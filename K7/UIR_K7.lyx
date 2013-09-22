@@ -1,0 +1,8264 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass extarticle
+\begin_preamble
+\usepackage{indentfirst}
+\usepackage{cmap}
+\usepackage{textcomp}
+\end_preamble
+\use_default_options true
+\begin_modules
+eqs-within-sections
+figs-within-sections
+\end_modules
+\maintain_unincluded_children false
+\language russian
+\language_package default
+\inputencoding koi8-r
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter cmtt
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 90
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement H
+\paperfontsize 11
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks false
+\pdf_backref page
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2.5cm
+\topmargin 2cm
+\rightmargin 1.5cm
+\bottommargin 3cm
+\secnumdepth 3
+\tocdepth 5
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\align center
+
+\size large
+МИНИСТЕРСТВО ОБРАЗОВАНИЯ И НАУКИ РОССИЙСКОЙ ФЕДЕРАЦИИ
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size larger
+Федеральное государственное автономное образовательное учреждение 
+\begin_inset Newline newline
+\end_inset
+
+высшего профессионального образования
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size larger
+\begin_inset Quotes fld
+\end_inset
+
+Национальный исследовательский ядерный
+\begin_inset Newline newline
+\end_inset
+
+ университет 
+\begin_inset Quotes fld
+\end_inset
+
+МИФИ
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="14cm">
+<row>
+<cell multirow="3" alignment="left" valignment="middle" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename files/mephi.png
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\size larger
+Факультет кибернетики и информационной безопасности
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+Кафедра №36
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 1cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size largest
+ПОЯСНИТЕЛЬНАЯ ЗАПИСКА 
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+к курсовому проекту на тему: 
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+\color black
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="16.4cm">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+\color black
+Разработка учебно-тренировочных средств по системам управления базами данных
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 2cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size large
+Группа  
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+К7-361
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size large
+Студент 
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="6.8cm">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="6cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+Воронин Д.Л.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset space \hspace{}
+\length 6cm
+\end_inset
+
+(подпись)
+\begin_inset space \hspace{}
+\length 5cm
+\end_inset
+
+(ФИО)
+\end_layout
+
+\begin_layout Standard
+
+\size large
+Руководитель проекта 
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="4.1cm">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="6cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+Муравьев С.К.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset space \hspace{}
+\length 6cm
+\end_inset
+
+(подпись)
+\begin_inset space \hspace{}
+\length 5cm
+\end_inset
+
+(ФИО)
+\end_layout
+
+\begin_layout Standard
+
+\size large
+Оценка 
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="14.2cm">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size large
+Члены комиссии 
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="5.2cm">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="6cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+(
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset space \hspace{}
+\length 6cm
+\end_inset
+
+(подпись)
+\begin_inset space \hspace{}
+\length 5cm
+\end_inset
+
+(ФИО)
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset space \hspace{}
+\length 3.3cm
+\end_inset
+
+
+\size large
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="5.2cm">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="6cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+(
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset space \hspace{}
+\length 6cm
+\end_inset
+
+(подпись)
+\begin_inset space \hspace{}
+\length 5cm
+\end_inset
+
+(ФИО)
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset space \hspace{}
+\length 3.3cm
+\end_inset
+
+
+\size large
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="5.2cm">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="6cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+(
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset space \hspace{}
+\length 6cm
+\end_inset
+
+(подпись)
+\begin_inset space \hspace{}
+\length 5cm
+\end_inset
+
+(ФИО)
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset space \hspace{}
+\length 3.3cm
+\end_inset
+
+
+\size large
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="5.2cm">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="6cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+(
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset space \hspace{}
+\length 6cm
+\end_inset
+
+(подпись)
+\begin_inset space \hspace{}
+\length 5cm
+\end_inset
+
+(ФИО)
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace vfill
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\series bold
+Москва 2012г.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+МИНИСТЕРСТВО ОБРАЗОВАНИЯ И НАУКИ РОССИЙСКОЙ ФЕДЕРАЦИИ
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size larger
+Федеральное государственное автономное образовательное учреждение 
+\begin_inset Newline newline
+\end_inset
+
+высшего профессионального образования
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size larger
+\begin_inset Quotes fld
+\end_inset
+
+Национальный исследовательский ядерный
+\begin_inset Newline newline
+\end_inset
+
+ университет 
+\begin_inset Quotes fld
+\end_inset
+
+МИФИ
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="14cm">
+<row>
+<cell multirow="3" alignment="left" valignment="middle" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename files/mephi.png
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ФАКУЛЬТЕТ КИБЕРНЕТИКИ И ИНФОРМАЦИОННОЙ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+БЕЗОПАСНОСТИ
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+КАФЕДРА ИНФОРМАЦИОННЫЕ СИСТЕМЫ И ТЕХНОЛОГИИ
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 0.5cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size largest
+Задание на УИР и КП
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 1cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size large
+Студенту гр.
+ 
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+К7-361 Воронину Дмитрию Леонидовичу
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 1cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size larger
+Тема УИР и КП
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+\color black
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="16.4cm">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+\color black
+Разработка учебно-тренировочных средств по системам управления базами данных
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 1cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size large
+ЗАДАНИЕ
+\end_layout
+
+\begin_layout Standard
+
+\size large
+\begin_inset Tabular
+<lyxtabular version="3" rows="13" columns="1">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.
+ Изучить документацию библиотеки Qt, необходимой для создания GUI-приложения.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2.
+ Разработать структуру базы данных обучающих уроков.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3.
+ Разработать дизайн GUI-приложения.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4.
+ Изучить язык запросов XPath.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5.
+ Изучить модуль библиотеки Qt QXmlPatterners,необходимого для реализации
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+запросов XPath и XQuery.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6.
+ Разработать и реализовать логику работы программы.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align left
+
+\size small
+\begin_inset space \hspace{}
+\length 3.3cm
+\end_inset
+
+
+\size default
+Место выполнения УИР и КП 
+\size large
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="4.8cm">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ФГУП 
+\begin_inset Quotes fld
+\end_inset
+
+ЦНИИ ЭИСУ
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align left
+
+\size small
+\begin_inset space \hspace{}
+\length 3.3cm
+\end_inset
+
+
+\size default
+Руководитель 
+\size large
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="3.8cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Муравьев С.К.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset space \hspace{}
+\length 2.7cm
+\end_inset
+
+
+\size default
+Дата выдачи задания
+\size small
+ 
+\size large
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="2cm">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Quotes fld
+\end_inset
+
+1
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+сентября
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2012г.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+ОТЗЫВ О РАБОТЕ СТУДЕНТА
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 2cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Руководитель 
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="6cm">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="4cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Quotes fld
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2012г.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Введение
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+addcontentsline{toc}{part}{Введение}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Современные программные продукты обладают широкими возможностями и характеризуют
+ся высокой сложностью освоения, что делает актуальной задачу построения
+ интерактивного учебника.
+ 
+\end_layout
+
+\begin_layout Standard
+Многие современные учебники по программным продуктам обычно представляют
+ собой справку в виде документации пользователя, поэтому требуется достаточно
+ много времени на изучение лишь документации, а не самого программного продукта.
+ Проблема создания интерактивных учебников решается путем создания специализиров
+анных учебников для каждого программного продукта, что не является эффективным.
+ 
+\end_layout
+
+\begin_layout Standard
+Поэтому актуальна задача создания такого интерактивного учебника, который
+ предусматривал возможность обучения сразу нескольким программным продуктам
+ в соответствии со специализированным подгружаемым алгоритмом.
+ Таким образом, требуется создать определенную структуру уроков, единую
+ для всех программных продуктов, чтобы иметь возможность одинаково обрабатывать
+ ее.
+ Кроме этого желательно, чтобы программа интерактивных уроков была кроссплатформ
+енной, то есть разработчику интерактивного учебника не требовалось дорабатывать
+ исходный код программы в зависимости от особенностей платформы.
+ 
+\end_layout
+
+\begin_layout Standard
+Системы управления базами данных являются многофункциональными, сложными
+ программными продуктами, что требует значительных усилий освоения принципов
+ работы с ними и их настройки.
+ Основными проблемами пользователей, которые не знакомы ранее с системами
+ управления базами данных, являются специфика администрирования системы
+ управления базы данных и язык запросов SQL.
+ 
+\end_layout
+
+\begin_layout Standard
+Одной из наиболее развитых систем управления базами данных является PostgreSQL.
+ PostgreSQL --- это свободно распространяемая объектно-реляционная система
+ управления базами данных 
+\begin_inset Newline newline
+\end_inset
+
+(ORDBMS) и альтернатива современным коммерческим системам управления базами
+ данных.
+ 
+\begin_inset Newline newline
+\end_inset
+
+PostgreSQL поддерживается большинством современных платформ, обладает широкими
+ возможностями для хранения информации и манипулирования ей.
+ Несмотря на наличие обширной документации по PostgreSQL, PostgreSQL остается
+ сложным программным продуктом для новых пользователей.
+ 
+\end_layout
+
+\begin_layout Standard
+В учебно-исследовательской работе предлагается разработать программу интерактивн
+ых уроков по системам управления базами данных на примере курса по PostgreSQL,
+ описывающий установку и настройку сервера базы данных на операционной системе
+ Linux и обучающий основным операторам языка SQL, а также продемонстрировать
+ работу этого интерактивного учебника.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Постановка задачи
+\end_layout
+
+\begin_layout Standard
+В настоящее время существует большое количество интерактивных учебников,
+ которые обеспечивают обучение основам работы разных программных продуктов.
+\end_layout
+
+\begin_layout Standard
+Одним из наиболее удобных интерактивных учебников является ресурс 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://try.github.com
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "try.github.com"
+
+\end_inset
+
+--- интерактивный учебник по обучению работе с распределенной системой управлени
+я версиями файлов 
+\series bold
+git
+\series default
+, скриншот которого приведен 
+\emph on
+на рисунке 1.1
+\emph default
+.
+ Он содержит один урок по работе с git.
+ Урок разделен на несколько шагов.
+ На каждом шаге приводится описание команды, которую требуется выполнить
+ пользователю.
+ В случае правильно введенной команды осуществляется переход на следующий
+ шаг.
+ В случае неверных действий пользователя учебник выводит предупреждение.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Основные преимущества данного учебника:
+\end_layout
+
+\begin_layout Itemize
+содержит описание команд, которые предлагается выполнить;
+\end_layout
+
+\begin_layout Itemize
+простой интерфейс;
+\end_layout
+
+\begin_layout Itemize
+кроссплатформенный (запускается в браузере).
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Основные недостатки:
+\end_layout
+
+\begin_layout Itemize
+хранение уроков осуществляется на сервере, таким образом требует обслуживания
+ сервера базы данных разработчиками;
+\end_layout
+
+\begin_layout Itemize
+отсутствие возможности расширения интерактивного учебника для других программных
+ продуктов.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename files/gihub.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Интерактивный учебник try.github
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Для систем управления базами данных также существуют специализированные
+ интерактивные учебники, например, интерактивный учебник по языку запросов
+ SQL, представленный 
+\emph on
+на рисунке 1.2 
+\emph default
+и доступный по адресу 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.sql-tutorial.ru
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "sql-tutorial.com"
+
+\end_inset
+
+.
+ Он содержит уроки по языку запросов SQL.
+ Каждый урок посвящен только одному оператору языка SQL.
+ Урок делится на шаги по уровням сложности.
+ Пользователю предлагается самому, основываясь на своих знаниях, решить
+ определенную задачу --- написать SQL-запрос, в результате которого получится
+ указанный в задании результат.
+ В качестве задания представлена структура таблиц базы данных и что требуется
+ из нее получить.
+ В этом интерактивном учебнике реализована возможность выполнения запроса
+ на нескольких диалектах языка SQL.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename files/sql-tutorial.png
+	scale 50
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Интерактивный учебник sql-tutorial
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+\align left
+
+\series bold
+Основные преимущества данного учебника:
+\end_layout
+
+\begin_layout Itemize
+возможность обучения диалекту языка SQL (возможность выбрать базу данных,
+ для которой пишется запрос);
+\end_layout
+
+\begin_layout Itemize
+существует несколько путей к решению каждой задачи;
+\end_layout
+
+\begin_layout Itemize
+кроссплатформенный (запускается в браузере).
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Основные недостатки:
+\end_layout
+
+\begin_layout Itemize
+нет описания оператора SQL во время выполнения шага;
+\end_layout
+
+\begin_layout Itemize
+реализация и поддержка эмулятора сервера каждой из поддерживаемой базы данных;
+\end_layout
+
+\begin_layout Itemize
+хранение уроков осуществляется на сервере, таким образом требуется обслуживание
+ сервера базы данных разработчиками;
+\end_layout
+
+\begin_layout Itemize
+неизвестно ни одно решение задачи на конкретном шаге;
+\end_layout
+
+\begin_layout Itemize
+отсутствие возможности расширения интерактивного учебника для других программных
+ продуктов.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Рассмотрев все достоинства и недостатки представленных выше интерактивных
+ учебников, предлагается создать приложение интерактивных уроков, удовлетворяюще
+е следующим требованиям:
+\end_layout
+
+\begin_layout Itemize
+приложение должно иметь единую структуру уроков;
+\end_layout
+
+\begin_layout Itemize
+приложение должно иметь единый алгоритм обработки уроков;
+\end_layout
+
+\begin_layout Itemize
+приложение должно быть кроссплатформенным на уровне исходных кодов.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Для создания единой структуры уроков предлагается использовать язык разметки
+ XML, обладающий возможностью 
+\color black
+простого пользовательского редактирования.
+
+\color inherit
+ Предлагается использовать языки запросов XPath и XQuery --- специальные
+ языки, разработанные специально для извлечения информации из XML, а также
+ Qt --- кроссплатформенную библиотеку C++, имеющую большое число инструментов
+ по созданию 
+\color black
+интерфейсов
+\color inherit
+ и средства по обработке XML.
+ 
+\end_layout
+
+\begin_layout Standard
+Для решения задачи реализации интерактивного учебника требуется выполнить
+ следующие шаги:
+\end_layout
+
+\begin_layout Itemize
+Разработать единую структуру обучающих уроков в формате XML и XSD-схему,
+ соответствующей этой структуре; 
+\end_layout
+
+\begin_layout Itemize
+Изучить языки запросов XPath и XQuery; 
+\end_layout
+
+\begin_layout Itemize
+Изучить методику разработки GUI-приложений в библиотеки Qt; 
+\end_layout
+
+\begin_layout Itemize
+Реализовать в Qt механизмы проверки корректности XML-файла уроков через
+ XSD-схему;
+\end_layout
+
+\begin_layout Itemize
+Разработать дизайн GUI-приложения.
+ Изучить механизмы работы библиотеки Qt с XPath и XQuery;
+\end_layout
+
+\begin_layout Itemize
+Разработать и реализовать механизм обработки уроков;
+\end_layout
+
+\begin_layout Itemize
+
+\color black
+Осуществить обзор
+\color inherit
+ СУБД PostgreSQL.
+ 
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Таким образом, целью данной учебно-исследовательской работы является создание
+ программы интерактивных уроков по системам управления базами данных.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Разработка архитектуры интерактивного учебника
+\end_layout
+
+\begin_layout Subsection
+Обзор языка разметки XML
+\end_layout
+
+\begin_layout Standard
+В качестве формата хранения данных обучающих уроков был выбран формат 
+\series bold
+XML
+\series default
+, имеющий важное преимущество с данными, хранящимися в таблицах базы данных.
+ Это преимущество заключается в возможности пользовательского редактирования
+ данных, хранящихся в XML.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+XML 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "XML"
+
+\end_inset
+
+ --- это описанная в текстовом формате иерархическая структура, предназначенная
+ для хранения структурированных данных.
+ Визуально она может быть представлена как дерево элементов.
+ Любой XML-документ начинается с заголовка --- это строка, указывающая версию
+ XML-документа.
+ Здесь может быть указана кодировка документа и иные зависимости.
+ Например:
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+<?xml version="1.0" encoding="UTF-8"?>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Существует понятие правильно оформленного (
+\emph on
+англ.
+ well-formed
+\emph default
+) XML-документа.
+ В правильно оформленном XML-документе содержится только один корневой узел
+ (
+\emph on
+англ.
+ root element
+\emph default
+).
+ Это означает, что все остальные элементы должны помещаться между открывающимся
+ корневым тегом и соответствующим ему закрывающимся корневым тегом.
+ Пример правильно построенного XML-документа:
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+<?xml version="1.0" encoding="UTF-8"?> 
+\end_layout
+
+\begin_layout Plain Layout
+
+ <root> 
+\end_layout
+
+\begin_layout Plain Layout
+
+   <element> text </element> 
+\end_layout
+
+\begin_layout Plain Layout
+
+ </root> 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Остальная часть XML-документа состоит из вложенных элементов, некоторые
+ из которых имеют атрибуты и значения.
+ Имена элементов, как и имена атрибутов, не могут содержать пробелы, но
+ могут быть на любом языке, поддерживаемом кодировкой XML-документа.
+ Имя может начинаться с буквы, подчеркивания, двоеточия.
+ Остальными символами имени могут быть те же символы, а также цифры, дефис,
+ точка.
+ 
+\end_layout
+
+\begin_layout Standard
+Различают несколько типов тегов: 
+\end_layout
+
+\begin_layout Enumerate
+Пустой тег
+\begin_inset Newline newline
+\end_inset
+
+ 
+\family typewriter
+<tag/>
+\end_layout
+
+\begin_layout Enumerate
+Тег с содержимым
+\begin_inset Newline newline
+\end_inset
+
+ 
+\family typewriter
+<tag> text </tag> 
+\end_layout
+
+\begin_layout Enumerate
+Тег с атрибутами 
+\family typewriter
+
+\begin_inset Newline newline
+\end_inset
+
+<tag> attribute_1="value_1" attribute_2="value_2" attribute_N="value_N"</tag>
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Так как в XML зарезервированными символами являются символы 
+\begin_inset Quotes fld
+\end_inset
+
+
+\family typewriter
+<
+\family default
+
+\begin_inset Quotes frd
+\end_inset
+
+, 
+\begin_inset Quotes fld
+\end_inset
+
+
+\family typewriter
+>
+\family default
+
+\begin_inset Quotes frd
+\end_inset
+
+ и 
+\begin_inset Quotes fld
+\end_inset
+
+
+\family typewriter
+&
+\family default
+
+\begin_inset Quotes frd
+\end_inset
+
+, 
+\begin_inset Quotes fld
+\end_inset
+
+
+\family typewriter
+'
+\family default
+
+\begin_inset Quotes frd
+\end_inset
+
+, 
+\begin_inset Quotes fld
+\end_inset
+
+
+\family typewriter
+''
+\family default
+
+\begin_inset Quotes frd
+\end_inset
+
+, то для их обозначения используют ссылки на сущности.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Сущностью
+\series default
+ (англ. entity) в XML называются именованные данные, обычно текстовые, в
+ частности, спецсимволы.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Ссылка на сущность 
+\series default
+(англ. entity references) указывается в том месте, где должна быть сущность
+ и состоит из амперсанда (
+\family typewriter
+&
+\family default
+), имени сущности и точки с запятой (
+\family typewriter
+;
+\family default
+).
+ В 
+\emph on
+таблице 1
+\emph default
+ приведены соответствия между литерами и кодами символа в формате XML.
+ 
+\end_layout
+
+\begin_layout Standard
+Например, чтобы описать выражение 
+\family typewriter
+if (a > b) 
+\family default
+в XML нужно написать так:
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize\ttfamily},language={C++}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+<code> if (a &gt; b) </code> 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="decimal" decimal_point="." valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Литера
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Код литеры в XML
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+&
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+&amp;
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+<
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+&lt;
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+>
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+&gt;
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+'
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+&apos;
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+"
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+&quot;
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Таблица соответствия литеры и ее кода в XML
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Subsection
+Обзор языков запросов XPath и XQuery
+\end_layout
+
+\begin_layout Subsubsection
+Язык запросов XPath
+\end_layout
+
+\begin_layout Standard
+Любой XML-документ представляет собой древовидную структуру данных.
+ У любого из элементов XML-документа могут быть предки и потомки (у корневого
+ элемента предков быть не может).
+ Обрабатывать данную структуру весьма сложно, поэтому был разработан язык
+ запросов 
+\series bold
+XPath
+\series default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "XPath"
+
+\end_inset
+
+, позволяющий получать данные из XML.
+ Путь делится на шаги, каждый из которых отделяется знаком ‘
+\family typewriter
+/
+\family default
+’.
+ Каждый шаг содержит: 
+\end_layout
+
+\begin_layout Itemize
+Критерий отбора узлов.
+ В качестве критерия отбора используют или имена узлов (элементов, атрибутов)
+ или специальные обозначения множеств узлов, например 
+\family typewriter
+text()
+\family default
+, которое символизирует все текстовые узлы.
+ Обозначение 
+\family typewriter
+node()
+\family default
+ или 
+\family typewriter
+*
+\family default
+ --- любой узел из подмножества узлов текущего шага, а используют их тогда,
+ когда не требуются никакие ограничения.
+ Критерий отбора узлов является обязательной частью каждого шага.
+\end_layout
+
+\begin_layout Itemize
+Предикат шага.
+ Выражение предиката описывается в квадратных скобках и может содержать
+ ограничения на значения атрибутов, ограничения, связанные с вложенными
+ узлами или просто индекс элемента, например 
+\family typewriter
+Folder[5]
+\family default
+.
+ Ограничения на значения атрибутов и вложенных элементов могут представлять
+ собой сложные условия, объединенные логическими операциями (
+\family typewriter
+and
+\family default
+,
+\family typewriter
+ or
+\family default
+) и содержащие математические выражения (
+\family typewriter
++
+\family default
+,
+\family typewriter
+ 
+\family default
+,
+\family typewriter
+ *
+\family default
+,
+\family typewriter
+ div
+\family default
+,
+\family typewriter
+ mod
+\family default
+).
+ Эта часть шага не является обязательной.
+\end_layout
+
+\begin_layout Itemize
+Ось шага.
+ Под осью шага понимается подмножество узлов документа, определяемое контекстом,
+ на котором будет осуществлен поиск.
+ 
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Ниже приведен XML, описывающий структуру каталога 
+\family typewriter
+/usr
+\family default
+ файловой системы операционной системы Linux:
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+<Folder name="usr">
+\end_layout
+
+\begin_layout Plain Layout
+
+ <Folder name="share">
+\end_layout
+
+\begin_layout Plain Layout
+
+  <Folder name="doc">
+\end_layout
+
+\begin_layout Plain Layout
+
+   <Folder name="adduser"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+   <Folder name="adobe-flashplugin"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+  </Folder>
+\end_layout
+
+\begin_layout Plain Layout
+
+  <Folder name="bin"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+</Folder>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+и XPath запрос, получающий все имена каталогов в каталоге 
+\family typewriter
+/usr/share/doc
+\family default
+:
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize\ttfamily},breaklines=true"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Folder[@name="usr"]/Folder[@name="share"]/Folder[@name="doc"]/*
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Чтение запроса осуществляется слева направо.
+ 
+\end_layout
+
+\begin_layout Standard
+Таким образом, XPath позволяет осуществить запросы, понятные человеку, любого
+ XML-файла.
+ Ниже приведем некоторые комментарии к примеру запроса, иллюстрированному
+ выше: 
+\end_layout
+
+\begin_layout Itemize
+Ось атрибутов 
+\family typewriter
+::attribute
+\family default
+ можно в запросах заменить на символ 
+\family typewriter
+@
+\family default
+ (например 
+\family typewriter
+@name=
+\family default
+ ).
+\end_layout
+
+\begin_layout Itemize
+Оси предков элемента можно опустить, как это и сделано (полный запрос для
+ каталога
+\family typewriter
+ /usr/
+\family default
+ будет записан как 
+\family typewriter
+child::usr
+\family default
+).
+\end_layout
+
+\begin_layout Itemize
+Для вывода множества всех узлов используют функцию 
+\family typewriter
+*
+\family default
+;
+\end_layout
+
+\begin_layout Itemize
+Для получения конкретного узла из множества одинаковых узлов используют
+ индексацию через оператор 
+\family typewriter
+[ ]
+\family default
+ (как это сделано выше в примере).
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Язык запросов XQuery
+\end_layout
+
+\begin_layout Standard
+Первое, на что следует обратить внимание, это то, что в 
+\series bold
+XQuery 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "XQuery"
+
+\end_inset
+
+
+\series default
+ любая конструкция --- это выражение, результатом вычисления которого является
+ некоторое значение.
+ Программа XQuery или скрипт --- это просто выражение вместе с некоторыми
+ необязательными функциями и другими определениями.
+ Поэтому 
+\family typewriter
+3+4 
+\family default
+--- это завершенная, допустимая программа XQuery, которая при вычислении
+ равняется 
+\family typewriter
+7
+\family default
+.
+ XQuery использует 
+\series bold
+path expression XPath 
+\series default
+(т.е.
+ использует адресную индексацию элементов XPath).
+ 
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Примитивные типы данных XQuery:
+\end_layout
+
+\begin_layout Itemize
+числа, включая целые и числа с плавающей запятой;
+\end_layout
+
+\begin_layout Itemize
+булевы числа: 
+\family typewriter
+true
+\family default
+ (истина) и 
+\family typewriter
+false
+\family default
+ (ложь);
+\end_layout
+
+\begin_layout Itemize
+строки символов, например, 
+\family typewriter
+"Hello world!"
+\family default
+.
+ Строки являются неизменными, то есть символ в строке не может быть изменен;
+ 
+\end_layout
+
+\begin_layout Itemize
+различные типы для представления дат, времени и продолжительности.
+ 
+\end_layout
+
+\begin_layout Itemize
+несколько типов, связанных с XML.
+ 
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Производные типы являются вариациями или ограничениями других типов.
+ Примитивные типы и типы, полученные из них, известны как атомарные типы,
+ поскольку атомарные величины не содержат других величин.
+ Таким образом, строка считается атомарной, так как в XQuery нет значений
+ символов.
+ Величины узлов и выражения
+\end_layout
+
+\begin_layout Standard
+В XQuery также есть типы данных, необходимые для представления величин XML.
+ Для этого используются величины узлов следующих семи типов: элемент, атрибут,
+ пространство имен, текст, комментарий, инструкция обработки и документ
+ (корень).
+ 
+\end_layout
+
+\begin_layout Standard
+Для создания и возврата узлов используются различные стандартные функции
+ XQuery.
+ Так, функция 
+\family typewriter
+document
+\family default
+ читает XML-файл, указанный аргументом URL, и возвращает корневой узел документа.
+ (Корневой элемент - это потомок корневого узла).
+\end_layout
+
+\begin_layout Standard
+Величины узлов XQuery являются неизменными (после создания узла его нельзя
+ изменить).
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Последовательности
+\end_layout
+
+\begin_layout Standard
+Рассмотренные атомарные величины (числа, строки и т.п.) и величины узлов (элементы
+, атрибуты и т.д.) известны как простые величины.
+ Результатом вычисления выражения XQuery на самом деле является последовательнос
+ть простых величин.
+ Например, 
+\family typewriter
+3,4,5
+\family default
+ --- это последовательность, состоящая из 3 целых.
+ Заметим, что если последовательность содержит только одно значение, то
+ она совпадает с самой величиной.
+ Не допускается использовать вложения для последовательностей.
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Функции
+\end_layout
+
+\begin_layout Standard
+Без функций, определяемых пользователем, XQuery был бы далек от языка от
+ программирования.
+ Определения таких функций располагаются в прологе запроса (query prologue)
+ программы XQuery.
+ Стоит заметить, что параметрами функции и результатами ее вычисления могут
+ быть примитивные типы, узлы или последовательности из тех или других.
+\end_layout
+
+\begin_layout Standard
+Ниже приведена рекурсивная служебная функция.
+ Она возвращает все узлы-наследники аргумента, включая сам узел аргумента.
+ Она проходит вглубь по аргументу и возвращает аргумент, а затем выполняет
+ цикл по потомкам узла аргумента, рекурсивно вызывая саму себя для каждого
+ потомка.
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize\ttfamily}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+define function descendant-or-self ($x) 
+\end_layout
+
+\begin_layout Plain Layout
+
+{ 
+\end_layout
+
+\begin_layout Plain Layout
+
+$x,
+\end_layout
+
+\begin_layout Plain Layout
+
+for $y in children($x) 
+\end_layout
+
+\begin_layout Plain Layout
+
+	return descendant-or-self($y) 
+\end_layout
+
+\begin_layout Plain Layout
+
+} 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В результате вызова функции
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize\ttfamily}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+descendant-or-self(<a>X<b>Y</b></a>)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+получается последовательность глубины 4:
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize\ttfamily}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+<a>X<b>Y</b></a>; "X"; <b>Y</b>; "Y"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+XQuery имеет большую библиотеку функций.
+ 
+\emph on
+В
+\emph default
+ 
+\emph on
+таблице 2
+\emph default
+ представлены некоторые функции из библиотеки
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Название функции
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+В чем состоит работа функции
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+doc($variable)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Возвращает содержимое XML-документа для запросов
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+concat($string1,[..], $string)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Выполняет конкатенацию строк, переданных в аргументах
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+text()
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Возвращает текстовое значение элемента
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+string(element)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Преобразует содержимое элемента 
+\family typewriter
+element
+\family default
+ в строку
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+count(element)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Возвращает число элементов с названием тега 
+\family typewriter
+element
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Некоторые функции XQuery
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Определение типов
+\end_layout
+
+\begin_layout Standard
+XQuery - строго типизированный язык программирования.
+ Как Java и C#, XQuery - это смесь статического (проверка совместимости
+ типов во время компиляции) и динамического контроля типов (тестирование
+ типов во время выполнения).
+ Однако, типы в XQuery отличаются от классов, присущих объектно-ориентрованному
+ программированию.
+ Взамен XQuery включает типы, которые соответствуют модели данных XQuery,
+ и позволяет импортировать типы из XML Schema.
+\end_layout
+
+\begin_layout Subsection
+Обзор библиотеки Qt
+\end_layout
+
+\begin_layout Standard
+Библиотека 
+\series bold
+Qt
+\series default
+ предоставляет обширные средства для создания пользовательских графических
+ интерфейсов, обработки различной информации.
+ Можно выделить основные достоинства библиотеки Qt по сравнению с остальными
+ библиотеками, предоставляющими возможности по созданию графического интерфейса:
+\end_layout
+
+\begin_layout Itemize
+кроссплатформенность на уровне исходных кодов;
+\end_layout
+
+\begin_layout Itemize
+все классы библиотеки разделяются на модули, каждый из которых может быть
+ подключен;
+\end_layout
+
+\begin_layout Itemize
+наличие интерактивной документации по каждому из модулей.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Subsubsection
+Методика разработки GUI-приложения на Qt
+\end_layout
+
+\begin_layout Standard
+В языке C++ нет удобных механизмов, позволяющих динамически взаимодействовать
+ объектам нескольких классов, отвечающих за графический интерфейс, ничего
+ друг о друге не зная при компиляции.
+ Другими словами, как сообщить объекту одного класса, что в работе другого
+ что-то произошло? Взаимодействие объектов Qt между собой и с внешним окружением
+ происходит немного по-разному.
+ Информацию о том, что происходит во внешнем окружении, программа получает,
+ в основном в виде 
+\series bold
+событий
+\series default
+.
+ 
+\series bold
+Обработчики событий
+\series default
+ --- это обычные методы классов Qt, которым в качестве аргумента передается
+ указатель на объект, описывающий событие.
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Qt-Шлее"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+На рисунке 2.1 
+\emph default
+представлена схема цикла обработчика событий в Qt.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/диаграмма_обработки_событий.png
+	lyxscale 50
+	scale 35
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+цикл жизни приложения в Qt
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Любое графическое приложение в Qt начинают свою жизнь с создания окна приложения
+ 
+\family typewriter
+
+\begin_inset Newline newline
+\end_inset
+
+QMainWindow
+\family default
+ методом 
+\family typewriter
+QApplication::exec()
+\family default
+.
+ Далее запускается обработчик событий.
+ Любая реакция пользователя (щелчок мыши, перетаскивание окна, нажатие клавиши
+ на клавиатуре) может быть обработана так, как этого хочет программист.
+ При возникновении события, описанного программистом, жизненный цикл приложения
+ приостанавливается, событие обрабатывается и снова возвращается в цикл
+ обработки события.
+ В случае если вызывается метод 
+\family typewriter
+QApplication::exit()
+\family default
+, приложение прекращает свою работу.
+\end_layout
+
+\begin_layout Standard
+Взаимодействие между графическими объектами приложения в Qt реализовано
+ с помощью 
+\emph on
+механизма сигналов и слотов
+\emph default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Сигналы
+\series default
+ --- это функции, не имеющие определения, возвращающие тип 
+\family typewriter
+void
+\family default
+ и определенныес помощью ключевого слова Qt 
+\family typewriter
+signal
+\family default
+ в заголовочном классе.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Слоты
+\series default
+ --- это функции, которые обрабатывают сигналы, другими присылаемые объектами,
+ также возвращают тип 
+\family typewriter
+void
+\family default
+ и объявляются с помощью ключевого слова 
+\family typewriter
+slots
+\family default
+ в заголовочном файле.
+ Данный механизм работает только при определении в каждом классе макроса
+\family typewriter
+ Q_OBJECT
+\family default
+.
+ Чтобы связать два объекта с помощью этого механизма, в классе-отправителе
+ сигнала должна определена функция-сигнал 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Qt-документация"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize\ttfamily},language={C++},numbers=left"
+inline false
+status open
+
+\begin_layout LyX-Code
+
+class MySignal { 
+\end_layout
+
+\begin_layout LyX-Code
+
+  Q_OBJECT 
+\end_layout
+
+\begin_layout LyX-Code
+
+  signals: 
+\end_layout
+
+\begin_layout LyX-Code
+
+	void signal(); 
+\end_layout
+
+\begin_layout LyX-Code
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Чтобы выслать сигнал, используется ключевое слово 
+\family typewriter
+emit
+\family default
+: 
+\family typewriter
+emit signal();
+\family default
+ 
+\end_layout
+
+\begin_layout Standard
+В классе-приемнике создадим функцию-обработчик сигнала из класса 
+\family typewriter
+MySignal
+\family default
+:
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize\ttfamily},numbers=left"
+inline false
+status open
+
+\begin_layout LyX-Code
+
+class Reciever {
+\end_layout
+
+\begin_layout LyX-Code
+
+  Q_OBJECT 
+\end_layout
+
+\begin_layout LyX-Code
+
+  public slots: 
+\end_layout
+
+\begin_layout LyX-Code
+
+  void recieverSignal() { qDebug() << "Получен сигнал"; } 
+\end_layout
+
+\begin_layout LyX-Code
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Для связи двух объектов sender и receiver c помощью сигналов и слотов использует
+ся функция 
+\family typewriter
+connect
+\family default
+: 
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize\ttfamily}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+connect(sender, SIGNAL(signal()), receiver, SLOT(slot()));
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+В нашем случае для связи объекта класса 
+\family typewriter
+MySignal
+\family default
+ с объектом класса 
+\family typewriter
+MyReciever
+\family default
+ достаточно написать так: 
+\end_layout
+
+\begin_layout LyX-Code
+
+\family typewriter
+\begin_inset listings
+lstparams "basicstyle={\footnotesize\ttfamily}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+connect(my_signal_obj, 
+\end_layout
+
+\begin_layout Plain Layout
+
+		SIGNAL(signal()),
+\end_layout
+
+\begin_layout Plain Layout
+
+		my_receiver_obj,
+\end_layout
+
+\begin_layout Plain Layout
+
+		SLOT(recieverSignal()));
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Для разрыва связи между двумя объектами достаточно написать функцию 
+\family typewriter
+disconnect
+\family default
+, в качестве параметров указываются имя объекта-отправителя, сигнал, имя
+ объекта-приемника и слот обработки сигнала-приемника:
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize\ttfamily}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+disconnect(my_signal_obj,
+\end_layout
+
+\begin_layout Plain Layout
+
+		   SIGNAL(signal()),
+\end_layout
+
+\begin_layout Plain Layout
+
+		   my_receiver_obj,
+\end_layout
+
+\begin_layout Plain Layout
+
+		   SLOT(recieverSignal()));
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Кроме того, существует перегруженная функция 
+\family typewriter
+disconnect
+\family default
+, которая разъединяет все связи объекта:
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize\ttfamily}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+disconnect(my_obj, 0, 0, 0);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+что эквивалентно вызову функции
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize\ttfamily}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+my_obj -> disconnect();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Компиляция приложения в Qt происходит несколько иначе, чем компиляция в
+ чистом C++.
+ В начале компиляции вызывается MOC (Meta Object Compiler, метаобъектный
+ компилятор).
+ Он анализирует классы на наличие специального макроса 
+\family typewriter
+Q_Object 
+\family default
+в их определении и внедряет в отдельный файл всю необходимую дополнительную
+ информацию.
+ После вызова MOC уже обработанные файлы компилируются компилятором C++.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Обзор компонентов библиотеки Qt
+\end_layout
+
+\begin_layout Standard
+В Qt все классы для удобства разработки приложений разделены на модули,
+ в каждом из которых содержатся классы для работы с разными видами объектов
+ (графикой, аудио, рисунками, XML и др.) В 
+\emph on
+таблице 3 
+\emph default
+приведено краткое описание некоторых модулей библиотеки Qt.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Модуль
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Описание
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+QtCore
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Содержит классы, обеспечивающие ядро библиотеки Qt
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+QtGui
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Дополняет модуль QtCore функциональностью GUI
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+QtXmlPatterns
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Обеспечивает поддержку XML, XPath, XQuery и валидацию XML схемой XSD
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Описание некоторых модулей Qt.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Модуль 
+\family typewriter
+QtCore 
+\family default
+является базовым модулем для всей библиотеки Qt.
+ В него входят реализации основных типов данных, контейнерные классы, классы
+ ввода и вывода, классы работы с датой, временем, базовый класс событий,
+ класс 
+\family typewriter
+QObject
+\family default
+, являющийся краеугольным камнем объектной модели Qt.
+\end_layout
+
+\begin_layout Standard
+Модуль 
+\family typewriter
+QtGui 
+\family default
+содержит важный для нас класс 
+\family typewriter
+QWidget
+\family default
+ --- класс-родитель, от которого наследуются все классы виджетов в Qt.
+ Содержит виджеты компановки, кнопки, текстовые поля и так далее.
+ 
+\series bold
+Виджеты
+\series default
+ --- это стандартные графические примитивы, выполняющие определенные действия.
+ 
+\end_layout
+
+\begin_layout Standard
+Модуль 
+\family typewriter
+QtXmlPatterners 
+\family default
+содержит классы для работы с XQuery и XPath
+\family typewriter
+.
+
+\family default
+ Класс
+\family typewriter
+ QXmlQuery
+\family default
+ позволяет загружать XQuery-запросы, класс 
+\family typewriter
+QXmlQuery
+\family default
+ необходим для загрузки шаблона XQuery-запроса и связывании переменных в
+ шаблоне, класс 
+\family typewriter
+QXmlFormatter
+\family default
+ предназначен для вывода результатов запроса, а также классы 
+\family typewriter
+QXmlSchema 
+\family default
+и 
+\family typewriter
+QXmlValidator
+\family default
+ позволяют загружать XSD-схему и реализовать механизм соответствия XML-файла
+ XSD-схеме.
+\end_layout
+
+\begin_layout Standard
+Далее рассмотрим подробнее некоторые классы библиотеки Qt.
+\end_layout
+
+\begin_layout Subsubsection
+Обзор класса QTreeWidget
+\end_layout
+
+\begin_layout Standard
+Класс 
+\family typewriter
+QTreeWidget
+\family default
+ обеспечивает создание виджета дерева.
+\end_layout
+
+\begin_layout Standard
+Основные методы класса 
+\family typewriter
+QTreeWidget
+\family default
+:
+\end_layout
+
+\begin_layout Itemize
+конструктор 
+\family typewriter
+QTreeWidget(QWidget *parent=0)
+\family default
+.
+ Создает виджет дерева;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+void addTopLevelItem (QTreeWidgetItem *item) 
+\family default
+--- добавляет в дерево элемент дерева
+\begin_inset Newline newline
+\end_inset
+
+ 
+\family typewriter
+QTreeWidgetItem
+\family default
+ как корневой элемент дерева;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+QTreeWidgetItem* currentItem() const 
+\family default
+--- возвращает текущий элемент в дереве;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+int indexOfTopLevelItem (QTreeWidgetItem *item) const 
+\family default
+--- возвращает индекс корневого элемента в дереве;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+QTreeWidgetItem* itemAbove(const QTreeWidgetItem *item) const 
+\family default
+--- возвращает элемент дерева, находящийся выше элемента 
+\family typewriter
+item 
+\family default
+в дереве;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+QTreeWidgetItem* itemBelow(const QTreeWidgetItem *item) const 
+\family default
+--- возвращает элемент дерева, находящийся ниже элемента 
+\family typewriter
+item 
+\family default
+в дереве;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+void setHeaderLabel (const QString &label)
+\family default
+ --- устанавливает метку дерева;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+QTreeWidgetItem* topLevelItem (int index) const 
+\family default
+--- возвращает элемент дерева по индексу 
+\family typewriter
+index
+\family default
+.
+\end_layout
+
+\begin_layout Subsubsection
+Обзор класса QTreeWidgetItem
+\end_layout
+
+\begin_layout Standard
+Класс 
+\family typewriter
+QTreeWidgetItem 
+\family default
+обеспечивает работу с элементами дерева 
+\family typewriter
+QTreeWidgetItem
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Основные методы класса:
+\end_layout
+
+\begin_layout Itemize
+конструктор 
+\family typewriter
+QTreeWidgetItem (QTreeWidgetItem* parent, int type=Type) 
+\family default
+--- создает новый вложенный элемент дерева.
+ Вложенность достигается путем указания элемента-родителя 
+\family typewriter
+parent
+\family default
+;
+\family typewriter
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+int childCount() const 
+\family default
+--- возвращает число потомков элемента;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+bool isExpanded() const 
+\family default
+--- возвращает истину, если дерево раскрыто и ложь, если нет;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+QTreeWidgetItem* parent() const 
+\family default
+--- возвращает родителя элемента и 0, если родителей не имеет;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+void setSelected(bool select) 
+\family default
+--- установить элемент дерева выбранным, при передаче параметра 
+\family typewriter
+select=true 
+\family default
+и снять выделение при передаче параметра 
+\family typewriter
+select=false
+\family default
+;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+void setText(int column, const QString &text)
+\family default
+ --- установить текст 
+\family typewriter
+text
+\family default
+ элемента в колонку 
+\family typewriter
+column
+\family default
+;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+QString text (int column) const 
+\family default
+--- получить текст элемента из колонки 
+\family typewriter
+column
+\family default
+;
+\end_layout
+
+\begin_layout Subsection
+Обзор языка запросов SQL
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+SQL
+\series default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "SQL"
+
+\end_inset
+
+(обычно произносимый как "СИКВЭЛ" или "ЭСКЮЭЛЬ") символизирует собой Структуриро
+ванный Язык Запросов.
+ Это --- язык, который дает нам возможность создавать и работать в реляционных
+ базах данных, являющихся наборами связанной информации, сохраняемой в таблицах.
+\end_layout
+
+\begin_layout Standard
+Информационное пространство становится более унифицированным.
+ Это привело к необходимости создания стандартного языка, который мог бы
+ использоваться в большом количестве различных видов компьютерных сред.
+ Стандартный язык позволит пользователям, знающим один набор команд, использоват
+ь их для создания, нахождения, изменения и передачи информации - независимо
+ от того, работают ли они на персональном компьютере, сетевой рабочей станции,
+ или на универсальной ЭВМ.
+\end_layout
+
+\begin_layout Standard
+В нашем все более и более взаимосвязанном компьютерном мире, пользователь
+ снабженный таким языком, имеет огромное преимущество в использовании и
+ обобщении информации из ряда источников с помощью большого количества способов.
+\end_layout
+
+\begin_layout Standard
+Элегантность и независимость от специфики компьютерных технологий, а также
+ его поддержка лидерами промышленности в области технологии реляционных
+ баз данных, сделало SQL (и, вероятно, в течение обозримого будущего оставит
+ его) основным стандартным языком.
+ По этой причине, любой, кто хочет работать с базами данных 90-х годов,
+ должен знать SQL.
+\end_layout
+
+\begin_layout Standard
+Стандарт SQL определяется ANSI (Американским Национальным Институтом Стандартов)
+ и в данное время также принимается ISO (Международной Организацией по Стандарти
+зации).
+ Однако, большинство коммерческих программ баз данных расширяют SQL без
+ уведомления ANSI, добавляя различные особенности в этот язык, которые,
+ как они считают, будут весьма полезны.
+ Иногда они несколько нарушают стандарт языка, хотя хорошие идеи имеют тенденцию
+ развиваться и вскоре становиться стандартами "рынка" сами по себе в силу
+ полезности своих качеств.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Состав языка SQL
+\series default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Язык SQL предназначен для манипулирования данными в реляционных базах данных,
+ определения структуры баз данных и для управления правами доступа к данным
+ в многопользовательской среде.
+ Поэтому, в язык SQL в качестве составных частей входят:
+\end_layout
+
+\begin_layout Itemize
+язык манипулирования данными (Data Manipulation Language, DML) 
+\end_layout
+
+\begin_layout Itemize
+язык определения данных (Data Definition Language, DDL) 
+\end_layout
+
+\begin_layout Itemize
+язык управления данными (Data Control Language, DCL).
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Подчеркнем, что это не отдельные языки, а различные команды одного языка.
+ Такое деление проведено только лишь с точки зрения различного функционального
+ назначения этих команд.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Язык манипулирования данными
+\emph default
+ используется, как это следует из его названия, для манипулирования данными
+ в таблицах баз данных.
+ Он состоит из 4 основных команд: SELECT (выбрать), INSERT (вставить), UPDATE
+ (обновить), DELETE (удалить)
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Язык определения данных
+\emph default
+ используется для создания и изменения структуры базы данных и ее составных
+ частей - таблиц, индексов, представлений (виртуальных таблиц), а также
+ триггеров и сохраненных процедур.
+ 
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Язык управления данными
+\emph default
+ используется для управления правами доступа к данным и выполнением процедур
+ в многопользовательской среде.
+ Более точно его можно назвать "язык управления доступом".
+ Он состоит из двух основных команд: GRANT (дать права), REVOKE (забрать
+ права).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Разработка учебно-тренировочных средств по СУБД 
+\end_layout
+
+\begin_layout Subsection
+Алгоритм построения учебно-тренировочных средств по СУБД 
+\end_layout
+
+\begin_layout Standard
+Программа учебно-тренировочных средств по СУБД PostgreSQL должна выполнять
+ следующий алгоритм: 
+\end_layout
+
+\begin_layout Enumerate
+Запуск программы;
+\end_layout
+
+\begin_layout Enumerate
+Проверка соответствия XML-файла XSD-схеме;
+\end_layout
+
+\begin_layout Enumerate
+Проверка, была ли запущена программа учебно-тренировочных средств по СУБД;
+\end_layout
+
+\begin_layout Enumerate
+Если программа была запущена ранее, то восстанавливаем состояние программы;
+\end_layout
+
+\begin_layout Enumerate
+Если программа не была запущена ранее, то создаем папку для сохранения состояния
+ программы в домашнем каталоге пользователя и создаем начальное состояние
+ программы;
+\end_layout
+
+\begin_layout Enumerate
+Обработка команды, введенной пользователем.
+ Если пользователь не выполнил все инструкции программы, то повторяем шаг
+ 6.
+\end_layout
+
+\begin_layout Enumerate
+Переход на новый шаг, обновляем информацию о шаге;
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Данный алгоритм иллюстрирует следующая блок-схема приложения (
+\emph on
+см.
+ рисунок 3.1
+\emph default
+):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/Блок-схема программы.jpg
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Блок-схема программы
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Работу программы можно условно разделить на два этапа: подготовительный
+ и этап обработки действий пользователя.
+\end_layout
+
+\begin_layout Standard
+На первом этапе работы программы происходят создание окна приложения, создание
+ элементов графического интерфейса и их компоновка, открытие XML и проверка
+ его на соответствие XSD-схеме, создание дерева уроков.
+ Проверка соответствия загружаемого XML XSD-схеме позволяет избежать сбоев
+ в работе программы и намеренной порчи файлов, поставляемых вместе с программой.
+ Поэтому требуется реализовать корректный механизм проверки соответствия
+ XML XSD-схемы непосредственно перед запуском цикла обработки событий.
+ Сохранение непосредственно перед выходом из программы позволит пользователю
+ не допустить сброса состояния программы и тем самым предоставляет возможность
+ восстановить состояние программы при следующем запуске.
+ 
+\end_layout
+
+\begin_layout Standard
+На втором этапе работы программы выполняется запуск цикла обработки событий.
+\end_layout
+
+\begin_layout Subsection
+Разработка структуры обучающих уроков
+\end_layout
+
+\begin_layout Standard
+Для обучающих уроков предлагается использовать следующую иерархическую структуру
+ (
+\emph on
+представлена на рисунке 3.2
+\emph default
+):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename files/Структура XML.jpg
+	scale 80
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Предлагаемая иерархическая с структура
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+В данной структуре корневой узел 
+\family typewriter
+tutorial
+\family default
+, имеющий несколько дочерних элементов
+\family typewriter
+ lesson
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Каждый узел 
+\family typewriter
+lesson 
+\family default
+содержит информацию о названии урока, содержит вложенные элементы 
+\family typewriter
+step
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Узел 
+\family typewriter
+step 
+\family default
+содержит информацию о названии шага, а также о том, что требуется от пользовател
+я сделать на текущем шаге.
+\end_layout
+
+\begin_layout Standard
+Узел 
+\family typewriter
+description
+\family default
+ содержит краткую справку о команде и о том, что нужно выполнить для перехода
+ на следующий шаг.
+\end_layout
+
+\begin_layout Standard
+Узел 
+\family typewriter
+command 
+\family default
+содержит команду для выполнения пользователем.
+\end_layout
+
+\begin_layout Standard
+В узле 
+\family typewriter
+default_prompt 
+\family default
+содержится приглашение ввода команды.
+\end_layout
+
+\begin_layout Standard
+Узел 
+\family typewriter
+prompt
+\family default
+ содержит приглашение для ввода команды в случае диалога между программой
+ и пользователем.
+\end_layout
+
+\begin_layout Standard
+Узел 
+\family typewriter
+result 
+\family default
+содержит информацию, выводимую в консоль при успешном выполнении команды
+ или при частичном ее выполнении.
+\end_layout
+
+\begin_layout Standard
+Узел 
+\family typewriter
+exception
+\family default
+ содержит информацию, выводимую в консоль при ошибочных действиях пользователя
+ (например, неверная установка пароля).
+\end_layout
+
+\begin_layout Standard
+Узел 
+\family typewriter
+database 
+\family default
+содержит текущую информацию о базе данных или о структуре конкретной таблицы
+ (присутствует во втором уроке).
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Далее приведен XML-документ, соответствующий данной структуре:
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize\ttfamily}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+<tutorial>
+\end_layout
+
+\begin_layout Plain Layout
+
+  <lesson name="название_урока_1">
+\end_layout
+
+\begin_layout Plain Layout
+
+    <step name="название_шага_1">
+\end_layout
+
+\begin_layout Plain Layout
+
+      <description> описание_шага_1 </description>
+\end_layout
+
+\begin_layout Plain Layout
+
+      <command> команда_для_выполнения </command>
+\end_layout
+
+\begin_layout Plain Layout
+
+      <default_prompt> приглашение_для_ввода_команды </default_prompt>
+\end_layout
+
+\begin_layout Plain Layout
+
+      <prompt> приглашение_для_ввода_команды_в_оболочках_1 </prompt>
+\end_layout
+
+\begin_layout Plain Layout
+
+       ...
+\end_layout
+
+\begin_layout Plain Layout
+
+      <prompt> приглашение_для_ввода_команды_в_оболочках_N </prompt>
+\end_layout
+
+\begin_layout Plain Layout
+
+      <result> результат_вывода_команды_1 </result>
+\end_layout
+
+\begin_layout Plain Layout
+
+       ...
+\end_layout
+
+\begin_layout Plain Layout
+
+      <result> результат_вывода_команды_M </result>
+\end_layout
+
+\begin_layout Plain Layout
+
+       ...
+\end_layout
+
+\begin_layout Plain Layout
+
+      <exception> Вывод_команды_в_случае_ошибки_K </exception>
+\end_layout
+
+\begin_layout Plain Layout
+
+      <database> Текущая_структура_базы_данных </database>
+\end_layout
+
+\begin_layout Plain Layout
+
+    </step>
+\end_layout
+
+\begin_layout Plain Layout
+
+  </lesson>
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  <lesson name="название_урока_2">  
+\end_layout
+
+\begin_layout Plain Layout
+
+   ...
+\end_layout
+
+\begin_layout Plain Layout
+
+  </lesson>
+\end_layout
+
+\begin_layout Plain Layout
+
+   ...
+\end_layout
+
+\begin_layout Plain Layout
+
+  <lesson name="название_урока_P">
+\end_layout
+
+\begin_layout Plain Layout
+
+   ...
+\end_layout
+
+\begin_layout Plain Layout
+
+  </lesson>
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+</tutorial>  
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Ниже представлена XSD-схема, позволяющая проверить XML-файл уроков на соответств
+ие ей.
+ 
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize},language=XML,numbers=left"
+inline false
+status open
+
+\begin_layout LyX-Code
+
+<?xml version="1.0"?> 
+\end_layout
+
+\begin_layout LyX-Code
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+\end_layout
+
+\begin_layout LyX-Code
+
+  <xs:element name="tutorial"> 
+\end_layout
+
+\begin_layout LyX-Code
+
+    <xs:complexType> 
+\end_layout
+
+\begin_layout LyX-Code
+
+      <xs:sequence> 
+\end_layout
+
+\begin_layout LyX-Code
+
+        <xs:element name="lesson" type="lesson" minOccurs="1" maxOccurs="unbound
+ed"/>
+\end_layout
+
+\begin_layout LyX-Code
+
+      </xs:sequence> 
+\end_layout
+
+\begin_layout LyX-Code
+
+    </xs:complexType> 
+\end_layout
+
+\begin_layout LyX-Code
+
+  </xs:element>
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+
+  <xs:complexType name="lesson">  
+\end_layout
+
+\begin_layout LyX-Code
+
+    <xs:sequence> 
+\end_layout
+
+\begin_layout LyX-Code
+
+      <xs:element name="step" type="step" minOccurs="1" maxOccurs="unbounded"/>
+ 
+\end_layout
+
+\begin_layout LyX-Code
+
+    </xs:sequence>
+\end_layout
+
+\begin_layout LyX-Code
+
+    <xs:attribute name="name" type="xs:string"/> 
+\end_layout
+
+\begin_layout LyX-Code
+
+  </xs:complexType>
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+
+  <xs:complexType name="step">
+\end_layout
+
+\begin_layout LyX-Code
+
+    <xs:sequence>
+\end_layout
+
+\begin_layout LyX-Code
+
+      <xs:element name="description" type="xs:string"/> 
+\end_layout
+
+\begin_layout LyX-Code
+
+      <xs:element name="command" type="xs:string"/> 
+\end_layout
+
+\begin_layout LyX-Code
+
+      <xs:element name="default_prompt" type="xs:string"/> 
+\end_layout
+
+\begin_layout LyX-Code
+
+      <xs:element name="prompt" type="xs:string" minOccurs="0" maxOccurs="unboun
+ded"/> 
+\end_layout
+
+\begin_layout LyX-Code
+
+      <xs:element name="result" type="xs:string" minOccurs="1" maxOccurs="unboun
+ded"/>
+\end_layout
+
+\begin_layout LyX-Code
+
+      <xs:element name="exception" type="xs:string" minOccurs="0" maxOccurs="unb
+ounded"/> 
+\end_layout
+
+\begin_layout LyX-Code
+
+      <xs:element name="database" type="xs:string" minOccurs="0" maxOccurs="1"/>
+\end_layout
+
+\begin_layout LyX-Code
+
+    </xs:sequence> 
+\end_layout
+
+\begin_layout LyX-Code
+
+    <xs:attribute name="name" type="xs:string"/> 
+\end_layout
+
+\begin_layout LyX-Code
+
+  </xs:complexType>
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+
+</xs:schema>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Данная схема позволяет не только указать вложение одного элемента в другой,
+ но и явно указать, какой тип данных может иметь конкретный атрибут, количество
+ этих атрибутов и так далее.
+ 
+\end_layout
+
+\begin_layout Standard
+Приведем некоторые комментарии к созданию XSD-схемы:
+\end_layout
+
+\begin_layout Standard
+Можно заметить, что у каждого элемента имеется префикс 
+\family typewriter
+xs:
+\family default
+.
+ Он указывает на пространство имен через объявление в атрибуте тега 
+\family typewriter
+schema 
+\family default
+пространства имен
+\begin_inset Newline newline
+\end_inset
+
+ 
+\family typewriter
+xmlns:xs=
+\family default
+"
+\family typewriter
+http://w3.org/2001/XMLSchema"
+\family default
+.
+ Тот же самый префикс должен использоваться у каждого элемента схемы.
+ Целью определения пространства имен является желание связать элементы и
+ простые типы со словарем языка XML-схем, а не со словарем автора схемы.
+ 
+\end_layout
+
+\begin_layout Standard
+Обязательным корневым элементом для языка XML-схемы является элемент 
+\family typewriter
+schema
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+С помощью тега 
+\family typewriter
+complexType
+\family default
+ объявляется сложный тип, который описывает вложенность элементов в XML-документ
+е.
+ Каждый 
+\family typewriter
+complexType
+\family default
+ в нашей схеме для простоты понимания описывается в схеме отдельно.
+\end_layout
+
+\begin_layout Standard
+С помощью тега 
+\family typewriter
+sequence
+\family default
+ достигается требование последовательности появления тегов.
+ Например, в 
+\family typewriter
+complexType
+\family default
+ 
+\family typewriter
+step
+\family default
+ объявлено, что в XML-документе, удовлетворяющем данной схеме, должны идти
+ теги в следующем порядке: 
+\family typewriter
+description
+\family default
+, 
+\family typewriter
+command
+\family default
+, 
+\family typewriter
+default_prompt 
+\family default
+и другие.
+ 
+\shape italic
+(см.
+ строки 19-27)
+\end_layout
+
+\begin_layout Standard
+С помощью тега 
+\family typewriter
+element
+\family default
+ объявляется элемент XML-документа, первый атрибут которого должен является
+ 
+\family typewriter
+name
+\family default
+.
+ Значение атрибута 
+\family typewriter
+name 
+\family default
+является название тега в XML-документе.
+ Второй атрибут --- 
+\family typewriter
+type
+\family default
+ определяет допустимый тип элемента в XML.
+ Например, 
+\emph on
+в строке 20 
+\emph default
+указано, что тег 
+\family typewriter
+description 
+\family default
+в XML должен являться строкой (
+\family typewriter
+type = "xs:string"
+\family default
+).
+\end_layout
+
+\begin_layout Standard
+Количество тегов с одинаковыми именами в XML-документе регулируются с помощью
+ конструкций 
+\family typewriter
+minOccurs= maxOccurs=
+\family default
+, являющиеся в XML Schema атрибутами.
+ Минимальное и максимальное количество должны быть указаны целыми неотрицательны
+ми числами, например 
+\emph on
+в строке 25 
+\emph default
+описано, что элемент 
+\family typewriter
+exception 
+\family default
+может присутствовать не более одного раза (
+\family typewriter
+maxOccurs=
+\family default
+"
+\family typewriter
+1
+\family default
+"), а может и не присутствовать (
+\family typewriter
+minOccurs=
+\family default
+"
+\family typewriter
+0
+\family default
+").
+ Кроме того, для описания неограниченного количества вхождений элементов
+ используется константа 
+\family typewriter
+"unbounded"
+\family default
+, как это сделано 
+\emph on
+в строке 23
+\emph default
+ 
+\family typewriter
+maxOccurs="unbounded"
+\family default
+ (количество элементов 
+\family typewriter
+result
+\family default
+ может быть от 1 и неограничено).
+\end_layout
+
+\begin_layout Subsection
+Реализация механизма проверки XML XSD-схемой
+\end_layout
+
+\begin_layout Standard
+Как было сказано выше, возможность валидации XML XSD-схемой реализуется
+ с помощью модуля 
+\family typewriter
+QtXmlPatterners
+\family default
+ библиотеки Qt, а именно с помощью методов классов 
+\family typewriter
+QXmlSchema 
+\family default
+и
+\begin_inset Newline newline
+\end_inset
+
+ 
+\family typewriter
+QXmlSchemaValidator
+\family default
+.
+ На листинге представлена реализация этого механизма.
+ 
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize\ttfamily},breaklines=true,language={C++},numbers=left,showstringspaces=false"
+inline false
+status open
+
+\begin_layout LyX-Code
+
+QFile source_document("test.xml"); 
+\end_layout
+
+\begin_layout LyX-Code
+
+QByteArray testData;      
+\end_layout
+
+\begin_layout LyX-Code
+
+testData = source_document.readAll();
+\end_layout
+
+\begin_layout LyX-Code
+
+source_document.close();
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+
+QFile file_xml_schema("schema.xsd");
+\end_layout
+
+\begin_layout LyX-Code
+
+file_xml_schema.open(QIODevice::ReadOnly);
+\end_layout
+
+\begin_layout LyX-Code
+
+const QByteArray schemaData = file_xml_schema.readAll();
+\end_layout
+
+\begin_layout LyX-Code
+
+file_xml_schema.close(); 
+\end_layout
+
+\begin_layout LyX-Code
+
+QXmlSchema schema;
+\end_layout
+
+\begin_layout LyX-Code
+
+schema.load(schemaData);
+\end_layout
+
+\begin_layout LyX-Code
+
+QXmlSchemaValidator schema_validator(schema); 
+\end_layout
+
+\begin_layout LyX-Code
+
+if (false == schema_validator.validate(testData, 
+\end_layout
+
+\begin_layout LyX-Code
+
+		QUrl::fromLocalFile(source_document.fileName()))){
+\end_layout
+
+\begin_layout LyX-Code
+
+    qDebug() << "XML не прошел валидацию";    
+\end_layout
+
+\begin_layout LyX-Code
+
+} else {
+\end_layout
+
+\begin_layout LyX-Code
+
+    qDebug() << "XML прошел валидацию";
+\end_layout
+
+\begin_layout LyX-Code
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Поясним механизм проверки XML схемой XSD в Qt.
+\end_layout
+
+\begin_layout Standard
+В 
+\emph on
+строках 1-4 
+\emph default
+происходит открытие XML-файла для проверки.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+В строках 6-9 
+\emph default
+происходит открытие файла XSD-схемы и загрузки ее в программу.
+ Далее, 
+\emph on
+в строках 10-11
+\emph default
+ происходит создание объекта 
+\family typewriter
+QXmlSchema
+\family default
+, в который загружается содержимое файла схемы.
+ 
+\end_layout
+
+\begin_layout Standard
+С помощью конструктора 
+\family typewriter
+QXmlSchemaValidator(const QXmlSchema &schema) 
+\family default
+создается объект 
+\family typewriter
+schema_validator
+\family default
+, который можно использовать для проверки содержимого XML-файла.
+ Метод 
+\family typewriter
+validate()
+\family default
+, принимающий первым параметром XML-данные 
+\family typewriter
+testDat
+\family default
+a, а вторым --- адрес их получения производит сканирование XML-документа
+ и выполняет проверку на соответствие XML схеме.
+\end_layout
+
+\begin_layout Subsection
+Реализация механизма получения результатов XQuery-запросов 
+\end_layout
+
+\begin_layout Standard
+Для реализации механизма получения результатов XQuery и XPath запросов используе
+тся модуль Qt 
+\family typewriter
+QtXmlPatternes
+\family default
+.
+ Класс 
+\family typewriter
+QXmlQuery
+\family default
+ отвечает за загрузку 
+\series bold
+шаблона 
+\series default
+запроса, подстановку переменных в шаблон и выполнение запроса.
+ Класс 
+\family typewriter
+QXmlFormatter 
+\family default
+преобразует вывод результата запроса к XML с помощью соответствующих методов.
+ Далее на листинге приведена реализация механизма получения результатов
+ запроса XQuery.
+ 
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize},breaklines=true,language={C++},numbers=left,showstringspaces=false"
+inline false
+status open
+
+\begin_layout LyX-Code
+
+QFile file_request(file_name);
+\end_layout
+
+\begin_layout LyX-Code
+
+if (false == file_request.open(QIODevice::ReadOnly)) {
+\end_layout
+
+\begin_layout LyX-Code
+
+   qDebug() << "Ошибка при открытии файла запросов";
+\end_layout
+
+\begin_layout LyX-Code
+
+   return;
+\end_layout
+
+\begin_layout LyX-Code
+
+}
+\end_layout
+
+\begin_layout LyX-Code
+
+const QString request_string(QString::fromUtf8(file_request.readAll()));
+\end_layout
+
+\begin_layout LyX-Code
+
+file_request.close();
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+
+QString step_name = "Установка и настройка СУБД";
+\end_layout
+
+\begin_layout LyX-Code
+
+QString lesson_name = "Установка пакетов базы данных";
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+
+QFile source_document("lessons.xml");
+\end_layout
+
+\begin_layout LyX-Code
+
+source_document.open(QIODevice::ReadOnly);
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+
+QBuffer buffer;
+\end_layout
+
+\begin_layout LyX-Code
+
+buffer.open(QIODevice::ReadWrite);
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+
+QXmlQuery query;
+\end_layout
+
+\begin_layout LyX-Code
+
+query.bindVariable("input_document", &source_document);
+\end_layout
+
+\begin_layout LyX-Code
+
+query.bindVariable("step_name", QVariant(step_name));
+\end_layout
+
+\begin_layout LyX-Code
+
+query.bindVariable("lesson_name", QVariant(lesson_name));
+\end_layout
+
+\begin_layout LyX-Code
+
+query.setQuery(request_string);
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+
+QXmlFormatter formatter(query, &buffer);
+\end_layout
+
+\begin_layout LyX-Code
+
+if (false == query.evaluateTo(&formatter))
+\end_layout
+
+\begin_layout LyX-Code
+
+    qDebug() << "Ошибка при выводе результата запроса";
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+
+buffer.close();
+\end_layout
+
+\begin_layout LyX-Code
+
+source_document.close();
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+
+QString result=QString::fromUtf8(buffer.data());
+\end_layout
+
+\begin_layout LyX-Code
+
+result.remove(QRegExp("</?p/?>"));
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+В 
+\emph on
+строках 1-7
+\emph default
+ происходит открытие файла запроса, считывание запроса из объекта 
+\family typewriter
+QFile
+\family default
+ в переменную 
+\family typewriter
+QString
+\family default
+, а потом закрытие файла.
+ В случае, если файл не может быть открыт в режиме чтения (
+\emph on
+строка 2
+\emph default
+), выводится предупредительная строки об ошибке и осуществляется выход из
+ функции с помощью ключевого слова 
+\family typewriter
+return
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+В 
+\emph on
+строках 9-10 
+\emph default
+создаются объекты 
+\family typewriter
+QString
+\family default
+ 
+\family typewriter
+lesson_name step_name
+\family default
+, являющиеся значениями атрибута 
+\family typewriter
+name 
+\family default
+уз
+\family typewriter
+лов lesson 
+\family default
+и 
+\family typewriter
+step 
+\family default
+соответственно.
+ 
+\end_layout
+
+\begin_layout Standard
+Далее в 
+\emph on
+строках 12-13
+\emph default
+ происходит создание и открытие на чтение/запись объекта 
+\family typewriter
+QBuffer buffer
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+В 
+\emph on
+строке 18 
+\emph default
+происходит создание объекта класса 
+\family typewriter
+QXmlQuery
+\family default
+, обеспечивающий загрузку, связывание переменных и выполнение XQuery-запроса.
+ Метод класса 
+\family typewriter
+QXmlQuery
+\family default
+ 
+\family typewriter
+bindVariable
+\family default
+ позволяет связать внешние переменные XQuery-запроса с конкретным значением.
+ В классе 
+\family typewriter
+QXmlQuery 
+\family default
+реализовано множество полиморфных функций 
+\family typewriter
+bindVariable()
+\family default
+.
+ Мы используем следующий вариант функции 
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+void QXmlQuery::bindVariable(const QString &localName,
+\end_layout
+
+\begin_layout Plain Layout
+
+			     QIODevice *device)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+для связывания внешней переменной 
+\family typewriter
+$input_document 
+\family default
+XQuery-запроса c объектом 
+\family typewriter
+QFile 
+\family default
+XML-документа и полиморфную функцию 
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize\ttfamily}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+void QXmlQuery::bindVariable(const QString &localName,
+\end_layout
+
+\begin_layout Plain Layout
+
+	             const QXmlItem &value)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+для связывания значений атрибутов 
+\family typewriter
+name 
+\family default
+узлов 
+\family typewriter
+lesson 
+\family default
+и 
+\family typewriter
+step 
+\family default
+c значениями переменных 
+\family typewriter
+QString lesson_name
+\family default
+ и 
+\family typewriter
+step_name
+\family default
+.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Для преобразования объекта 
+\family typewriter
+QString 
+\family default
+в 
+\family typewriter
+QXmlItem
+\family default
+ используется класс 
+\family typewriter
+QVariant
+\family default
+, который создает необходимый нам объект 
+\family typewriter
+QXmlItem
+\family default
+ с помощью вызова конструктора 
+\family typewriter
+QVariant(string)
+\family default
+, как это сделано в 
+\emph on
+строках 19-20
+\emph default
+.
+ 
+\end_layout
+
+\end_inset
+
+ После вызова метода 
+\family typewriter
+setQuery() 
+\family default
+в объекте 
+\family typewriter
+query 
+\family default
+будет
+\family typewriter
+ 
+\family default
+сгенерирован запрос (
+\emph on
+см.
+
+\emph default
+ 
+\emph on
+строку
+\emph default
+ 
+\emph on
+22
+\emph default
+).
+ 
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Созданный 
+\emph on
+в строке 24 
+\emph default
+объект 
+\family typewriter
+QXmlFormatter 
+\family default
+осуществляет вывод результата запроса в виде XML.
+ Выполнение запроса происходит с помощью метода
+\family typewriter
+ evaluateTo(const &QXmlFormatter)
+\family default
+, возвращающий 
+\family typewriter
+true
+\family default
+ в случае успешного выполнения и 
+\family typewriter
+false 
+\family default
+иначе.
+ 
+\emph on
+В строках 28-29 
+\emph default
+закрывается объект 
+\family typewriter
+QFile source_document
+\family default
+ и объект 
+\family typewriter
+QBuffer buffer
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+В строке 31 
+\emph default
+происходит получение результата запроса, а 
+\emph on
+в строке 32
+\emph default
+ реализуется обработка результата.
+ Обработка результата заключается в удалении тегов 
+\family typewriter
+<p> </p> <p/> 
+\family default
+по регулярному выражению 
+\family typewriter
+</?p/?>
+\family default
+.
+\end_layout
+
+\begin_layout Subsection
+Реализация записи данных в XML
+\end_layout
+
+\begin_layout Standard
+Механизм записи данных в XML позволяет сохранить конкретные состояния программы
+ в XML, что удобно для их обработки.
+ Возможность записи данных в XML реализована в модуле Qt 
+\family typewriter
+QtCore
+\family default
+.
+ Это подчеркивает значимость XML как способа хранения данных.
+\end_layout
+
+\begin_layout Standard
+В работе используются классы 
+\family typewriter
+QXmlStreamWriter
+\family default
+ для создания узлов XML, их атрибутов и значений для генерирования XML.
+ Рассмотрим основные методы этого класса на примере реализации сохранения
+ текущего состояния программы в файл:
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize\ttfamily},numbers=left,showstringspaces=false"
+inline false
+status open
+
+\begin_layout LyX-Code
+
+QString file_content;
+\end_layout
+
+\begin_layout LyX-Code
+
+QXmlStreamWriter streamWriter(&file_content);
+\end_layout
+
+\begin_layout LyX-Code
+
+streamWriter.setAutoFormatting(true);
+\end_layout
+
+\begin_layout LyX-Code
+
+streamWriter.writeStartDocument();
+\end_layout
+
+\begin_layout LyX-Code
+
+streamWriter.writeStartElement("tutorial");
+\end_layout
+
+\begin_layout LyX-Code
+
+{
+\end_layout
+
+\begin_layout LyX-Code
+
+//получаем значение количества уроков и 
+\end_layout
+
+\begin_layout LyX-Code
+
+//осуществляем запись их номеров в XML
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+
+  streamWriter.writeStartElement("lesson");
+\end_layout
+
+\begin_layout LyX-Code
+
+  streamWriter.writeAttribute("number", QString::number(i + 1));
+\end_layout
+
+\begin_layout LyX-Code
+
+  
+\end_layout
+
+\begin_layout LyX-Code
+
+  //получаем значение количества пройденных пользователем шагов и 
+\end_layout
+
+\begin_layout LyX-Code
+
+  //записываем их в XML
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+
+  streamWriter.writeAttribute("enabled_steps", QString::number(j));
+\end_layout
+
+\begin_layout LyX-Code
+
+  streamWriter.writeEndElement();
+\end_layout
+
+\begin_layout LyX-Code
+
+}
+\end_layout
+
+\begin_layout LyX-Code
+
+streamWriter.writeEndElement();
+\end_layout
+
+\begin_layout LyX-Code
+
+streamWriter.writeEndDocument();
+\end_layout
+
+\begin_layout LyX-Code
+
+QTextStream out(&file);
+\end_layout
+
+\begin_layout LyX-Code
+
+out << file_content;
+\end_layout
+
+\begin_layout LyX-Code
+
+file.close();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+В строках 1-2 
+\emph default
+происходит создание объекта класса 
+\family typewriter
+QXmlStreamWriter
+\family default
+.
+ В 
+\emph on
+строке 3
+\emph default
+ устанавливаем ступенчатое форматирование и информацию о версии XML в нашей
+ строке методом 
+\family typewriter
+setAutoFormatting()
+\family default
+, в которую будет выводить результат записи объект 
+\family typewriter
+streamWriter
+\family default
+.
+
+\emph on
+ 
+\emph default
+Метод 
+\family typewriter
+writeStartDocument() 
+\family default
+указывает на начало записи XML.
+ Метод 
+\family typewriter
+writeStartElement()
+\family default
+, вызываемый 
+\emph on
+в строке 5
+\emph default
+ записывает в строку открывающийся тег 
+\family typewriter
+tutorial 
+\family default
+(строка будет следующая: 
+\family typewriter
+<tutorial
+\family default
+\emph on
+ 
+\emph default
+).
+ 
+\end_layout
+
+\begin_layout Standard
+Вложенность элементов достигается с помощью очередного вызова метода 
+\family typewriter
+writeStartElement()
+\family default
+, как это и сделано 
+\emph on
+в строке 10
+\emph default
+.
+ В следующей строке происходит запись атрибута 
+\family typewriter
+name 
+\family default
+со значением номера урока ближайшего открытого тега (в нашем случае 
+\family typewriter
+lesson
+\family default
+) а потом еще одного атрибута 
+\family typewriter
+enabled_steps 
+\family default
+с указанием доступных уроков в дереве (
+\emph on
+строка 1
+\emph default
+6).
+\end_layout
+
+\begin_layout Standard
+Для окончания записи последнего открытого элемента вызывается метод объекта
+ 
+\family typewriter
+streamWriter 
+\begin_inset Newline newline
+\end_inset
+
+writeEndElement()
+\family default
+, как это сделано в 
+\emph on
+строке 17
+\emph default
+ (т.о.
+ оканчивается запись элемента
+\family typewriter
+ lesson
+\family default
+).
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+В строке 19 
+\emph default
+завершается запись элемента 
+\family typewriter
+tutorial
+\family default
+, а для окончания записи XML
+\emph on
+ 
+\emph default
+вызывается метод 
+\family typewriter
+writeEndDocument()
+\family default
+ (
+\emph on
+см.
+ строку 20
+\emph default
+).
+ 
+\end_layout
+
+\begin_layout Standard
+В последних трех строках происходит открытие потока 
+\family typewriter
+QTextStream
+\family default
+ и запись в файл строки с XML.
+ В результате будет записан XML со следующим содержанием:
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize\ttfamily}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+<?xml version="1.0"?>
+\end_layout
+
+\begin_layout Plain Layout
+
+<tutorial>
+\end_layout
+
+\begin_layout Plain Layout
+
+    <lesson number="1" enabled_steps="21"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+    <lesson number="2" enabled_steps="4"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+</tutorial>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout Subsection
+Разработка графического интерфейса приложения
+\end_layout
+
+\begin_layout Standard
+Для разработки графического интерфейса приложения предлагается взять за
+ основу вариант компоновки элементов графического интерфейса интерактивного
+ учебника 
+\series bold
+try.github
+\series default
+.
+ Предлагается следующая модель расположения элементов графического интерфейса
+ в приложении:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/снимок1_редактированный.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Графический интерфейс программы в kubuntu 12.04
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Интерфейс программы интерактивных уроков состоит из главного меню (
+\emph on
+1)
+\emph default
+, панели инструментов (
+\emph on
+2
+\emph default
+) и сгруппированных по сетке элементов графического интерфейса (виджетов)
+ (
+\emph on
+3-7
+\emph default
+).
+ Вся текстовая информация на каждом шаге загружается в виджеты через XQuery-запр
+осы, механизм вывода результатов которых реализован в программе.
+\end_layout
+
+\begin_layout Standard
+Главное меню разделено на две секции: секция “
+\emph on
+Уроки
+\emph default
+” – содержит функции переключения между уроками, функцию начала обучения,
+ при выборе которой происходит сброс состояния обучения пользователя.
+ Вторая секция – “
+\emph on
+Помощь
+\emph default
+” представляет помощь по программе и предоставляет информацию о разработчике.
+ Для удобства все функции секции “
+\emph on
+Уроки
+\emph default
+” вынесены на панель инструментов (
+\emph on
+2
+\emph default
+), а также добавлена кнопка “
+\emph on
+Прекратить выполнения команды
+\emph default
+”.
+ Она может быть использована в случае, когда выполняется команда, требующая
+ диалога с пользователем.
+ 
+\end_layout
+
+\begin_layout Standard
+Основное окно программы содержит сгруппированные по сетке виджеты.
+ Виджет дерева, расположенный в левой части окна программы (
+\emph on
+1
+\emph default
+), создается для предоставления информации пользователю о количествах уроков
+ в XML-файле, количества шагов в уроках, а также графически отображает состояние
+ пройденных шагов (неактивные – пройденные, активные – пройденные).
+ Кроме того, пользователь может выбрать любой из пройденных шагов и повторить
+ задание.
+\end_layout
+
+\begin_layout Standard
+Вывод информации о команде, предоставление описания о ней осуществляется
+ в текстовом поле в правой верхней части программы (4).
+ 
+\end_layout
+
+\begin_layout Standard
+Эмулятор консоли (6) служит для ввода команд пользователя и осуществляет
+ проверку вводимых команд.
+ Для облегчения работы пользователя в эмуляторе предусмотрены возможности
+ перемещения по вводимой строке с помощью стрелок ← и →, а также выбрать
+ уже вводимую команду с помощью ↑ и ↓.
+ 
+\end_layout
+
+\begin_layout Standard
+Для удобства над виджетом консоли располагается кнопка с текущей требуемой
+ командой от пользователя (
+\emph on
+5
+\emph default
+).
+ Пользователь может воспользоваться ей, не набирая команды в консоли.
+ При нажатии пользователя на кнопку происходит считывание команды с кнопки
+ в консоль, пользователю требуется ввести лишь клавишу 
+\family typewriter
+Enter
+\family default
+ для перехода к следующему шагу.
+ 
+\end_layout
+
+\begin_layout Standard
+Нижнее текстовое поле (
+\emph on
+7
+\emph default
+) необходимо для вывода структуры таблицы базы данных на конкретном шаге.
+ 
+\end_layout
+
+\begin_layout Subsection
+Описание реализованных классов
+\end_layout
+
+\begin_layout Standard
+В ходе учебно-исследовательской работы были созданы два класса, 
+\family typewriter
+Console
+\family default
+ и 
+\family typewriter
+MainWindow
+\family default
+, реализующие всю логику работы программы.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Описание класса Console
+\end_layout
+
+\begin_layout Standard
+Класс 
+\family typewriter
+Console 
+\family default
+был разработан для эмуляции терминала linux на базе класса 
+\family typewriter
+QTextEdit 
+\family default
+и обеспечивает ввод символов в консоль, загрузки приглашений для ввода команд
+ и реализует полезные функции терминала.
+ Рассмотрим некоторые методы этого класса:
+\end_layout
+
+\begin_layout Itemize
+конструктор класса 
+\family typewriter
+Console(QWidget *parent = 0)
+\family default
+.
+ Здесь происходит создание виджета, установка ширины текстового курсора,
+ установка шрифтов (используется шрифт 
+\family typewriter
+Monospace 12
+\family default
+), инициализируются значение переключателей блокировки и ввода пароля;
+\end_layout
+
+\begin_layout Itemize
+метод 
+\family typewriter
+keyPressEvent(QPressEvent *event)
+\family default
+.
+ Метод реализует ввод символов с клавиатуры в виджет консоли, а также реагирует
+ на нажатие пользователя клавиши 
+\family typewriter
+Enter
+\family default
+ высыланием сигнала 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\family typewriter
+signalCommandEntered(QString)
+\family default
+.
+ Этот сигнал обрабатывается в классе 
+\family typewriter
+MainWindow
+\family default
+.
+ Здесь же реализованы возможности перемещать курсор в эмуляторе с помощью
+ клавиш ← и →, а также выбрать уже введенную команду с помощью ↑ и ↓;
+\end_layout
+
+\begin_layout Itemize
+метод 
+\family typewriter
+Output(QString stringToOut) 
+\family default
+выводит результат выполнения команды в консоль, тем самым эмулируя работу
+ самой консоли;
+\end_layout
+
+\begin_layout Itemize
+методы 
+\family typewriter
+InsertPrompt(bool insert_new_block) 
+\family default
+и 
+\family typewriter
+
+\begin_inset Newline newline
+\end_inset
+
+InsertPrompt(QString new_prompt,bool insert_new_block) 
+\family default
+обеспечивают вставку в эмулятор консоли приглашений для ввода.
+ Переменная типа 
+\family typewriter
+bool 
+\family default
+указывает на необходимость делать переносы на новую строку при вставке приглашен
+ия.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Subsubsection
+Описание класса MainWindow
+\end_layout
+
+\begin_layout Standard
+Класс 
+\family typewriter
+MainWindow 
+\family default
+реализовывает методы создания основного окна приложения, открытие XML-файла
+ уроков, проверку его на соответствие XSD-схемой, обработки введенных пользовате
+лем команд, сохранение и загрузка состояний.
+ Рассмотрим основные методы этого класса:
+\end_layout
+
+\begin_layout Itemize
+Конструктор класса 
+\family typewriter
+MainWindow(QWidget *parent = 0) 
+\family default
+создает окно приложения, панель инструментов и главное меню;
+\end_layout
+
+\begin_layout Itemize
+Метод 
+\family typewriter
+CreateWindow() 
+\family default
+создает виджеты и их компанует их.
+ Кроме того, в методе связываются сигналы и их обработчики;
+\end_layout
+
+\begin_layout Itemize
+Метод 
+\family typewriter
+OpenXmlDocument() 
+\family default
+обеспечивает загрузку XML-документа в программу, выполняет проверку на соответст
+вие XSD-схемой и в случае соответствия XML схеме производится построение
+ дерева обучающих уроков методом 
+\family typewriter
+CreateXmlTree()
+\family default
+;
+\end_layout
+
+\begin_layout Itemize
+Метод 
+\family typewriter
+PrepareProgramForUser() 
+\family default
+проверяет, было ли уже запущена данная программа пользователем поиском папки
+ 
+\family typewriter
+~/.config/UTS_PostrgreSQL
+\family default
+, в случае отсутствия эта папка создается.
+ В указанную папку сохраняется состояние программы после закрытия окна пользоват
+елем;
+\end_layout
+
+\begin_layout Itemize
+Метод 
+\family typewriter
+GetCountOfItem(QString file_name, QString attribute_name = QString()) 
+\family default
+позволяет получить количество элементов с помощью выполнения XQuery-запроса;
+\end_layout
+
+\begin_layout Itemize
+Метод 
+\family typewriter
+GetRequestResult(QTreeWidgetItem *item, QString file_name, const int index
+ = 0) 
+\family default
+реализует механизм получения результатов XQueey-запросов для каждого шага;
+\end_layout
+
+\begin_layout Itemize
+Метод 
+\family typewriter
+slotItemOnXmlChanged(QTreeWidgetItem *item, int) 
+\family default
+является обработчиком сигнала смены текущего элемента в виджете дерева.
+ Функция 
+\family typewriter
+ItemOnXmlChanged(QTreeWidgetItem *item) 
+\family default
+обновляет информацию о текущем уроке с помощью вызова выполнения XQuery-запросов
+;
+\end_layout
+
+\begin_layout Itemize
+Метод 
+\family typewriter
+slotItemOnXmlTreeClicked(QTreeWidgetItem *item, int) 
+\family default
+обрабатывает нажатие пользователем элемента в дереве и по необходимости
+ (если выбранный элемент является шагом) обновляет информацию о шаге;
+\end_layout
+
+\begin_layout Itemize
+Метод 
+\family typewriter
+slotEnterPressedOnConsole(QString entered_command) 
+\family default
+является слотом обработки введенной в консоль команды.
+ В функции 
+\family typewriter
+ValidateEnteredCommand(QString entered_command), вызываемой в данном методе,
+ 
+\family default
+происходит проверка на правильность ввода команды, а в случае правильного
+ ввода команда ищется в списке команд, требующих диалога с пользователем.
+ Если команда не найдена в этом списке, то делается XQuery-запрос результата
+ выполнения команды и выполняется переход на следующий шаг вызовом метода
+ 
+\family typewriter
+MoveToNextStep()
+\family default
+.
+ Если же команда совпадает с одной из команд из этого списка, происходит
+ переключение слотов-обработчиков команд.
+ Каждый из подобных слотов выполняет различные сценарии, требующие ввода
+ дополнительных данных пользователя.
+ Например, команда 
+\family typewriter
+passwd 
+\family default
+при смене пароля некоторого пользователя попросит ввести новый пароль, подтверди
+ть его и вывести сообщение об успешном обновлении пароля.
+ В случае ошибок 
+\family typewriter
+passwd 
+\family default
+также выводит предупреждения об ошибках.
+ Эти слоты полностью эмитируют поведения подобных команд;
+\end_layout
+
+\begin_layout Itemize
+Метод 
+\family typewriter
+slotCommandButtonPressed() 
+\family default
+является обработчиком сигнала нажатия кнопки команды.
+ При нажатии на кнопку происходит считывание текста кнопки в эмулятор консоли,
+ затем требуется нажатие пользователя на кнопку 
+\family typewriter
+Enter 
+\family default
+для начала ее обработки;
+\end_layout
+
+\begin_layout Itemize
+Слоты обработки нажатий на кнопки в меню реализуют вспомогательные функции
+ для работы пользователя в приложении, например, кнопка 
+\emph on
+
+\begin_inset Quotes fld
+\end_inset
+
+Начать обучение
+\begin_inset Quotes frd
+\end_inset
+
+ 
+\emph default
+сбрасывает текущее состояние до начального;
+\end_layout
+
+\begin_layout Itemize
+Метод 
+\family typewriter
+LoadSaveFile(QString file_name) 
+\family default
+производит загрузку сохранения файла (сохранение проводится в формате XML),
+ проверку на корректность файла сохранение и на загрузку сохранения в программу;
+\end_layout
+
+\begin_layout Itemize
+Метод 
+\family typewriter
+SaveFile(QString file_name) 
+\family default
+сохраняет текущее состояние в XML.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Разработка интерактивных уроков по СУБД PostgreSQL
+\end_layout
+
+\begin_layout Subsection
+Обзор СУБД PostgreSQL
+\end_layout
+
+\begin_layout Standard
+PostgreSQL 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "PostgreSQL"
+
+\end_inset
+
+ - это свободно распространяемая объектно-реляционная система управления
+ базами данных (ORDBMS), наиболее развитая из открытых СУБД в мире и являющаяся
+ реальной альтернативой коммерческим базам данных.
+\end_layout
+
+\begin_layout Standard
+PostgreSQL обладает рядом преимуществ по сравнению с остальными СУБД:
+\end_layout
+
+\begin_layout Itemize
+Надежность.
+ PostgreSQL является проверенным и доказанным фактом и обеспечивается следующими
+ возможностями: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+полное соответствие принципам ACID - атомарность, непротиворечивость, изолирован
+ность, сохранность данных.
+ 
+\end_layout
+
+\begin_layout Itemize
+многоверсионность (Multiversion Concurrency Control, MVCC) используется
+ для поддержания согласованности данных в конкурентных условиях, в то время
+ как в традиционных базах данных используются блокировки.
+ 
+\end_layout
+
+\begin_layout Itemize
+наличие Write Ahead Logging (WAL) - общепринятый механизм протоколирования
+ всех транзакций, что позволяет восстановить систему после возможных сбоев
+ Point in Time Recovery (PITR) - возможность восстановления базы данных
+ (используя WAL) на любой момент в прошлом, что позволяет осуществлять непрерывн
+ое резервное копирование кластера PostgreSQL.
+\end_layout
+
+\begin_layout Itemize
+Репликация.
+\end_layout
+
+\begin_layout Itemize
+Целостность данных является сердцем PostgreSQL.
+ Помимо MVCC, PostgreSQL поддерживает целостность данных на уровне схемы
+ - это внешние ключи (foreign keys), ограничения (constraints).
+ 
+\end_layout
+
+\begin_layout Itemize
+Модель развития PostgreSQL, которая абсолютно прозрачна для любого, так
+ как все планы, проблемы и приоритеты открыто обсуждаются.
+ Пользователи и разработчики находятся в постоянном диалоге через мэйлинг
+ листы.
+ Все предложения, патчи проходят тщательное тестирование до принятия их
+ в программное дерево.
+ Большое количество бета-тестеров способствует тестированию версии до релиза
+ и вычищению мелких ошибок.
+ 
+\end_layout
+
+\begin_layout Itemize
+Открытость кодов PostgreSQL означает их абсолютную доступность для любого,
+ а либеральная BSD лицензия не накладывает никаких ограничений на использование
+ кода.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Производительность.
+ PostgreSQL основывается на использовании индексов, интеллектуальном планировщик
+е запросов, тонкой системы блокировок, системе управления буферами памяти
+ и кэширования, превосходной масштабируемости при конкурентной работе.
+ 
+\end_layout
+
+\begin_layout Itemize
+Расширяемость PostgreSQL означает, что пользователь может настраивать систему
+ путем определения новых функций, агрегатов, типов, языков, индексов и операторо
+в.
+ Объектно-
+\begin_inset Newline newline
+\end_inset
+
+ориентированность PostgreSQL позволяет перенести логику приложения на уровень
+ базы данных, что сильно упрощает разработку клиентов, так как вся бизнес
+ логика находится в базе данных.
+ Функции в PostgreSQL однозначно определяются названием, количеством и типами
+ аргументов.
+\end_layout
+
+\begin_layout Itemize
+Поддержка SQL, кроме основных возможностей, присущих любой SQL базе данных,
+ PostgreSQL поддерживает:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Очень высокий уровень соответствия ANSI SQL 92, ANSI SQL 99 и ANSI SQL 2003.
+\end_layout
+
+\begin_layout Itemize
+Схемы, которые обеспечивают пространство имен на уровне SQL.
+ Схемы содержат таблицы, в них можно определять типы данных, функции и операторы.
+ 
+\end_layout
+
+\begin_layout Itemize
+Subqueries - подзапросы (subselects), полная поддержка SQL92.
+ Подзапросы делают язык SQL более гибким и зачастую более эффективным.
+ 
+\end_layout
+
+\begin_layout Itemize
+Outer Joins - внешние связки (LEFT,RIGHT, FULL).
+ 
+\end_layout
+
+\begin_layout Itemize
+Rules - правила, согласно которым модифицируется исходный запрос.
+\end_layout
+
+\begin_layout Itemize
+Views - представления, виртуальные таблицы.
+ 
+\end_layout
+
+\begin_layout Itemize
+Cursors - курсоры, позволяют уменьшить трафик между клиентом и сервером,
+ а также память на клиенте, если требуется получить не весь результат запроса,
+ а только его часть.
+\end_layout
+
+\begin_layout Itemize
+Table Inheritance - наследование таблиц, позволяющее создавать объекты,
+ которые наследуют структуру родительского объекта и добавлять свои специфически
+е атрибуты.
+ 
+\end_layout
+
+\begin_layout Itemize
+Prepared Statements (преподготовленные запросы) - это объекты, живущие на
+ стороне сервера, которые представляют собой оригинальный запрос после команды
+ PREPARE, который уже прошел стадии разбора запроса (parser), модификации
+ запроса (rewriting rules) и создания плана выполнения запроса (planner),
+ в результате чего, можно использовать команду EXECUTE, которая уже не требует
+ прохождения этих стадий.
+ Для сложных запросов это может быть большим выигрышем.
+ 
+\end_layout
+
+\begin_layout Itemize
+Stored Procedures - серверные (хранимые) процедуры позволяют реализовывать
+ бизнес логику приложения на стороне сервера.
+ Кроме того, они позволяют сильно уменьшить трафик между клиентом и сервером.
+ 
+\end_layout
+
+\begin_layout Itemize
+Savepoints (nested transactions) - в отличие от "плоских транзакций", которые
+ не имеют промежуточных точек фиксации, использование savepoints позволяет
+ отменять работу части транзакции, например вследствии ошибочно введенной
+ команды, без влияния на оставшуюся часть транзакции.
+ Это бывает очень полезно для транзакций, которые работают с большими объемами
+ данных.
+\end_layout
+
+\begin_layout Itemize
+Права доступа к объектам системы на основе системы привилегий.
+ Владелец объекта или суперюзер может как разрешать доступ (GRANT), так
+ и отменять (REVOKE).
+ 
+\end_layout
+
+\begin_layout Itemize
+Система обмена сообщениями между процессами - LISTEN и NOTIFY позволяют
+ организовывать событийную модель взаимодействия между клиентом и сервером
+ (клиенту передается название события, назначенное командой notify и PID
+ процесса).
+\end_layout
+
+\begin_layout Itemize
+Триггеры позволяют управлять реакцией системы на изменение данных (INSERT,
+ UPDATE, DELETE), как перед самой операцией (BEFORE), так и после (AFTER).
+ Во время выполнения триггера доступны специальные переменные NEW (запись,
+ которая будет вставлена или обновлена) и OLD (запись перед обновлением).
+\end_layout
+
+\begin_layout Itemize
+Cluster table - упорядочивание записей таблицы на диске согласно индексу,
+ что иногда за счет уменьшения доступа к диску ускоряет выполнение запроса.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Богатый набор типов данных PostgreSQL включает: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Символьные типы (character(n)) как определено в стандарте SQL и тип text
+ с практически неограниченной длиной.
+\end_layout
+
+\begin_layout Itemize
+Numeric тип поддерживает произвольную точность, очень востребованную в научных
+ и финансовых приложениях.
+ 
+\end_layout
+
+\begin_layout Itemize
+Массивы согласно стандарту SQL:2003.
+\end_layout
+
+\begin_layout Itemize
+Большие объекты (Large Objects) позволяют хранить в базе данных бинарные
+ данные размером до 2Gb.
+\end_layout
+
+\begin_layout Itemize
+Геометрические типы (point, line, circle,polygon, box,...) позволяют работать
+ с пространственными данными на плоскости.
+\end_layout
+
+\begin_layout Itemize
+ГИС (GIS) типы в PostgreSQL являются доказательством расширяемости PostgreSQL
+ и позволяют эффективно работать с трехмерными данными.
+ 
+\end_layout
+
+\begin_layout Itemize
+Сетевые типы (Network types) поддерживают типы данных inet для IPV4, IPV6,
+ а также cidr (Classless Internet Domain Routing) блоки и macaddr
+\end_layout
+
+\begin_layout Itemize
+Композитные типы (composite types) объединяют один или несколько элементарных
+ типов и позволяют пользователям манипулировать со сложными объектами.
+\end_layout
+
+\begin_layout Itemize
+Временные типы (timestamp, interval, date, time) реализованы с очень большой
+ точностью.
+\end_layout
+
+\begin_layout Itemize
+Псевдотипы serial и bigserial позволяют организовать упорядоченную последователь
+ность целых чисел (AUTO_INCREMENT у некоторых СУБД).
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+PostgreSQL имеет очень богатый набор встроенных функций и операторов для
+ работы с данными.
+ 
+\end_layout
+
+\begin_layout Itemize
+Поддержка 25 различных наборов символов (charsets), включая ASCII, LATIN,
+ WIN, KOI8 и UNICODE, а также поддержка locale, что позволяет корректно
+ работать с данными на разных языках.
+ 
+\end_layout
+
+\begin_layout Itemize
+Поддержка NLS(Native Language Support) - документация, сообщения об ошибках
+ доступны на различных языках, включая японский, немецкий, итальянский,
+ французский, русский, испанский, португальский, словенский, словацкий и
+ несколько диалектов китайского языков.
+ 
+\end_layout
+
+\begin_layout Itemize
+Интерфейсы в PostgreSQL реализованы для доступа к базе данных из ряда языков
+ (C, C++, C# ,python, perl, ruby ,php, Lisp и другие) и методов доступа
+ к данным (JDBC, ODBC).
+ 
+\end_layout
+
+\begin_layout Itemize
+Процедурные языки позволяют пользователям разрабатывать свои функции на
+ стороне сервера, тем самым переносить логику приложения на сторону базы
+ данных, используя языки программирования, отличные от встроенных SQL и
+ C.
+ К настоящему времени поддерживаются (включены в стандартный дистрибутив)
+ PL/pgSQL, pl/Tcl, Pl/Perl и pl/Python.
+ Кроме них, существует поддержка PHP, Java, Ruby, R, shell.
+ 
+\end_layout
+
+\begin_layout Itemize
+Простота использования всегда являлась важным фактором для разработчиков.
+ Предоставляются следующие средства взаимодействия пользователя с базой
+ данных:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Утилита psql (входит в дистрибутив) предоставляет удобный интерфейс для
+ работы с базой данных, содержит краткий справочник по SQL, облегчает ввод
+ команд (используя стрелки для повтора и табулятор для расширения), поддерживает
+ историю и буфер запросов, а также позволяет работать как в интерактивном
+ режиме, так и потоковом режиме.
+ 
+\end_layout
+
+\begin_layout Itemize
+phpPgAdmin (лицензия GPL) представляет возможность с помощью веб браузера
+ администрировать PostgreSQL кластер.
+ 
+\end_layout
+
+\begin_layout Itemize
+pgAdmin III (GNU Artistic license) предоставляет удобный интерфейс для работы
+ с базами данных PostgreSQL и работает под Linux, FreeBSD и Windows 2000/XP.
+ 
+\end_layout
+
+\begin_layout Itemize
+PgEdit - программная среда для разработки приложений и SQL-редактор, доступна
+ для Windows и Mac.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Безопасность данных также является важнейшим аспектом любой СУБД.
+ В PostgreSQL она обеспечивается 4-мя уровнями безопасности: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+PostgreSQL нельзя запустить под привилегированным пользователем - системный
+ контекст.
+\end_layout
+
+\begin_layout Itemize
+SSL,SSH шифрование трафика между клиентом и сервером - сетевой контекст.
+\end_layout
+
+\begin_layout Itemize
+сложная система аутентификации на уровне хоста или IP адреса/подсети.
+ Система аутентификации поддерживает пароли, шифрованные пароли, Kerberos,
+ IDENT и прочие системы, которые могут подключаться используя механизм подключае
+мых аутентификационных модулей.
+\end_layout
+
+\begin_layout Itemize
+Детализированная система прав доступа ко всем объектам базы данных, которая
+ совместно со схемой, обеспечивающая изоляцию названий объектов для каждого
+ пользователя, PostgreSQL предоставляет богатую и гибкую инфраструктуру.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+Реализация уроков по СУБД PostgreSQL
+\end_layout
+
+\begin_layout Subsubsection
+Пример выполнения шага 1.3 
+\end_layout
+
+\begin_layout Standard
+На примере шага по установке пароля пользователю 
+\family typewriter
+postgres 
+\family default
+продемонстрируем работу программы интерактивных уроков.
+ В листинге ниже представлено описание шага по установке пароля пользователю
+ 
+\family typewriter
+postgres
+\family default
+.
+ 
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize},numbers=left,numberstyle={\small}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+<step name="Установка пароля пользователя postgres.">
+\end_layout
+
+\begin_layout Plain Layout
+
+  <description>
+\end_layout
+
+\begin_layout Plain Layout
+
+   &lt; style type="text/css"&gt;
+\end_layout
+
+\begin_layout Plain Layout
+
+   p { text-indent: 30px;}
+\end_layout
+
+\begin_layout Plain Layout
+
+   &lt;/style&gt;
+\end_layout
+
+\begin_layout Plain Layout
+
+    &lt;p&gt;При установке СУБД автоматически создается учетная запись postgres,
+\end_layout
+
+\begin_layout Plain Layout
+
+    от имени которого будут выполняться административные работы.
+ &lt;/p&gt;
+\end_layout
+
+\begin_layout Plain Layout
+
+    &lt;p&gt; &lt;b&gt;passwd &lt;/b&gt; - утилита UNIX-систем управления
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+    пользовательскими паролями.&lt;/p&gt;
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    &lt;p&gt;Общий синаксис следующий: &lt;br&gt; &lt;norb&gt; &lt;code&gt;
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+    passwd [параметры][имя пользователя] &lt;/code&gt; &lt;/norb&gt; &lt;/p&gt;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    &lt;p&gt;С помощью команды &lt;code&gt;passwd postgres &lt;/code&gt;
+\end_layout
+
+\begin_layout Plain Layout
+
+    установите пароль для пользователя postgres.
+ &lt;/p&gt;
+\end_layout
+
+\begin_layout Plain Layout
+
+  </description>
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  <command>passwd postgres</command>
+\end_layout
+
+\begin_layout Plain Layout
+
+  <default_prompt>[root@test psql]# </default_prompt>
+\end_layout
+
+\begin_layout Plain Layout
+
+   
+\end_layout
+
+\begin_layout Plain Layout
+
+  <prompt>Новый пароль : </prompt>
+\end_layout
+
+\begin_layout Plain Layout
+
+  <prompt>Повторите ввод нового пароля : </prompt>
+\end_layout
+
+\begin_layout Plain Layout
+
+   
+\end_layout
+
+\begin_layout Plain Layout
+
+  <result>Смена пароля для пользователя postgres.
+ </result>
+\end_layout
+
+\begin_layout Plain Layout
+
+  <result>passwd: все токены проверки подлинности успешно обновлены.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  </result>
+\end_layout
+
+\begin_layout Plain Layout
+
+   
+\end_layout
+
+\begin_layout Plain Layout
+
+  <exception>Пароль не указан
+\end_layout
+
+\begin_layout Plain Layout
+
+  passwd: Ошибка при операциях с маркером проверки подлинности
+\end_layout
+
+\begin_layout Plain Layout
+
+  </exception>
+\end_layout
+
+\begin_layout Plain Layout
+
+  <exception>Извините, пароли не совпадают </exception>
+\end_layout
+
+\begin_layout Plain Layout
+
+  <exception>passwd: Использовано максимальное число попыток, заданное для
+ службы
+\end_layout
+
+\begin_layout Plain Layout
+
+  </exception>
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\end_layout
+
+\begin_layout Plain Layout
+
+</step>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Вся информация в поля программы устанавливается с помощью соответствующих
+ XQuery-запросов в XML-файл уроков.
+\end_layout
+
+\begin_layout Standard
+Можно заметить, что текст тега 
+\family typewriter
+description 
+\family default
+описан с помощью тегов HTML.
+ Из-за того, что в XML зарезервированными являются символы 
+\begin_inset Quotes fld
+\end_inset
+
+
+\family typewriter
+<
+\family default
+
+\begin_inset Quotes frd
+\end_inset
+
+
+\family typewriter
+ и 
+\family default
+
+\begin_inset Quotes fld
+\end_inset
+
+
+\family typewriter
+>
+\family default
+
+\begin_inset Quotes frd
+\end_inset
+
+ использованы ссылки на сущность, например 
+\family typewriter
+&lt;p&gt;
+\family default
+, что означает 
+\family typewriter
+<p>
+\family default
+ или новый абзац.
+ Текст в поле 
+\family typewriter
+description 
+\family default
+устанавливается с помощью метода класса 
+\family typewriter
+QTextEdit::setHtml(QString text)
+\family default
+, таким образом в этом поле достигается равнение и выделение текста.
+ Ниже 
+\emph on
+на рисунке.
+ 4.1 
+\emph default
+можно увидеть, как преобразуется текст тега 
+\family typewriter
+description 
+\family default
+при переходе на шаг 1.3.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename files/passwd.png
+	scale 45
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Окно программы при начале выполнения шага 1.3
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Введенная команда проверяется сначала в стандартном обработчике команды
+ на правильность ввода.
+ Далее она ищется в списке команд, требующих специфической обработки.
+ Если команда найдена в списке, то происходит переключение слотов обработки
+ команд и команда обрабатывается в специализированном слоте.
+ Иначе выполняется запрос XQuery для тега 
+\family typewriter
+result
+\family default
+ и выполняется переход на следующий шаг.
+ В случае, если пользователь неправильно вводит команду, программа интерактивных
+ уроков выводит предупреждение об ошибке в эмулятор консоли, что можно увидеть
+ 
+\emph on
+на рисунке 4.2
+\emph default
+.
+ 
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Здесь была специально введена неверная команда 
+\family typewriter
+password postgres
+\family default
+ вместо эталонной 
+\family typewriter
+passwd postgres
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename files/passwd_error.png
+	scale 45
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Неправильный ввод команды
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Если же пользователь введет правильно команду, начинается диалог с пользователем
+ (программа полностью эмитирует работу команды 
+\family typewriter
+passwd
+\family default
+ операционной системы linux), как это показано на 
+\emph on
+рисунке 4.3
+\emph default
+.
+ В это время программа получает данные с помощью XQuery-запросов тегов 
+\family typewriter
+prompt[1] 
+\family default
+и 
+\family typewriter
+result[1]
+\family default
+ из XML-файла урока, часть которого приведена на листинге выше.
+ Результаты выполнения запросов следующие:
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Смена пароля для пользователя postgres.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+для тега 
+\family typewriter
+result[1] 
+\family default
+и
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Новый пароль : 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+для тега 
+\family typewriter
+prompt[1]
+\family default
+.
+ Эти результаты запроса выводятся в эмулятор консоли.
+ Так пользователю предлагается установить пароль для пользователя СУБД 
+\family typewriter
+postgres
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename files/passwd_start.png
+	scale 45
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Начало выполнения шага 1.3
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+По окончании ввода нового пароля требуется его повторить (
+\emph on
+см.
+ рисунок 4.4
+\emph default
+).
+ При этом выполняется XQuery-запрос тега 
+\family typewriter
+prompt[2]
+\family default
+ и результат запроса выводится в эмулятор консоли.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename files/passwd_repeat.png
+	scale 45
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Подтверждение пароля
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В случае неверно введенного повторения пароля программа выводит предупреждение,
+ выполнив XQuery-запрос для тега 
+\family typewriter
+exeption[2]
+\family default
+ и в эмуляторе консоли будут следующие строки
+\begin_inset Newline newline
+\end_inset
+
+ (
+\emph on
+см.
+ рисунок 4.
+\emph default
+5):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename files/passwd_exeption_2.png
+	scale 45
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Вывод ошибки при несовпадении паролей
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Аналогично, программа предупреждает пользователя об отсутствии пароля.
+ В этом случае выполняется XQuery-запрос для тега 
+\family typewriter
+exeption[1] 
+\family default
+и выполняется выход из слота обработки команды 
+\family typewriter
+passwd 
+\family default
+согласно работе программы 
+\family typewriter
+passwd 
+\family default
+в операционной системе linux (
+\emph on
+см.
+ рисунок 4.6
+\emph default
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename files/passwd_exeption_1.png
+	scale 45
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Ошибка при отсутствии пароля
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В случае правильных выполнения действий пользователя осуществляется переход
+ на следующий шаг (в нашем случае на 1.4), результат перехода можно посмотреть
+ 
+\emph on
+на рисунке 4.7
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename files/passwd_end.png
+	scale 45
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Успешное выполнение шага 1.3 и переход на шаг 1.4
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В данном случае пользователь уведомляется с помощью вывода в консоли строки
+ о том, что пароль успешно обновлен и выполняется переход на следующий шаг.
+ При переходе меняется положение текущего элемента в дереве уроков, а выполняютс
+я XQuery-запросы для обновления полей программы.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Пример выполнения шага 2.3
+\end_layout
+
+\begin_layout Standard
+Шаг 2.3 иллюстрирует команду языка SQL 
+\family typewriter
+CREATE TABLE
+\family default
+ по созданию таблицы в базе данных.
+ Ниже в листинге приведено описание этого шага в XML.
+ 
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset listings
+lstparams "basicstyle={\footnotesize\ttfamily}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+<step name="Создание таблицы в базе данных.">
+\end_layout
+
+\begin_layout Plain Layout
+
+ <description>
+\end_layout
+
+\begin_layout Plain Layout
+
+  &lt; style type="text/css"&gt;
+\end_layout
+
+\begin_layout Plain Layout
+
+  p { text-indent: 30px;}
+\end_layout
+
+\begin_layout Plain Layout
+
+  &lt;/style&gt;
+\end_layout
+
+\begin_layout Plain Layout
+
+  &lt;p&gt;Для создания таблицы используется SQL-оператор &lt;b&gt;
+\end_layout
+
+\begin_layout Plain Layout
+
+  CREATE TABLE &lt;/b&gt;,наиболее простейший синтаксис которого следующий:&lt;/
+p&gt;
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+  &lt;code&gt; CREATE TABLE имя_таблицы (имя_колонки_1 тип_данных_колонки_2,
+\end_layout
+
+\begin_layout Plain Layout
+
+  имя_колонки_2 тип_данных_колонки_2, ..., имя_колонки_N тип_данных_колонки_N);
+\end_layout
+
+\begin_layout Plain Layout
+
+  &lt;/code&gt;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  &lt;p&gt;Вы можете создать таблицу, указав ее название, а затем имена
+ полей и их типы.
+\end_layout
+
+\begin_layout Plain Layout
+
+  Создайте таблицу &lt;code&gt; students &lt;/code&gt; с полями: &lt;br&gt;
+\end_layout
+
+\begin_layout Plain Layout
+
+    &lt;code&gt;student_id    : integer &lt;br&gt;
+\end_layout
+
+\begin_layout Plain Layout
+
+    student_name  : varchar  &lt;br&gt;
+\end_layout
+
+\begin_layout Plain Layout
+
+    group_id      : integer &lt;/code&gt; &lt;/p&gt;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ </description>
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ <command>CREATE TABLE students (student_id integer, student_name varchar,
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  group_id integer);</command>
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ <default_prompt>test-# </default_prompt>
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ <result>CREATE TABLE </result>
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ <database> No relations found.</database>
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\end_layout
+
+\begin_layout Plain Layout
+
+</step>  
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Как и в первом примере, рассмотренном в пункте 4.3.1, тег 
+\family typewriter
+description 
+\family default
+описан с помощью тегов языка HTML.
+ Но в отличие от первого примера, в описании данного шага присутствует тег
+ 
+\family typewriter
+database
+\family default
+, отвечающий за вывод структуры базы данных в соответствующее поле программы.
+ 
+\emph on
+На рисунке 4.8 
+\emph default
+представлено окно программы при начале выполнения шага 2.3.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename files/create_table_start.png
+	scale 45
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+При выполнении шага поле, отвечающее за отражение структуры базы данных,
+ изменяется.
+ Это можно увидеть 
+\emph on
+на рисунке 4.9
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename files/create_table_end.png
+	scale 45
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Успешное выполнение шага 2.3
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Таким образом, данная программа позволяет обучить пользователя порядку настройки
+ сервера СУБД, а также обучить синтаксису команд языка SQL.
+ Благодаря наличию краткой справке по каждой выполняемой пользователем команды
+ пользователю не требуется прибегать к чтению документации или прочей литературы
+, что тем самым, упрощает процесс понимания принципов работы с СУБД.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Заключение
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+addcontentsline{toc}{part}{Заключение}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Данная учебно-исследовательская работа посвящена созданию кроссплатформенного
+ интерактивного учебника по СУБД.
+ 
+\end_layout
+
+\begin_layout Standard
+Были достигнуты основные результаты:
+\end_layout
+
+\begin_layout Enumerate
+Разработана иерархическая структура данных обучающих уроков на языке разметки
+ XML;
+\end_layout
+
+\begin_layout Enumerate
+Разработана кроссплатформенная интерактивная программа обучающих уроков,
+ использующую данную структуру и обрабатывающую ее;
+\end_layout
+
+\begin_layout Enumerate
+Возможности программы интерактивных уроков продемонстрированы на примере
+ курса по свободно распространяемой СУБД PostgreSQL для операционной системы
+ Linux.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+В целом можно сделать вывод о 
+\color black
+достижении
+\color inherit
+ поставленной 
+\color black
+цели
+\color inherit
+ работы.
+ 
+\color black
+В продолжение темы учебно-исследовательской работы можно реализовать возможность
+ использования полноценной консоли в программе интерактивных уроков по СУБД
+ с помощью виртуальных машин.
+\end_layout
+
+\begin_layout Standard
+
+\color black
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+addcontentsline{toc}{part}{Список литературы}
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Литература"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "1"
+key "try.github.com"
+
+\end_inset
+
+ Интерактивный урок по git.
+ [электронный ресурс] --- http://try.github.com
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "2"
+key "sql-tutorial.com"
+
+\end_inset
+
+ Интерактивный учебник по SQL.
+ [электронный ресурс] --- http://www.sql-tutorial.com
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "3"
+key "XML"
+
+\end_inset
+
+ Язык разметки XML.
+ [электронный ресурс] --- http://ru.wikipedia.org/wiki/XML
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "4"
+key "XPath"
+
+\end_inset
+
+ Язык запросов XPath.
+ [электронный ресурс].
+ --- http://codingcraft.ru/xpath.php 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "5"
+key "XQuery"
+
+\end_inset
+
+ XQuery: что это такое.
+ [электронный ресурс].
+ --- http://www.iso.ru/rus/document5992.phtml
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "6"
+key "Qt-Шлее"
+
+\end_inset
+
+ Шлее М.
+ --- Qt 4.5.
+ Профессиональное программирование на C++.
+ --- СПб.: БВХ-Петербург, 2010.
+ --- 896с.: ил.
+ + DVD --- (В подлиннике), ISBN: 978-5-9775-0398-3
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "7"
+key "Qt-документация"
+
+\end_inset
+
+ Qt 4.8 --- документация.
+ [электронный ресурс].
+ --- http://qt-project.org/doc/qt-4.8/
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "8"
+key "SQL"
+
+\end_inset
+
+ Основы языка SQL.
+ [электронный ресурс].
+ --- http://citforum.ru/programming/32less/les44.shtml
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "9"
+key "PostgreSQL"
+
+\end_inset
+
+ Что такое PostgreSQL? [электронный ресурс].
+ --- http://postgresql.ru.net/manual/intro-whatis.html
+\end_layout
+
+\end_body
+\end_document

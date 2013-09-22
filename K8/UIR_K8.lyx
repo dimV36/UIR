@@ -1,0 +1,7594 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass extarticle
+\begin_preamble
+%\usepackage{indentfirst}
+%\usepackage{cmap}
+%\usepackage{textcomp}
+
+%\lstdefinestyle{customc}{
+%  belowcaptionskip=1\baselineskip,
+%  breaklines=true,
+ % xleftmargin=\parindent,
+ % commentstyle=\it, 
+%  extendedchars=true,
+%  numbers=right,
+ % numberstyle=\small,
+ % stepnumber=0, 
+ % showstringspaces=false,
+ % basicstyle=\ttfamily,
+  %identifierstyle=\color{black},
+ % breaklines=true,                
+ % breakatwhitespace=true,
+%}
+
+
+%\lstset{style=customc}
+
+%Дополнения
+\usepackage{rotating}		%для вращения
+\usepackage{caption}		%для подписей
+\usepackage{lastpage}		%подсчёт страниц
+\usepackage{indentfirst}	%красная строка
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{graphicx}		%поддержка графики
+\usepackage{setspace}
+\usepackage{hhline}		%горизонтальные линии
+\usepackage{ifthen}		%условия
+\usepackage{ifxetex}		%проверки для XeTeX
+\usepackage{footmisc}		%настраивать сноски
+\usepackage{listings}
+\usepackage{pdflscape}
+%\usepackage[raggedright]{titlesec}
+
+%XeTeX-овский дзен
+\ifxetex
+\usepackage{xecyr} %нужно, если используется babel
+
+%устанавливает язык по умолчанию
+%\setdefaultlanguage[spelling=modern]{russian}
+%\setotherlanguage{english}
+%Нужно для автозамены кавычек и тире
+\defaultfontfeatures{Mapping=tex-text}
+%без этого не работает шрифт...
+\newfontfamily\russianfont{Times New Roman}
+%шрифты, обычные, трутайповские
+\setmainfont{Times New Roman}
+\setmonofont[Scale=0.915]{Nimbus Mono L}
+
+%ещё один баг XeTeX! Не работают листинги с русскими буквами, печаль... Пришлось кинуть алиас на вербатим.
+\usepackage{verbatim}
+\usepackage{spverbatim}
+
+\def\verbatim@processline{\hspace{1.2cm}\raggedright\the\verbatim@line\par}
+\renewenvironment{lstlisting}{\spverbatim}{\endverbatim}
+
+\else %если не ХеТеХ а обычный ТеХ
+
+%пока отменил, с ХеТеХ работает криво
+%Это то что нужно для того, чтобы листинги выводились с моноширинным шрифтом
+\lstset{
+breaklines=true,                % sets automatic line breaking
+basicstyle=\ttfamily,
+%отступ примерно 4 пробела
+breakindent={-1.2cm},
+xleftmargin=0.5cm
+}
+
+\fi
+
+%русские буквы в нумерации
+\renewcommand\theenumii{\asbuk{enumii}}
+
+\sloppy %не вылезать за края листа
+\end_preamble
+\use_default_options true
+\begin_modules
+eqs-within-sections
+figs-within-sections
+\end_modules
+\maintain_unincluded_children false
+\language russian
+\language_package default
+\inputencoding koi8-r
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter cmtt
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 90
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement H
+\paperfontsize 12
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks true
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\align center
+
+\size small
+МИНИСТЕРСТВО ОБРАЗОВАНИЯ И НАУКИ РОССИЙСКОЙ ФЕДЕРАЦИИ
+\end_layout
+
+\begin_layout Standard
+\align center
+Федеральное государственное автономное образовательное учреждение 
+\begin_inset Newline newline
+\end_inset
+
+высшего профессионального образования
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\begin_inset Quotes fld
+\end_inset
+
+Национальный исследовательский ядерный
+\begin_inset Newline newline
+\end_inset
+
+ университет 
+\begin_inset Quotes fld
+\end_inset
+
+МИФИ
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="14cm">
+<row>
+<cell multirow="3" alignment="left" valignment="middle" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename files/mephi.png
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Факультет кибернетики и информационной 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+безопасности
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+Кафедра №36
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 1cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size largest
+ПОЯСНИТЕЛЬНАЯ ЗАПИСКА 
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+к курсовому проекту на тему: 
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+\color black
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="16.4cm">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+\color black
+Распределенные системы управления 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+\color black
+сверхбольшими объемами научных данных
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 1cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Группа  
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+К8-361
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Студент 
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="6.8cm">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="6cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Воронин Д.Л.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \hspace{}
+\length 6cm
+\end_inset
+
+(подпись)
+\begin_inset space \hspace{}
+\length 5cm
+\end_inset
+
+(ФИО)
+\end_layout
+
+\begin_layout Standard
+Руководитель проекта 
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="4.1cm">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="6cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Муравьев С.К.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \hspace{}
+\length 6cm
+\end_inset
+
+(подпись)
+\begin_inset space \hspace{}
+\length 5cm
+\end_inset
+
+(ФИО)
+\end_layout
+
+\begin_layout Standard
+Оценка 
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="14.2cm">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Члены комиссии 
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="5.2cm">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="6cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \hspace{}
+\length 6cm
+\end_inset
+
+(подпись)
+\begin_inset space \hspace{}
+\length 5cm
+\end_inset
+
+(ФИО)
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \hspace{}
+\length 3.3cm
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="5.2cm">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="6cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \hspace{}
+\length 6cm
+\end_inset
+
+(подпись)
+\begin_inset space \hspace{}
+\length 5cm
+\end_inset
+
+(ФИО)
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \hspace{}
+\length 3.3cm
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="5.2cm">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="6cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \hspace{}
+\length 6cm
+\end_inset
+
+(подпись)
+\begin_inset space \hspace{}
+\length 5cm
+\end_inset
+
+(ФИО)
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \hspace{}
+\length 3.3cm
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="5.2cm">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="6cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \hspace{}
+\length 6cm
+\end_inset
+
+(подпись)
+\begin_inset space \hspace{}
+\length 5cm
+\end_inset
+
+(ФИО)
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace vfill
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\series bold
+Москва 2013г.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size small
+МИНИСТЕРСТВО ОБРАЗОВАНИЯ И НАУКИ РОССИЙСКОЙ ФЕДЕРАЦИИ
+\end_layout
+
+\begin_layout Standard
+\align center
+Федеральное государственное автономное образовательное учреждение 
+\begin_inset Newline newline
+\end_inset
+
+высшего профессионального образования
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\begin_inset Quotes fld
+\end_inset
+
+Национальный исследовательский ядерный
+\begin_inset Newline newline
+\end_inset
+
+ университет 
+\begin_inset Quotes fld
+\end_inset
+
+МИФИ
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="14cm">
+<row>
+<cell multirow="3" alignment="left" valignment="middle" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename files/mephi.png
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ФАКУЛЬТЕТ КИБЕРНЕТИКИ И ИНФОРМАЦИОННОЙ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+БЕЗОПАСНОСТИ
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+КАФЕДРА ИНФОРМАЦИОННЫЕ СИСТЕМЫ И ТЕХНОЛОГИИ
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 0.5cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size largest
+Задание на УИР и КП
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 1cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Студенту
+\size large
+ гр.
+ 
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+К8-361 Воронину Дмитрию Леонидовичу
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 1cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size larger
+Тема УИР и КП
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+\color black
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="16.4cm">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+\color black
+Распределенные системы управления сверхбольшими
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+\color black
+объемами научных данных
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 1cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size large
+ЗАДАНИЕ
+\end_layout
+
+\begin_layout Standard
+
+\size large
+\begin_inset Tabular
+<lyxtabular version="3" rows="8" columns="1">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.
+ Выполнить обзор модели хранения данных в виде многомерных массивов.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2.
+ Выполнить обзор системы управления базами данных SciDB.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3.
+ Выполнить обзор языков манипулирования с массивами AQL и AFL.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4.
+ Разработать алгоритм фильтрации изображения BMP средствами базы данных.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace vfill
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align left
+
+\size small
+\begin_inset space \hspace{}
+\length 3.3cm
+\end_inset
+
+
+\size default
+Место выполнения УИР и КП 
+\size large
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="4.8cm">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ФГУП 
+\begin_inset Quotes fld
+\end_inset
+
+ЦНИИ ЭИСУ
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align left
+
+\size small
+\begin_inset space \hspace{}
+\length 3.3cm
+\end_inset
+
+
+\size default
+Руководитель 
+\size large
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="3.8cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Муравьев С.К.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset space \hspace{}
+\length 2.7cm
+\end_inset
+
+
+\size default
+Дата выдачи задания
+\size small
+ 
+\size large
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="2cm">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Quotes fld
+\end_inset
+
+11
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+февраля
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2013г.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+ОТЗЫВ О РАБОТЕ СТУДЕНТА
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 2cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Руководитель 
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="6cm">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="4cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Quotes fld
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2013г.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Введение
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+addcontentsline{toc}{part}{Введение}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Широкое информационное распространение, ускорение и унификация доступа к
+ информации являются основной характеристикой современного мира.
+ При этом происходит глобальный рост числа информации, полученной в ходе
+ научных экспериментов.
+ Доступ к ней осложнен тем, что результаты наблюдений хранятся в неоднородно
+ распределенных архивах.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Поэтому актуальна задача поиска масштабируемого механизма хранения и обработки
+ сверхбольших объемов данных, полученных как в результате численного моделирован
+ия, так и в результате эксперимента.
+ 
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Существующие объектно-реляционные базы данных позволяют хранить различные
+ данные в таблицах, но при определенных условиях, в случае если объем данных
+ превосходит 1 Тб, они становятся неэффективными.
+ Существует матричный класс данных, которые характеризуются наличием естественны
+х связей между соседними элементами.
+ Реляционные базы данных не поддерживают связи между элементами, поэтому
+ использовать их для решения задачи нерационально.
+ 
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Другие классы баз данных, использующих масштабируемое хранилище, позволяют
+ хранить информацию с помощью модели ключ-значение.
+ Данная модель является неприменимой для решения этой задачи, так как научным
+ данным требуется более богатая модель хранения.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Поэтому для решения этой задачи наилучшим образом подходит система управления
+ базами данных SciDB --- система с открытым программным кодом, разработанная
+ для нужд науки.
+ Модель данных SciDB представляет из себя многомерные вложенные массивы,
+ таким образом ученым не надо моделировать свои данные как таблицы записей,
+ что в свою очередь ведет к более простой формулировке аналитических запросов
+ и на порядки увеличивает производительность системы.
+ Так как в SciDB хранятся данные полученные с приборов, SciDB поддерживает
+ погрешность измерений на уровне модели данных и языка запросов.
+ Наконец, SciDB изначально разрабатывается для работы на большом спектре
+ вычислительных систем, от переносного компьютера до больших кластеров и
+ суперкомпьютеров 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Статья Бортунова"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+В учебно-исследовательской работе рассматривается описание модели хранения
+ данных SciDB и ее архитектуры.
+ Целью данной учебно-исследовательской работы является исследование возможностей
+ базы данных, а также ее применимости для обработки графической информации.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Обзор архитектуры СУБД SciDB
+\end_layout
+
+\begin_layout Subsection
+Модель хранения данных 
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Система управления базами данных SciDB представляет собой модульную и расширяему
+ю базу данных, предназначенную для хранения и управления сверхбольшим числом
+ сырых научных данных
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Статья Бортунова"
+
+\end_inset
+
+.
+ В отличие от реляционных баз данных, в структурах которых используются
+ строки или столбцы, SciDB использует многомерный массив для хранения информации.
+ Данная модель хранения данных обеспечивает компактное хранение информации
+ и быстрый доступ к ней.
+ 
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+n-мерный массив SciDB имеет измерения 
+\begin_inset Formula $d{}_{1}$
+\end_inset
+
+,
+\begin_inset Formula $d{}_{2}$
+\end_inset
+
+,...,
+\begin_inset Formula $d{}_{n}$
+\end_inset
+
+.
+ Размерность определяется количеством упорядоченных значений в этом измерении.
+ Размерность определяется числом типа 
+\family typewriter
+int64
+\family default
+, но для определения размерности также допускаются строки и дробные числа.
+ 
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Когда общее количество измерений массива известно заранее, он определяется
+ как ограниченный (
+\emph on
+bounded
+\emph default
+) массив.
+ Во многих случаях размерность массива неизвестна заранее.
+ В таких случаях в SciDB определяется неограниченный (
+\emph on
+unbounded
+\emph default
+) массив.
+ 
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Индексы массива в общем случае имеют вид 
+\emph on
+
+\begin_inset Formula $a$
+\end_inset
+
+=(
+\begin_inset Formula $a{}_{1}$
+\end_inset
+
+,
+\begin_inset Formula $a{}_{2}$
+\end_inset
+
+,...,
+\begin_inset Formula $a{}_{n}$
+\end_inset
+
+) 
+\emph default
+и называются атрибутами 
+\emph on
+(attributes)
+\emph default
+.
+ Атрибуты однозначно индексирует элемент многомерного массива.
+ На 
+\emph on
+рисунке 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Модель хранения данных"
+
+\end_inset
+
+ 
+\emph default
+показана модель хранения данных в SciDB.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/array_data_model.png
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Модель хранения данных"
+
+\end_inset
+
+Модель хранения данных в SciDB
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+При загрузке данных в SciDB происходит их разбиение на части.
+ Они распределяются между рабочими серверами SciDB.
+ В модели хранения данных используется технология чанков 
+\emph on
+(chunks)
+\emph default
+, которая состоит в том, что каждый сервер отвечает за хранение и обновление
+ своего подмножества массивов, а также за выполнение запросов тех данных,
+ которые хранятся на сервере.
+ Таким образом SciDB обеспечивает расширяемость и позволяет проводить различные
+ вычисления над большим объемом данных.
+ 
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Размер чанка устанавливается для каждого массива при его создании.
+ При этом не нужно заботиться о размещении данных по чанкам --- это происходит
+ средствами самой SciDB.
+ 
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Например, при создании массива с измерениями 
+\family typewriter
+i 
+\family default
+и 
+\family typewriter
+j
+\family default
+, размерностями 30 и размером чанка 10, данные могут храниться следующим
+ образом (см.
+ 
+\emph on
+рисунок 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Хранение-данных-в"
+
+\end_inset
+
+
+\emph default
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/chunked_dimensions.png
+	scale 75
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Хранение-данных-в"
+
+\end_inset
+
+Хранение данных в массиве SciDB
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Другим параметром массива является перехлест
+\emph on
+ (Overlap)
+\emph default
+ --- количество соседних чанков, которые 
+\begin_inset Quotes fld
+\end_inset
+
+видит
+\begin_inset Quotes frd
+\end_inset
+
+ каждый из чанков.
+ Иначе говоря, с помощью перехлеста достигается хранение данных в соседних
+ ячейках памяти.
+ 
+\end_layout
+
+\begin_layout Standard
+Достоинствами данного подхода являются:
+\end_layout
+
+\begin_layout Itemize
+Повышение скорости выполнения запроса на данных при условии, каждый чанк
+ может иметь доступ к некоторым соседним элементам массива.
+\end_layout
+
+\begin_layout Itemize
+Поиск данных, которые занимают памяти больше, чем 1 чанк.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Архитектура SciDB
+\end_layout
+
+\begin_layout Standard
+На 
+\emph on
+рисунке 
+\emph default
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Архитектура-SciDB"
+
+\end_inset
+
+ представлена архитектура SciDB.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/scidb_architecture.png
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Архитектура-SciDB"
+
+\end_inset
+
+Архитектура SciDB
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Кластер системы управления базами данных SciDB 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Документация SciDB"
+
+\end_inset
+
+ представляет собой несколько серверов, каждый из которых связан друг с
+ другом через интерфейс Ethernet и протокол TCP/IP.
+ Физический сервер (т.е.
+ расположенный на отдельной машине) управляет своим локальным хранилищем.
+ 
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Внешние приложения подключаются к одному из экземпляров кластера.
+ В то время как все экземпляры выполняют запросы и хранят данные, один экземпляр
+ отвечает за их выполнение и получение.
+ Этот экземпляр называют 
+\emph on
+управляющим сервером (Coordinator)
+\emph default
+.
+ Он выполняет задачу объединения всех связей между внешним клиентом SciDB
+ и базой данных.
+ При этом он использует протокол доступа SSH для объединения всех серверов
+ в кластер.
+ На машине управляющего сервера дополнительно устанавливается объектно-реляционн
+ая база данных PostgreSQL для хранения метаданных кластера SciDB.
+ При установке SciDB создается база данных в PostgreSQL со следующей структурой:
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+                      Список отношений
+\end_layout
+
+\begin_layout Plain Layout
+
+ Схема  |        Имя         |        Тип         | Владелец 
+\end_layout
+
+\begin_layout Plain Layout
+
+--------+--------------------+--------------------+----------
+\end_layout
+
+\begin_layout Plain Layout
+
+ public | array              | таблица            | scidb
+\end_layout
+
+\begin_layout Plain Layout
+
+ public | array_attribute    | таблица            | scidb
+\end_layout
+
+\begin_layout Plain Layout
+
+ public | array_dimension    | таблица            | scidb
+\end_layout
+
+\begin_layout Plain Layout
+
+ public | array_id_seq       | последовательность | scidb
+\end_layout
+
+\begin_layout Plain Layout
+
+ public | array_partition    | таблица            | scidb
+\end_layout
+
+\begin_layout Plain Layout
+
+ public | array_version      | таблица            | scidb
+\end_layout
+
+\begin_layout Plain Layout
+
+ public | array_version_lock | таблица            | scidb
+\end_layout
+
+\begin_layout Plain Layout
+
+ public | cluster            | таблица            | scidb
+\end_layout
+
+\begin_layout Plain Layout
+
+ public | instance           | таблица            | scidb
+\end_layout
+
+\begin_layout Plain Layout
+
+ public | instance_id_seq    | последовательность | scidb
+\end_layout
+
+\begin_layout Plain Layout
+
+ public | libraries          | таблица            | scidb
+\end_layout
+
+\begin_layout Plain Layout
+
+ public | libraries_id_seq   | последовательность | scidb
+\end_layout
+
+\begin_layout Plain Layout
+
+ public | partition_id_seq   | последовательность | scidb
+\end_layout
+
+\begin_layout Plain Layout
+
+(13 строк)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Каждая таблица или последовательность выполняет определенную функцию.
+ Далее 
+\emph on
+в таблице 
+\emph default
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Описание-структуры-таблицы"
+
+\end_inset
+
+ указана роль каждой таблицы в базе данных:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="11" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Имя
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Выполняемая функция
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+array
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Хранит информацию об созданных массивах
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+array_attrubute
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Хранит информацию об атрибутах массива
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+array_dimension
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Хранит информацию об измерениях массива
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+array_partition
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Предоставляет данные разбиений массива
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+array_version
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Хранит информацию о версиях массива
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+array_version_lock
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Хранит информацию о успешных транзакциях массива
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+cluster
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Предоставляет информацию о идентификаторе 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+кластера и версии метаданных
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+instance
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Хранит информацию об экземплярах кластера
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+libraries
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Предоставляет список загруженных в кластер библиотек
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Описание-структуры-таблицы"
+
+\end_inset
+
+Описание структуры таблицы метаданных
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+При построении внутреннего хранилища SciDB используются следующие принципы:
+\end_layout
+
+\begin_layout Itemize
+Вертикальное деление;
+\end_layout
+
+\begin_layout Itemize
+Хранение массивов новых версий;
+\end_layout
+
+\begin_layout Itemize
+Хранение сегментов;
+\end_layout
+
+\begin_layout Itemize
+Временное хранилище;
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+При 
+\series bold
+вертикальном делении 
+\series default
+происходит разделение логически связанных частей на части в каждом измерении.
+ Все операции над массивом --- хранение, выполнение запросов и передача
+ данных между экземплярами происходит с помощью одноатрибутного чанка.
+ SciDB использует сжатие по длине хранимых значений для часто повторяющихся
+ значений.
+ Частично эти данных записываются в память для повышения скорости запросов.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+
+\series bold
+Хранение массивов новых версий
+\series default
+ предполагает отказ от поддержки транзакций, которые не нужны для научных
+ данных (WORM – Write Once Read Many) и которые сильно усложняют архитектуру
+ СУБД и вносят существенные расходы на их поддержание.
+ Вместо ACID будет использоваться модель BASE (eventual consistency).
+ В свою очередь, это позволяет избежать журналирования и большого количество
+ замков, присутствующих в традиционных СУБД.
+ При обновлении данных обновляется всего лишь та часть, которая изменилась
+ после операций.
+ SciDB после обновления будет хранить новейшую версию массива, а также список
+ обратных изменений в виде отдельных частей, которые могут вернуть массив
+ к исходному состоянию.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Локальный менеджер выполняет функцию распределения памяти для хранения данных
+ с использованием сегментов.
+ 
+\series bold
+Хранение сегментов 
+\series default
+представляет собой непрерывную часть хранилища, зарезервированного для последова
+тельного хранения частей массива.
+ Данная технология разработана для оптимизации запросов на сверхбольших
+ массивах данных.
+ Сегменты используются как единицы хранения информации.
+ Поэтому аналогично операциям над чанками, сегменты могут быть созданы,
+ обновлены или удалены.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+
+\series bold
+Временное хранилище 
+\series default
+используется в SciDB единожды при выполнении запроса.
+ Оно необходимо для оптимизации времени выполнения запроса.
+ Создается при инициализации запроса и удаляется в случае успешного его
+ завершения.
+\end_layout
+
+\begin_layout Subsection
+Механизм выполнения запросов в SciDB
+\end_layout
+
+\begin_layout Standard
+Механизм выполнения запросов состоит из нескольких этапов:
+\end_layout
+
+\begin_layout Enumerate
+Ввод запроса в клиент 
+\family typewriter
+iquery
+\family default
+;
+\end_layout
+
+\begin_layout Enumerate
+Уведомление рабочих серверов о поступившем запросе;
+\end_layout
+
+\begin_layout Enumerate
+Выполнение запроса на узле;
+\end_layout
+
+\begin_layout Enumerate
+Возвращение результата запроса на узле управляющему узлу.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+На примере запроса 
+\family typewriter
+select * from testarray;
+\family default
+ рассмотрим подробнее каждый из этих этапов.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+На первом этапе в системе запросу присваивается 
+\family typewriter
+queryID 
+\family default
+--- уникальный идентификатор запроса.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+2013-05-29 15:31:39,656 [0x7f5d0fbb2700] [DEBUG]: Generated queryID: instanceID=
+0, time=1369827099, clock=690000, nextID=2, queryID=1100882144877
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Далее выделяется память для запроса:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+2013-05-29 15:31:39,656 [0x7f5d0fbb2700] [DEBUG]: Allocating query (110088214487
+7)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+После чего происходит разбор запроса и построение оптимального маршрута
+ для вывода результата.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Определяется тип запроса (в данном случае будет DML) и строится физический
+ план:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+013-05-29 15:31:39,824 [0x7f5d0fdb4700] [DEBUG]: The physical plan is detected
+ as DML
+\end_layout
+
+\begin_layout Plain Layout
+
+2013-05-29 15:31:39,824 [0x7f5d0fdb4700] [DEBUG]: 
+\end_layout
+
+\begin_layout Plain Layout
+
+[pPlan]:
+\end_layout
+
+\begin_layout Plain Layout
+
+>[pNode] physicalScan agg 0 ddl 0 tile 1 children 0
+\end_layout
+
+\begin_layout Plain Layout
+
+  schema blue_1D@1<i:int64,j:int64,val:int64> [rowblue_1D=0:235422,235422,1000]
+\end_layout
+
+\begin_layout Plain Layout
+
+  props sgm 1 sgo 1
+\end_layout
+
+\begin_layout Plain Layout
+
+  distr roro
+\end_layout
+
+\begin_layout Plain Layout
+
+  bound start {0} end {235421} density 1 cells 235422 chunks 1 est_bytes
+ 1.71858e+07
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+На втором этапе происходит уведомление рабочих серверов о поступившем запросе:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+2013-05-29 15:31:39,828 [0x7f5d0fdb4700] [DEBUG]: Waiting confirmation about
+ preparing physical plan in queryID from 3 instances
+\end_layout
+
+\begin_layout Plain Layout
+
+2013-05-29 15:31:39,831 [0x7f5d0feb5700] [DEBUG]: Notify on processing query
+ 1100882144877 from instance 3
+\end_layout
+
+\begin_layout Plain Layout
+
+2013-05-29 15:31:39,833 [0x7f5d0fcb3700] [DEBUG]: Notify on processing query
+ 1100882144877 from instance 1
+\end_layout
+
+\begin_layout Plain Layout
+
+2013-05-29 15:31:39,836 [0x7f5d0fab1700] [DEBUG]: Notify on processing query
+ 1100882144877 from instance 2
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Далее запрос выполняется на каждом из узлов и высылается результат управляющему
+ серверу:
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+2013-05-29 15:31:39,873 [0x7f5d0fbb2700] [DEBUG]: Received query result
+ from instance#2, queryID=1100882144877, arrayName=
+\end_layout
+
+\begin_layout Plain Layout
+
+2013-05-29 15:31:39,873 [0x7f5d0fbb2700] [DEBUG]: Received query result
+ from instance#3, queryID=1100882144877, arrayName=
+\end_layout
+
+\begin_layout Plain Layout
+
+2013-05-29 15:31:39,877 [0x7f5d0fcb3700] [DEBUG]: Received query result
+ from instance#1, queryID=1100882144877, arrayName=
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Таким образом, благодаря распределению данных по частям достигается быстродейств
+ие базы данных и возможность выполнять запросы над подмножеством данных.
+ 
+\end_layout
+
+\begin_layout Subsection
+Языки запросов в SciDB
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Аналогично языку SQL для реляционных баз данных, в SciDB реализована поддержка
+ AQL и AFL.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Язык запросов AQL --- это высокоуровневый декларативный язык запросов для
+ работы с массивами.
+ Он похож на SQL, но обладает большими возможностями.
+ AQL предоставляет полный набор управления данными и аналитических возможностей,
+ включая загрузку данных, выбор и проектирование, агрегации и объединения.
+\end_layout
+
+\begin_layout Standard
+Язык AQL включает в себя 2 класса:
+\end_layout
+
+\begin_layout Itemize
+DDL (Data Difinition Language) --- запросы, позволяющие определить массив
+ или загрузить данные;
+\end_layout
+
+\begin_layout Itemize
+DML (Data Manipulation Language) --- запросы, предоставляющие доступ к данным
+ и оперирования над ними.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Язык AFL --- функциональный язык работы с массивами.
+ 
+\end_layout
+
+\begin_layout Standard
+Запросы могут состоять из:
+\end_layout
+
+\begin_layout Itemize
+Операторов (принимают несколько массивов на вход, возвращают массив);
+\end_layout
+
+\begin_layout Itemize
+Функции (принимают на вход значения из массивов и возвращают скалярное значение)
+;
+\end_layout
+
+\begin_layout Itemize
+Типы данных (классы значений, которое SciDB может возвращать и хранить);
+\end_layout
+
+\begin_layout Itemize
+Агрегаты (принимают множество значений и возвращают скалярное значение).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Разработка алгоритма фильтрации изображений с помощью СУБД SciDB
+\end_layout
+
+\begin_layout Subsection
+Формат изображений BMP
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+BMP (от англ.
+ Bitmap Picture)
+\begin_inset CommandInset citation
+LatexCommand cite
+key "BMP"
+
+\end_inset
+
+ — формат хранения растровых изображений без сжатия, разработанный компанией
+ Microsoft.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+С форматом BMP работает огромное количество программ, так как его поддержка
+ интегрирована в операционные системы Windows и OS/2.
+ Файлы формата BMP могут иметь расширения .bmp, .dib и .rle.
+ Кроме того, данные этого формата включаются в двоичные файлы ресурсов RES
+ и в PE-файлы.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Глубина цвета в данном формате может быть 1, 4, 8, 16, 24, 32, 48 бит на
+ пиксель.
+ При этом для глубины цвета меньше 16 бит используется палитра с полноцветными
+ компонентами глубиной 24 бита.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+В формате BMP изображения могут храниться как есть или же с применением
+ некоторых распространенных алгоритмов сжатия.
+ В частности, формат BMP поддерживает RLE-сжатие без потери качества, а
+ современные операционные системы и программное обеспечение позволяют использова
+ть JPEG и PNG (эти форматы встраиваются в BMP как в контейнер).
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+При использовании формата DIB (англ.
+ Device Independent Bitmap, аппаратно-независимый растр) программист может
+ получить доступ ко всем элементам структур, описывающих изображение, при
+ помощи обычного указателя.
+ Но эти данные не используются для непосредственного управления экраном,
+ так как они всегда хранятся в системной памяти, а не в специализированной
+ видеопамяти.
+ Формат пикселя в оперативной памяти может отличаться от того формата, который
+ должен заноситься в видеопамять для индикации точки такого же цвета.
+ Например, в DIB-формате может использоваться 24 бита для задания пикселя,
+ а графический адаптер в этот момент может работать в режиме HiColor с цветовой
+ глубиной 16 бит.
+ При этом ярко-красная точка в аппаратно-независимом формате будет задаваться
+ тремя байтами 0x0000ff, а в видеопамяти — словом 0xF800.
+ При копировании картинки на экран система будет тратить дополнительное
+ время на преобразование кодов цвета из 24-битного формата в формат видеобуфера.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Формат DDB (англ.
+ Device Dependent Bitmap, аппаратно-зависимый растр) всегда содержит цветовые
+ коды, совпадающие с кодами видеобуфера, но храниться он может как в системной,
+ так и в видеопамяти.
+ В обоих случаях он содержит только коды цвета в том формате, который обеспечит
+ пересылку изображения из ОЗУ в видеопамять при помощи простого копирования.
+\end_layout
+
+\begin_layout Standard
+BMP-файл состоит из четырёх частей:
+\end_layout
+
+\begin_layout Itemize
+Заголовок файла (
+\family typewriter
+BITMAPFILEHEADER
+\family default
+); 
+\end_layout
+
+\begin_layout Itemize
+Заголовок изображения (
+\family typewriter
+BITMAPINFOHEADER
+\family default
+, может отсутствовать); 
+\end_layout
+
+\begin_layout Itemize
+Палитра (может отсутствовать); 
+\end_layout
+
+\begin_layout Itemize
+Само изображение;
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Структура 
+\family typewriter
+BITMAPFILEHEADER
+\family default
+ содержит информацию о типе, размере и представлении данных в файле.
+ Размер 14 байт.
+ На следующем листинге приведено определение структуры 
+\family typewriter
+BITMAPFILEHEADER
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+typedef struct {
+\end_layout
+
+\begin_layout Plain Layout
+
+    short int      bfType;      
+\end_layout
+
+\begin_layout Plain Layout
+
+    unsigned int   bfSize;      
+\end_layout
+
+\begin_layout Plain Layout
+
+    short int      bfReserved1; 
+\end_layout
+
+\begin_layout Plain Layout
+
+    short int      bfReserved2; 
+\end_layout
+
+\begin_layout Plain Layout
+
+    unsigned int   bfOffBits;   
+\end_layout
+
+\begin_layout Plain Layout
+
+} BITMAPFILEHEADER;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+В 
+\emph on
+таблице 
+\emph default
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Описание полей структуры BITMAPINFOHEADER"
+
+\end_inset
+
+ приведено описание полей структуры BITMAPINFOHEADER.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="7" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Поле
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Размер, байт
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Описание
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+bfType
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+указывает на тип файла BMP 
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Данное поле содержит символы 
+\begin_inset Quotes fld
+\end_inset
+
+BM
+\begin_inset Quotes frd
+\end_inset
+
+, что позволяет отличить формат BMP от других.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+bfSize
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+размер всего файла в байтах
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+bfReserved1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+зарезервировано
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+bfReserved2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+зарезервировано
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+bfOffBits
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+содержит смещение в байтах от начала структуры 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BITMAPINFOHEADER до непосредственно битов изображения
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Описание полей структуры BITMAPINFOHEADER
+\begin_inset CommandInset label
+LatexCommand label
+name "Описание полей структуры BITMAPINFOHEADER"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+После заголовка файла следует структура 
+\family typewriter
+BITMAPINFOHEADER
+\family default
+, размер которой равен 40 байт.
+ 
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Определение данной структуры приведено на следующем листинге:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+typedef struct {
+\end_layout
+
+\begin_layout Plain Layout
+
+    unsigned int   biSize;
+\end_layout
+
+\begin_layout Plain Layout
+
+    int            biWidth;
+\end_layout
+
+\begin_layout Plain Layout
+
+    int            biHeight;
+\end_layout
+
+\begin_layout Plain Layout
+
+    short int      biPlanes;
+\end_layout
+
+\begin_layout Plain Layout
+
+    short int      biBitCount;
+\end_layout
+
+\begin_layout Plain Layout
+
+    unsigned int   biCompression;
+\end_layout
+
+\begin_layout Plain Layout
+
+    unsigned int   biSizeImage;
+\end_layout
+
+\begin_layout Plain Layout
+
+    int            biXPelsPerMeter;
+\end_layout
+
+\begin_layout Plain Layout
+
+    int            biYPelsPerMeter;
+\end_layout
+
+\begin_layout Plain Layout
+
+    unsigned int   biClrUsed;
+\end_layout
+
+\begin_layout Plain Layout
+
+    unsigned int   biClrImportant;
+\end_layout
+
+\begin_layout Plain Layout
+
+} BITMAPINFOHEADER;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+В 
+\emph on
+таблице
+\emph default
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Описание-полей-структуры"
+
+\end_inset
+
+ приводится описание полей данной структуры.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="16" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Поле
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Размер, байт
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Описание
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+biSize
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Описывает размер данной структуры
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+biWidth
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Определяет ширину изображения в пикселях
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+biHeight
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Определяет высоту изображения в пикселях
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Если данное поле содержит значение больше 0, то изображение записано в порядке
+ снизу-вверх, нулевой пиксель в нижнем левом углу, иначе изображение записано
+ сверху-вниз и нулевой пиксель находится в верхнем левом углу изображения.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+biPlanes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Определяет число плоскостей, равно 1
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+biBitCount
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Определяет число пикселей на пиксель
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+biCompression
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Определяет сжатие изображения
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Если поле равно 0, то изображение несжато.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+biSizeImage
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Определяет размер изображения в байтах
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+biXPelsPerMeter
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Определяет горизонтальное разрешение 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+на метр целевого устройства
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+biYPelsPerMeter
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Определяет вертикальное разрешение 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+на метр целевого устройства
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+biClrUsed
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Определяет размер палитры.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Содержит либо 0, либо размер палитры
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+biClrImportant
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Определяет количество элементов палитры, 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+необходимых для отображения изображения
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Описание полей структуры BITMAPINFOHEADER
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Описание-полей-структуры"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Растр обычно хранится в вертикально зеркальном виде.
+ Но есть также возможность хранить растр не в вертикально зеркальном виде.
+ Признак того, что растр в BMP не в вертикально зеркальном виде задается
+ параметром biHeight.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+BITMAPV4HEADER и BITMAPV5HEADER являются расширенными версиями описанной
+ структуры.
+ Данные структуры применяются в более поздних версиях формата BMP.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Палитра может содержать последовательность четырехбайтовых полей по числу
+ доступных цветов (256 для 8-битного изображения).
+ Три младшие байта каждого поля определяют интенсивность красной, зелёной
+ и синей компоненты цвета, старший байт не используется.
+ Каждый пиксель изображения описан в таком случае одним байтом, содержащим
+ номер поля палитры, в котором сохранен цвет этого пикселя.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Если пиксель изображения описывается 16-битным числом, палитра может хранить
+ три двухбайтных значения, каждое из которых определяет маску для извлечения
+ из 16-битного пикселя красной, зелёной и синей компоненты цвета.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Файл BMP может не содержать палитры, если в нем хранится несжатое полноцветное
+ изображение.
+ 
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Структура RGBTRIPLE, описанная на следующем листинге, описывает пиксель
+ в BMP.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+typedef struct {
+\end_layout
+
+\begin_layout Plain Layout
+
+    unsigned char rgbBlue;
+\end_layout
+
+\begin_layout Plain Layout
+
+    unsigned char rgbGreen;
+\end_layout
+
+\begin_layout Plain Layout
+
+    unsigned char rgbRed;
+\end_layout
+
+\begin_layout Plain Layout
+
+} RGBTRIPLE;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Каждый пиксель в формате BMP описывается данной структуре.
+ Поля данной структуры представляют собой целые числа в диапазоне от 0 до
+ 255.
+ Данная структура используется для хранения данных в BMP с глубиной цвета
+ 24 бита, причем, как следует из структуры, цвета хранятся в отдельном порядке
+ BGR (Blue, Green, Red).
+ Пиксели хранятся построчно, снизу вверх.
+ Каждая строка изображения дополняется нулями до длины, кратной четырем
+ байтам.
+\end_layout
+
+\begin_layout Subsection
+Разработка алгоритма фильтрации изображения в SciDB
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Изображение в формате BMP можно представить как матричный набор данных.
+ Но непосредственная загрузка бинарных данных в SciDB не будет эффективна,
+ т.к.
+ каждый файл в формате BMP содержит дополнительно структуры 
+\family typewriter
+BITMAPINFOHEADER
+\family default
+ и 
+\family typewriter
+BITMAPFILEHEADER
+\family default
+.
+ Поэтому требуется разработать механизм загрузки данных изображения в базу
+ данных непосредственно данных пикселей и разработать алгоритм фильтрации
+ изображения.
+ 
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+На 
+\emph on
+рисунке
+\emph default
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Блок-схема-алгоритма-фильтрации"
+
+\end_inset
+
+ приведена блок-схема алгоритма фильтрации изображения.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Из входного размытого изображения в формате BMP выделяются данные пикселей
+ с помощью конвертера 
+\family typewriter
+BMPtoTXT
+\family default
+.
+ Далее эти данные преобразуются к формату 
+\family typewriter
+scidb
+\family default
+.
+ Преобразованные данные загружаются в SciDB в одномерные массивы.
+ Оператор 
+\family typewriter
+redimension_store
+\family default
+ конвертирует одномерные массивы в двумерные.
+ Таким образом становится возможна выполнять запросы на матрицах.
+ Каждая из созданных двумерных матриц обрабатывается матрицей с весовыми
+ коэффициентами 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Матричные фильтры"
+
+\end_inset
+
+, данные сохраняются в TXT-файлы, а потом конвертером 
+\family typewriter
+TXTtoBMP
+\family default
+ происходит конвертация в формат BMP.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/Блок-схема.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Блок-схема-алгоритма-фильтрации"
+
+\end_inset
+
+Блок-схема алгоритма фильтрации изображения
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Разработка-программного-средства"
+
+\end_inset
+
+Разработка конвертера BMP в TXT
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Для реализации возможности фильтрации данных изображения с помощью SciDB
+ реализована программа BMPtoTXT на языке C++, позволяющая извлекать данные
+ изображения из входного файла.
+ Код данной программы приведен в пункте 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Реализация-механизма-получения"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Программа требует переданных в качестве параметров входной строки пути до
+ BMP-файла, из которого будут прочтены данные пикселей из соответствующей
+ структуры.
+ 
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Директивами 
+\family typewriter
+#include 
+\family default
+подключается стандартный класс ввода/вывода C++ 
+\family typewriter
+iostream
+\family default
+, стандартный класс чтения/записи из/в файл 
+\family typewriter
+fstream
+\family default
+, класс для работы со строками 
+\family typewriter
+string
+\family default
+ библиотеки 
+\family typewriter
+std
+\family default
+ и файл 
+\family typewriter
+structure.h
+\family default
+, в котором описаны структуры BMP-файла.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+В фукнции 
+\family typewriter
+main() 
+\family default
+создается объект потока 
+\family typewriter
+input_stream
+\family default
+, с помощью которого считывается содержимое файла в программу для дальнейшей
+ обработки.
+ Далее с помощью метода 
+\family typewriter
+open()
+\family default
+ открываем файл в бинарном режиме чтения, передав этой функции флаг 
+\family typewriter
+ios::binary
+\family default
+.
+ В случае успешного открытия вызывается функция 
+\family typewriter
+ConvertToText()
+\family default
+ с переменой потока 
+\family typewriter
+input_stream
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+В начале функции объявляются переменные структур 
+\family typewriter
+BITMAPFILEHEADER file_header
+\family default
+ и 
+\family typewriter
+BITMAPINFOHEADER
+\family default
+ 
+\family typewriter
+info_header
+\family default
+, с помощью функции 
+\family typewriter
+read() 
+\family default
+класса 
+\family typewriter
+fstream 
+\family default
+в переменные этих структур записываются данные из входного изображения.
+ 
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Полученные данные о величине изображения (ширина 
+\family typewriter
+biWidth 
+\family default
+и высота 
+\family typewriter
+biHeight
+\family default
+) используются в инициализации динамического массива типа 
+\family typewriter
+RGBTRIPLE
+\family default
+.
+ Каждый элемент данного массива описывает пиксель входного изображения.
+ Двойным циклом осуществляется проход по всем пикселям выражения.
+ С помощью функции 
+\family typewriter
+read() 
+\family default
+считываются поля структуры 
+\family typewriter
+RGBTRIPLE 
+\family default
+в переменную структуры.
+ Далее вычисляется переменная, отвечающая за количество байтов в строке,
+ дополненных до числа, кратным четырем.
+ В случае, если это число не нулевое, осуществляется пропуск этих байтов
+ методом 
+\family typewriter
+get()
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Массив с цветовыми кодами передается в функцию 
+\family typewriter
+WriteRGBToFile()
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+В функции инициализируется массив из строк 
+\family typewriter
+color_path
+\family default
+, элементам которого присваиваются названия файлов (
+\family typewriter
+blue_color.txt
+\family default
+, 
+\family typewriter
+green_color.txt
+\family default
+, 
+\family typewriter
+red_color.txt
+\family default
+).
+ Создается массив потоков, в каждый элемент которого записывается соответствующа
+я информация поля структуры (в первый поток --- синий цвет, во второй ---
+ зеленый, в третий --- красный).
+ В случае, если хотя бы один поток не был открыт, то выводится сообщение
+ об ошибке и программа завершает свою работу.
+ После записи в потоки информации, в цикле закрывается эти потоки, а созданный
+ в динамической памяти массив потоков удаляется.
+ Выводится сообщение, информирующее пользователя об успешном считывании
+ информации о цветах входного изображения и указываются файлы, в которые
+ эта информация была записана.
+ 
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Компиляция приложения выполняется с помощью следующей команды:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ g++ -o BMPtoTXT BMPtoTXT.cpp
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+запуск приложения из каталога с исполняемым файлом:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ ./BMPtoTXT /полный_путь_до_bmp/file.bmp
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Пример выходных данных приведен на 
+\emph on
+рисунке 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Текстовый-файл-BMP"
+
+\end_inset
+
+
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing single
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename files/blue_color.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Текстовый-файл-BMP"
+
+\end_inset
+
+Текстовый файл BMP с числовыми значениями пикселей поля 
+\family typewriter
+rgbBlue
+\family default
+ структуры 
+\family typewriter
+RGBTRIPLE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Аналогично можно разработать конвертеры из других форматов изображения в
+ текстовый.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+С помощью разработанного приложения предоставляется возможность выделять
+ значения цветов для их дальнейшей обработке иными средствами.
+ 
+\end_layout
+
+\begin_layout Subsection
+Разработка конвертера из данных TXT, содержащих значения пикселей в BMP
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Возможность записи BMP-изображения по числовым значениям цветов палитры
+ RGB, хранящихся в текстовых файлах, реализована в программе TXTtoBMP на
+ языке C++, программный код которой приведен в пункте 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Реализация-механизма-записи"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Программа требует передачи 3 аргумента командной строки: полный путь до
+ директории с хранимыми в TXT данными, длину и ширину изображения.
+ 
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Аналогично программе BMPtoTXT, директивами 
+\family typewriter
+#include 
+\family default
+подключаются стандартные классы ввода/вывода 
+\family typewriter
+iostream
+\family default
+, чтения/записи из/в файл 
+\family typewriter
+fstream
+\family default
+, 
+\family typewriter
+string 
+\family default
+для работы с высокоуровневыми строками библиотеки 
+\family typewriter
+std
+\family default
+, файл 
+\family typewriter
+structure.h 
+\family default
+с объявлением структур BMP, а также С-библиотека 
+\family typewriter
+cstdlib
+\family default
+, которая содержит объявления функций для работы с C-строками.
+ 
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+При правильном передаче аргументов в командную строку осуществляется преобразова
+ние их к нужными типам, после чего они передаются в функцию 
+\family typewriter
+ConvertToBMP()
+\family default
+.
+ Данная функция реализует основные действия по записи данных в формат BMP.
+ 
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+В функции производится проверка на правильность ввода пути, который был
+ передан в программу в качестве аргумента командной строки.
+ После чего формируется массив строк, содержащий пути до TXT-файлов с данными
+ цветов пикселей.
+ Объявляются переменные структур 
+\family typewriter
+BITMAPFILEHEADER 
+\family default
+и 
+\family typewriter
+BITMAPINFOHEADER
+\family default
+, инициализируются значениями согласно описанию формата BMP, а поля 
+\family typewriter
+biWidth 
+\family default
+и 
+\family typewriter
+biHeight 
+\family default
+инициализируются значениями, переданными в командной строке при запуске
+ программы.
+ После чего создается динамический массив типа 
+\family typewriter
+RGBTRIPLE
+\family default
+.
+ Он передается в функцию 
+\family typewriter
+LoadDataToRGB
+\family default
+, в которую кроме этого массива передается его длина и ширина, а также массив
+ строк, содержащий пути до TXT-файлов.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Функция 
+\family typewriter
+LoadDataToRGB 
+\family default
+создает массив потоков, которые в цикле открывает.
+ В случае ошибки программа прекращает работу.
+ Далее в цикле по всем потокам и по всем индексам массива выполняется проход,
+ в ходе которого во временную переменную 
+\family typewriter
+buffer 
+\family default
+считывается значение с потока, а потом присваивается элементу массива соответств
+ующего поля структуры 
+\family typewriter
+RGBTRIPLE 
+\family default
+(1 поток соответствует синему цвету, 2 --- зеленому, 3 --- красному).
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+После загрузки данных о пикселях из файлов выполняется открытие файла 
+\family typewriter
+output.bmp 
+\family default
+с помощью функции 
+\family typewriter
+open() 
+\family default
+класса 
+\family typewriter
+ofstream
+\family default
+.
+ Этой функции передается значение флагов 
+\family typewriter
+ios::out
+\family default
+, обозначающий открытие на запись, и 
+\family typewriter
+ios::binary
+\family default
+, обозначающий открытие в бинарном режиме.
+ В случае успешного открытие этого файла, записываются структуры 
+\family typewriter
+BITMAPFILEHEADER
+\family default
+ и 
+\family typewriter
+BITMAPINFOHEADER 
+\family default
+с помощью функции 
+\family typewriter
+write()
+\family default
+, в которую передается адрес записываемой структуры и размер структуры.
+ Далее вычисляется число выравнивающих байтов, необходимых для записи в
+ каждую строку BMP-файла.
+ 
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+В цикле записывается каждый пиксель аналогично предыдущим структурам.
+ В конце каждой строки записываются выравнивающие байты, если они требуются.
+ 
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+После записи всех структур удаляется динамический массив структур 
+\family typewriter
+RGBTRIPLE 
+\family default
+и выводится сообщение об успешном выполнении записи BMP в файл.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Компиляция приложения выполняется с помощью следующей команды:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ g++ -o TXTtoBMP TXTtoBMP.cpp
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Запуск приложения осуществляется с помощью команды:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ ./TXTtoBMP /путь_до_папки_с_txt_файлами/ <длина_изображения> <ширина_изображени
+я>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+В результате изображения в каталоге должен создаться файл 
+\family typewriter
+output.bmp
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Разработанное приложение позволяет записать по данным пикселей в текстовом
+ формате само изображение, при этом не используя специфических средств для
+ нее.
+ 
+\end_layout
+
+\begin_layout Subsection
+Приложения
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Реализация-механизма-получения"
+
+\end_inset
+
+Реализация конвертера BMP в TXT.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},numbers=left"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+#include <iostream>
+\end_layout
+
+\begin_layout Plain Layout
+
+#include <fstream>
+\end_layout
+
+\begin_layout Plain Layout
+
+#include <string>
+\end_layout
+
+\begin_layout Plain Layout
+
+#include "structure.h"
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+using namespace std;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+void WriteRGBToFile (RGBTRIPLE **rgb, int width, int height) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  const int PATH_COUNT = 3;
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\end_layout
+
+\begin_layout Plain Layout
+
+  string color_path[3];
+\end_layout
+
+\begin_layout Plain Layout
+
+  color_path[0] = "blue_color.txt";
+\end_layout
+
+\begin_layout Plain Layout
+
+  color_path[1] = "green_color.txt";
+\end_layout
+
+\begin_layout Plain Layout
+
+  color_path[2] = "red_color.txt";
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\end_layout
+
+\begin_layout Plain Layout
+
+  ofstream output[3];
+\end_layout
+
+\begin_layout Plain Layout
+
+  for (int i=0; i<PATH_COUNT; i++) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    output[i].open(color_path[i].data());
+\end_layout
+
+\begin_layout Plain Layout
+
+    if (0 == output[i]) {
+\end_layout
+
+\begin_layout Plain Layout
+
+      cout << "Не удалось открыть файл на запись " << color_path[i] << endl;
+\end_layout
+
+\begin_layout Plain Layout
+
+      return;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+  for (int i=0; i<PATH_COUNT; i++)
+\end_layout
+
+\begin_layout Plain Layout
+
+    for (int j=0; j<width; j++) {
+\end_layout
+
+\begin_layout Plain Layout
+
+      for (int k=0; k<height; k++) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	switch(i) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	  case 0: {
+\end_layout
+
+\begin_layout Plain Layout
+
+	    if (k != height-1)
+\end_layout
+
+\begin_layout Plain Layout
+
+	      output[i] << (int) rgb[j][k].rgbBlue << ",";
+\end_layout
+
+\begin_layout Plain Layout
+
+	    else
+\end_layout
+
+\begin_layout Plain Layout
+
+	      output[i] << (int) rgb[j][k].rgbBlue << " ";
+\end_layout
+
+\begin_layout Plain Layout
+
+	    break;
+\end_layout
+
+\begin_layout Plain Layout
+
+	  }
+\end_layout
+
+\begin_layout Plain Layout
+
+	  case 1: {
+\end_layout
+
+\begin_layout Plain Layout
+
+	    if (k != height-1)
+\end_layout
+
+\begin_layout Plain Layout
+
+	      output[i] << (int) rgb[j][k].rgbGreen << ",";
+\end_layout
+
+\begin_layout Plain Layout
+
+	    else
+\end_layout
+
+\begin_layout Plain Layout
+
+	      output[i] << (int) rgb[j][k].rgbGreen << " ";
+\end_layout
+
+\begin_layout Plain Layout
+
+	    break;
+\end_layout
+
+\begin_layout Plain Layout
+
+	  }
+\end_layout
+
+\begin_layout Plain Layout
+
+	  case 2: {
+\end_layout
+
+\begin_layout Plain Layout
+
+	    if (k != height-1)
+\end_layout
+
+\begin_layout Plain Layout
+
+	      output[i] << (int) rgb[j][k].rgbRed << ",";
+\end_layout
+
+\begin_layout Plain Layout
+
+	    else 
+\end_layout
+
+\begin_layout Plain Layout
+
+	      output[i] << (int) rgb[j][k].rgbRed << " ";
+\end_layout
+
+\begin_layout Plain Layout
+
+	    break;
+\end_layout
+
+\begin_layout Plain Layout
+
+	  }
+\end_layout
+
+\begin_layout Plain Layout
+
+       }
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    output[i] << endl;
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+  cout << endl << "Значения пикселей сохранены в файлы: " << endl;
+\end_layout
+
+\begin_layout Plain Layout
+
+  for (int i=0; i<PATH_COUNT; i++)
+\end_layout
+
+\begin_layout Plain Layout
+
+    cout << color_path[i] << endl;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+void ConvertToText(ifstream &input) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    BITMAPFILEHEADER file_header;
+\end_layout
+
+\begin_layout Plain Layout
+
+    BITMAPINFOHEADER info_header;
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\end_layout
+
+\begin_layout Plain Layout
+
+    input.read((char*) &file_header, sizeof(file_header));
+\end_layout
+
+\begin_layout Plain Layout
+
+    input.read((char*) &info_header, sizeof(info_header));
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+    RGBTRIPLE **rgb = new RGBTRIPLE* [info_header.biWidth];
+\end_layout
+
+\begin_layout Plain Layout
+
+    for (int i=0; i<info_header.biWidth; i++)
+\end_layout
+
+\begin_layout Plain Layout
+
+      rgb[i] = new RGBTRIPLE [info_header.biHeight];
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    int padding = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+    if ((info_header.biWidth * sizeof(RGBTRIPLE)) % 4) 
+\end_layout
+
+\begin_layout Plain Layout
+
+        padding = 4 - (info_header.biWidth * sizeof(RGBTRIPLE)) % 4;
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    for (int i = 0; i < info_header.biWidth; i++) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        for (int j = 0; j < info_header.biHeight; j++) { 
+\end_layout
+
+\begin_layout Plain Layout
+
+	    input.read((char*) &rgb[i][j], sizeof(rgb[i][j]));
+\end_layout
+
+\begin_layout Plain Layout
+
+        }
+\end_layout
+
+\begin_layout Plain Layout
+
+        // пропускаем последний байт в строке
+\end_layout
+
+\begin_layout Plain Layout
+
+        if (0 != padding)
+\end_layout
+
+\begin_layout Plain Layout
+
+          input.get();
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    WriteRGBToFile(rgb, info_header.biWidth, info_header.biHeight);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    for (int i=0; i<info_header.biWidth; i++)
+\end_layout
+
+\begin_layout Plain Layout
+
+      delete[] rgb[i];
+\end_layout
+
+\begin_layout Plain Layout
+
+    delete[] rgb;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+int main(int argc, char* argv[]) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  ifstream input;
+\end_layout
+
+\begin_layout Plain Layout
+
+  if (argc < 2) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    cout << "Ошибка: Мало аргументов в командной строке" << endl;
+\end_layout
+
+\begin_layout Plain Layout
+
+    cout << "Использование: ./BMPToText <file>" << endl;
+\end_layout
+
+\begin_layout Plain Layout
+
+    return 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+  } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+    input.open(argv[1], ios::in | ios::binary);
+\end_layout
+
+\begin_layout Plain Layout
+
+    if (0 == input) {
+\end_layout
+
+\begin_layout Plain Layout
+
+      cout << "Ошибка: входной файл не был открыт" << endl;
+\end_layout
+
+\begin_layout Plain Layout
+
+      return 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    cout << "Выделяем значения пикселей изображения" << endl;
+\end_layout
+
+\begin_layout Plain Layout
+
+    ConvertToText(input);
+\end_layout
+
+\begin_layout Plain Layout
+
+    input.close();
+\end_layout
+
+\begin_layout Plain Layout
+
+    return 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Реализация-механизма-записи"
+
+\end_inset
+
+Реализация конвертера TXT с значениями пикселей в BMP
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},numbers=left"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+#include <iostream>
+\end_layout
+
+\begin_layout Plain Layout
+
+#include <fstream>
+\end_layout
+
+\begin_layout Plain Layout
+
+#include <string>
+\end_layout
+
+\begin_layout Plain Layout
+
+#include <stdlib.h>
+\end_layout
+
+\begin_layout Plain Layout
+
+#include "structure.h"
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+using namespace std;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+void LoadDataToRGB (string color_path[3], RGBTRIPLE **rgb, int width, int
+ height) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  const int PATH_COUNT = 3;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  ifstream input_stream[3];
+\end_layout
+
+\begin_layout Plain Layout
+
+  for (int i=0; i<PATH_COUNT; i++) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    input_stream[i].open(color_path[i].data());
+\end_layout
+
+\begin_layout Plain Layout
+
+    if (0 == input_stream[i]) {
+\end_layout
+
+\begin_layout Plain Layout
+
+      cout << "Невозможно открыть на чтение " << color_path[i] << endl;
+\end_layout
+
+\begin_layout Plain Layout
+
+      return;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+  for (int i=0; i<PATH_COUNT; i++) 
+\end_layout
+
+\begin_layout Plain Layout
+
+    for (int j=0; j<width; j++) 
+\end_layout
+
+\begin_layout Plain Layout
+
+      for (int k=0; k<height; k++) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	    switch(i) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	       int buffer;
+\end_layout
+
+\begin_layout Plain Layout
+
+	   	case 0: {
+\end_layout
+
+\begin_layout Plain Layout
+
+		     input_stream[i] >> buffer;
+\end_layout
+
+\begin_layout Plain Layout
+
+		     rgb[j][k].rgbBlue = (unsigned char) buffer;
+\end_layout
+
+\begin_layout Plain Layout
+
+		     break;
+\end_layout
+
+\begin_layout Plain Layout
+
+	        }
+\end_layout
+
+\begin_layout Plain Layout
+
+		    case 1: {
+\end_layout
+
+\begin_layout Plain Layout
+
+		      input_stream[i] >> buffer;
+\end_layout
+
+\begin_layout Plain Layout
+
+              rgb[j][k].rgbGreen = (unsigned char) buffer;
+\end_layout
+
+\begin_layout Plain Layout
+
+		      break;
+\end_layout
+
+\begin_layout Plain Layout
+
+		    }
+\end_layout
+
+\begin_layout Plain Layout
+
+		    case 2: {
+\end_layout
+
+\begin_layout Plain Layout
+
+		      input_stream[i] >> buffer;
+\end_layout
+
+\begin_layout Plain Layout
+
+		      rgb[j][k].rgbRed = (unsigned char) buffer;
+\end_layout
+
+\begin_layout Plain Layout
+
+		      break;
+\end_layout
+
+\begin_layout Plain Layout
+
+		    }
+\end_layout
+
+\begin_layout Plain Layout
+
+	    }
+\end_layout
+
+\begin_layout Plain Layout
+
+   }
+\end_layout
+
+\begin_layout Plain Layout
+
+   for (int i=0; i< PATH_COUNT; i++)
+\end_layout
+
+\begin_layout Plain Layout
+
+     input_stream[i].close();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+void ConvertToBMP (string &path, int width, int height) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  if (path[path.length()-1] != '/')
+\end_layout
+
+\begin_layout Plain Layout
+
+    path += '/';
+\end_layout
+
+\begin_layout Plain Layout
+
+   
+\end_layout
+
+\begin_layout Plain Layout
+
+  string color_path[3];
+\end_layout
+
+\begin_layout Plain Layout
+
+  color_path[0] = path + "blue_color.txt";
+\end_layout
+
+\begin_layout Plain Layout
+
+  color_path[1] = path + "green_color.txt";
+\end_layout
+
+\begin_layout Plain Layout
+
+  color_path[2] = path + "red_color.txt";
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+  BITMAPFILEHEADER file_header;
+\end_layout
+
+\begin_layout Plain Layout
+
+  BITMAPINFOHEADER info_header;
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\end_layout
+
+\begin_layout Plain Layout
+
+  file_header.bfType = 19778;
+\end_layout
+
+\begin_layout Plain Layout
+
+  file_header.bfOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
+\end_layout
+
+\begin_layout Plain Layout
+
+  file_header.bfSize = file_header.bfOffBits + sizeof(RGBTRIPLE) * width *
+ height + height * (width % 4);
+\end_layout
+
+\begin_layout Plain Layout
+
+  file_header.bfReserved1 = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+  file_header.bfReserved2 = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\end_layout
+
+\begin_layout Plain Layout
+
+  info_header.biSize = sizeof(BITMAPINFOHEADER);
+\end_layout
+
+\begin_layout Plain Layout
+
+  info_header.biWidth = width;
+\end_layout
+
+\begin_layout Plain Layout
+
+  info_header.biHeight = height;
+\end_layout
+
+\begin_layout Plain Layout
+
+  info_header.biPlanes = 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+  info_header.biBitCount = 24;
+\end_layout
+
+\begin_layout Plain Layout
+
+  info_header.biCompression = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+  info_header.biSizeImage = sizeof(RGBTRIPLE) * width * height + height *
+ (width % 4);
+\end_layout
+
+\begin_layout Plain Layout
+
+  info_header.biXPelsPerMeter = 3780;
+\end_layout
+
+\begin_layout Plain Layout
+
+  info_header.biYPelsPerMeter = 3780;
+\end_layout
+
+\begin_layout Plain Layout
+
+  info_header.biClrUsed = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+  info_header.biClrImportant = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\end_layout
+
+\begin_layout Plain Layout
+
+  RGBTRIPLE **rgb = new RGBTRIPLE* [info_header.biWidth];
+\end_layout
+
+\begin_layout Plain Layout
+
+  for (int i=0; i<info_header.biWidth; i++)
+\end_layout
+
+\begin_layout Plain Layout
+
+    rgb[i] = new RGBTRIPLE [info_header.biHeight];
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\end_layout
+
+\begin_layout Plain Layout
+
+  LoadDataToRGB(color_path, rgb, info_header.biWidth, info_header.biHeight);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  ofstream output;
+\end_layout
+
+\begin_layout Plain Layout
+
+  output.open("output.bmp", ios::out | ios::binary);
+\end_layout
+
+\begin_layout Plain Layout
+
+  if (0 == output) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    cout << "Невозможно открыть файл output.bmp на запись" << endl;
+\end_layout
+
+\begin_layout Plain Layout
+
+    return;
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\end_layout
+
+\begin_layout Plain Layout
+
+  output.write((char *) &file_header, sizeof(file_header));
+\end_layout
+
+\begin_layout Plain Layout
+
+  output.write((char *) &info_header, sizeof(info_header));
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\end_layout
+
+\begin_layout Plain Layout
+
+  unsigned char padding = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+  if ((info_header.biWidth * sizeof(RGBTRIPLE)) % 4) 
+\end_layout
+
+\begin_layout Plain Layout
+
+    padding = 4 - (info_header.biWidth * sizeof(RGBTRIPLE)) % 4;
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\end_layout
+
+\begin_layout Plain Layout
+
+  for (int i=0; i<info_header.biWidth; i++) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    for (int j=0; j<info_header.biHeight; j++) {
+\end_layout
+
+\begin_layout Plain Layout
+
+      output.write((char*) &rgb[i][j], sizeof(rgb[i][j]));
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    if (0 != padding)
+\end_layout
+
+\begin_layout Plain Layout
+
+      output << padding; 
+\end_layout
+
+\begin_layout Plain Layout
+
+  } 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\end_layout
+
+\begin_layout Plain Layout
+
+  for (int i=0; i<info_header.biWidth; i++)
+\end_layout
+
+\begin_layout Plain Layout
+
+    delete[] rgb[i];
+\end_layout
+
+\begin_layout Plain Layout
+
+  delete[] rgb;
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\end_layout
+
+\begin_layout Plain Layout
+
+  cout << endl << "Конвертация завершена в файл output.bmp " << endl; 
+\end_layout
+
+\begin_layout Plain Layout
+
+  output.close();
+\end_layout
+
+\begin_layout Plain Layout
+
+} 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+int main(int argc, char* argv[]) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  if (argc < 4) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    cout << "ERROR: Мало аргументов в командной строке" << endl;
+\end_layout
+
+\begin_layout Plain Layout
+
+    cout << "Использование: ./TextToBMP <путь_до_rgb_txt> <длина> <ширина>"
+ << endl;
+\end_layout
+
+\begin_layout Plain Layout
+
+    exit(1);
+\end_layout
+
+\begin_layout Plain Layout
+
+  } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+    cout << "Конвертируем в BMP" << endl;
+\end_layout
+
+\begin_layout Plain Layout
+
+    string path = argv[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+    int width = atoi(argv[2]);
+\end_layout
+
+\begin_layout Plain Layout
+
+    int height = atoi(argv[3]);
+\end_layout
+
+\begin_layout Plain Layout
+
+    ConvertToBMP(path, width, height);
+\end_layout
+
+\begin_layout Plain Layout
+
+    return 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+  } 
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Развертывание кластера SciDB
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Для реализации алгоритма фильтрации изображения требуется развернуть кластер
+ из 3 рабочих и 1 управляющего сервера на Red Hat Enterprise Linux 6.3.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+На 
+\emph on
+рисунке 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Схема"
+
+\end_inset
+
+ 
+\emph default
+изображена схема разворачиваемого кластера.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/Схема.png
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Схема"
+
+\end_inset
+
+Схема разворачиваемого кластера
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Установка дистрибутива SciDB на операционную систему Linux
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+SciDB использует СУБД PostgreSQL 8.4 для хранения метаинформации о массивах
+ SciDB.
+ Подключение к базе данных SciDB осуществляется по протоколу SSH.
+\end_layout
+
+\begin_layout Enumerate
+Создадим ssh-ключ для пользователя СУБД.
+ По умолчанию, ключ создается в по следующим путям: 
+\family typewriter
+~/.ssh/id_rsa.pub
+\family default
+ и 
+\family typewriter
+~/.ssh/id_rsa
+\family default
+.
+ По желанию пользователя имя ключа может быть изменено, в таком случае требуется
+ отредактировать конфигурационный файл SciDB для использования в 
+\family typewriter
+scidb.py
+\family default
+.
+ 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ ssh-keygen
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Скопируем созданный ssh-ключ на управляющий сервер:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ssh-copy-id -i ~/.ssh/id_rsa.pub scidb@localhost
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Скопируем созданный ssh-ключ на каждый из рабочих серверов:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ssh-copy-id -i ~./ssh/id_rsa.pub scidb@worker
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Подключаем репозиторий СУБД SciDB.
+ Для этого создаем 
+\family typewriter
+repo
+\family default
+-файл со следующим содержанием в каталоге 
+\family typewriter
+/etc/yum.repos.d/scidb.repo
+\family default
+:
+\family typewriter
+ 
+\family default
+
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+[scidb]
+\end_layout
+
+\begin_layout Plain Layout
+
+name=SciDB
+\end_layout
+
+\begin_layout Plain Layout
+
+baseurl=http://downloads.paradigm4.com/yum/centos6.3/13.3.0/
+\end_layout
+
+\begin_layout Plain Layout
+
+gpgcheck=0
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Очищаем список пакетов менеджера 
+\family typewriter
+yum 
+\family default
+командой:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# yum clean all
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Обновляем список пакетов из репозитория:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# yum repolist
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Устанавливаем пакеты СУБД Postgresql и SciDB.
+ В репозитории 
+\family typewriter
+scidb
+\family default
+ содержатся пакеты 
+\family typewriter
+scidb-coord 
+\family default
+и 
+\family typewriter
+scidb-coord-all
+\family default
+.
+ Друг от друга они отличаются тем, что со вторым пакетом поставляется полный
+ дистрибутив СУБД PostgreSQL.
+ Пакет 
+\family typewriter
+scidb-coord 
+\family default
+необходимо установить на рабочий сервер, пакет 
+\family typewriter
+scidb-coord-all 
+\family default
+ставится на управляющий сервер.
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# yum install scidb-all-coord 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+В случае возможных проблем с библиотекой 
+\family typewriter
+boost 
+\family default
+воспользуемся следующей командой.
+ Данная команда ищет в списке пакетов все пакеты библиотеки 
+\family typewriter
+boost
+\family default
+ и удаляет их.
+ 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# rpm -qa | grep boost | xargs yum remove -y
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Subsubsection
+Настройка системного каталога PostgreSQL
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+SciDB использует системный каталог PostgreSQL.
+ Рассмотрим, как настроить PostgreSQL для использования SciDB.
+\end_layout
+
+\begin_layout Standard
+Отметим следующее:
+\end_layout
+
+\begin_layout Itemize
+Настоятельно рекомендуется использовать СУБД PostgreSQL только для SciDB;
+\end_layout
+
+\begin_layout Itemize
+Администрирование и настройка PostgreSQL должно быть выполнена от суперпользоват
+еля 
+\family typewriter
+root 
+\family default
+или любым другим с аналогичными административными правами;
+\end_layout
+
+\begin_layout Itemize
+PostgreSQL должна быть установлена только на управляющем сервере.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+По умолчанию PostgreSQL разрешено подключение только с локальной машины.
+ В случае работы по сети, требуется настроить PostgreSQL для удаленного
+ подключения.
+ Чтобы это сделать, требуется выполнить следующие шаги:
+\end_layout
+
+\begin_layout Enumerate
+Если PostgreSQL никогда не был запущен на системе, то требуется проинициализиров
+ать кластер базы данных
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ sudo service postgresql-8.4 initdb
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Создаем пользователя PostgreSQL согласно документации.
+\end_layout
+
+\begin_layout Enumerate
+Настроим метод аутентификации для локальных и удаленных подключений.
+ Для этого отредактируем конфигурационный файл 
+\family typewriter
+/var/lib/pgsql/8.4/data/pg_hba.conf
+\family default
+.
+ IP-адрес 
+\family typewriter
+192.168.100.1 
+\family default
+--- адрес подсети, на которой находятся рабочие сервера SciDB.
+ 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+local	 all	all			        trust
+\end_layout
+
+\begin_layout Plain Layout
+
+host	 all	all	192.168.100.1/8		trust 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Добавим в межсетевой экран 
+\family typewriter
+iptables
+\family default
+ правило, которое позволит подключаться удаленно через порт 5432 в PostgreSQL
+ по протоколу TCP/IP:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# vi /etc/sysconfig/iptables
+\end_layout
+
+\end_inset
+
+Добавляем само правило:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 5432 -j ACCEPT
+\end_layout
+
+\end_inset
+
+Кроме того, требуется добавить правило в 
+\family typewriter
+iptables
+\family default
+, разрешающее подключиться в SciDB по порту 1239.
+\end_layout
+
+\begin_layout Enumerate
+Перезапускаем межсетевой экран: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# service iptables restart
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\paragraph_spacing single
+Установим IP-адреса, с которых можно подключиться в PostgreSQL.
+ Для этого требуется отредактировать файл 
+\family typewriter
+/var/lib/pgsql/8.4/data/postgresql.conf
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# - Connection Settings -
+\end_layout
+
+\begin_layout Plain Layout
+
+listen_addresses = '*'
+\end_layout
+
+\begin_layout Plain Layout
+
+port = 5432
+\end_layout
+
+\end_inset
+
+Во второй строке устанавливаем возможность подключения с любым IP-адресом,
+ в третьей строке устанавливаем порт подключения 5432.
+\end_layout
+
+\begin_layout Enumerate
+\paragraph_spacing single
+Для сохранения всех изменений требуется перезапуск PostgreSQL:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ sudo /etc/init.d/postgresql-8.4 restart
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\paragraph_spacing single
+Добавляем PostgreSQL в список системных служб, что, таким образом, позволит
+ PostgreSQL запускаться автоматически при запуске системы:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ sudo /sbin/chkconfig --add postgresql-8.4
+\end_layout
+
+\end_inset
+
+ Узнать состояние PostgreSQL можно командой:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ service postgresql-8.4 status
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Subsubsection
+Установка переменных окружения
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Установим переменные окружения для координационного сервера.
+ Для этого требуется последовательно запустить следующие команды от пользователя
+ SciDB:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ export SCIDB_VER=13.3
+\end_layout
+
+\begin_layout Plain Layout
+
+$ export PATH=/opt/scidb/$SCIDB_VER/bin:/opt/scidb/$SCIDB_VER/share/scidb:$PATH
+\end_layout
+
+\begin_layout Plain Layout
+
+$ export LD_LIBRARY_PATH=/opt/scidb/$SCIDB_VER/lib:$LD_LIBRARY_PATH 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Настройка SciDB
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Конфигурационный файл SciDB находится по адресу 
+\family typewriter
+/opt/scidb/13.3/etc/config.ini
+\family default
+.
+ Пример конфигурационного файла, описывающий кластер базы данных из 1 управляюще
+го сервера и 3 рабочих приведен на следующем листинге:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+[testdb]
+\end_layout
+
+\begin_layout Plain Layout
+
+server-0=192.168.100.2,0
+\end_layout
+
+\begin_layout Plain Layout
+
+server-1=192.168.100.3,1
+\end_layout
+
+\begin_layout Plain Layout
+
+server-2=192.168.100.4,1
+\end_layout
+
+\begin_layout Plain Layout
+
+server-3=192.168.100.5,1
+\end_layout
+
+\begin_layout Plain Layout
+
+db_user=123456
+\end_layout
+
+\begin_layout Plain Layout
+
+db_passwd=123456
+\end_layout
+
+\begin_layout Plain Layout
+
+install_root=/opt/scidb/13.3
+\end_layout
+
+\begin_layout Plain Layout
+
+metadata=/opt/scidb/13.3/share/scidb/meta.sql
+\end_layout
+
+\begin_layout Plain Layout
+
+pluginsdir=/opt/scidb/13.3/lib/scidb/plugins
+\end_layout
+
+\begin_layout Plain Layout
+
+logconf=/opt/scidb/13.3/share/scidb/log4cxx.properties
+\end_layout
+
+\begin_layout Plain Layout
+
+base-path=/home/scidb/data
+\end_layout
+
+\begin_layout Plain Layout
+
+base-port=1239
+\end_layout
+
+\begin_layout Plain Layout
+
+interface=eth0
+\end_layout
+
+\begin_layout Plain Layout
+
+network-buffer=1024
+\end_layout
+
+\begin_layout Plain Layout
+
+mem-array-threshold=1024
+\end_layout
+
+\begin_layout Plain Layout
+
+smgr-cache-size=1024
+\end_layout
+
+\begin_layout Plain Layout
+
+execution-threads=16
+\end_layout
+
+\begin_layout Plain Layout
+
+result-prefetch-queue-size=4
+\end_layout
+
+\begin_layout Plain Layout
+
+result-prefetch-threads=4
+\end_layout
+
+\begin_layout Plain Layout
+
+chunk-segment-size=100485760
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+В данном случае был описан кластер, состоящий из управляющего сервера и
+ трех рабочих серверах, расположенных на разных машинах.
+ 
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Ниже, в 
+\emph on
+таблице 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Описание-стандартных-параметров"
+
+\end_inset
+
+ 
+\emph default
+приводится описание стандартных параметров настройки SciDB.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="9" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="4cm">
+<column alignment="center" valignment="top" width="12cm">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Ключ
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Значение
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+[Cluster name]
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Название кластера SciDB.
+ Имя кластера должно содержаться в заголовке конфигурационного файла.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+server-N,w
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Имя хоста или IP-адрес сервера N, где N=0,1,2,...
+ и следуемое за запятой количество экземпляров работающего сервера.
+ Сервер-координатор всегда должен иметь имя 
+\family typewriter
+server-0 
+\family default
+и должен запускать по крайней мере 1 экземпляр.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+db_user
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Имя пользователя, используемое для подключения.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+db_passwd
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Пароль, используемый для подключения к базе данных.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+install_root
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Полный путь до директории SciDB.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+metadata
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Полный путь до файла метаданных SciDB.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+pluginsdir
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Полный путь до папки плагинов, содержащей все плагины сервера.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+logconf
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Полный путь до 
+\family typewriter
+log4xx
+\family default
+ конфигурационного файла 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Описание-стандартных-параметров"
+
+\end_inset
+
+Описание стандартных параметров настройки SciDB
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Операции с кластером базы данных
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Все операции с базой данных, касающееся инициализации, запуска или остановки
+ кластера выполняется с помощью скрипта 
+\family typewriter
+scidb.py
+\family default
+.
+ Его синтаксис следующий:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ scidb.py <команда> <база_данных>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Далее приведены некоторые команды этого скрипта (см.
+ 
+\emph on
+таблицу
+\emph default
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Некоторые-команды-скрипта"
+
+\end_inset
+
+):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Команда
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Реализуемая операция
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+init_syscat
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Инициализирует системный каталог SciDB
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+initall
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Очищает каталоги серверов
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+startall
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Запускает кластер
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+stopall
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Останавливает кластер
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+check-version
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Выдает версию SciDB на каждом сервере
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Некоторые-команды-скрипта"
+
+\end_inset
+
+Некоторые команды скрипта scidb.py
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+После установки требуется проинициализировать системный каталог SciDB:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ sudo -u postgres /opt/scidb/13.3/bin/scidb.py init_syscat testdb
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+При этом в postgreSQL создается таблица 
+\family typewriter
+testdb
+\family default
+ рассмотренной в начале структуры.
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Далее требуется проинициализировать каталоги серверов:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ ./scidb.py initall testdb
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Завершающим этапом является запуск кластера SciDB:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ ./scidb.py startall testdb
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+В результате указанных действий был развернут кластер SciDB.
+ И теперь можно использовать его для хранения данных и проведения различных
+ аналитических действий.
+\end_layout
+
+\begin_layout Subsection
+Загрузка данных в SciDB
+\end_layout
+
+\begin_layout Standard
+Для загрузки данных в SciDB требуется выполнить несколько последовательных
+ шагов.
+\end_layout
+
+\begin_layout Enumerate
+Подготовить данные.
+ Каждое значение должно быть разделено запятой (
+\emph on
+comma separated values
+\emph default
+).
+ При выделении данных пикселей в 
+\emph on
+пункте
+\emph default
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Реализация-механизма-получения"
+
+\end_inset
+
+ были получены данные именно в этом формате.
+\end_layout
+
+\begin_layout Enumerate
+Требуется создать одномерный массив для временного хранения данных.
+ Для этого в клиенте 
+\family typewriter
+iquery
+\family default
+ требуется ввести запрос: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+CREATE ARRAY test_1D <int64: i, int64: j, int64: value> [index=0:450*522,
+ 451*522, 1000];
+\end_layout
+
+\end_inset
+
+При этом создается массив с атрибутами 
+\family typewriter
+i
+\family default
+, 
+\family typewriter
+j
+\family default
+, 
+\family typewriter
+value
+\family default
+.
+ В квадратных скобках указывается размер массива, размер чанка и его перехлест.
+\end_layout
+
+\begin_layout Enumerate
+Далее на входные данные применяется утилита, переводящая данные в формат
+ базы данных SciDB:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ csv2scidb -p NNN < /path_to_data/test.txt > /output_path/test.scidb
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Теперь данные могут быть загружены в базу данных.
+ Требуется переключить клиент 
+\family typewriter
+iquery
+\family default
+ в режим AFL командой 
+\family typewriter
+set lang afl;
+\family default
+, после чего выполнить запрос:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+load test_1D from '/path_to_test.scidb'
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Создадим двумерный массив для хранения значений пикселей:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+CREATE ARRAY test_2D <int64: value] [i=0:522, 100000, 1000, j=0:450, 10000,
+ 1000];
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Теперь можно применять функцию изменения размерности массива и сохранения
+ одномерного в двумерный:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+redimension_store(test_1D, test_2D);
+\end_layout
+
+\end_inset
+
+ Где первым параметром функции указывается исходный массив, а вторым ---
+ массив назначения.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Таким образом реализована загрузка данных в двумерный массив, после чего
+ можно выполнять различную обработку данных.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Заключение
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Данная учебно-исследовательская работа посвящена распределенным системам
+ управления базами сверхбольших объемов данных.
+ 
+\end_layout
+
+\begin_layout Standard
+Были достигнуты следующие результаты:
+\end_layout
+
+\begin_layout Itemize
+Проведен анализ архитектуры SciDB и его хранилища.
+ Анализ показал, что SciDB может быть использована для хранения научных
+ данных, а также использоваться для их обработки.
+\end_layout
+
+\begin_layout Itemize
+Разработан механизм по загрузке данных изображения в SciDB.
+ 
+\end_layout
+
+\begin_layout Itemize
+Разработан алгоритм по обработке данных изображения.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Таким образом, можно считать выполненной цель учебно-исследовательской работы.
+ В продолжение темы учебно-исследовательской работы можно разработать комплекс
+ средств защиты СУБД, а также реализовать хранимую процедуру, реализующая
+ алгоритм фильтрации изображения.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+addcontentsline{toc}{part}{Заключение}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\color black
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+addcontentsline{toc}{part}{Список литературы}
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Литература"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "1"
+key "Статья Бортунова"
+
+\end_inset
+
+Научные вызовы технологиям СУБД --- О.
+ Бартунов [Электронный ресурс] --- http://citforum.ru/database/articles/scidb_sci
+entific_challenges/
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "2"
+key "Документация SciDB"
+
+\end_inset
+
+Документация по СУБД SciDB [Электронный ресурс] --- http://scidb.org/HTMLmanual/1
+3.3/scidb_ug/index.html
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "3"
+key "BMP"
+
+\end_inset
+
+ Формат изображений BMP [Электронный ресурс] --- http://ru.wikipedia.org/wiki/BMP
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "4"
+key "Матричные фильтры"
+
+\end_inset
+
+ Матричные фильтры обработки изображений [Электронный ресурс] --- http://habraha
+br.ru/post/142818/
+\end_layout
+
+\end_body
+\end_document
