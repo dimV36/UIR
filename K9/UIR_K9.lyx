@@ -114,10 +114,10 @@ figs-within-sections
 \shortcut idx
 \color #008000
 \end_index
-\leftmargin 2.5cm
+\leftmargin 2cm
 \topmargin 2cm
-\rightmargin 1.5cm
-\bottommargin 3cm
+\rightmargin 2cm
+\bottommargin 2cm
 \secnumdepth 3
 \tocdepth 3
 \paragraph_separation indent
@@ -1740,7 +1740,7 @@ addcontentsline{toc}{part}{Введение}
 \end_layout
 
 \begin_layout Subsection
-Протокол Ident
+Метод Ident
 \end_layout
 
 \begin_layout Standard
@@ -2927,12 +2927,1206 @@ Kerberos требует, чтобы системные часы на всех к
 
 \end_layout
 
+\begin_layout Section
+Метод авторизации LDAP
+\end_layout
+
 \begin_layout Subsection
+Обзор протокола LDAP
+\end_layout
+
+\begin_layout Standard
+
+\series bold
 LDAP
+\series default
+ - это аббревиатура от
+\emph on
+ Lightweight Directory Access Protocol
+\emph default
+.
+ Как следует из названия, это облегченный протокол доступа к службам каталогов,
+ предназначенный для доступа к службам каталогов на основе X.500.
+ LDAP работает поверх TCP/IP или других ориентированных на соединение сетевых
+ протоколов.
+ LDAP стандартизирован в качестве протокола IETF.
+ Он описан в стандарте 
+\series bold
+RFC4510
+\series default
+.
+\end_layout
+
+\begin_layout Standard
+Каталоги LDAP используют модель данных, которая считает или представляет
+ данные как иерархию объектов.
+ Это не означает, что LDAP является объектно-ориентированной базой данных.
+\end_layout
+
+\begin_layout Standard
+В LDAP-каталоге данные представлены как иерархия объектов, каждый из которых
+ называется записью.
+ Полученная в результате древовидная структура называется 
+\series bold
+информационным деревом каталога 
+\series default
+(
+\emph on
+Data Information Tree
+\emph default
+, 
+\emph on
+DIT
+\emph default
+).
+ Верхнюю часть данного дерева обычно называют 
+\series bold
+корнем 
+\series default
+(
+\series bold
+root
+\series default
+), (а также базой (
+\series bold
+base
+\series default
+) или суффиксом (
+\series bold
+suffix
+\series default
+)).
+\end_layout
+
+\begin_layout Standard
+Каждый элемент DIT называется записью (
+\series bold
+object
+\series default
+).
+ Каждая запись имеет ноль или более дочерних записей.
+ Каждая дочерняя запись является одноуровневой (братской) по отношению к
+ другим дочерним записям своей родительской записи.
+ Каждая запись является экземпляром одного или нескольких объектных классов
+ (
+\series bold
+objectClass
+\series default
+).
+\end_layout
+
+\begin_layout Standard
+Объектные классы содержат ноль или более атрибутов (
+\series bold
+attribute
+\series default
+).
+ Атрибуты имеют имена (и, иногда, аббревиатуры или псевдонимы) и обычно
+ содержат данные.
+\end_layout
+
+\begin_layout Standard
+Характеристики (свойства) объектных классов и их атрибутов описываются определен
+иями 
+\series bold
+ASN.1
+\series default
+.
+\series bold
+100
+\series default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/DIT.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Дерево-информационного-каталога"
+
+\end_inset
+
+Дерево информационного каталога LDAP
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+На 
+\emph on
+рис.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Дерево-информационного-каталога"
+
+\end_inset
+
+ 
+\emph default
+представлен пример дерева информационного каталога LDAP.
+ Элемент 
+\family typewriter
+root 
+\family default
+является корневым
+\family typewriter
+ 
+\family default
+для данного дерева, а также является родителем для элементов 
+\family typewriter
+note_1
+\family default
+, 
+\family typewriter
+note_2
+\family default
+, 
+\family typewriter
+note_3
+\family default
+.
+ Элементы 
+\family typewriter
+note_1
+\family default
+, 
+\family typewriter
+note_2
+\family default
+ и 
+\family typewriter
+note_3
+\family default
+ являются братскими между собой.
+ Элементы 
+\family typewriter
+child_1 
+\family default
+и 
+\family typewriter
+child_2
+\family default
+ --- дочерними для 
+\family typewriter
+note_1
+\family default
+.
+\end_layout
+
+\begin_layout Subsubsection*
+Атрибуты
+\end_layout
+
+\begin_layout Standard
+Каждый атрибут имеет имя и обычно содержит данные.
+ Атрибуты всегда связаны являются членами одного или нескольких классов.
+ У атрибутов есть ряд интересных особенностей:
+\end_layout
+
+\begin_layout Enumerate
+Каждый атрибут определяет тип данных, которые он может содержать.
+\end_layout
+
+\begin_layout Enumerate
+Атрибуты могут быть необязательными (MAY) или обязательными (MUST).
+\end_layout
+
+\begin_layout Enumerate
+Атрибуты могут быть единственными (
+\family typewriter
+single
+\family default
+) или множественными (
+\family typewriter
+multi
+\family default
+).
+ 
+\family typewriter
+Single
+\family default
+ означает, что для атрибута может быть задано только одно значение.
+ 
+\family typewriter
+Multi
+\family default
+ --- для атрибута может быть задано несколько значений.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Атрибуты могут иметь псевдонимы (
+\family typewriter
+alias
+\family default
+) имен.
+ При этом при ссылке на этот атрибут можно использовать как полное имя атрибута,
+ так и его псевдоним.
+\end_layout
+
+\begin_layout Enumerate
+На всех уровнях иерархии атрибуты должны быть уникальными.
+ 
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Каждый атрибут описывается в классе по следующей схеме:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+AttributeTypeDescription = "(" whsp 	;whsp - пробел
+\end_layout
+
+\begin_layout Plain Layout
+
+   numericoid whsp     			
+\end_layout
+
+\begin_layout Plain Layout
+
+ [ "NAME" qdescrs ]             	
+\end_layout
+
+\begin_layout Plain Layout
+
+ [ "DESC" qdstring ]            	
+\end_layout
+
+\begin_layout Plain Layout
+
+ [ "OBSOLETE" whsp ]
+\end_layout
+
+\begin_layout Plain Layout
+
+ [ "SUP" woid ]                 	
+\end_layout
+
+\begin_layout Plain Layout
+
+ [ "EQUALITY" woid              	
+\end_layout
+
+\begin_layout Plain Layout
+
+ [ "ORDERING" woid              	
+\end_layout
+
+\begin_layout Plain Layout
+
+ [ "SUBSTR" woid ]              	
+\end_layout
+
+\begin_layout Plain Layout
+
+ [ "SYNTAX" whsp noidlen whsp ] 	
+\end_layout
+
+\begin_layout Plain Layout
+
+ [ "SINGLE-VALUE" whsp ]        	
+\end_layout
+
+\begin_layout Plain Layout
+
+ [ "COLLECTIVE" whsp ]          	
+\end_layout
+
+\begin_layout Plain Layout
+
+ [ "NO-USER-MODIFICATION" whsp ]	
+\end_layout
+
+\begin_layout Plain Layout
+
+ [ X-ORDERED whsp type ]        	
+\end_layout
+
+\begin_layout Plain Layout
+
+ [ "USAGE" whsp AttributeUsage ]	
+\end_layout
+
+\begin_layout Plain Layout
+
+ whsp ")"
+\end_layout
+
+\end_inset
+
+Далее приводится описание наиболее важных элементов атрибута:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+numbercoid
+\family default
+ определяет OID атрибута.
+ Этот OID должен быть уникальным.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+NAME
+\family default
+ определяет глобально уникальное имя для данного атрибута.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+DESC 
+\family default
+задает описание атрибута.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+SUP
+\family default
+ указывает класс-родитель (если есть).
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+EQUALITY
+\family default
+ определяет поведение атрибута в поисковом фильтре, где не используется
+ поисковых шаблонов.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+SUBSTR 
+\family default
+определяет поведение атрибута в поисковом фильтре, использующем подстроки,
+ содержащем один или несколько поисковых шаблонов.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+SYNTAX
+\family default
+ это OID, определяющий тип данных, а также какие правила (проверки данных)
+ применяются к этим данным.
+ 
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+На листинге приведен пример определения атрибута 
+\family typewriter
+name
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+attributetype ( 2.5.4.41 NAME 'name'
+\end_layout
+
+\begin_layout Plain Layout
+
+  EQUALITY caseIgnoreMatch
+\end_layout
+
+\begin_layout Plain Layout
+
+  SUBSTR caseIgnoreSubstringsMatch
+\end_layout
+
+\begin_layout Plain Layout
+
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{32768} )
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+Объектные классы
+\end_layout
+
+\begin_layout Standard
+Объектные классы представляют собой хранилищем атрибутов, определяют перечень
+ атрибутов, которые должны присутствовать в случае загрузки записи в LDAP,
+ а также перечень необязательных атрибутов.
+ Объектный класс может быть унаследован от другого класса, при этом дочерний
+ класс наследует все атрибуты класса-родителя.
+\end_layout
+
+\begin_layout Standard
+Объектный класс описывается по следующей схеме:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ObjectClassDescription = "(" whsp
+\end_layout
+
+\begin_layout Plain Layout
+
+ numericoid whsp      
+\end_layout
+
+\begin_layout Plain Layout
+
+ [ "NAME" qdescrs ]
+\end_layout
+
+\begin_layout Plain Layout
+
+ [ "DESC" qdstring ]
+\end_layout
+
+\begin_layout Plain Layout
+
+ [ "OBSOLETE" whsp ]
+\end_layout
+
+\begin_layout Plain Layout
+
+ [ "SUP" oids ]       
+\end_layout
+
+\begin_layout Plain Layout
+
+ [ ( "ABSTRACT" / "STRUCTURAL" / "AUXILIARY" ) whsp ]
+\end_layout
+
+\begin_layout Plain Layout
+
+                      
+\end_layout
+
+\begin_layout Plain Layout
+
+ [ "MUST" oids ]      
+\end_layout
+
+\begin_layout Plain Layout
+
+ [ "MAY" oids ]       
+\end_layout
+
+\begin_layout Plain Layout
+
+  whsp ")"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Поле 
+\family typewriter
+numerricoid 
+\family default
+указывает идентификатор класса.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+NAME 
+\family default
+определяет имя класса.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+DESC 
+\family default
+задает описание класса.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+SUP
+\family default
+ указывает класс-родитель данного класса.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+STRUCTURAL 
+\family default
+--- класс может формировать запись в дереве каталогов.
+ 
+\family typewriter
+ABSTRACT 
+\family default
+--- указывает на несуществующий класс в дереве каталогов, используемый для
+ удобства.
+ 
+\family typewriter
+AUXILIARY
+\family default
+ определяет вспомогательный класс, который только используется при создании
+ других объектных классов
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+MUST 
+\family default
+определяет перечень атрибутов, которые обязательно должны содержаться в
+ классе.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+MAY 
+\family default
+определяет перечень необязательных атрибутов класса.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+В качестве примера далее приведено описание класса 
+\family typewriter
+pilotOrganization 
+\family default
+с
+\family typewriter
+ 
+\family default
+необязательным атрибутом 
+\family typewriter
+buildingName
+\family default
+ и со всеми атрибутами (необязательными и обязательными) объектных классов
+ 
+\family typewriter
+organization
+\family default
+ и
+\family typewriter
+ organizationUnit
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+objectClasses: ( 0.9.2342.19200300.100.4.20 NAME 'pilotOrganization'
+\end_layout
+
+\begin_layout Plain Layout
+
+  SUP ( organization $ organizationalUnit ) STRUCTURAL
+\end_layout
+
+\begin_layout Plain Layout
+
+  MAY buildingName )
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+OpenLDAP
+\end_layout
+
+\begin_layout Standard
+OpenLDAP --- открытая реализация протокола LDAP.
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+slapd 
+\family default
+--- сервер службы каталогов, реализующую 3ю версию протокола LDAP.
+ В качестве хранилища поддерживаются механизмы манипуляции данных.
+ Одним из самых распространенных является BDB (высокопроизводительный механизм
+ манипуляции с поддержкой транзакций) на базе Berklery DB.
+ Сервер 
+\family typewriter
+slapd
+\family default
+ может быть настроен в режиме 
+\family typewriter
+master-slave
+\family default
+, в котором данные ведущего сервера пересылаются в фоновом режиме на ведомый.
+ 
 \end_layout
 
 \begin_layout Subsubsection
-Преобразование schema в ldif
+Использование OLC в OpenLDAP
+\end_layout
+
+\begin_layout Standard
+Исторически OpenLDAP настраивался статически, то есть, чтобы произвести
+ изменение, нужно было править конфигурационный файл 
+\family typewriter
+slapd.conf
+\family default
+, а затем останавливать и запускать 
+\family typewriter
+slapd
+\family default
+.
+ При увеличении количества записей в каталоге перезапуск будет занимать
+ все более продолжительное время, и, в случае высоконагруженных каталогов,
+ такой метод переконфигурации становится всё более неприемлемым.
+ В OpenLDAP версии 2.3 была представлена опциональная новая возможность,
+ посредством которой конфигурация может быть произведена во время исполнения
+ с помощью модификации записей специального DIT, называемого 
+\family typewriter
+cn=config
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Для управления настройками рабочей среды в конфигурации времени исполнения
+ (OLC) используется конфигурационное DIT с жёстко установленным суффиксом
+ 
+\family typewriter
+cn=config
+\family default
+.
+ Концептуально, модификация записей в этом DIT (с помощью LDAP-браузера
+ или файлов LDIF) приводит к немедленному изменению поведения рабочей среды
+ 
+\family typewriter
+slapd
+\family default
+ без необходимости перезапуска 
+\family typewriter
+slapd
+\family default
+ (как это приходилось делать после изменения 
+\family typewriter
+slapd.conf
+\family default
+).
+ На 
+\emph on
+рисунке 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Схема-каталога-cn=config"
+
+\end_inset
+
+
+\emph default
+ представлена структурная схема каталога 
+\family typewriter
+cn=config
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/cn=config.png
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Схема-каталога-cn=config"
+
+\end_inset
+
+Структурная схема каталога 
+\family typewriter
+cn=config
+\family default
+ OpenLDAP
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Корневая запись 
+\family typewriter
+cn=config 
+\family default
+основывается на объектном классе 
+\family typewriter
+olcGlobal 
+\family default
+и содержит глобальные атрибуты, влияющие на работу 
+\family typewriter
+slapd
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Запись 
+\family typewriter
+cn=module{0},cn=config
+\family default
+ основывается на объектном классе 
+\family typewriter
+olcModuleList 
+\family default
+и содержит список всех динамически загружаемых объектов и путей к ним.
+ 
+\end_layout
+
+\begin_layout Standard
+Запись
+\family typewriter
+ cn=schema,cn=config
+\family default
+ использует объектный класс 
+\family typewriter
+olcSchemaConfig 
+\family default
+и содержит все объекты, используемые системой 
+\family typewriter
+cn=config
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Дочерние записи cn
+\family typewriter
+={Z}xxx,cn=schema,cn=config
+\family default
+ используют объектный класс 
+\family typewriter
+olcSchemaConfig 
+\family default
+и содержат все объекты (атрибуты и объектные классы), определённые в данном
+ наборе схемы.
+ Здесь {Z} - числовой счётчик, нумерация которого начинается с 0, а xxxx
+ - имя набора схемы данных.
+ То есть, если первым подключается набор схемы 
+\family typewriter
+core.schema
+\family default
+, то данное значение будет 
+\family typewriter
+{0}core
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Запись 
+\family typewriter
+olcDatabase={Z}xxx,cn=config
+\family default
+ использует объектный класс 
+\family typewriter
+olcDatabaseConfig
+\family default
+ (содержащий общие атрибуты, определяемые для всех типов баз данных), а
+ также объектный класс, специфичный для конкретного типа базы данных.
+ Здесь {Z} - числовой счётчик, нумерация которого начинается с 0, а xxxx
+ - имя типа базы данных.
+ То есть, если первой определяется база данных типа 
+\family typewriter
+bdb
+\family default
+, то данное значение будет 
+\family typewriter
+{0}bdb
+\family default
+, и эта запись будет строиться на объектном классе olcBdbConfig, содержащем
+ атрибуты, специфичные для этого типа баз данных.
+ 
+\end_layout
+
+\begin_layout Standard
+Запись 
+\family typewriter
+olcOverlay={Z}xxx,olcDatabase={Z}xxx,cn=config
+\family default
+ использует объектный класс 
+\family typewriter
+olcOverlayConfig
+\family default
+, содержащий общие атрибуты, определяемые для всех наложений, а также объектный
+ класс, специфичный для конкретного наложения.
+ Здесь {Z} - числовой счётчик, нумерация которого начинается с 0, а xxxx
+ - имя наложения.
+ То есть, если первым из наложений определяется наложение 
+\family typewriter
+syncprov
+\family default
+, то данное значение будет 
+\family typewriter
+{0}syncprov
+\family default
+, и эта запись будет строиться на объектном классе 
+\family typewriter
+olcSyncProvConfig
+\family default
+, содержащем атрибуты, специфичные для этого наложения.
+ Точно также другие наложения будут использовать специфичные для них объектные
+ классы, содержащие их уникальные атрибуты.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Инструменты манипуляции данных в OpenLDAP
+\end_layout
+
+\begin_layout Standard
+С пакетом 
+\family typewriter
+openldap-servers 
+\family default
+поставляются различные утилиты OpenLDAP, которые позволяют оперировать с
+ данными каталога.
+ 
+\end_layout
+
+\begin_layout Standard
+Утилита 
+\family typewriter
+\series bold
+ldapadd 
+\family default
+\series default
+(
+\family typewriter
+\series bold
+ldapmodify
+\family default
+\series default
+) позволяет добавить данные в каталог.
+ Например запрос:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# ldapadd -H ldapi:/// -x -D "cn=admin,dc=ldap-server,dc=ru" -f /tmp/addgroups.ld
+if -w password
+\end_layout
+
+\end_inset
+
+добавляет в каталог 
+\family typewriter
+cn=admin,dc=ldap-server,dc=ru 
+\family default
+содержимое файла 
+\family typewriter
+/tmp/addgroups.ldif 
+\family default
+локально с применением проверки подлинности по паролю (указан после ключа
+ 
+\family typewriter
+-w
+\family default
+).
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+\series bold
+ldapdelete
+\family default
+\series default
+ открывает соединение с сервером LDAP, подключается и удаляет одну или несколько
+ записей.
+ Если команде был предоставлен один или несколько аргументов DN, записи
+ с этими Distinguished Names будут удалены.
+ Каждый DN должен быть оформлен в виде строкового представления LDAPv3,
+ как определено в RFC 2253.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+\series bold
+ldapmodrdn
+\family default
+\series default
+ открывает соединение с сервером LDAP, подключается и модифицирует RDN записей.
+\end_layout
+
+\begin_layout Standard
+Утилита 
+\family typewriter
+\series bold
+ldappasswd 
+\family default
+\series default
+позволяет проводить действия с паролями, в т.ч.
+ генерировать зашифрованные пароли.
+ Например запрос:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# ldappasswd -H ldapi:/// -D cn=admin,dc=ldap-server,dc=ru -W -A -S "cn=user1,ou
+=Users,dc=ldap-server,dc=ru" 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+меняет пароль у пользователя 
+\family typewriter
+user1
+\family default
+ из группы 
+\family typewriter
+Users
+\family default
+.
+ При этом запрашивается старый пароль, новый пароль, после чего новый пароль
+ записывается в каталог.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+\series bold
+ldapsearch
+\family default
+\series default
+ открывает соединение с сервером LDAP, подключается и производит поиск,
+ используя указанные параметры.
+ Указываемый фильтр должен соответствовать строковому представлению поисковых
+ фильтров, определённому в RFC 4515.
+ Если фильтр не был указан, используется фильтр по умолчанию 
+\family typewriter
+(objectClass=*)
+\family default
+.
+ Если 
+\family typewriter
+ldapsearch
+\family default
+ находит одну или несколько записей, возвращаются атрибуты, указанные как
+ аргументы 
+\family typewriter
+attrs
+\family default
+.
+ Если в списке атрибутов присутствует *, возвращаются все пользовательские
+ атрибуты.
+ Если присутствует +, возвращаются все операционные атрибуты.
+ Если не было указано аргументов 
+\family typewriter
+attrs
+\family default
+, будут возвращены все пользовательские атрибуты (то есть подразумевается
+ 
+\family typewriter
+*
+\family default
+).
+ Например запрос:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# ldapsearch -x -LLL -b dc=ldap-server,dc=ru '(objectClass=inetOrgPerson)'
+\end_layout
+
+\end_inset
+
+возвратит все записи класса 
+\family typewriter
+InetOrgPerson 
+\family default
+из каталога 
+\family typewriter
+dc=ldap-server,dc=ru
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+\series bold
+ldapwhoami 
+\family default
+\series default
+открывает соединение и получает информацию о пользователе, который подключается
+ к 
+\family typewriter
+slapd
+\family default
+.
+ Пример:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# ldapwhoami -x -D cn=postgres,ou=Admins,dc=ldap-server,dc=ru -w 123456
+\end_layout
+
+\end_inset
+
+выведет строку:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+cn=postgres,ou=Admins,dc=ldap-server,dc=ru
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+\series bold
+slapacl
+\family default
+\series default
+ позволяет пользователю проверить возможность доступа от имени определённого
+ DN подключения (
+\family typewriter
+-b
+\family default
+) к указанным атрибутам, применяя текущие директивы 
+\family typewriter
+access
+\family default
+, указанные в конфигурационных файлах 
+\family typewriter
+slapd
+\family default
+.
+\end_layout
+
+\begin_layout Subsubsection
+Преобразование SCHEMA в LDIF
 \end_layout
 
 \begin_layout Standard
@@ -3181,8 +4375,15 @@ seinetorgperson
  будет доступна для использования в OpenLDAP.
 \end_layout
 
-\begin_layout Subsubsection
-Принцип работы метода авторизации LDAP в PostgreSQL
+\begin_layout Standard
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Развертывание PostgreSQL с авторизацией LDAP
 \end_layout
 
 \begin_layout Standard
@@ -3201,6 +4402,8 @@ reference "fig:Схема-разворачиваемого-стенда"
 
 \emph default
 ).
+ В качестве примера настройки стенда будет использоваться CentOS 6.4, PostgreSQL
+ 9.3 и OpenLDAP 2.4.23.
 \end_layout
 
 \begin_layout Standard
@@ -3236,10 +4439,6 @@ name "fig:Схема-разворачиваемого-стенда"
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Plain Layout
 
 \end_layout
 
@@ -3342,15 +4541,6 @@ user3
 \end_layout
 
 \begin_layout Subsection
-Настройка метода авторизации LDAP в PostgreSQL
-\end_layout
-
-\begin_layout Standard
-В качестве примера настройки стенда будет использоваться CentOS 6.4, PostgreSQL
- 9.3 и OpenLDAP 2.4.23
-\end_layout
-
-\begin_layout Subsubsection
 Настройка клиентской машины
 \end_layout
 
@@ -3402,7 +4592,7 @@ status open
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Настройка сервера OpenLDAP
 \end_layout
 
@@ -4240,7 +5430,7 @@ status open
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Настройка сервера PostgreSQL
 \end_layout
 
@@ -4458,7 +5648,7 @@ postgres
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Проверка работы механизма авторизации LDAP в PostgreSQL
 \end_layout
 
