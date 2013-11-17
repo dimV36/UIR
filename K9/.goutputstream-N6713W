@@ -1,0 +1,2967 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass extarticle
+\begin_preamble
+%Дополнения
+\usepackage{rotating}		%для вращения
+\usepackage{caption}		%для подписей
+\usepackage{lastpage}		%подсчёт страниц
+\usepackage{indentfirst}	%красная строка
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{graphicx}		%поддержка графики
+\usepackage{setspace}
+\usepackage{hhline}		%горизонтальные линии
+\usepackage{ifthen}		%условия
+\usepackage{ifxetex}		%проверки для XeTeX
+\usepackage{footmisc}		%настраивать сноски
+\usepackage{listings}
+\usepackage{pdflscape}
+
+%XeTeX-овский дзен
+\ifxetex
+\usepackage{xecyr} %нужно, если используется babel
+
+%Нужно для автозамены кавычек и тире
+\defaultfontfeatures{Mapping=tex-text}
+%без этого не работает шрифт...
+\newfontfamily\russianfont{Times New Roman}
+%шрифты, обычные, трутайповские
+\setmainfont{Times New Roman}
+\setmonofont[Scale=0.915]{Nimbus Mono L}
+
+%ещё один баг XeTeX! Не работают листинги с русскими буквами, печаль... Пришлось кинуть алиас на вербатим.
+\usepackage{verbatim}
+\usepackage{spverbatim}
+
+\def\verbatim@processline{\hspace{1.2cm}\raggedright\the\verbatim@line\par}
+\renewenvironment{lstlisting}{\spverbatim}{\endverbatim}
+
+\else %если не ХеТеХ а обычный ТеХ
+
+%пока отменил, с ХеТеХ работает криво
+%Это то что нужно для того, чтобы листинги выводились с моноширинным шрифтом
+\lstset{
+breaklines=true,                % sets automatic line breaking
+basicstyle=\ttfamily,
+%отступ примерно 4 пробела
+breakindent={-1.2cm},
+xleftmargin=0.5cm
+}
+
+\fi
+
+%русские буквы в нумерации
+\renewcommand\theenumii{\asbuk{enumii}}
+
+\sloppy %не вылезать за края листа
+\end_preamble
+\use_default_options true
+\begin_modules
+eqs-within-sections
+figs-within-sections
+\end_modules
+\maintain_unincluded_children false
+\language russian
+\language_package default
+\inputencoding koi8-r
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter cmtt
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 90
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement H
+\paperfontsize 11
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks false
+\pdf_backref page
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2.5cm
+\topmargin 2cm
+\rightmargin 1.5cm
+\bottommargin 3cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\align center
+
+\size large
+МИНИСТЕРСТВО ОБРАЗОВАНИЯ И НАУКИ РОССИЙСКОЙ ФЕДЕРАЦИИ
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size larger
+Федеральное государственное автономное образовательное учреждение 
+\begin_inset Newline newline
+\end_inset
+
+высшего профессионального образования
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size larger
+\begin_inset Quotes fld
+\end_inset
+
+Национальный исследовательский ядерный
+\begin_inset Newline newline
+\end_inset
+
+ университет 
+\begin_inset Quotes fld
+\end_inset
+
+МИФИ
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="14cm">
+<row>
+<cell multirow="3" alignment="left" valignment="middle" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename files/mephi.png
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\size larger
+Факультет кибернетики и информационной безопасности
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+Кафедра №36
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 1cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size largest
+ПОЯСНИТЕЛЬНАЯ ЗАПИСКА 
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+к курсовому проекту на тему: 
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+\color black
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="16.4cm">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Методы авторизации
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+в системе управления базами данных PostgreSQL
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 2cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size large
+Группа  
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+К9-361
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size large
+Студент 
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="6.8cm">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="6cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Воронин Д.Л.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset space \hspace{}
+\length 6cm
+\end_inset
+
+(подпись)
+\begin_inset space \hspace{}
+\length 5cm
+\end_inset
+
+(ФИО)
+\end_layout
+
+\begin_layout Standard
+
+\size large
+Руководитель проекта 
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="4.1cm">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="6cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Муравьев С.К.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset space \hspace{}
+\length 6cm
+\end_inset
+
+(подпись)
+\begin_inset space \hspace{}
+\length 5cm
+\end_inset
+
+(ФИО)
+\end_layout
+
+\begin_layout Standard
+
+\size large
+Оценка 
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="14.2cm">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size large
+Члены комиссии 
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="5.2cm">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="6cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+(
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset space \hspace{}
+\length 6cm
+\end_inset
+
+(подпись)
+\begin_inset space \hspace{}
+\length 5cm
+\end_inset
+
+(ФИО)
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset space \hspace{}
+\length 3.3cm
+\end_inset
+
+
+\size large
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="5.2cm">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="6cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+(
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset space \hspace{}
+\length 6cm
+\end_inset
+
+(подпись)
+\begin_inset space \hspace{}
+\length 5cm
+\end_inset
+
+(ФИО)
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset space \hspace{}
+\length 3.3cm
+\end_inset
+
+
+\size large
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="5.2cm">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="6cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+(
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset space \hspace{}
+\length 6cm
+\end_inset
+
+(подпись)
+\begin_inset space \hspace{}
+\length 5cm
+\end_inset
+
+(ФИО)
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset space \hspace{}
+\length 3.3cm
+\end_inset
+
+
+\size large
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="5.2cm">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="6cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+(
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset space \hspace{}
+\length 6cm
+\end_inset
+
+(подпись)
+\begin_inset space \hspace{}
+\length 5cm
+\end_inset
+
+(ФИО)
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace vfill
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\series bold
+Москва 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+the
+\backslash
+year
+\end_layout
+
+\end_inset
+
+г.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+МИНИСТЕРСТВО ОБРАЗОВАНИЯ И НАУКИ РОССИЙСКОЙ ФЕДЕРАЦИИ
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size larger
+Федеральное государственное автономное образовательное учреждение 
+\begin_inset Newline newline
+\end_inset
+
+высшего профессионального образования
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size larger
+\begin_inset Quotes fld
+\end_inset
+
+Национальный исследовательский ядерный
+\begin_inset Newline newline
+\end_inset
+
+ университет 
+\begin_inset Quotes fld
+\end_inset
+
+МИФИ
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="14cm">
+<row>
+<cell multirow="3" alignment="left" valignment="middle" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename files/mephi.png
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ФАКУЛЬТЕТ КИБЕРНЕТИКИ И ИНФОРМАЦИОННОЙ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+БЕЗОПАСНОСТИ
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+КАФЕДРА ИНФОРМАЦИОННЫЕ СИСТЕМЫ И ТЕХНОЛОГИИ
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 0.5cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size largest
+Задание на УИР и КП
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 1cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size large
+Студенту гр.
+ 
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+К9-361 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 1cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size larger
+Тема УИР и КП
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+\color black
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="16.4cm">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Методы авторизации 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+в системе управления базами данных PostgreSQL
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 1cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size large
+ЗАДАНИЕ
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align left
+
+\size small
+\begin_inset space \hspace{}
+\length 3.3cm
+\end_inset
+
+
+\size default
+Место выполнения УИР и КП 
+\size large
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="4.8cm">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ФГУП 
+\begin_inset Quotes fld
+\end_inset
+
+ЦНИИ ЭИСУ
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align left
+
+\size small
+\begin_inset space \hspace{}
+\length 3.3cm
+\end_inset
+
+
+\size default
+Руководитель 
+\size large
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="3.8cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Муравьев С.К.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset space \hspace{}
+\length 2.7cm
+\end_inset
+
+
+\size default
+Дата выдачи задания
+\size small
+ 
+\size large
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Quotes fld
+\end_inset
+
+ 
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+the
+\backslash
+year
+\end_layout
+
+\end_inset
+
+г.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+ОТЗЫВ О РАБОТЕ СТУДЕНТА
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 2cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Руководитель 
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="6cm">
+<column alignment="center" valignment="top" width="4cm">
+<column alignment="center" valignment="top" width="1cm">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Муравьев С.К.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Quotes fld
+\end_inset
+
+
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+the
+\backslash
+year
+\end_layout
+
+\end_inset
+
+г.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Введение
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+addcontentsline{toc}{part}{Введение}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Обзор основных методов авторизации PostgreSQL
+\end_layout
+
+\begin_layout Subsection
+Протокол Ident
+\end_layout
+
+\begin_layout Standard
+Протокол идентификации 
+\emph on
+(Identification Protocol
+\emph default
+, 
+\emph on
+ident
+\emph default
+, 
+\emph on
+Ident Protocol
+\emph default
+) обеспечивает способ идентификации пользователя для конкретного соединения
+ TCP.
+ Используя на входе номера пары соединенных между собой портов TCP, протокол
+ возвращает строку символов, идентифицирующую владельца данного соединения
+ на стороне сервера.
+ Первоначально протокол идентификации называли Authentication Server Protocol
+ (протокол аутентификации сервера).
+ Новое имя лучше отражает суть протокола.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Принцип работы 
+\end_layout
+
+\begin_layout Standard
+Протокол представляет собой сервис на основе соединений TCP.
+ Сервер слушает соединения TCP для порта 113.
+ После организации соединения сервер читает строку данных, содержащую сведения
+ о цели соединения.
+ При существовании идентификатора пользователя для соединения сервер передает
+ этот идентификатор в качестве отклика.
+ После этого сервер может закрыть соединение или продолжить диалог «запрос-откли
+к».
+ Серверу следует закрывать соединение по истечении заданного конфигурационными
+ параметрами тайм-аута (60-180) при отсутствии каких-либо запросов.
+ Клиент может закрыть соединение в любой момент, однако для компенсации
+ возможных задержек в сети клиенту следует выждать по крайней мере 30 секунд
+ после запроса прежде, закрыть соединение.
+ 
+\end_layout
+
+\begin_layout Standard
+Передача запросов допустима только для полностью организованных соединений.
+ Запрос содержит номера пары портов (локальный - удаленный), используемых
+ для идентификации соединения и получаемых с указанием локального и удаленного
+ адресов.
+ Это означает, что пользователь с адресом A может запрашивать у сервера
+ B только информацию о соединении между A и B.
+\end_layout
+
+\begin_layout Standard
+Сервер воспринимает простые текстовые запросы в формате: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+<port-on-server>, <port-on-client> 
+\end_layout
+
+\end_inset
+
+где 
+\family typewriter
+<port-on-server>
+\family default
+ указывает порт TCP для адресата (хоста, где работает сервер ident), а
+\family typewriter
+ <port-on-client>
+\family default
+ указывает порт TCP (десятичное значение) на клиентской системе.
+ 
+\end_layout
+
+\begin_layout Standard
+Важно отметить, что если клиент на хосте A хочет сделать запрос серверу
+ на хосте B о соединении, заданном локально (на хосте A) парой портов 
+\family typewriter
+23, 6191
+\family default
+ (входящее соединение TELNET), клиент должен сделать запрос для пары 6191,
+ 23 (идентификация соединения с точки зрения хоста B).
+ Например: 
+\family typewriter
+6191, 23
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Отклик имеет формат: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+<port-on-server>, <port-on-client> : <resp-type> : <add-info>
+\end_layout
+
+\end_inset
+
+ где 
+\family typewriter
+<port-on-server> 
+\family default
+и 
+\family typewriter
+<port-on-client> 
+\family default
+совпадают с номерами портов в запросе, 
+\family typewriter
+<resp-type> 
+\family default
+идентифицирует тип отклика, а 
+\family typewriter
+<add-info> 
+\family default
+содержит зависящие от контекста данные.
+\end_layout
+
+\begin_layout Standard
+Возвращаемая информация связана с соединением TCP, заданным параметрами
+ 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+<server-address>, <client-address>, <port-on-server>, <port-on-client> 
+\end_layout
+
+\end_inset
+
+где
+\family typewriter
+ <server-address> 
+\family default
+и 
+\family typewriter
+<client-address> 
+\family default
+- IP-адреса обеих сторон соединения, а 
+\family typewriter
+<port-on-server>
+\family default
+ и 
+\family typewriter
+<port-on-client>
+\family default
+ --- параметры запроса.
+ Например: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+6193, 23 : USERID : UNIX : stjohns 6195, 23 : ERROR : NO-USER
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Типы откликов 
+\end_layout
+
+\begin_layout Standard
+Отклики могут быть двух типов: 
+\family typewriter
+USERID
+\family default
+ и 
+\family typewriter
+ERROR
+\family default
+.
+ В случае отклика 
+\family typewriter
+USERID
+\family default
+ строка
+\family typewriter
+ <add-info>
+\family default
+ содержит название операционной системы, за которым следует разделитель
+ "
+\family typewriter
+:
+\family default
+" и строка идентификации.
+ Если отклик содержит набор символов, последний отделяется от имени операционной
+ системы запятой (,).
+ Для обозначения набора символов используются стандартные идентификаторы.
+ Если набор символов не указан, предполагается US-ASCII.
+ 
+\end_layout
+
+\begin_layout Standard
+В противном случае возвращается тип отклика 
+\family typewriter
+ERROR
+\family default
+.
+ Если по каким-то причинам владелец соединения не может быть определен,
+ строка 
+\family typewriter
+<add-info>
+\family default
+ сообщает о причине.
+ Возможны следующие значения
+\family typewriter
+ <add-info>
+\family default
+: 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+INVALID-PORT
+\family default
+ --- Один из портов указан некорректно.
+ Такой отклик возвращается, если номер какого-нибудь (или обоих) из портов
+ выходит за допустимые пределы (порты TCP могут нумероваться от 1 до 65535)
+ или не является целым числом.
+ NO-USER Указанное парой портов соединение в настоящее время не используется
+ или принадлежит неизвестному объекту.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+HIDDEN-USER
+\family default
+ --- Сервер может определить пользователя, но не сообщает о нем по требованию
+ этого пользователя.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+UNKNOWN-ERROR
+\family default
+ --- Причину ошибки не удается определить (любая причина, не указанная выше).
+ Такой отклик может возвращаться и в тех случаях, когда сервер может определить
+ причину ошибки, но не желает ее сообщать.
+ Если на сервере реализована такая возможность, она должна быть настраиваемой
+ и по умолчанию сервер должен возвращать корректное сообщение об ошибке.
+ В дальнейшем могут быть добавлены другие коды отклики.
+ При использовании нестандартных откликов они должны начинаться с символа
+ "X".
+ В дополнение к возврату откликов сервер может разрывать соединения, не
+ возвращая никакого отклика.
+ Преждевременное завершение соединения (клиент не получил символа EOL) должно
+ трактоваться клиентом как отклик "ERROR : UNKNOWN-ERROR".
+ 
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Subsubsection
+Достоинства и недостатки протокола Ident
+\end_layout
+
+\begin_layout Standard
+Достоинствами протокола Ident являются:
+\end_layout
+
+\begin_layout Itemize
+Может быть использован в архитектуре клиент-сервер;
+\end_layout
+
+\begin_layout Itemize
+Простота архитектуры и сообщений передачи данных протокола.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Недостатками протокола являются:
+\end_layout
+
+\begin_layout Itemize
+Возможность подмены хоста и/или информации на хосте;
+\end_layout
+
+\begin_layout Itemize
+Не может быть использован для принятия решений о предоставлении доступа
+ в качестве основного (т.е.
+ при отсутствии других проверок).
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Subsection
+GSS-API
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+GSS-API
+\series default
+ (GSS, GSS-API, англ.
+ 
+\emph on
+Generic Security Services API
+\emph default
+, общий программный интерфейс сервисов безопасности) --- API для доступа
+ к сервисам безопасности.
+ Описано в стандарте IETF.
+ Предназначено для решения проблемы несовместимости схожих сервисов безопасности.
+ 
+\end_layout
+
+\begin_layout Standard
+GSS-API сам по себе не обеспечивает сервисов безопасности, вместо этого
+ он обеспечивает интерфейс между приложениями и реализациями GSS-API (обычно
+ библиотеками).
+ Эти библиотеки обеспечивают совместимый с GSS-API интерфейс, позволяя создавать
+ приложения, способные работать с разными библиотеками безопасности; позволяя
+ заменять библиотеки без необходимости переписывать приложения.
+\end_layout
+
+\begin_layout Standard
+Отличительной особенностью приложений, реализованных с использованием GSS-API
+ является использование закрытых сообщений (токенов), которые скрывают подробнос
+ти реализации от вышестоящих приложений.
+ Серверная и клиентская часть приложений создаются таким образом, чтобы
+ взаимодействовать с помощью токенов GSS-API.
+ Токены обычно могут передаваться через незащищенную (публичную) сеть.
+ После обмена сторонами (клиентом и сервером) некоторым количеством сообщений,
+ библиотека GSS-API информирует обе стороны взаимодействия об установлении
+ безопасного контекста.
+\end_layout
+
+\begin_layout Standard
+После установления безопасного контекста защищаемые сообщения приложения
+ могут быть «завернуты» (зашифрованы) с помощью GSS-API для безопасной передачи
+ между сервером и клиентом.
+\end_layout
+
+\begin_layout Standard
+Типичные аспекты безопасности, обеспечиваемые библиотеками, реализующими
+ GSS-API:
+\end_layout
+
+\begin_layout Enumerate
+конфиденциальность
+\end_layout
+
+\begin_layout Enumerate
+целостность
+\end_layout
+
+\begin_layout Enumerate
+подлинность обеих сторон информационного обмена
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Структурная схема приложения, использующее GSS-API приведена на 
+\emph on
+рис.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Структурная-схема-приложения,"
+
+\end_inset
+
+
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/gssapi.gif
+	scale 65
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Структурная-схема-приложения,"
+
+\end_inset
+
+Структурная схема приложения, использующая GSS-API
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+GSS-API описывает примерно 45 вызовов.
+ Основные:
+\end_layout
+
+\begin_layout Itemize
+GSS_Acquire_cred --- получение пользовательского доказательства идентичности
+ (чаще всего закрытый ключ, пароль).
+\end_layout
+
+\begin_layout Itemize
+GSS_Import_name --- конвертирование имени пользователя, узла сети в форму,
+ позволяющую определить объект безопасности.
+\end_layout
+
+\begin_layout Itemize
+GSS_Init_sec_context --- создает клиентский токен для отсылки на сервер
+ (обычно вызов, в рамках модели Вызов-ответ (аутентификация)).
+\end_layout
+
+\begin_layout Itemize
+GSS_Accept_sec_context --- обрабатывает токен, созданный с помощью GSS_Init_sec_
+context и, возможно, возвращает токен ответа.
+\end_layout
+
+\begin_layout Itemize
+GSS_Wrap --- конвертирует данные приложения в форму защищенного сообщения
+ (обычно шифровка).
+\end_layout
+
+\begin_layout Itemize
+GSS_Unwrap --- извлекает из защищенного сообщения данные приложения (обычно
+ расшифровка).
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+GSS-API был стандартизирован для языков C (RFC 2744) и Java (JSR-072).
+\end_layout
+
+\begin_layout Standard
+К ограничениям GSS-API можно отнести то, что он стандартизирует только аутентифи
+кацию, но не авторизацию, и что он предполагает архитектуру клиент–сервер.
+\end_layout
+
+\begin_layout Standard
+Предполагая появление новых механизмов безопасности, GSS-API включает в
+ себя специальный псевдо-механизм, SPNEGO, который позволяет обнаруживать
+ и использовать механизмы не существовашие на момент, когда приложение было
+ собрано.
+ Связь с Kerberos
+\end_layout
+
+\begin_layout Standard
+GSS-API часто применяется в связке с Kerberos.
+ В отличие от GSS-API, API Kerberos не стандартизировано (и существуют несовмест
+имые API).
+ GSS-API позволяет использовать разные реализации Kerberos без изменения
+ кода приложения.
+ 
+\end_layout
+
+\begin_layout Standard
+Основные термины GSS-API:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Name
+\family default
+ (имя) --- двоичная строка для обозначения идентификатора (имя пользователя,
+ приложения и т.
+ д.) Например, Kerberos использует формат 'user@REALM для пользователей и
+ service/hostname@REALM для приложений.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Credential
+\family default
+ (удостоверение) --- информация, доказывающая подлинность объекта (обычно
+ пароль или закрытый ключ).
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Context
+\family default
+ (контекст) --- состояние канала связи.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Token
+\family default
+ (токен) --- непрозрачное (для приложения) сообщение, которое отсылается
+ на этапе установления соединения или в ходе передачи защищенного сообщения.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Mechanism
+\family default
+ (механизм) --- реализация нижележащего уровня GSS-API, обеспечивающая фактическ
+ие имя, удостоверение и токены.
+ Типичные механизмы: Kerberos, NTLM, DCE, SESAME, SPKM, LIPKEY.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Initiator/acceptor
+\family default
+ (инициатор/получатель) --- сторона, отправляющая первый токен является
+ инициатором; противоположная сторона --- получатель.
+ Обычно получаетелем является сервер, а инициатором клиент.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Subsection
+Kerberos 5
+\end_layout
+
+\begin_layout Standard
+Протокол 
+\series bold
+Kerberos
+\series default
+ был создан более десяти лет назад в Массачусетском технологическом институте
+ в рамках проекта Athena.
+ Однако общедоступным этот протокол стал, начиная с версии 4.
+ После того, как специалисты изучили новый протокол, авторы разработали
+ и предложили очередную версию --- Kerberos 5, которая была принята в качестве
+ стандарта IETF.
+ Требования реализации протокола изложены в документе RFC 1510, кроме того,
+ в спецификации RFC 1964 описывается механизм и формат передачи жетонов
+ безопасности в сообщениях Kerberos.
+\end_layout
+
+\begin_layout Standard
+Протокол Kerberos предлагает механизм взаимной аутентификации клиента и
+ сервера перед установлением связи между ними, причем в протоколе учтен
+ тот факт, что начальный обмен информацией между клиентом и сервером происходит
+ в незащищенной среде, а передаваемые пакеты могут быть перехвачены и модифициро
+ваны.
+ Другими словами, протокол идеально подходит для применения в Интернет и
+ аналогичных сетях.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Основные концепции.
+\end_layout
+
+\begin_layout Standard
+Основная концепция протокола Kerberos очень проста --- если есть секрет,
+ известный только двоим, то любой из его хранителей может с легкостью удостовери
+ться, что имеет дело со своим напарником.
+ Для этого ему достаточно проверить, знает ли его собеседник общий секрет.
+\end_layout
+
+\begin_layout Standard
+Протокол Kerberos решает эту проблему средствами криптографии с секретным
+ ключом.
+ Вместо того, чтобы сообщать друг другу пароль, участники сеанса связи обмениваю
+тся криптографическим ключом, знание которого подтверждает личность собеседника.
+ Но чтобы такая технология оказалась работоспособной, необходимо, чтобы
+ общий ключ был симметричным, т.е., он должен обеспечивать как шифрование,
+ так и дешифрование информации.
+ Тогда один из участников использует его для шифрования данных, а другой
+ с помощью этого ключа извлекает их.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Аутентификаторы.
+\end_layout
+
+\begin_layout Standard
+Простой протокол аутентификации (на 
+\emph on
+рис.
+
+\emph default
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Пример-простого-протокола"
+
+\end_inset
+
+) с секретным ключом вступает в действие, когда кто-то стучится в сетевую
+ дверь и просит впустить его.
+ Чтобы доказать свое право на вход, пользователь предъявляет аутентификатор
+ (
+\emph on
+authenticator
+\emph default
+) в виде набора данных, зашифрованного секретным ключом.
+ Получив аутенитификатор, привратник расшифровывает его и проверяет полученную
+ информацию, чтобы убедиться в успешности дешифрования.
+ Разумеется, содержание набора данных должно постоянно меняться, иначе злоумышле
+нник может просто перехватить пакет и воспользоваться его содержимым для
+ входа в систему.
+ Если проверка прошла успешно, то это значит, что посетителю известен секретный
+ код, а так как этот код знает только он и привратник, следовательно, пришелец
+ на самом деле тот, за кого себя выдает.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/Key.png
+	scale 65
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Пример-простого-протокола"
+
+\end_inset
+
+Простой протокол шифрования
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Может случиться и так, что посетитель захочет провести взаимную аутентификацию.
+ В этом случае используется тот же самый протокол, но с некоторыми изменениями
+ и в обратном порядке.
+ Теперь привратник извлекает из исходного аутентификатора часть информации,
+ а затем шифрует ее, превращая в новый аутентификатор, и передает обратно
+ посетителю.
+ Тот, в свою очередь, расшифровывает информацию и сравнивает ее с исходной.
+ Если все совпадает --- значит, привратник знает секретный ключ.
+\end_layout
+
+\begin_layout Standard
+При этом в данном случае возникают следующие проблемы:
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Управление ключами.
+
+\emph default
+ Создание ключа, который принимали бы клиент и сервер при их взаимной передаче
+ данных.
+ Т.е.
+ клиенту и серверу требуется договориться о выборе ключа, чтобы получить
+ доступ друг к другу.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Хранение ключа
+\emph default
+.
+ Если клиенту требуется соединение с несколькими серверами, то ему требуется
+ иметь ключ для каждого сервера.
+ Соответственно, серверу нужно хранить каждый ключ клиента, подключенный
+ к нему.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Subsubsection
+Управление ключами.
+\end_layout
+
+\begin_layout Standard
+Само название протокола Kerberos говорит о том, как здесь решена проблема
+ управления ключами.
+ Кербер (или Цербер) --- персонаж классической греческой мифологии.
+ Этот свирепый пес о трех головах, по поверьям греков, охраняет врата подземного
+ царства мертвых.
+ Трем головам Кербера в протоколе Kerberos соответствуют три участника безопасно
+й связи: клиент, сервер и доверенный посредник между ними.
+ Роль посредника здесь играет так называемый центр распределения ключей
+ (
+\emph on
+Key Distribution Center
+\emph default
+, 
+\emph on
+KDC
+\emph default
+)
+\emph on
+.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+KDC
+\series default
+ представляет собой службу, работающую на физически защищенном сервере.
+ Она ведет базу данных с информацией об учетных записях всех главных абонентов
+ безопасности своей области.
+ Вместе с информацией о каждом абоненте безопасности в базе данных KDC сохраняет
+ся криптографический ключ, известный только этому абоненту и службе KDC.
+ Этот ключ, который называют долговременным, используется для связи пользователя
+ системы безопасности с центром распределения ключей.
+ В большинстве практических реализаций протокола Kerberos долговременные
+ ключи генерируются на основе пароля пользователя, указываемого при входе
+ в систему.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/KDC.png
+	scale 65
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Взаимодействие-клиента-и"
+
+\end_inset
+
+Взаимодействие клиента и сервера через посредника
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+На 
+\emph on
+рис.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Взаимодействие-клиента-и"
+
+\end_inset
+
+ 
+\emph default
+изображен процесс взаимодействия клиента и сервера с посредником.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Клиент сообщает KDC об необходимости подключения к серверу.
+\end_layout
+
+\begin_layout Enumerate
+KDC направляет клиенту и серверу копии уникального сеансового ключа (
+\emph on
+session key
+\emph default
+), действующие в течение короткого времени.
+ Их назначение заключается в проведении аутентификации клиента и сервера.
+ Копия сеансового ключа, пересылаемая на сервер, шифруется с помощью долговремен
+ного ключа этого сервера, а направляемая клиенту --- долговременного ключа
+ данного клиента.
+\end_layout
+
+\begin_layout Enumerate
+Клиент и сервер обмениваются ключами и устанавливают соединение.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Однако и у данной модели взаимодействия существуют проблемы:
+\end_layout
+
+\begin_layout Itemize
+Серверу приходится хранить свою копию сеансового ключа в памяти до тех пор,
+ пока клиент не свяжется с ним.
+\end_layout
+
+\begin_layout Itemize
+Возможные перебои в соединении между клиентом и сервером приведут к тому,
+ что запросы на сервер поступят раньше, чем сервер получит ключ от KDC.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Subsubsection
+Сеансовые мандаты.
+\end_layout
+
+\begin_layout Standard
+В ответ на запрос клиента, который намерен подключиться к серверу, служба
+ KDC направляет обе копии сеансового ключа клиенту.
+ Сообщение, предназначенное клиенту, шифруется посредством долговременного
+ ключа, общего для данного клиента и KDC, а сеансовый ключ для сервера вместе
+ с информацией о клиенте вкладывается в блок данных, получивший название
+ сеансового мандата (
+\emph on
+session ticket
+\emph default
+).
+ Затем сеансовый мандат целиком шифруется с помощью долговременного ключа,
+ который знают только служба KDC и данный сервер.
+ После этого вся ответственность за обработку мандата, несущего в себе шифрованн
+ый сеансовый ключ, возлагается на клиента, который должен доставить его
+ на сервер.
+ На 
+\emph on
+рис.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Работа-KDC-в"
+
+\end_inset
+
+ 
+\emph default
+приведена схема работы KDC в режиме раздачи сеансовых мандатов.
+ 
+\end_layout
+
+\begin_layout Standard
+В данном случае функции службы KDC ограничиваются генерацией мандата.
+ Ей больше не нужно следить за тем, все ли отправленные сообщения доставлены
+ соответствующим адресатам.
+ Даже если какое-нибудь из них попадет не туда, --- ничего страшного не
+ случится.
+ Расшифровать клиентскую копию сеансового ключа может только тот, кто знает
+ секретный долговременный ключ данного клиента, а чтобы прочесть содержимое
+ сеансового мандата, нужен секретный код сервера.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/session_ticket.png
+	scale 65
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Работа-KDC-в"
+
+\end_inset
+
+Работа KDC в режиме раздачи сеансовых мандатов
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Соединение клиента с сервером происходит по следующему сценарию:
+\end_layout
+
+\begin_layout Enumerate
+Клиент направляет KDC уведомление о необходимости подключения к серверу.
+\end_layout
+
+\begin_layout Enumerate
+KDC генерирует мандат, после чего пересылает клиенту мандат, зашифрованный
+ долгосрочным ключем, и собственный аутентификатор, зашифрованный сеансовым
+ ключом KDC.
+\end_layout
+
+\begin_layout Enumerate
+Мандат и аутентификатор пересылается серверу.
+ Сервер убеждается в том, что мандат и аутентификатор выдан доверенным посредник
+ом KDC.
+ Данные мандата расшифровываются ключом сервера.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Преимуществами данного подхода являются:
+\end_layout
+
+\begin_layout Itemize
+Серверу не нужно хранить сеансовые ключи для связи с клиентами.
+ Они сохраняются в кэш-памяти удостоверений (
+\emph on
+credentials cache
+\emph default
+) клиента, который направляет мандат на сервер каждый раз, когда хочет связаться
+ с ним.
+ Сервер, со своей стороны, получив от клиента мандат, дешифрует его и извлекает
+ сеансовый ключ.
+ Когда надобность в этом ключе исчезает, сервер может просто стереть его
+ из своей памяти.
+\end_layout
+
+\begin_layout Itemize
+У клиента исчезает необходимость обращаться к центру KDC перед каждым сеансом
+ связи с конкретным сервером.
+ Сеансовые мандаты можно использовать многократно.
+ На случай же их хищения устанавливается срок годности мандата, который
+ KDC указывает в самой структуре данных.
+ Это время определяется политикой Kerberos для конкретной области.
+ Обычно срок годности мандатов не превышает восьми часов, то есть, стандартной
+ продолжительности одного сеанса работы в сети.
+ Когда пользователь отключается от нее, кэш-память удостоверений обнуляется
+ и все сеансовые мандаты вместе с сеансовыми ключами уничтожаются.
+ Мандаты на выдачу мандатов.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Такой процесс --- вычисление одной копии ключа по паролю и извлечение другой
+ его копии из базы данных --- выполняется всего лишь один раз за сеанс,
+ когда пользователь входит в сеть впервые.
+ Сразу же после получения пользовательского пароля и вычисления долговременного
+ ключа клиент Kerberos рабочей станции запрашивает сеансовый мандат и сеансовый
+ ключ, которые используются во всех последующих транзакциях с KDC на протяжении
+ текущего сеанса работы в сети.
+\end_layout
+
+\begin_layout Standard
+На запрос пользователя KDC отвечает специальным сеансовым мандатом для самого
+ себя, так называемый мандат на выдачу мандатов (
+\emph on
+ticket-granting ticket
+\emph default
+), или мандат TGT.
+ Как и обычный сеансовый мандат, мандат TGT содержит копию сеансового ключа
+ для связи службы (в данном случае --- центра KDC) с клиентом.
+ В сообщение с мандатом TGT также включается копия сеансового ключа, с помощью
+ которой клиент может связаться с KDC.
+ Мандат TGT шифруется посредством долговременного ключа службы KDC, а клиентская
+ копия сеансового ключа --- с помощью долговременного ключа пользователя.
+\end_layout
+
+\begin_layout Standard
+Получив ответ службы KDC на свой первоначальный запрос, клиент дешифрует
+ свою копию сеансового ключа, используя для этого копию долговременного
+ ключа пользователя из своей кэш-памяти.
+ После этого долговременный ключ, полученный из пользовательского пароля,
+ можно удалить из памяти, поскольку он больше не понадобится: вся последующая
+ связь с KDC будет шифроваться с помощью полученного сеансового ключа.
+ Как и все другие сеансовые ключи, он имеет временный характер и действителен
+ до истечения срока действия мандата TGT, либо до выхода пользователя из
+ системы.
+ По этой причине такой ключ называют сеансовым ключом регистрации (
+\emph on
+login session key
+\emph default
+).
+\end_layout
+
+\begin_layout Standard
+С точки зрения клиента мандат TGT почти ничем не отличается от обычного.
+ Перед подключением к любой службе, клиент прежде всего обращается в кэш-память
+ удостоверений и достает оттуда сеансовый мандат нужной службы.
+ Если его нет, он начинает искать в этой же кэш-памяти мандат TGT.
+ Найдя его, клиент извлекает оттуда же соответствующий сеансовый ключ регистраци
+и и готовит с его помощью аутентификатор, который вместе с мандатом TGT
+ высылает в центр KDC.
+ Одновременно туда направляется запрос на сеансовый мандат для требуемой
+ службы.
+ Другими словами, организация безопасного доступа к KDC ничем не отличается
+ от организации такого доступа к любой другой службе домена --- она требует
+ сеансового ключа, аутентификатора и мандата (в данном случае мандата TGT).
+\end_layout
+
+\begin_layout Standard
+С точки же зрения службы KDC, мандаты TGT позволяют ускорить обработку запросов
+ на получением мандатов, сэкономив несколько наносекунд на пересылке каждого
+ из них.
+ Центр распределения ключей KDC обращается к долговременному ключу пользователя
+ только один раз, когда предоставляет клиенту первоначальный мандат на выдачу
+ мандата.
+ Во всех последующих транзакциях с этим клиентом центр KDC дешифрует мандаты
+ TGT с помощью собственного долговременного ключа и извлекает из него сеансовый
+ ключ регистрации, который использует для проверки подлинности аутентификатора
+ клиента.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Недостатки Kerberos
+\end_layout
+
+\begin_layout Itemize
+KDC может являться единой точкой отказа (
+\emph on
+single point of failure
+\emph default
+).
+ Если KDC недоступен, никто не сможет получить доступ к ресурсам.
+ Поэтому KDC требует избыточности.
+\end_layout
+
+\begin_layout Itemize
+KDC должен быть способен одновременно обрабатывать большое количество запросов.
+ Поэтому он должен быть масштабируемым.
+ 
+\end_layout
+
+\begin_layout Itemize
+Секретный ключ временно хранится на рабочей станции пользователя, что может
+ привести к его компрометации.
+\end_layout
+
+\begin_layout Itemize
+Сеансовый ключ хранится на рабочей станции пользователя в открытом виде
+ в кэше или таблице ключей, что может привести к его компрометации.
+\end_layout
+
+\begin_layout Itemize
+Kerberos уязвим к подбору паролей, он не сможет узнать, что атакующим производит
+ся подбор пароля по словарю.
+ 
+\end_layout
+
+\begin_layout Itemize
+Kerberos не защищает сетевой трафик, если не включено шифрование.
+ 
+\end_layout
+
+\begin_layout Itemize
+Если ключ очень короткий, он может быть уязвим к атаке «грубой силы» (
+\emph on
+brute force attack
+\emph default
+).
+\end_layout
+
+\begin_layout Itemize
+Kerberos требует, чтобы системные часы на всех клиентах и серверах были
+ синхронизированы.
+ 
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Заключение
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+addcontentsline{toc}{part}{Заключение}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\color black
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+addcontentsline{toc}{part}{Список литературы}
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Литература"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "1"
+key "GSS-API"
+
+\end_inset
+
+ Википедия: GSS-API [Электронный ресурс] --- http://ru.wikipedia.org/wiki/GSS-API
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "2"
+key "Kerberos"
+
+\end_inset
+
+ Протокол сетевой аутентификации Kerberos 5 [Электронный ресурс] --- http://www.i
+xbt.com/comm/kerberos5.shtml
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "3"
+key "Kerberos-man"
+
+\end_inset
+
+ John T.
+ Kohl, B.
+ Clifford Neuman, Theodore Y.
+ Ts’o --- The Evolution of the Kerberos Authentication Service 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "4"
+key "Kerberos-1"
+
+\end_inset
+
+http://www.bytemag.ru/articles/detail.php?ID=9059
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "4"
+key "PAM"
+
+\end_inset
+
+ Как работает PAM [Электронный ресурс] --- http://www.opennet.ru/base/net/pam_linu
+x.txt.html
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "5"
+key "PAM-history"
+
+\end_inset
+
+ Основы и настройка PAM [Электронный ресурс] --- http://www.ibm.com/developerworks
+/ru/library/l-pam/index.html
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "6"
+key "Ident"
+
+\end_inset
+
+Identification protocol (RFC1413) [Электронный ресурс] --- http://www.faqs.org/rfc
+s/rfc1413.html
+\end_layout
+
+\end_body
+\end_document
