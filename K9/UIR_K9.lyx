@@ -47,7 +47,7 @@
 %Это то что нужно для того, чтобы листинги выводились с моноширинным шрифтом
 \lstset{
 breaklines=true,                % sets automatic line breaking
-basicstyle=\ttfamily,
+basicstyle=\ttfamily\footnotesize,
 %отступ примерно 4 пробела
 breakindent={-1.2cm},
 xleftmargin=0.5cm
@@ -86,7 +86,7 @@ figs-within-sections
 \bibtex_command default
 \index_command default
 \float_placement H
-\paperfontsize 10
+\paperfontsize 12
 \spacing single
 \use_hyperref true
 \pdf_bookmarks true
@@ -4852,6 +4852,12 @@ slaptest
 \end_layout
 
 \begin_layout Subsubsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Преобразование-SCHEMA-в"
+
+\end_inset
+
 Преобразование SCHEMA в LDIF
 \end_layout
 
@@ -4873,11 +4879,11 @@ ldif
 \begin_layout Standard
 В качестве примера приведен алгоритм конвертации файла
 \family typewriter
- seinetorgperson.schema
+ example.schema
 \family default
  в файл 
 \family typewriter
-seinetorgperson.ldif
+example.ldif
 \family default
 :
 \end_layout
@@ -4918,7 +4924,7 @@ include /home/ldapuser/schema/inetorgperson.schema
 
 \begin_layout Plain Layout
 
-include /home/ldapuser/schema/seinetorgperson.schema
+include /home/ldapuser/schema/example.schema
 \end_layout
 
 \end_inset
@@ -4982,7 +4988,7 @@ ldif
 .
  Конвертированный файл будет иметь имя 
 \family typewriter
-cn={5}seinetorgperson.ldif
+cn={5}example.ldif
 \family default
 .
 \end_layout
@@ -4995,7 +5001,7 @@ status open
 
 \begin_layout Plain Layout
 
-dn: cn={5}seinetorgperson
+dn: cn={5}example
 \end_layout
 
 \begin_layout Plain Layout
@@ -5005,7 +5011,7 @@ objectClass: olcSchemaConfig
 
 \begin_layout Plain Layout
 
-cn: {5}seinetorgperson
+cn: {5}example
 \end_layout
 
 \end_inset
@@ -5017,7 +5023,7 @@ status open
 
 \begin_layout Plain Layout
 
-dn: cn=seinetorgperson,cn=schema,cn=config
+dn: cn=example,cn=schema,cn=config
 \end_layout
 
 \begin_layout Plain Layout
@@ -5027,7 +5033,7 @@ objectClass: olcSchemaConfig
 
 \begin_layout Plain Layout
 
-cn: seinetorgperson
+cn: example
 \end_layout
 
 \end_inset
@@ -5065,7 +5071,7 @@ status open
 \backslash
 {4
 \backslash
-}seinetorgperson.ldif /etc/openldap/schema/seinetorgperson.ldif
+}example.ldif /etc/openldap/schema/example.ldif
 \end_layout
 
 \end_inset
@@ -5081,7 +5087,7 @@ status open
 
 \begin_layout Plain Layout
 
-# ldapadd -x -W -D cn=config -f /etc/openldap/schema/seinetorgperson.ldif
+# ldapadd -x -W -D cn=config -f /etc/openldap/schema/example.ldif
 \end_layout
 
 \end_inset
@@ -5096,7 +5102,7 @@ status open
 \begin_layout Standard
 При выполнении данного алгоритма схема 
 \family typewriter
-seInetOrgPerson
+example
 \family default
  будет доступна для использования в OpenLDAP.
 \end_layout
@@ -5570,7 +5576,7 @@ changetype: modify
 
 \begin_layout Plain Layout
 
-replace: olcAccess
+add: olcAccess
 \end_layout
 
 \begin_layout Plain Layout
@@ -6496,6 +6502,462 @@ $ psql -h 192.168.100.4 testdb
 \end_layout
 
 \begin_layout Standard
+При этом в базе данных будет идентифицировано подключение пользователя 
+\family typewriter
+user1
+\family default
+: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+conninfo
+\end_layout
+
+\begin_layout Plain Layout
+
+connected to database "testdb" as user "user1" on host "192.168.100.4" at port
+ "5432"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+\paragraph_spacing onehalf
+Проектирование механизма хранения и передачи контекста SELinux в OpenLDAP
+\end_layout
+
+\begin_layout Standard
+Предложенный метод реализации разграничения прав доступа пользователей предполаг
+ает возможность входа пользователей удаленной машины 
+\family typewriter
+user1
+\family default
+, 
+\family typewriter
+user2
+\family default
+ и 
+\family typewriter
+user3
+\family default
+ с помощью команды:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+//Команда выполняется от пользователя user1
+\end_layout
+
+\begin_layout Plain Layout
+
+$ psql -U user2 -h 192.168.100.4 testdb
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Т.е.
+ в случае, если пользователь знает пароль 
+\family typewriter
+user2
+\family default
+, то он может зайти в базу данных с его правами.
+ Для предотвращения подобной ситуации предлагается спроектировать механизм
+ передачи контекста SELinux в OpenLDAP для мандатного разграничения доступа.
+ Данный механизм предполагает передачу контекста безопасности в OpenLDAP
+ для дополнительного контроля авторизации.
+ На 
+\emph on
+рисунке 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Схема-механизма-передачи"
+
+\end_inset
+
+ 
+\emph default
+приведена схема механизма передачи метки контекста SELinux.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/SELDAP.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Схема-механизма-передачи"
+
+\end_inset
+
+Схема механизма передачи контекста SELinux
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing single
+Предполагается, что механизм будет работать по следующей схеме:
+\end_layout
+
+\begin_layout Enumerate
+\paragraph_spacing single
+Клиент подключается к базе данных и передает имя и контекст подключающегося
+ пользователя.
+\end_layout
+
+\begin_layout Enumerate
+\paragraph_spacing single
+PostgreSQL делает запрос в сервер OpenLDAP и передает данные пользователя.
+\end_layout
+
+\begin_layout Enumerate
+\paragraph_spacing single
+LDAP ищет запись с параметрами пользователя, при этом проверяет контекст
+ пользователя по модели Белл-ла Падула.
+\end_layout
+
+\begin_layout Enumerate
+\paragraph_spacing single
+Если проверка имени пользователя, пароля и контекста прошла успешно, то
+ пользователю разрешается подключиться к базе данных, иначе соединение между
+ клиентом и базой данных разрывается.
+ 
+\end_layout
+
+\begin_layout --Separator--
+\paragraph_spacing single
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing single
+Так как отсутствуют схемы хранения и проверки контекста SELinux в OpenLDAP,
+ то предлагается создать схему на основе 
+\family typewriter
+InetOrgPerson
+\family default
+: 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+objectclass	( 2.16.840.1.113730.3.2.901
+\end_layout
+
+\begin_layout Plain Layout
+
+    NAME 'seInetOrgPerson'
+\end_layout
+
+\begin_layout Plain Layout
+
+	DESC 'Security Internet Organizational Person'
+\end_layout
+
+\begin_layout Plain Layout
+
+    SUP organizationalPerson
+\end_layout
+
+\begin_layout Plain Layout
+
+    STRUCTURAL
+\end_layout
+
+\begin_layout Plain Layout
+
+    MUST ( cn $ userPassword $ selinuxContext )
+\end_layout
+
+\begin_layout Plain Layout
+
+	MAY ( uid )
+\end_layout
+
+\begin_layout Plain Layout
+
+	)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В первой строке указывается идентификатор класса.
+ Он выбран таким образом, чтобы не было совпадений уже с существующими классами
+ LDAP.
+ Директивой 
+\family typewriter
+NAME 
+\family default
+определяется имя нового класса.
+ В следующей строке указывается описание.
+ 
+\end_layout
+
+\begin_layout Standard
+Ключевым словом 
+\family typewriter
+SUP
+\family default
+ указывается класс-родитель, от которого наследуется создаваемый класс.
+ По идеологии LDAP при наследовании в классе-наследнике доступны все поля
+ родительского класса.
+ Ключевым словом 
+\family typewriter
+STRUCTURAL 
+\family default
+определяется возможность использовать класс в создании схем.
+\end_layout
+
+\begin_layout Standard
+После чего директивой 
+\family typewriter
+MUST
+\family default
+ указываются требуемые поля в классе.
+ В данном случае это: 
+\family typewriter
+cn 
+\family default
+--- имя объекта (
+\family typewriter
+Common Name
+\family default
+), 
+\family typewriter
+userPassword 
+\family default
+--- пароль пользователя, 
+\family typewriter
+selinuxContext 
+\family default
+--- контекст пользователя SELinux.
+ В качестве необязательных в данном классе может присутствовать 
+\family typewriter
+uid
+\family default
+, определяющий uid пользователя клиентской машины.
+ 
+\end_layout
+
+\begin_layout Standard
+При определении класса был объявлен атрибут 
+\family typewriter
+selinuxContext
+\family default
+, описанный следующим образом:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+attributetype ( 2.16.840.1.113730.3.1.900
+\end_layout
+
+\begin_layout Plain Layout
+
+	NAME 'selinuxContext'
+\end_layout
+
+\begin_layout Plain Layout
+
+	DESC 'SeLinuxContext for LDAP'
+\end_layout
+
+\begin_layout Plain Layout
+
+	EQUALITY caseExactMatch
+\end_layout
+
+\begin_layout Plain Layout
+
+	SUBSTR caseIgnoreSubstringsMatch
+\end_layout
+
+\begin_layout Plain Layout
+
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+\end_layout
+
+\begin_layout Plain Layout
+
+	SINGLE-VALUE )
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Назначение идентификатора, 
+\family typewriter
+NAME 
+\family default
+и 
+\family typewriter
+DESC 
+\family default
+описывалось выше.
+ С помощью директивы 
+\family typewriter
+EQULITY 
+\family default
+задается правило сравнения (чувствительное к регистру, но нечувствительное
+ к количеству пробелов).
+ В следующей строке определяется правило сравнения для подстроки.
+ В данном случае это 
+\family typewriter
+caseIgnoreSubstringsMatch 
+\family default
+--- нечувствительное к регистру, нечувствительное к количеству пробельных
+ символов значение подстроки.
+ В следующей строке с помощью ключевого слова 
+\family typewriter
+SYNTAX
+\family default
+ указывается тип данных, который применяется здесь в качестве значения.
+ В данном случае идентификатор указывает на Unicode-строку.
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+SINGLE-VALUE
+\family default
+,
+\family typewriter
+ 
+\family default
+указанное в конце объявления атрибута запрещает классу иметь более одного
+ такого атрибута.
+ 
+\end_layout
+
+\begin_layout Standard
+Данный класс изначально записывается в файл 
+\family typewriter
+seinetorgperson.schema
+\family default
+, но может быть преобразован к LDIF-файлу по инструкции 
+\emph on
+пункта 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Преобразование-SCHEMA-в"
+
+\end_inset
+
+
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+После успешной загрузки данный класс можно использовать для создания новых
+ сущностей в дереве:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+dn: cn=seuser,ou=Users,dc=ldap-server,dc=ru
+\end_layout
+
+\begin_layout Plain Layout
+
+cn: security user
+\end_layout
+
+\begin_layout Plain Layout
+
+sn: seuser
+\end_layout
+
+\begin_layout Plain Layout
+
+objectClass: seinetOrgPerson
+\end_layout
+
+\begin_layout Plain Layout
+
+userPassword: {SSHA}csBKk4Ei9q0eOgBA8TNLWCio7bvg97BI
+\end_layout
+
+\begin_layout Plain Layout
+
+selinuxContext: user_u:user_r:user_t:s0-s3
+\end_layout
+
+\begin_layout Plain Layout
+
+uid: 501
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Таким образом, LDAP обладает возможностью настройки прав доступа к объектам
+ на основе иерархической структуры, гибок при настройке и может быть использован
+ для использования в качестве методов авторизации в PostgreSQL.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Newpage newpage
 \end_inset
 
@@ -6520,6 +6982,44 @@ addcontentsline{toc}{part}{Заключение}
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Данная учебно-исследовательская работа посвящена исследованию основных методов
+ авторизации в системе управления базами данных PostgreSQL.
+\end_layout
+
+\begin_layout Standard
+Были достигнуты основные результаты:
+\end_layout
+
+\begin_layout Enumerate
+Произведено исследование основных методов авторизации в PostgreSQL.
+ Выявлены их достоинства и недостатки.
+\end_layout
+
+\begin_layout Enumerate
+Исследованы возможности сервера OpenLDAP.
+\end_layout
+
+\begin_layout Enumerate
+Описан процесс настройки метода авторизации LDAP в PostgreSQL.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Предложен механизм интеграции средств мандатного разграничения доступа с
+ OpenLDAP, а также реализована схема хранения контекста безопасности в OpenLDAP.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+В целом можно судить о достижении поставленной цели.
+ Продолжением темы учебно-исследовательской работы может послужить программная
+ реализация механизма и передачи контекста безопасности в OpenLDAP сервер.
 \end_layout
 
 \begin_layout Standard
