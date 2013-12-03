@@ -1877,6 +1877,33 @@ trust
  Однако данный метод используется редко для этих целей.
 \end_layout
 
+\begin_layout Subsubsection*
+Недостатки метода аутентификации trust
+\end_layout
+
+\begin_layout Itemize
+Не позволяет разграничивать доступ пользователей.
+\end_layout
+
+\begin_layout Itemize
+Разрешает подключение к любой базе данных (в том числе и системной) любому
+ пользователю ОС.
+\end_layout
+
+\begin_layout Itemize
+Применение на многопользовательских рабочих станциях требуют дополнительной
+ настройки.
+\end_layout
+
+\begin_layout Itemize
+Требуют создания аккаунтов пользователей ОС для их аутентификации в базах
+ данных.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
 \begin_layout Subsection
 Password
 \end_layout
@@ -1900,35 +1927,98 @@ password
 \family default
 .
  Эти методы работают следующим образом: пользователю предлагается ввести
- пароль от базы данных.
- Введенный пароль хранится в с
-\end_layout
-
-\begin_layout Standard
-The password-based authentication methods are md5, crypt, and password.
- These methods operate similarly except for the way that the password is
- sent across the connection: respectively, MD5-hashed, crypt-encrypted,
- and clear-text.
- A limitation is that the crypt method does not work with passwords that
- have been encrypted in pg_authid.
-\end_layout
-
-\begin_layout Standard
-If you are at all concerned about password "sniffing" attacks then md5 is
- preferred, with crypt to be used only if you must support pre-7.2 clients.
- Plain password should be avoided especially for connections over the open
- Internet (unless you use SSL, SSH, or another communications security wrapper
- around the connection).
-\end_layout
-
-\begin_layout Standard
-PostgreSQL database passwords are separate from operating system user passwords.
- The password for each database user is stored in the pg_authid system catalog.
- Passwords can be managed with the SQL commands CREATE USER and ALTER USER,
- e.g., CREATE USER foo WITH PASSWORD 'secret';.
- By default, that is, if no password has been set up, the stored password
- is null and password authentication will always fail for that user.
+ пароль от базы данных, который передается базе данных через подключение.
+ Введенный пароль сравнивается с хранимым в глобальной системной таблице
  
+\family typewriter
+pg_shadow
+\family default
+.
+ При совпадении этих паролей пользователь авторизуется в базе данных.
+\end_layout
+
+\begin_layout Standard
+При использовании метода 
+\family typewriter
+password
+\family default
+ пароль высылается в базу данных в открытом (тестовом) виде.
+ 
+\end_layout
+
+\begin_layout Standard
+Метод 
+\family typewriter
+crypt
+\family default
+ аналогичен методу 
+\family typewriter
+password
+\family default
+, но в нем пароль пересылается не в простом текстовом виде, а с применением
+ простой схемы шифрования, которая не обеспечивает надежной защиты, но это
+ все же лучше, чем простая пересылка пароля в текстовом виде, как в методе
+ 
+\family typewriter
+password
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Аналогично, при использовании 
+\family typewriter
+md5 
+\family default
+PostgreSQL сравнивает шифрованные по алгоритму 
+\family typewriter
+md5 
+\family default
+пароли.
+ 
+\end_layout
+
+\begin_layout Standard
+Для назначения или изменения пароля пользователей используются SQL-запросы
+ 
+\family typewriter
+CREATE USER
+\family default
+ и 
+\family typewriter
+ALTER USER
+\family default
+.
+ По умолчанию, если пароль пользователя не установлен, то в качестве пароля
+ этого пользователя хранится пустая строка и аутентификация пользователя
+ проводиться не будет.
+\end_layout
+
+\begin_layout Subsubsection*
+Недостатки методов аутентификации по паролю
+\end_layout
+
+\begin_layout Itemize
+Пароли пользователей передаются по нешифрованному каналу.
+\end_layout
+
+\begin_layout Itemize
+Ввиду использования простых схем шифрования паролей, могут быть скомпрометирован
+ы.
+\end_layout
+
+\begin_layout Itemize
+Пароли пользователей хранятся в таблице базы данных.
+\end_layout
+
+\begin_layout Itemize
+Позволяют любому пользователю ОС зайти в базу данных с именем пользователя
+ при вводе правильного пароля.
+\end_layout
+
+\begin_layout --Separator--
+
 \end_layout
 
 \begin_layout Subsection
@@ -2322,7 +2412,7 @@ key "Peer"
 \end_layout
 
 \begin_layout Enumerate
-Незашифрованный канал.
+Нешифрованный канал.
 \end_layout
 
 \begin_layout --Separator--
