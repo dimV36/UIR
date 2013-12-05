@@ -3610,7 +3610,7 @@ slapd
 .
  При увеличении количества записей в каталоге перезапуск будет занимать
  все более продолжительное время, и, в случае высоконагруженных каталогов,
- такой метод переконфигурации становится всё более неприемлемым.
+ такой метод переконфигурации становится все более неприемлемым.
  В OpenLDAP версии 2.3 была представлена опциональная новая возможность,
  посредством которой конфигурация может быть произведена во время исполнения
  с помощью модификации записей специального DIT, называемого 
@@ -3621,8 +3621,16 @@ cn=config
 \end_layout
 
 \begin_layout Standard
+Все конфигурационные файлы сервера OpenLDAP хранятся в каталоге 
+\family typewriter
+/etc/openldap/slapd.d
+\family default
+.
+\end_layout
+
+\begin_layout Standard
 Для управления настройками рабочей среды в конфигурации времени исполнения
- (OLC) используется конфигурационное DIT с жёстко установленным суффиксом
+ (OLC) используется конфигурационное DIT с жестко установленным суффиксом
  
 \family typewriter
 cn=config
@@ -3764,9 +3772,9 @@ cn=config
 \family typewriter
 olcSchemaConfig 
 \family default
-и содержат все объекты (атрибуты и объектные классы), определённые в данном
+и содержат все объекты (атрибуты и объектные классы), определенные в данном
  наборе схемы.
- Здесь {Z} - числовой счётчик, нумерация которого начинается с 0, а xxxx
+ Здесь {Z} - числовой счетчик, нумерация которого начинается с 0, а xxxx
  - имя набора схемы данных.
  То есть, если первым подключается набор схемы 
 \family typewriter
@@ -3791,7 +3799,7 @@ olcDatabaseConfig
 \family default
  (содержащий общие атрибуты, определяемые для всех типов баз данных), а
  также объектный класс, специфичный для конкретного типа базы данных.
- Здесь {Z} - числовой счётчик, нумерация которого начинается с 0, а xxxx
+ Здесь {Z} - числовой счетчик, нумерация которого начинается с 0, а xxxx
  - имя типа базы данных.
  То есть, если первой определяется база данных типа 
 \family typewriter
@@ -3817,7 +3825,7 @@ olcOverlayConfig
 \family default
 , содержащий общие атрибуты, определяемые для всех наложений, а также объектный
  класс, специфичный для конкретного наложения.
- Здесь {Z} - числовой счётчик, нумерация которого начинается с 0, а xxxx
+ Здесь {Z} - числовой счетчик, нумерация которого начинается с 0, а xxxx
  - имя наложения.
  То есть, если первым из наложений определяется наложение 
 \family typewriter
@@ -3980,7 +3988,7 @@ ldapsearch
  открывает соединение с сервером LDAP, подключается и производит поиск,
  используя указанные параметры.
  Указываемый фильтр должен соответствовать строковому представлению поисковых
- фильтров, определённому в RFC 4515.
+ фильтров, определенному в RFC 4515.
  Если фильтр не был указан, используется фильтр по умолчанию 
 \family typewriter
 (objectClass=*)
@@ -4079,7 +4087,7 @@ cn=postgres,ou=Admins,dc=ldap-server,dc=ru
 slapacl
 \family default
 \series default
- позволяет пользователю проверить возможность доступа от имени определённого
+ позволяет пользователю проверить возможность доступа от имени определенного
  DN подключения (
 \family typewriter
 -b
@@ -4442,259 +4450,20 @@ slaptest
 \end_layout
 
 \begin_layout Subsubsection
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:Преобразование-SCHEMA-в"
-
-\end_inset
-
-Преобразование SCHEMA в LDIF
+Access Control List (ACL)
 \end_layout
 
 \begin_layout Standard
-Формат 
-\family typewriter
-schema
-\family default
- используется для статического подключения схем сущностей в LDAP.
- Иным вариантом является динамическое подключение схем с помощью 
-\family typewriter
-ldif
-\family default
--схем.
- Динамические схемы могут быть загружены в LDAP подобно обычному запросу
- в каталог.
-\end_layout
-
-\begin_layout Standard
-В качестве примера приведен алгоритм конвертации файла
-\family typewriter
- example.schema
-\family default
- в файл 
-\family typewriter
-example.ldif
-\family default
-:
-\end_layout
-
-\begin_layout Enumerate
-Создать файл преобразования 
-\family typewriter
-/home/ldapuser/export.ldif
-\family default
-, в который импортируются данные 
-\family typewriter
-schema
-\family default
--файлов:
-\begin_inset listings
-inline false
+\begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
-
-include /home/ldapuser/schema/core.schema
-\end_layout
-
-\begin_layout Plain Layout
-
-include /home/ldapuser/schema/cosine.schema
-\end_layout
-
-\begin_layout Plain Layout
-
-include /home/ldapuser/schema/nis.schema
-\end_layout
-
-\begin_layout Plain Layout
-
-include /home/ldapuser/schema/inetorgperson.schema
-\end_layout
-
-\begin_layout Plain Layout
-
-include /home/ldapuser/schema/example.schema
-\end_layout
-
-\end_inset
-
-При этом требуется подключить все доступные схемы из каталога 
-\family typewriter
-/etc/openldap/schema
-\family default
-.
-\end_layout
-
-\begin_layout Enumerate
-Создать каталог, в котором будут храниться конвертированные схемы:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# mkdir ldif
+Доделать
 \end_layout
 
 \end_inset
 
 
-\end_layout
-
-\begin_layout Enumerate
-Запустить процесс конвертации:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# slaptest -f /home/ldapuser/export.ldif -F /home/ldapuser/ldif
-\end_layout
-
-\end_inset
-
-В случае успешного завершения будет выведено сообщение:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-config file testing succeeded
-\end_layout
-
-\end_inset
-
-И при этом будет создано дерево каталогов 
-\family typewriter
-cn=config
-\family default
- в 
-\family typewriter
-ldif
-\family default
-.
- Конвертированный файл будет иметь имя 
-\family typewriter
-cn={5}example.ldif
-\family default
-.
-\end_layout
-
-\begin_layout Enumerate
-В конвертируемом файле требуется изменить записи:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-dn: cn={5}example
-\end_layout
-
-\begin_layout Plain Layout
-
-objectClass: olcSchemaConfig
-\end_layout
-
-\begin_layout Plain Layout
-
-cn: {5}example
-\end_layout
-
-\end_inset
-
-на следующие:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-dn: cn=example,cn=schema,cn=config
-\end_layout
-
-\begin_layout Plain Layout
-
-objectClass: olcSchemaConfig
-\end_layout
-
-\begin_layout Plain Layout
-
-cn: example
-\end_layout
-
-\end_inset
-
-и удалить все записи, начиная с 
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-structuralObjectClass: olcSchemaConfig
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Скопировать конвертированную схему в каталог схем:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# cp ldif/cn
-\backslash
-=config/cn
-\backslash
-=schema/cn
-\backslash
-=
-\backslash
-{4
-\backslash
-}example.ldif /etc/openldap/schema/example.ldif
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-После чего можно загружать схему в OpenLDAP:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# ldapadd -x -W -D cn=config -f /etc/openldap/schema/example.ldif
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout --Separator--
-
-\end_layout
-
-\begin_layout Standard
-При выполнении данного алгоритма схема 
-\family typewriter
-example
-\family default
- будет доступна для использования в OpenLDAP.
 \end_layout
 
 \begin_layout Standard
@@ -4737,7 +4506,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename files/LDAP.png
+	filename files/cluster.svg
 	scale 65
 
 \end_inset
@@ -4770,45 +4539,55 @@ name "fig:Схема-разворачиваемого-стенда"
 \end_layout
 
 \begin_layout Standard
-Клиентская машина PostgreSQL (IP 192.168.100.2) содержит локального пользователя
+Клиент с IP 192.168.100.2 позволяет проводит аутентификацию своих пользователей
+ (
+\family typewriter
+user1
+\family default
+, 
+\family typewriter
+user2
+\family default
+ и 
+\family typewriter
+user3
+\family default
+) на сервере LDAP (IP 192.168.100.3), который хранит записи с данными пользователей
  
 \family typewriter
 user1
 \family default
+, 
+\family typewriter
+user2
+\family default
+, 
+\family typewriter
+user3
+\family default
 .
- 
 \end_layout
 
 \begin_layout Standard
-Сервер OpenLDAP, доступный по IP 192.168.100.3 хранит записи о пользователе
- базы данных 
-\family typewriter
-user1 
-\family default
-и администраторе базы данных 
-\family typewriter
-postgres
-\family default
- вместе с их паролями
-\family typewriter
- 
-\family default
-в системе каталогов LDAP.
- 
-\end_layout
-
-\begin_layout Standard
-Сервер базы данных PostgreSQL (IP 192.168.100.4) имеет администратора базы
+Сервер базы данных PostgreSQL (IP 192.168.100.4) содержит администратора базы
  данных 
 \family typewriter
 postgres
 \family default
-, который является пользователем операционной системы, а также пользователя
+, который является пользователем операционной системы, а также пользователей
  базы данных 
 \family typewriter
-user1 
+user1
 \family default
-в базе данных.
+, 
+\family typewriter
+user2 
+\family default
+и
+\family typewriter
+ user3
+\family default
+ в базе данных.
 \end_layout
 
 \begin_layout Standard
@@ -4817,25 +4596,53 @@ user1
 Механизм аутентификации по методу LDAP работает следующим образом:
 \end_layout
 
-\begin_layout Enumerate
-Клиент подключается к серверу базы данных.
- 
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Допилить!
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Настройка стенда будет состоять из следующих этапов:
 \end_layout
 
 \begin_layout Enumerate
-Сервер базы данных генерирует запрос серверу LDAP, содержащий имя пользователя
- на клиентской машине.
+Установка клиента PostgreSQL, демона SSSD и скриптов, создающие сущности
+ LDAP-объектов учетных записей пользователей на клиентской машины и копирование
+ этих данных на LDAP-сервер.
 \end_layout
 
 \begin_layout Enumerate
-Сервер LDAP выдает запрос на ввод пароля от того пользователя, имя которого
- передал сервер PostgreSQL.
+Настройка сервера LDAP: установка имени DIT, пароля администратора, системы
+ логирования, а также политики доступа к атрибутам сущностей.
 \end_layout
 
 \begin_layout Enumerate
-Если запись этого пользователя найдена и введенный пароль на клиентской
- машины совпадает с паролем, хранящемся в системе каталогов LDAP, то клиенту
- разрешается подключение, иначе --- доступ закрывается.
+Создание сертификата сервера LDAP и передача его клиенту.
+\end_layout
+
+\begin_layout Enumerate
+Загрузка сущностей учетных записей пользователей клиента в LDAP-сервер.
+\end_layout
+
+\begin_layout Enumerate
+Настройка аутентификации пользователей клиента на LDAP-сервере с помощью
+ SSSD.
+\end_layout
+
+\begin_layout Enumerate
+Установка и настройка сервера PostgreSQL.
+\end_layout
+
+\begin_layout Enumerate
+Проверка работы стенда.
 \end_layout
 
 \begin_layout --Separator--
@@ -4847,63 +4654,217 @@ user1
 \end_layout
 
 \begin_layout Standard
-Для настройки клиентской машины требуется выполнить следующие действия:
-\end_layout
-
-\begin_layout Enumerate
-Установить пакеты клиентского приложения 
-\family typewriter
-psql
-\family default
- следующей командой:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# yum install -y postgresql93 postgresql93-libs
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Создать пользователя 
-\family typewriter
-user1
-\family default
- и назначить ему пароль: 
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# useradd user -p 123456
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout --Separator--
-
-\end_layout
-
-\begin_layout Subsection
-Настройка сервера OpenLDAP
+Первоначальная настройка клиентской машины состоит в установке необходимых
+ пакетов для настройки аутентификации на сервере LDAP и клиентских пакетов
+ базы данных.
+ 
 \end_layout
 
 \begin_layout Standard
-Для настройки openLDAP сервера требуется выполнить следующие действия:
+Для установки демона SSSD используется команда:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# yum install -y sssd
 \end_layout
 
-\begin_layout Enumerate
-Установить пакеты openLDAP командой:
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Далее устанавливаются пакеты скриптов, позволяющие импортировать данные
+ пользователей, их паролей, групп в LDAP:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# yum install -y migrationtools
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Данный пакет содержит Perl-скрипты, генерирующий на основе файлов 
+\family typewriter
+/etc/passwd
+\family default
+, 
+\family typewriter
+/etc/shadow 
+\family default
+сущности пользователей LDAP и сервисов.
+\end_layout
+
+\begin_layout Standard
+Установить пакет клиента Postgresql psql:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# yum install -y postgresql93
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+После выполнения данной команды будет установлен клиент 
+\family typewriter
+psql
+\family default
+ для версии Postgresql 9.3.
+\end_layout
+
+\begin_layout Standard
+Создать папку 
+\family typewriter
+ldif
+\family default
+, в которой будут храниться сгенерированные LDIF-файлы для загрузки в LDAP-серве
+р:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# mkdir /root/ldif
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Перейти в каталог скриптов 
+\family typewriter
+migrationtools
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# cd /usr/share/migrationtools
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Отредактировать файл 
+\family typewriter
+migrate_common.ph
+\family default
+, установив имя DIT:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$DEFAULT_BASE = "dc=ldap-server,dc=ru"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+После чего запустить скрипт 
+\family typewriter
+migrate_base.pl
+\family default
+, который создаст корневой элемент дерева и дочерние сущности для хостов,
+ сети, групп и пользователей:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# ./migrate_base.pl > /root/ldif/base.ldif
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Данный скрипт копируется на LDAP-сервер:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# scp /root/ldif/base.ldif root@192.168.100.3:/etc/openldap
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+При выполнении команды требуется ввод пароля пользователя 
+\family typewriter
+root
+\family default
+ на сервере LDAP.
+\end_layout
+
+\begin_layout Subsection
+Настройка сервера LDAP
+\end_layout
+
+\begin_layout Standard
+Первоначальная настройка сервера OpenLDAP предполагает установку пакетов
+ сервера OpenLDAP, далее изменение доменного имени, создание администратора
+ каталога и его пароля, изменение правил доступа к атрибутам каталога.
+ С помощью системы 
+\family typewriter
+rsyslog
+\family default
+ выполняется логгирование сервера.
+ 
+\end_layout
+
+\begin_layout Standard
+Сервер OpenLDAP устанавливается с помощью команды: 
 \begin_inset listings
 inline false
 status open
@@ -4918,25 +4879,23 @@ status open
 
 \end_layout
 
-\begin_layout Enumerate
-Открыть порт 
+\begin_layout Standard
+Команда установит необходимые компоненты сервера, а также клиентские приложения
+ для выполнения запросов в службу каталогов LDAP.
+\end_layout
+
+\begin_layout Standard
+Сервер OpenLDAP работает на парте 389.
+ Для возможности доступа к серверу OpenLDAP с клиентской машины требуется
+ открыть порт 389 в межсетевом экране 
 \family typewriter
-389
+iptables
 \family default
- в межсетевом экране iptables.
- Для этого открыть на чтение 
-\family typewriter
-/etc/sysconfig/iptables
-\family default
- и поместить следующую строку после всех 
-\family typewriter
-ACCEPT 
-\family default
-и до 
-\family typewriter
-REJECT
-\family default
-:
+.
+ Для этого нужно записать следующую строку
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
@@ -4948,9 +4907,27 @@ status open
 
 \end_inset
 
-Таким образом, данная строка позволяет принимать запросы от других машин
- по порту 389.
- Изменение конфигурационного файла межсетевого экрана требует перезапуска:
+
+\end_layout
+
+\begin_layout Standard
+в конфигурационный файл 
+\family typewriter
+/etc/sysconfig/iptables 
+\family default
+после строк, заканчивающихся на 
+\family typewriter
+ACCEPT
+\family default
+ и до строки 
+\family typewriter
+REJECT
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Изменение конфигурационного файла межсетевого экрана требует перезапуска:
  
 \begin_inset listings
 inline false
@@ -4966,49 +4943,84 @@ status open
 
 \end_layout
 
-\begin_layout Enumerate
-Создать пароль для администратора (
+\begin_layout Standard
+Далее выполняется непосредственно настройка сервера OpenLDAP.
+\end_layout
+
+\begin_layout Standard
+Сервер OpenLDAP использует для хранения BerkleyDB.
+ Файл 
 \family typewriter
-RootDN
+DB_CONFIG.example 
 \family default
-) сервера OpenLDAP.
- Для этого выполнить команду:
+содержит конфигурацию BerkleyDB, оптимизированную для использования в OpenLDAP.
+ Поэтому требуется скопировать этот файл в каталог базы данных LDAP:
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-# slappasswd
+# cp /usr/share/openldap-servers/DB_CONFIG.example /var/lib/ldap/DB_CONFIG
 \end_layout
 
 \end_inset
 
-Потребуется ввести желаемый пароль, а также его подтвердить.
- В результате работы этой команды будет выведена строка с хэшем пароля,
- например для пароля 
+и назначить папке владельца 
 \family typewriter
-123456 
+ldap.ldap
 \family default
-будет выведен следующий хэш:
+:
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-{SSHA}US0VGNxhxro/QD3B4wIbjRa5re9i8cX1
+# chown -R ldap.ldap /var/lib/ldap
 \end_layout
 
 \end_inset
 
-Изменить настройки сервера OpenLDAP.
- Для этого:
+
 \end_layout
 
-\begin_deeper
-\begin_layout Enumerate
-Создать папку, в которой будут храниться все пользовательские LDIF:
+\begin_layout Standard
+При установке сервера OpenLDAP создается пользователь 
+\family typewriter
+ldap
+\family default
+, не наделенный правами аутентифкации на сервере.
+ Это сделано из соображения безопасности.
+ При этом нужно следить, чтобы конфигурационные файлы сервера 
+\family typewriter
+/etc/openldap/slapd.d
+\family default
+ и файлы базы данных BerkleyDB 
+\family typewriter
+/var/lib/ldap
+\family default
+ были маркированы как 
+\family typewriter
+ldap.ldap
+\family default
+, иначе сервер OpenLDAP не будет запущен.
+
+\family typewriter
+ 
+\end_layout
+
+\begin_layout Standard
+Для хранения изменений конфигурационных файлов и пользовательских данных
+ сервера в формате LDAP Data Interchange Format (LDIF, 
+\begin_inset Quotes fld
+\end_inset
+
+Формат обмена данными LDAP) создается папка 
+\family typewriter
+ldif
+\family default
+:
 \begin_inset listings
 inline false
 status open
@@ -5023,39 +5035,19 @@ status open
 
 \end_layout
 
-\begin_layout Enumerate
-Cоздать файл
+\begin_layout Standard
+Для изменения доменного имени создается файл 
 \family typewriter
- config.ldif
+/etc/openldap/ldif/root.ldif
 \family default
- следующего содержания в этой папке:
+:
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
+lstparams "numbers=left"
 inline false
 status open
-
-\begin_layout Plain Layout
-
-dn: olcDatabase={0}config,cn=config
-\end_layout
-
-\begin_layout Plain Layout
-
-changetype: modify
-\end_layout
-
-\begin_layout Plain Layout
-
-add: olcRootPW
-\end_layout
-
-\begin_layout Plain Layout
-
-olcRootPW: {SSHA}wxIXiCClyvjvT0YTjb8KT5KaIf9uT4TV 
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -5077,9 +5069,186 @@ replace: olcSuffix
 olcSuffix: dc=ldap-server,dc=ru
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В первой строке указывается путь до конфигурационного файла базы данных:
+ 
+\family typewriter
+olcDatabase={2}bdb.ldif
+\family default
+, который содержится в папке 
+\family typewriter
+cn=config
+\family default
+.
+ Далее указывается, что файл модифицируется.
+ В третьей строке указывается, что изменяется параметр 
+\family typewriter
+olcSuffix
+\family default
+, отвечающий за имя DIT.
+ В последней строке устанавливается желаемое имя информационного каталога
+ DIT в нотации LDAP.
+\end_layout
+
+\begin_layout Standard
+Для загрузки этого файла в OpenLDAP используется следующая команда:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# ldapmodify -Y EXTERNAL -H ldapi:/// -f /etc/openldap/ldif/root.ldif
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Ключом 
+\family typewriter
+-Y
+\family default
+ передается тип механизма SASL,
+\family typewriter
+ 
+\family default
+используемый при запросе.
+ В данном случае используется аутентификация, уже выполненную протоколом
+ низкого уровня.
+ 
+\end_layout
+
+\begin_layout Standard
+Ключом 
+\family typewriter
+-H
+\family default
+ указывается хост LDAP-сервера.
+ В данном случае аргумент 
+\family typewriter
+ldapi:///
+\family default
+ означает выполнение запроса на локальном хосте.
+ 
+\end_layout
+
+\begin_layout Standard
+С помощью ключа 
+\family typewriter
+-f
+\family default
+ указывается файл запроса.
+ 
+\end_layout
+
+\begin_layout Standard
+При успешном выполнении команды будет выведено следующее:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+SASL/EXTERNAL authentication started
+\end_layout
+
+\begin_layout Plain Layout
+
+SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
+\end_layout
+
+\begin_layout Plain Layout
+
+SASL SSF: 0
+\end_layout
+
+\begin_layout Plain Layout
+
+modifying entry "olcDataBase={2}bdb,cn=config"
+\end_layout
+
 \begin_layout Plain Layout
 
 \end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Администратор LDAP может изменять сущности каталога, добавлять или удалять
+ сущности пользователей, а также редактировать их сущности.
+ Создание сущности администратора в LDAP предполагает: 
+\end_layout
+
+\begin_layout Enumerate
+Создание записи администратора.
+\end_layout
+
+\begin_layout Enumerate
+Установка пароля администратора.
+ 
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Перед тем, как создать LDIF-файл для администратора, нужно создать зашифрованный
+ пароль с помощью утилиты 
+\family typewriter
+slappaswd
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# slappasswd
+\end_layout
+
+\end_inset
+
+Потребуется ввести желаемый пароль, а также его подтвердить.
+ В результате работы этой команды будет выведена строка с хэшем пароля.
+ Необходимость шифрования пароля обусловлена недопущением раскрытия пароля
+ администратора службы каталогов.
+ 
+\end_layout
+
+\begin_layout Standard
+Запись администратора каталога создается в файле 
+\family typewriter
+/etc/openldap/ldif/admin.ldif
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
 
 \begin_layout Plain Layout
 
@@ -5125,9 +5294,78 @@ add: olcRootPW
 olcRootPW: {SSHA}US0VGNxhxro/QD3B4wIbjRa5re9i8cX1
 \end_layout
 
-\begin_layout Plain Layout
+\end_inset
+
 
 \end_layout
+
+\begin_layout Standard
+В поле 
+\family typewriter
+olcRootDN
+\family default
+ устанавливается имя администратора 
+\family typewriter
+admin
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+В поле 
+\family typewriter
+olcRootPW
+\family default
+ записывается пароль администратора, зашифрованный с помощью команды 
+\family typewriter
+slappaswd
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Аналогично предыдущему, загрузка осуществляется с помощью команды:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# ldapmodify -Y EXTERNAL -H ldapi:/// -f /etc/openldap/ldif/admin.ldif
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+ACL --- это набор правил, определяющие права доступа к атрибутам записи
+ LDAP.
+ Порядок правил важен при создании, т.к.
+ их обработка происходит от первого к последнему.
+ Если пользователь запрашивает доступ к атрибуту, но в ACL не существует
+ ни одного, в котором разрешается, то в доступе отказывается.
+ В стандартной политике LDAP, поставляемой с пакетами 
+\family typewriter
+openldap 
+\family default
+доступ к атрибутам разрешается всем пользователям.
+ В связи с этим, требуется установка новых правил ACL.
+\end_layout
+
+\begin_layout Standard
+Создается файл 
+\family typewriter
+/etc/openldap/ldif/policy.ldif
+\family default
+, определяющий права доступа к атрибутам записей LDAP: 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
 
 \begin_layout Plain Layout
 
@@ -5202,130 +5440,88 @@ n=auth" read by dn.base="cn=admin,dc=ldap-server,dc=ru" read by * none
 
 \end_inset
 
-В качестве примера рассмотрим описание запроса, представленного в первом
- блоке:
-\begin_inset listings
-inline false
-status open
 
-\begin_layout Plain Layout
-
-dn: olcDatabase={0}config,cn=config
 \end_layout
 
-\begin_layout Plain Layout
-
-changetype: modify
-\end_layout
-
-\begin_layout Plain Layout
-
-add: olcRootPW
-\end_layout
-
-\begin_layout Plain Layout
-
-olcRootPW: {SSHA}wxIXiCClyvjvT0YTjb8KT5KaIf9uT4TV 
-\end_layout
-
-\end_inset
-
-В первой строке указывается, что объект запроса --- сущность 
+\begin_layout Standard
+Первый запрос устанавливает права пользователей на поле 
 \family typewriter
-cn=config/olcDataBase={0}config.ldif
+userPassword
 \family default
-, 
+ записей пользователей.
+ В данное поле разрешено записывать (
 \family typewriter
-changetype: modify
+write
 \family default
- указывает базе данных на то, что сущность изменяется.
- Изменение описывается в следующей строке: 
+), т.е.
+ изменять его, себе (
 \family typewriter
-add: olcRootPW
+self
 \family default
-.
- Т.е добавляется аторибут 
-\family typewriter
-oclRootPW
-\family default
-.
- В последней строке указывается значение этого поля.
- Так как это изменение применяется для атрибута пароля, то значение этого
- поля --- хэш пароля, выдаваемого утилитой 
-\family typewriter
-slappaswd
-\family default
-.
-\end_layout
-
-\begin_layout Enumerate
-Первый запрос устанавливает поля пароля для базы данных 
-\family typewriter
-config
-\family default
-, которая хранит служебную информацию о каталоге.
-\begin_inset Newline newline
-\end_inset
-
-Второй запрос изменяет имя домена сервера openLDAP.
-\begin_inset Newline newline
-\end_inset
-
-В третьем блоке устанавливается имя администратора каталога 
-\family typewriter
-admin
-\family default
-.
-\begin_inset Newline newline
-\end_inset
-
-В четвертом --- устанавливается пароль администратора каталога.
-\begin_inset Newline newline
-\end_inset
-
-Во всех остальных устанавливается политика безопасности каталога 
+) и администратору (
 \family typewriter
 cn=admin,dc=ldap-server,dc=ru
 \family default
-.
+).
+ Анонимные пользователи для изменения этого поля должны пройти аутентификацию
+ в LDAP (
+\family typewriter
+anonymous auth
+\family default
+), всем остальным, не попадающие под предыдущее, запрещены любые действия
+ (
+\family typewriter
+by * none
+\family default
+).
 \end_layout
 
-\begin_layout Enumerate
-Осуществить загрузку изменений в LDAP:
+\begin_layout Standard
+Во втором запросе устанавливаются права пользователей на остальные поля
+ записей.
+\end_layout
+
+\begin_layout Standard
+В третьем запросе устанавливаются права на чтение записей базы 
+\family typewriter
+cn=monitor
+\family default
+, с помощью которой можно узнать текущее состояние каталога.
+ 
+\end_layout
+
+\begin_layout Standard
+Загрузка политик ACL в LDAP:
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-# ldapmodify -Y EXTERNAL -H ldapi:/// -f /etc/openldap/ldif/config.ldif
+# ldapmodify -Y EXTERNAL -H ldapi:/// -f /etc/openldap/ldif/policy.ldif
 \end_layout
 
 \end_inset
 
-Успешное выполнение этого запроса предполагает вывод строк, содержащих фразу
- 
-\begin_inset Quotes fld
-\end_inset
 
+\end_layout
 
+\begin_layout Standard
+Система ведения логов позволяет вести в реальном времени информацию о работе
+ демона 
 \family typewriter
-modifying entity <entity_name>
+slapd
 \family default
-
-\begin_inset Quotes frd
-\end_inset
-
- .
+, в том числе, выводить ошибки.
+ Система ведения логов демона в OpenLDAP реализуется с помощью системного
+ демона 
+\family typewriter
+rsyslog
+\family default
+.
+ Для его настройки выполняются следующие действия:
 \end_layout
 
-\end_deeper
-\begin_layout Enumerate
-Настроить систему логов.
- Для этого требуется:
-\end_layout
-
-\begin_deeper
 \begin_layout Enumerate
 Создать файл 
 \family typewriter
@@ -5343,6 +5539,10 @@ status open
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Enumerate
 Назначить владельца логов 
 \family typewriter
 ldap.ldap
@@ -5359,14 +5559,22 @@ status open
 
 \end_inset
 
-Установить права 600 на лог-файл:
+
+\end_layout
+
+\begin_layout Enumerate
+Установить права на чтение и запись пользователю 
+\family typewriter
+ldap
+\family default
+ на лог-файл:
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-# chmod 600 /var/log/openldap.log
+# chmod +rw /var/log/openldap.log
 \end_layout
 
 \end_inset
@@ -5375,11 +5583,11 @@ status open
 \end_layout
 
 \begin_layout Enumerate
-Добавить следующую строку, позволив демону логирования 
+Добавить следующую строку, позволяющую демону системы ведения логов 
 \family typewriter
 rsyslog 
 \family default
-перенаправлять все сообщения LDAP-сервера в созданный ранее файл логов:
+перенаправлять все сообщения LDAP-сервера в созданный ранее файл:
 \begin_inset listings
 inline false
 status open
@@ -5395,11 +5603,11 @@ local4.*	-/var/log/openldap.log
 \end_layout
 
 \begin_layout Enumerate
-Перезапустить демон 
+Изменение конфигурационного файла демона 
 \family typewriter
 rsyslog
 \family default
-:
+ требует его перезапуска:
 \begin_inset listings
 inline false
 status open
@@ -5414,36 +5622,236 @@ status open
 
 \end_layout
 
-\end_deeper
-\begin_layout Enumerate
-Скопировать файл 
-\family typewriter
-DB_CONFIG.example 
-\family default
-в каталог базы данных LDAP:
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Аутентификация пользователей клиента требует постоянно работающего сервера
+ LDAP, поэтому требуется добавить его в список автозагрузки:
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-# cp /usr/share/openldap-servers/DB_CONFIG.example /var/lib/ldap/DB_CONFIG
+# chkconfig slapd on
 \end_layout
 
 \end_inset
 
-и назначить папке владельца 
+
+\end_layout
+
+\begin_layout Standard
+После чего перезагрузить сервер OpenLDAP:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# service slapd restart
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Создание сертификата сервера LDAP
+\end_layout
+
+\begin_layout Standard
+Сервер LDAP пересылает всю информацию, включая пароли по сети в нешифрованном
+ виде.
+ Эта проблема решается с помощью TLS.
+ 
+\end_layout
+
+\begin_layout Standard
+Чтобы исключить вероятность подмены сервера LDAP используется создание сертифика
+та сервера.
+ Каждому клиенту сервера высылается копия этого сертификата, а клиент при
+ подключении сверяет копию с сертификатом, находящемся на сервере.
+ При его отсутствии или несовпадении с копией клиент разрывает соединение.
+ Это позволяет обезопасить соединение между клиентом и сервером.
+ 
+\end_layout
+
+\begin_layout Standard
+Для создания удостоверяющего центра требуется перейти в каталог 
+\family typewriter
+/etc/pki/tls/misc
+\family default
+ и выполнить команду:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# ./CA -newca
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+При первом создании сертификата удостоверяющего центра потребуется нажать
+ клавишу 
+\family typewriter
+Enter
+\family default
+, а также заполнить следующую информацию: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Country Name (2 letter code) [XX]:ru
+\end_layout
+
+\begin_layout Plain Layout
+
+State or Province Name (full name) []:msk
+\end_layout
+
+\begin_layout Plain Layout
+
+Locality Name (eg, city) [Default City]:msk
+\end_layout
+
+\begin_layout Plain Layout
+
+Organization Name (eg, company) [Default Company Ltd]:mephi
+\end_layout
+
+\begin_layout Plain Layout
+
+Organizational Unit Name (eg, section) []:kaf36
+\end_layout
+
+\begin_layout Plain Layout
+
+Common Name (eg, your name or your server's hostname) []:ldap-server
+\end_layout
+
+\begin_layout Plain Layout
+
+Email Address []:root@example.com
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Таким образом, будет создан сертификат удостоверяющего центра LDAP.
+\end_layout
+
+\begin_layout Standard
+Создается публичный и закрытый ключи сервера, которые будет использоваться
+ в удостоверяющем центре:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+#  openssl req -new -subj '/CN=ldap-server/O=mephi/C=ru/ST=msk/L=msk' -keyout
+ ldapserver-key.pem -out ldapserver-req.pem -days 365
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+где 
+\family typewriter
+ldapserver-req.pem 
+\family default
+--- публичный ключ сервера, а 
+\family typewriter
+ldapserver-key.pem 
+\family default
+--- приватный.
+\end_layout
+
+\begin_layout Standard
+Удостоверяющий центр выдает сертификат LDAP-сервера:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+openssl ca -out ldapserver-cert.pem -infiles ldapserver-req.pem
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Далее ключи копируются в каталог OpenLDAP:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# cp -p ldapserver-key.pem /etc/openldap/ldapserver-key.pem
+\end_layout
+
+\begin_layout Plain Layout
+
+# cp -p ldapserver-cert.pem /etc/openldap/ldapserver-cert.pem
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Сертификату назначается владелец 
 \family typewriter
 ldap.ldap
 \family default
-:
+ и права 644:
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-# chown -R ldap.ldap /var/lib/ldap
+# chown ldap:ldap /etc/openldap/ldapserver-cert.pem
+\end_layout
+
+\begin_layout Plain Layout
+
+# chmod 644 /etc/openldap/ldapserver-cert.pem
 \end_layout
 
 \end_inset
@@ -5451,48 +5859,183 @@ status open
 
 \end_layout
 
-\begin_layout Enumerate
-Создать корневой элемент 
+\begin_layout Standard
+Публичному ключу назначается владелец 
 \family typewriter
-dc=ldap-server,dc=ru
+ldap.ldap
 \family default
- в LDAP:
+ и права 400:
 \end_layout
 
-\begin_deeper
-\begin_layout Enumerate
-Создать файл 
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# chown ldap:ldap /etc/openldap/ldapserver-key.pem
+\end_layout
+
+\begin_layout Plain Layout
+
+# chmod 400 /etc/openldap/ldapserver-key.pem
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Создается папка с ключом удостоверяющего центра:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# mkdir /etc/openldap/cacerts
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Копируется ключ удостоверяющего центра в эту папку:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# cp /etc/pki/CA/cacert.pem /etc/openldap/cacerts/cacert.pem
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Сертификату назначаются права 644 и владелец ldap.ldap:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# chown ldap:ldap /etc/openldap/cacerts/cacert.pem
+\end_layout
+
+\begin_layout Plain Layout
+
+# chmod 644 /etc/openldap/cacerts/cacert.pem
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Далее требуется изменить пути ключей в конфигурационном файле с помощью
+ запроса:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+dn: cn=config
+\end_layout
+
+\begin_layout Plain Layout
+
+changetype: modify
+\end_layout
+
+\begin_layout Plain Layout
+
+replace: olcTLSCertificateFile
+\end_layout
+
+\begin_layout Plain Layout
+
+olcTLSCertificateFile: /etc/openldap/ldapserver-cert.pem
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+dn: cn=config
+\end_layout
+
+\begin_layout Plain Layout
+
+changetype: modify
+\end_layout
+
+\begin_layout Plain Layout
+
+replace: olcTLSCertificateKeyFile
+\end_layout
+
+\begin_layout Plain Layout
+
+olcTLSCertificateKeyFile: /etc/openldap/ldapserver-cert.pem
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Загрузка изменений осуществляется с помощью команды:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# ldapmodify -Y EXTERNAL -H ldapi:/// -f /etc/openldap/ldif/tls.ldif
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Создание учетных записей пользователей клиента
+\end_layout
+
+\begin_layout Standard
+Сначала нужно загрузить корневую сущность, созданную с помощью скриптов
+ утилит 
 \family typewriter
-root.ldif
+migrationtools
 \family default
 :
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-dn: dc=ldap-server,dc=ru
-\end_layout
-
-\begin_layout Plain Layout
-
-objectClass: dcObject
-\end_layout
-
-\begin_layout Plain Layout
-
-objectClass: organization
-\end_layout
-
-\begin_layout Plain Layout
-
-dc: ldap-server
-\end_layout
-
-\begin_layout Plain Layout
-
-o : ldap-server
+# ldapadd -D cn=admin,dc=ldap-server,dc=ru -f base.ldif -W
 \end_layout
 
 \end_inset
@@ -5500,236 +6043,13 @@ o : ldap-server
 
 \end_layout
 
-\begin_layout Enumerate
-Загрузить его в LDAP:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# ldapadd -f /etc/openldap/ldif/root.ldif -D cn=admin,dc=ldap-server,dc=ru
- -W
-\end_layout
-
-\end_inset
-
-При выполнении этой команды требуется ввести пароль администратора 
+\begin_layout Standard
+При выполнении данной команды требуется ввести пароль администратора каталога
+ 
 \family typewriter
 admin
 \family default
- LDAP
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-При выполнении этой команды можно использовать ключ 
-\family typewriter
--w
-\family default
-, после чего ввести пароль в открытом виде.
-\end_layout
-
-\end_inset
-
 .
-\end_layout
-
-\end_deeper
-\begin_layout Enumerate
-Создать сущности групп (
-\family typewriter
-Admins
-\family default
-, 
-\family typewriter
-Users
-\family default
-) в файле 
-\family typewriter
-groups.ldif
-\family default
-:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-dn: ou=Admins,dc=ldap-server,dc=ru
-\end_layout
-
-\begin_layout Plain Layout
-
-objectClass: organizationalUnit
-\end_layout
-
-\begin_layout Plain Layout
-
-ou: Admins
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-dn: ou=Users,dc=ldap-server,dc=ru
-\end_layout
-
-\begin_layout Plain Layout
-
-objectClass: organizationalUnit
-\end_layout
-
-\begin_layout Plain Layout
-
-ou: Users
-\end_layout
-
-\end_inset
-
-и загрузить их в LDAP:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# ldapadd -f /etc/openldap/ldif/groups.ldif -D cn=admin,dc=ldap-server,dc=ru
- -W
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Создать сущность пользователей 
-\family typewriter
-users.ldif 
-\family default
-и загрузить ее в LDAP:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-dn: cn=user,ou=Users,dc=ldap-server,dc=ru
-\end_layout
-
-\begin_layout Plain Layout
-
-cn: user (remote)
-\end_layout
-
-\begin_layout Plain Layout
-
-sn: user
-\end_layout
-
-\begin_layout Plain Layout
-
-objectClass: inetOrgPerson
-\end_layout
-
-\begin_layout Plain Layout
-
-userPassword: {SSHA}csBKk4Ei9q0eOgBA8TNLWCio7bvg97BI
-\end_layout
-
-\begin_layout Plain Layout
-
-uid: 501
-\end_layout
-
-\end_inset
-
-где 
-\family typewriter
-userPassword
-\family default
- содержит
-\family typewriter
- 
-\family default
-хэшированное значение пароля, созданное с помощью 
-\family typewriter
-slappaswd
-\family default
-, 
-\family typewriter
-uid
-\family default
- --- идентификатор пользователя в системе на клиентской машине.
-\end_layout
-
-\begin_layout Enumerate
-Создать сущность администраторов СУБД PostgreSQL и загрузить ее в LDAP:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-dn: cn=postgres,ou=Admins,dc=ldap-server,dc=ru
-\end_layout
-
-\begin_layout Plain Layout
-
-cn: postgres admin
-\end_layout
-
-\begin_layout Plain Layout
-
-sn: admin
-\end_layout
-
-\begin_layout Plain Layout
-
-objectClass: inetOrgPerson
-\end_layout
-
-\begin_layout Plain Layout
-
-userPassword: {SSHA}iPxDsPOHV3HNjwLmpfYxnOOyysKImJYH
-\end_layout
-
-\begin_layout Plain Layout
-
-uid: 26
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Добавить демон LDAP 
-\family typewriter
-slapd 
-\family default
-в список запущенных при запуске системы:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# echo "service slapd start" >> /etc/init.d/rc.local
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout --Separator--
-
 \end_layout
 
 \begin_layout Subsection
