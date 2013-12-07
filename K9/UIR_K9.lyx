@@ -4733,6 +4733,65 @@ psql
 \end_layout
 
 \begin_layout Standard
+Создать локальных пользователей, чьи аккаунты будут храниться в LDAP:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# useradd pvolkov
+\end_layout
+
+\begin_layout Plain Layout
+
+# useradd nivanov
+\end_layout
+
+\begin_layout Plain Layout
+
+# useradd asidorov
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Для каждого пользователя назначается пароль с помощью утилиты 
+\family typewriter
+passwd
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# passwd pvolkov
+\end_layout
+
+\begin_layout Plain Layout
+
+# passwd nivanov
+\end_layout
+
+\begin_layout Plain Layout
+
+# passwd asidorov
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Создать папку 
 \family typewriter
 ldif
@@ -4821,7 +4880,48 @@ status open
 \end_layout
 
 \begin_layout Standard
-Данный скрипт копируется на LDAP-сервер:
+Скрипт 
+\family typewriter
+migrate_group.pl
+\family default
+ выполняет создание LDAP-сущностей групп на основе файла 
+\family typewriter
+/etc/group
+\family default
+.
+ Так как помимо пользовательских групп в системе содержится ещё системные,
+ то необходимо получить строки пользовательских групп
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Так как диапазон 
+\family typewriter
+uid
+\family default
+ пользователей в CentOS 6 начинается с 500, то для получения данных групп
+ и аккаунтов пользователй используется следующее регулярное выражение
+\end_layout
+
+\end_inset
+
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# grep 5[0-9][0-9] /etc/group > groups
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+После чего выполняется преобразование этих данных в LDIF:
 \end_layout
 
 \begin_layout Standard
@@ -4831,7 +4931,79 @@ status open
 
 \begin_layout Plain Layout
 
-# scp /root/ldif/base.ldif root@192.168.100.3:/etc/openldap
+# ./migrate_group.pl groups > /root/ldif/groups.ldif
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Скрипт 
+\family typewriter
+migration_passwd.pl
+\family default
+ создает сущности пользователей и их пароли.
+ Аналогично файлу 
+\family typewriter
+/etc/group
+\family default
+ файл пользователей 
+\family typewriter
+/etc/passwd
+\family default
+ содержит множество системных пользователей.
+ Поэтому с помощью следующей команды получаются строки аккаунтов реальных
+ пользователей:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# grep [0-9][0-9] /etc/passwd > passwd
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Далее создаются сущности:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# ./migrate_group.pl passwd > /root/ldif/passwd.ldif
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Полученные LDIF-файлы копируются на LDAP-сервер:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# scp -R /root/ldif root@192.168.100.3:/etc/openldap
 \end_layout
 
 \end_inset
@@ -4845,6 +5017,35 @@ status open
 root
 \family default
  на сервере LDAP.
+\end_layout
+
+\begin_layout Standard
+Все локальные аккаунты пользователей удаляются:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# userdel pvolkov
+\end_layout
+
+\begin_layout Plain Layout
+
+# userdel nivanov
+\end_layout
+
+\begin_layout Plain Layout
+
+# userdel asidorov
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -4902,7 +5103,7 @@ status open
 
 \begin_layout Plain Layout
 
--A INPUT -p tcp --dport 389 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 389 -j ACCEPT
 \end_layout
 
 \end_inset
