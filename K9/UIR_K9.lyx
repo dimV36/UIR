@@ -4625,11 +4625,11 @@ status open
 \end_layout
 
 \begin_layout Enumerate
-Создание сертификата сервера LDAP и передача его клиенту.
+Создание сертификата сервера LDAP.
 \end_layout
 
 \begin_layout Enumerate
-Загрузка сущностей учетных записей пользователей клиента в LDAP-сервер.
+Загрузка аккаунтов пользователей в LDAP.
 \end_layout
 
 \begin_layout Enumerate
@@ -4661,24 +4661,8 @@ status open
 \end_layout
 
 \begin_layout Standard
-Для установки демона SSSD используется команда:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# yum install -y sssd
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Далее устанавливаются пакеты скриптов, позволяющие импортировать данные
- пользователей, их паролей, групп в LDAP:
+Устанавливаются пакеты скриптов, позволяющие импортировать данные пользователей,
+ их паролей, групп в LDAP:
 \end_layout
 
 \begin_layout Standard
@@ -5003,7 +4987,22 @@ status open
 
 \begin_layout Plain Layout
 
-# scp -R /root/ldif root@192.168.100.3:/etc/openldap
+# ssh -T root@192.168.100.3
+\end_layout
+
+\begin_layout Plain Layout
+
+# mkdit /etc/openldap/ldif
+\end_layout
+
+\begin_layout Plain Layout
+
+# exit
+\end_layout
+
+\begin_layout Plain Layout
+
+# scp -R /root/ldif root@192.168.100.3:/etc/openldap/ldif/
 \end_layout
 
 \end_inset
@@ -5870,18 +5869,31 @@ status open
 \begin_layout Standard
 Сервер LDAP пересылает всю информацию, включая пароли по сети в нешифрованном
  виде.
- Эта проблема решается с помощью TLS.
+ Эта проблема решается с помощью TLS (
+\emph on
+Transport Socket Layers 
+\emph default
+--- 
+\begin_inset Quotes fld
+\end_inset
+
+уровень защищенных сокетов).
+ TLS --- криптографические протоколы, обеспечивающие защищенную передачу
+ данных между узлами сети.
  
 \end_layout
 
 \begin_layout Standard
-Чтобы исключить вероятность подмены сервера LDAP используется создание сертифика
-та сервера.
- Каждому клиенту сервера высылается копия этого сертификата, а клиент при
- подключении сверяет копию с сертификатом, находящемся на сервере.
- При его отсутствии или несовпадении с копией клиент разрывает соединение.
- Это позволяет обезопасить соединение между клиентом и сервером.
- 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Описать кратко процесс установления соединений в TLS
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -5947,7 +5959,7 @@ Common Name (eg, your name or your server's hostname) []:ldap-server
 
 \begin_layout Plain Layout
 
-Email Address []:root@example.com
+Email Address []:ldap-server@example.com
 \end_layout
 
 \end_inset
@@ -5972,7 +5984,7 @@ status open
 \begin_layout Plain Layout
 
 #  openssl req -new -subj '/CN=ldap-server/O=mephi/C=ru/ST=msk/L=msk' -keyout
- ldapserver-key.pem -out ldapserver-req.pem -days 365
+ ldapkey.pem -out ldapreq.pem -days 365
 \end_layout
 
 \end_inset
@@ -5983,17 +5995,17 @@ status open
 \begin_layout Standard
 где 
 \family typewriter
-ldapserver-req.pem 
+ldapreq.pem 
 \family default
 --- публичный ключ сервера, а 
 \family typewriter
-ldapserver-key.pem 
+ldapkey.pem 
 \family default
 --- приватный.
 \end_layout
 
 \begin_layout Standard
-Удостоверяющий центр выдает сертификат LDAP-сервера:
+Удостоверяющий центр подписывает сертификат LDAP-сервера:
 \end_layout
 
 \begin_layout Standard
@@ -6003,7 +6015,7 @@ status open
 
 \begin_layout Plain Layout
 
-openssl ca -out ldapserver-cert.pem -infiles ldapserver-req.pem
+openssl ca -out ldapcert.pem -infiles ldapreq.pem
 \end_layout
 
 \end_inset
@@ -6012,22 +6024,19 @@ openssl ca -out ldapserver-cert.pem -infiles ldapserver-req.pem
 \end_layout
 
 \begin_layout Standard
-Далее ключи копируются в каталог OpenLDAP:
-\end_layout
-
-\begin_layout Standard
+Созданным ключам назначаются следующие права:
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-# cp -p ldapserver-key.pem /etc/openldap/ldapserver-key.pem
+# chown -Rf root:ldap /etc/pki/tls/certs/ldapcert.pem
 \end_layout
 
 \begin_layout Plain Layout
 
-# cp -p ldapserver-cert.pem /etc/openldap/ldapserver-cert.pem
+# chmod -Rf 750 /etc/pki/tls/certs/ldapkey.pem
 \end_layout
 
 \end_inset
@@ -6036,124 +6045,18 @@ status open
 \end_layout
 
 \begin_layout Standard
-Сертификату назначается владелец 
+Для загрузки путей этих ключей создается запрос 
 \family typewriter
-ldap.ldap
+tls.ldif
 \family default
- и права 644:
+: 
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-# chown ldap:ldap /etc/openldap/ldapserver-cert.pem
-\end_layout
-
-\begin_layout Plain Layout
-
-# chmod 644 /etc/openldap/ldapserver-cert.pem
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Публичному ключу назначается владелец 
-\family typewriter
-ldap.ldap
-\family default
- и права 400:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# chown ldap:ldap /etc/openldap/ldapserver-key.pem
-\end_layout
-
-\begin_layout Plain Layout
-
-# chmod 400 /etc/openldap/ldapserver-key.pem
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Создается папка с ключом удостоверяющего центра:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# mkdir /etc/openldap/cacerts
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Копируется ключ удостоверяющего центра в эту папку:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# cp /etc/pki/CA/cacert.pem /etc/openldap/cacerts/cacert.pem
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Сертификату назначаются права 644 и владелец ldap.ldap:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# chown ldap:ldap /etc/openldap/cacerts/cacert.pem
-\end_layout
-
-\begin_layout Plain Layout
-
-# chmod 644 /etc/openldap/cacerts/cacert.pem
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Далее требуется изменить пути ключей в конфигурационном файле с помощью
- запроса:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-dn: cn=config
+olcDatabase={2}bdb,cn=config
 \end_layout
 
 \begin_layout Plain Layout
@@ -6168,7 +6071,7 @@ replace: olcTLSCertificateFile
 
 \begin_layout Plain Layout
 
-olcTLSCertificateFile: /etc/openldap/ldapserver-cert.pem
+olcTLSCertificateFile: /etc/pki/tls/certs/ldapcert.pem
 \end_layout
 
 \begin_layout Plain Layout
@@ -6177,7 +6080,7 @@ olcTLSCertificateFile: /etc/openldap/ldapserver-cert.pem
 
 \begin_layout Plain Layout
 
-dn: cn=config
+olcDatabase={2}bdb,cn=config
 \end_layout
 
 \begin_layout Plain Layout
@@ -6192,7 +6095,7 @@ replace: olcTLSCertificateKeyFile
 
 \begin_layout Plain Layout
 
-olcTLSCertificateKeyFile: /etc/openldap/ldapserver-cert.pem
+olcTLSCertificateKeyFile: /etc/pki/tls/certs/ldapkey.pem
 \end_layout
 
 \end_inset
@@ -6216,17 +6119,16 @@ status open
 
 \end_layout
 
-\begin_layout Subsection
-Создание учетных записей пользователей клиента
-\end_layout
-
 \begin_layout Standard
-Сначала нужно загрузить корневую сущность, созданную с помощью скриптов
- утилит 
+В конфигурационном файле LDAP разрешается подключение по протоколу 
 \family typewriter
-migrationtools
+ldaps 
 \family default
-:
+(
+\emph on
+LDAP security
+\emph default
+):
 \end_layout
 
 \begin_layout Standard
@@ -6236,7 +6138,28 @@ status open
 
 \begin_layout Plain Layout
 
-# ldapadd -D cn=admin,dc=ldap-server,dc=ru -f base.ldif -W
+SLAPD_LDAPS = yes
+\end_layout
+
+\end_inset
+
+Что тем самым разрешает использование клиентам шифрованный протокол доступа
+ LDAP.
+\end_layout
+
+\begin_layout Standard
+В конфигурационном файле клиента LDAP требуется добавить строку с указанием
+ пути к сертификату:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+TLS_CACERT /etc/pki/tls/certs/ldapcert.pem
 \end_layout
 
 \end_inset
@@ -6245,12 +6168,126 @@ status open
 \end_layout
 
 \begin_layout Standard
-При выполнении данной команды требуется ввести пароль администратора каталога
- 
+После чего выполняется перезагрузка сервера LDAP:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# service slapd restart
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Загрузка аккаунтов пользователей в LDAP
+\end_layout
+
+\begin_layout Standard
+LDIF-файлы, созданные с помощью скриптов пакета 
+\family typewriter
+migration_tools
+\family default
+ последовательно загружаются в LDAP:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# ldapadd -D cn=admin,dc=ldap-server,dc=ru -f /etc/openldap/ldif/base.ldif
+ -W
+\end_layout
+
+\begin_layout Plain Layout
+
+# ldapadd -D cn=admin,dc=ldap-server,dc=ru -f /etc/openldap/ldif/group.ldif
+ -W 
+\end_layout
+
+\begin_layout Plain Layout
+
+# ldapadd -D cn=admin,dc=ldap-server,dc=ru -f /etc/openldap/ldif/passwd.ldif
+ -W
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+При выполнении каждой команды требуется вводить пароль администратора домашнего
+ каталога 
 \family typewriter
 admin
 \family default
 .
+\end_layout
+
+\begin_layout Subsection
+Настройка аутентификации пользователей клиента на LDAP-сервере с помощью
+ SSSD
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+SSSD
+\series default
+ (
+\emph on
+System Security Services Daemon
+\emph default
+) позволяет обращаться к удаленным механизмам аутентификации, называемым
+ поставщиками.
+ Таким образом стирается граница между аутентификацией локального и сетевого
+ доступа и допускается использование разных механизмов.
+ Информацию о пользователях предоставляет база данных, называемая доменом,
+ которая может служить источником данных для поставщика.
+ 
+\end_layout
+
+\begin_layout Standard
+Для установки демона SSSD используется команда:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# yum install -y sssd
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Добавить демон SSSD в автозагрузку:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# chkconfig sssd on
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
