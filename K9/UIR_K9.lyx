@@ -5827,6 +5827,44 @@ status open
 \end_layout
 
 \begin_layout Standard
+Изменяются параметры конфигурации клиента OpenLDAP 
+\family typewriter
+/etc/openldap/ldap.conf
+\family default
+, в котором указываются база данных для подключения по-умолчанию (параметром
+ 
+\family typewriter
+BASE
+\family default
+) и адрес LDAP-сервера (
+\family typewriter
+URI
+\family default
+), указан локальный сервер 
+\family typewriter
+ldap:///
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+URI ldap:///
+\end_layout
+
+\begin_layout Plain Layout
+
+BASE dc=ldap-server,dc=ru
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Аутентификация пользователей клиента требует постоянно работающего сервера
  LDAP, поэтому требуется добавить его в список автозагрузки:
 \begin_inset listings
@@ -5884,15 +5922,53 @@ Transport Socket Layers
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Описать кратко процесс установления соединений в TLS
-\end_layout
+Установка соединения с использованием TLS включает в себя следующие шаги
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "TLS"
 
 \end_inset
 
+:
+\end_layout
+
+\begin_layout Enumerate
+Клиент подключается к TLS --- поддерживаемому серверу и запрашивает защищенное
+ соединение;
+\end_layout
+
+\begin_layout Enumerate
+Клиент предоставляет список поддерживаемых алгоритмов шифрования и хеш-функций;
+\end_layout
+
+\begin_layout Enumerate
+Сервер выбирает из списка, предоставленного клиентом, наиболее устойчивые
+ алгоритмы, которые так же поддерживаются сервером, и сообщает о своем выборе
+ клиенту;
+\end_layout
+
+\begin_layout Enumerate
+Сервер отправляет клиенту цифровой сертификат для собственной идентификации.
+ Обычно цифровой сертификат содержит имя сервера, имя доверенного центра
+ сертификации и открытый ключ сервера;
+\end_layout
+
+\begin_layout Enumerate
+Клиент может связаться с сервером доверенного центра сертификации и подтвердить
+ аутентичность переданного сертификата до начала передачи данных;
+\end_layout
+
+\begin_layout Enumerate
+для того чтобы сгенерировать ключ сессии для защищенного соединения, клиент
+ шифрует случайно сгенерированную цифровую последовательность открытым ключом
+ сервера и посылает результат на сервер.
+ Учитывая специфику алгоритма асимметричного шифрования, используемого для
+ установления соединения, только сервер может расшифровать полученную последоват
+ельность, используя свой закрытый ключ; 
+\end_layout
+
+\begin_layout --Separator--
 
 \end_layout
 
@@ -5984,7 +6060,7 @@ status open
 \begin_layout Plain Layout
 
 #  openssl req -new -subj '/CN=ldap-server/O=mephi/C=ru/ST=msk/L=msk' -keyout
- ldapkey.pem -out ldapreq.pem -days 365
+ slapd-key.pem -out slapd-req.pem -days 365
 \end_layout
 
 \end_inset
@@ -5995,11 +6071,11 @@ status open
 \begin_layout Standard
 где 
 \family typewriter
-ldapreq.pem 
+slapd-req.pem 
 \family default
 --- публичный ключ сервера, а 
 \family typewriter
-ldapkey.pem 
+slapd-key.pem 
 \family default
 --- приватный.
 \end_layout
@@ -6015,7 +6091,7 @@ status open
 
 \begin_layout Plain Layout
 
-openssl ca -out ldapcert.pem -infiles ldapreq.pem
+openssl ca -out slapd-cert.pem -infiles slapd-req.pem
 \end_layout
 
 \end_inset
@@ -6024,19 +6100,57 @@ openssl ca -out ldapcert.pem -infiles ldapreq.pem
 \end_layout
 
 \begin_layout Standard
-Созданным ключам назначаются следующие права:
+Для хранения созданных ключей используется папка 
+\family typewriter
+/etc/openldap/ssl
+\family default
+, в которой будут храниться все ключи:
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-# chown -Rf root:ldap /etc/pki/tls/certs/ldapcert.pem
+# mkdir /etc/openldap/ssl
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Созданные ключи копируются в папку и им назначаются права и владелец:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# cp -p /etc/pki/tls/misc/slapd-key.pem /etc/openldap/ssl/slapdkey.pem
 \end_layout
 
 \begin_layout Plain Layout
 
-# chmod -Rf 750 /etc/pki/tls/certs/ldapkey.pem
+# cp -p /etc/pki/tls/misc/slapd-cert.pem /etc/openldap/ssl/slapdcert.pem
+\end_layout
+
+\begin_layout Plain Layout
+
+# chown -R ldap:ldap ldap:ldap /etc/openldap/ssl/
+\end_layout
+
+\begin_layout Plain Layout
+
+# chmod 644 /etc/openldap/ssl/slapdcert.pem
+\end_layout
+
+\begin_layout Plain Layout
+
+# chmod 400 /etc/openldap/ssl/slapdkey.pem
 \end_layout
 
 \end_inset
@@ -6056,7 +6170,7 @@ status open
 
 \begin_layout Plain Layout
 
-olcDatabase={2}bdb,cn=config
+olcDatabase=cn=config
 \end_layout
 
 \begin_layout Plain Layout
@@ -6071,7 +6185,7 @@ replace: olcTLSCertificateFile
 
 \begin_layout Plain Layout
 
-olcTLSCertificateFile: /etc/pki/tls/certs/ldapcert.pem
+olcTLSCertificateFile: /etc/openldap/ssl/slapdcert.pem
 \end_layout
 
 \begin_layout Plain Layout
@@ -6080,7 +6194,7 @@ olcTLSCertificateFile: /etc/pki/tls/certs/ldapcert.pem
 
 \begin_layout Plain Layout
 
-olcDatabase={2}bdb,cn=config
+olcDatabase=cn=config
 \end_layout
 
 \begin_layout Plain Layout
@@ -6095,7 +6209,7 @@ replace: olcTLSCertificateKeyFile
 
 \begin_layout Plain Layout
 
-olcTLSCertificateKeyFile: /etc/pki/tls/certs/ldapkey.pem
+olcTLSCertificateKeyFile: /etc/openldap/ssl/slapdkey.pem
 \end_layout
 
 \end_inset
@@ -6120,7 +6234,57 @@ status open
 \end_layout
 
 \begin_layout Standard
-В конфигурационном файле LDAP разрешается подключение по протоколу 
+Создается папка сертификата удостоверяющего центра в каталоге OpenLDAP:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# mkdir /etc/openldap/cacerts/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Сервер OpenLDAP требует копирования сертификата удостоверяющего центра в
+ созданную папку для проверки ключа клиента.
+ Но в данном случае в эту папку копируется не сама копия сертификата, а
+ его хэш, по которому OpenSSL найдет сертификат удостоверяющего центра:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# HASH=$( openssl x509 -noout -hash -in /etc/pki/CA/cacert.pem )
+\end_layout
+
+\begin_layout Plain Layout
+
+# ln -s /etc/pki/CA/cacert.pem /etc/openldap/cacerts/${HASH}.0
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В конфигурационном файле сервера LDAP 
+\family typewriter
+/etc/sysconfig/ldap
+\family default
+ разрешается подключение по протоколу 
 \family typewriter
 ldaps 
 \family default
@@ -6128,13 +6292,23 @@ ldaps
 \emph on
 LDAP security
 \emph default
-):
+), все остальные соединения запрещены для подключения:
 \end_layout
 
 \begin_layout Standard
 \begin_inset listings
 inline false
 status open
+
+\begin_layout Plain Layout
+
+SLAPD_LDAP = no
+\end_layout
+
+\begin_layout Plain Layout
+
+SLAPD_LDAPI = no
+\end_layout
 
 \begin_layout Plain Layout
 
@@ -6148,8 +6322,8 @@ SLAPD_LDAPS = yes
 \end_layout
 
 \begin_layout Standard
-В конфигурационном файле клиента LDAP требуется добавить строку с указанием
- пути к сертификату:
+Чтобы клиент OpenLDAP мог подключиться локально к серверу, изменяются параметры
+ подключения в файле /etc/openldap/
 \end_layout
 
 \begin_layout Standard
@@ -6159,7 +6333,12 @@ status open
 
 \begin_layout Plain Layout
 
-TLS_CACERT /etc/pki/tls/certs/ldapcert.pem
+URI ldaps:///
+\end_layout
+
+\begin_layout Plain Layout
+
+TLS_REQCERT allow
 \end_layout
 
 \end_inset
@@ -7288,13 +7467,25 @@ key "LDAP-for-rocket-scientist"
 
 \end_inset
 
-LDAP for Rocket Scientists --- http://www.pro-ldap.ru/tr/zytrax/
+LDAP for Rocket Scientists [Электронный ресурс] --- http://www.pro-ldap.ru/tr/zytr
+ax/
 \end_layout
 
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "8"
+key "TLS"
+
+\end_inset
+
+TLS [Электронный ресурс] --- http://mind-control.wikia.com/wiki/TLS
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "9"
 key "LDAP-PostgreSQL"
 
 \end_inset
