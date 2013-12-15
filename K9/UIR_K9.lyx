@@ -4449,23 +4449,6 @@ slaptest
  использован для конвертации конфигурационных файлов в LDIF.
 \end_layout
 
-\begin_layout Subsubsection
-Access Control List (ACL)
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Доделать
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Standard
 \begin_inset Newpage clearpage
 \end_inset
@@ -5494,6 +5477,30 @@ add: olcRootPW
 olcRootPW: {SSHA}US0VGNxhxro/QD3B4wIbjRa5re9i8cX1
 \end_layout
 
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+dn: olcDatabase=cn=config
+\end_layout
+
+\begin_layout Plain Layout
+
+changetype: modify
+\end_layout
+
+\begin_layout Plain Layout
+
+replace: olcRootPW
+\end_layout
+
+\begin_layout Plain Layout
+
+olcRootPW: {SSHA}US0VGNxhxro/QD3B4wIbjRa5re9i8cX1
+\end_layout
+
 \end_inset
 
 
@@ -5521,6 +5528,16 @@ olcRootPW
 slappaswd
 \family default
 .
+\end_layout
+
+\begin_layout Standard
+В третьем запросе создается пароль администратора каталога 
+\family typewriter
+cn=config
+\family default
+.
+ Установка пароля требуется, чтобы можно было проводить запросы на изменение
+ конфигурации сервера OpenLDAP.
 \end_layout
 
 \begin_layout Standard
@@ -5973,18 +5990,28 @@ key "TLS"
 \end_layout
 
 \begin_layout Standard
-Для создания удостоверяющего центра требуется перейти в каталог 
-\family typewriter
-/etc/pki/tls/misc
-\family default
- и выполнить команду:
+Создаются папки, которые будут хранить ключ сервера и сертификат сервера,
+ после чего выполняется переход в созданную папку:
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-# ./CA -newca
+# mkdir /etc/openldap/certs
+\end_layout
+
+\begin_layout Plain Layout
+
+# mkdir /etc/openldap/certs/keys
+\end_layout
+
+\begin_layout Plain Layout
+
+# cd /etc/openldap/certs
 \end_layout
 
 \end_inset
@@ -5993,49 +6020,31 @@ status open
 \end_layout
 
 \begin_layout Standard
-При первом создании сертификата удостоверяющего центра потребуется нажать
- клавишу 
+Создаются самоподписанный (
+\emph on
+self-signed
+\emph default
+) сертификат сервера (
 \family typewriter
-Enter
+ldapcert.pem
 \family default
-, а также заполнить следующую информацию: 
+) и закрытй ключ сервера (
+\family typewriter
+ldapkey.pem
+\family default
+) закрытый ключ без пароля, действительный в течение 10 лет.
+ При генерации ключа используется RSA в качестве протокола обмена ключами:
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-Country Name (2 letter code) [XX]:ru
-\end_layout
-
-\begin_layout Plain Layout
-
-State or Province Name (full name) []:msk
-\end_layout
-
-\begin_layout Plain Layout
-
-Locality Name (eg, city) [Default City]:msk
-\end_layout
-
-\begin_layout Plain Layout
-
-Organization Name (eg, company) [Default Company Ltd]:mephi
-\end_layout
-
-\begin_layout Plain Layout
-
-Organizational Unit Name (eg, section) []:kaf36
-\end_layout
-
-\begin_layout Plain Layout
-
-Common Name (eg, your name or your server's hostname) []:ldap-server
-\end_layout
-
-\begin_layout Plain Layout
-
-Email Address []:ldap-server@example.com
+# openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout keys/ldapkey.pem
+ -out ldapcert.pem
 \end_layout
 
 \end_inset
@@ -6044,23 +6053,28 @@ Email Address []:ldap-server@example.com
 \end_layout
 
 \begin_layout Standard
-Таким образом, будет создан сертификат удостоверяющего центра LDAP.
+Созданный сертификат может быть использован в качестве сертификата сервера
+ и удостоверяющего центра.
+ 
 \end_layout
 
 \begin_layout Standard
-Создается публичный и закрытый ключи сервера, которые будет использоваться
- в удостоверяющем центре:
-\end_layout
-
-\begin_layout Standard
+Сертификат сгенерирован в папке 
+\family typewriter
+/etc/openldap/certs/
+\family default
+, созданный ключ копируется в папку 
+\family typewriter
+/etc/openldap/certs/keys/
+\family default
+:
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-#  openssl req -new -subj '/CN=ldap-server/O=mephi/C=ru/ST=msk/L=msk' -keyout
- slapd-key.pem -out slapd-req.pem -days 365
+# cp ldapkey.pem keys/
 \end_layout
 
 \end_inset
@@ -6069,19 +6083,11 @@ status open
 \end_layout
 
 \begin_layout Standard
-где 
+Устанавливается владелец ключей 
 \family typewriter
-slapd-req.pem 
+ldap:ldap
 \family default
---- публичный ключ сервера, а 
-\family typewriter
-slapd-key.pem 
-\family default
---- приватный.
-\end_layout
-
-\begin_layout Standard
-Удостоверяющий центр подписывает сертификат LDAP-сервера:
+ и права на доступ для исключения возможности несанкционированного доступа:
 \end_layout
 
 \begin_layout Standard
@@ -6091,7 +6097,12 @@ status open
 
 \begin_layout Plain Layout
 
-openssl ca -out slapd-cert.pem -infiles slapd-req.pem
+# chown -R ldap:ldap /etc/openldap/cers/*
+\end_layout
+
+\begin_layout Plain Layout
+
+# chmod 0400 keys/ldapkey.pem
 \end_layout
 
 \end_inset
@@ -6100,77 +6111,16 @@ openssl ca -out slapd-cert.pem -infiles slapd-req.pem
 \end_layout
 
 \begin_layout Standard
-Для хранения созданных ключей используется папка 
-\family typewriter
-/etc/openldap/ssl
-\family default
-, в которой будут храниться все ключи:
+Для того, чтобы OpenLDAP использовал ключи для шифрования соединения, требуется
+ выполнить следующий запрос, добавляющий информацию о сгенерированных ключа
+ и сертификата: 
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-# mkdir /etc/openldap/ssl
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Созданные ключи копируются в папку и им назначаются права и владелец:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# cp -p /etc/pki/tls/misc/slapd-key.pem /etc/openldap/ssl/slapdkey.pem
-\end_layout
-
-\begin_layout Plain Layout
-
-# cp -p /etc/pki/tls/misc/slapd-cert.pem /etc/openldap/ssl/slapdcert.pem
-\end_layout
-
-\begin_layout Plain Layout
-
-# chown -R ldap:ldap ldap:ldap /etc/openldap/ssl/
-\end_layout
-
-\begin_layout Plain Layout
-
-# chmod 644 /etc/openldap/ssl/slapdcert.pem
-\end_layout
-
-\begin_layout Plain Layout
-
-# chmod 400 /etc/openldap/ssl/slapdkey.pem
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Для загрузки путей этих ключей создается запрос 
-\family typewriter
-tls.ldif
-\family default
-: 
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-olcDatabase=cn=config
+dn: cn=config
 \end_layout
 
 \begin_layout Plain Layout
@@ -6185,7 +6135,7 @@ replace: olcTLSCertificateFile
 
 \begin_layout Plain Layout
 
-olcTLSCertificateFile: /etc/openldap/ssl/slapdcert.pem
+olcTLSCertificateFile: /etc/openldap/certs/ldapcert.pem
 \end_layout
 
 \begin_layout Plain Layout
@@ -6194,7 +6144,7 @@ olcTLSCertificateFile: /etc/openldap/ssl/slapdcert.pem
 
 \begin_layout Plain Layout
 
-olcDatabase=cn=config
+dn: cn=config
 \end_layout
 
 \begin_layout Plain Layout
@@ -6209,12 +6159,41 @@ replace: olcTLSCertificateKeyFile
 
 \begin_layout Plain Layout
 
-olcTLSCertificateKeyFile: /etc/openldap/ssl/slapdkey.pem
+olcTLSCertificateKeyFile: /etc/openldap/certs/keys/ldapkey.pem
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+dn: cn=config
+\end_layout
+
+\begin_layout Plain Layout
+
+changetype: modify
+\end_layout
+
+\begin_layout Plain Layout
+
+add: olcTLSCipherSuite
+\end_layout
+
+\begin_layout Plain Layout
+
+olcTLSCipherSuite: TLSv1+RSA:!NULL
 \end_layout
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+В последнем запросе явно указываются типы шифров, которые будут использоваться
+ при инициализации соединения TLS.
 \end_layout
 
 \begin_layout Standard
@@ -6226,52 +6205,6 @@ status open
 \begin_layout Plain Layout
 
 # ldapmodify -Y EXTERNAL -H ldapi:/// -f /etc/openldap/ldif/tls.ldif
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Создается папка сертификата удостоверяющего центра в каталоге OpenLDAP:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# mkdir /etc/openldap/cacerts/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Сервер OpenLDAP требует копирования сертификата удостоверяющего центра в
- созданную папку для проверки ключа клиента.
- Но в данном случае в эту папку копируется не сама копия сертификата, а
- его хэш, по которому OpenSSL найдет сертификат удостоверяющего центра:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# HASH=$( openssl x509 -noout -hash -in /etc/pki/CA/cacert.pem )
-\end_layout
-
-\begin_layout Plain Layout
-
-# ln -s /etc/pki/CA/cacert.pem /etc/openldap/cacerts/${HASH}.0
 \end_layout
 
 \end_inset
@@ -6322,8 +6255,54 @@ SLAPD_LDAPS = yes
 \end_layout
 
 \begin_layout Standard
+Сервер OpenLDAP, использующий протокол LDAPS для соединения, работает на
+ порте 636.
+ Его требуется открыть в межсетевом экране 
+\family typewriter
+iptables
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 636 -j ACCEPT
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+И перезагрузить межсетевой экран:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# service iptables restart
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Чтобы клиент OpenLDAP мог подключиться локально к серверу, изменяются параметры
- подключения в файле /etc/openldap/
+ подключения в файле 
+\family typewriter
+/etc/openldap/ldap.conf
 \end_layout
 
 \begin_layout Standard
@@ -6467,6 +6446,127 @@ status open
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Следующая команда создает конфигурационный файл 
+\family typewriter
+/etc/sssd/sssd.conf
+\family default
+, с помощью которой настраивается аутентификация пользователей на сервере
+ LDAP:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+authconfig --updateall 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+--enableldap 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+--enableldapauth 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+--ldapserver=ldaps://192.168.100.3 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+--ldapbasedn=dc=ldap-server,dc=ru 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+--enableldaptls 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+--enableldapstarttls 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+--enablesssd 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+--enablesssdauth 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+--disablecachecreds
+\end_layout
+
+\end_inset
+
+Данная команда устанавливает аутентификацию с использованием сервера LDAP,
+ находящегося по адресу 
+\family typewriter
+ldaps://192.168.100.3
+\family default
+.
+ При этом используется соединение TLS при подключении к нему.
+ Опции 
+\family typewriter
+--enablesssd 
+\family default
+и 
+\family typewriter
+--enablesssdauth 
+\family default
+описывают использование SSSD-демона при аутентификации.
+ Последняя опция указывает не сохранять данные уже авторизованных пользователей
+ на клиентской машине в кэш.
+ Таким образом, аутентификация клиента будет возможна только при работающем
+ сервере LDAP.
+\end_layout
+
+\begin_layout Standard
+Дополнительно в конфигурационный файл демона SSSD устанавливается опция
+ 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ldap_tls_reqcert = allow
+\end_layout
+
+\end_inset
+
+Она позволяет демону SSSD подключаться к серверу без проверки сертификатов.
+ 
 \end_layout
 
 \begin_layout Subsection
