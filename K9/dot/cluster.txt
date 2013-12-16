@@ -3,35 +3,37 @@ digraph LDAP {
   edge[color = darkgreen, fontcolor=blue, fontsize = 10];
   
   subgraph cluster_client {
-    node [shape = box, fontcolor = black, fontsize = 9];
+    node [layout = fdp, shape = box, fontcolor = black, fontsize = 9];
     label = "Клиент\n IP:192.168.100.2";
     subgraph cluster_accounts {
       node [shape = box, style = filled, fontcolor = black, fontsize = 9];
       label = "Аккаунты пользователей" 
-      accounts [shape = record, label = "{user1 | user2 | user3}"];
+      accounts [shape = record, label = "{pvolkov | nivanov | asidorov}"];
     }
   }
   
   subgraph cluster_ldap_server {
-    node [shape = box, fontcolor = black, fontsize = 9];
+    node [layout = fdp, shape = box, fontcolor = black, fontsize = 9];
     label = "LDAP-сервер\n IP:192.168.100.3"
     subgraph cluster_ldap_accounts {
       node [shape = box, style = filled, fontcolor = black, fontsize = 9];
       label = "Записи LDAP"
-      ldap_accounts [shape = record, label = "{user1 | user2 | user3}"];
+      ldap_accounts [shape = record, label = "{pvolkov | nivanov | asidorov}"];
     }
   }
   
   subgraph cluster_psql_server {
-    node [shape = box, fontcolor = black, fontsize = 9];
+    node [layout = fdp, shape = box, fontcolor = black, fontsize = 9];
     label = "PostgreSQL\n IP:192.168.100.4"
     subgraph cluster_postgresql_accounts {
       node [shape = box, style = filled, fontcolor = black, fontsize = 9];
       label = "Аккаунты пользователей БД"
-      psql_accounts [shape = record, label = "{user1 | user2 | user3}"];
+      psql_accounts [shape = record, label = "{pvolkov | nivanov | asidorov}"];
     }
   }
-  accounts -> ldap_accounts[label = "Аутентификация на сервере LDAP"];
-  ldap_accounts -> accounts[label = "Успех/Провал аутентификации"];
-  accounts -> psql_accounts[label = "Авторизация в PostgreSQL"];
+  accounts -> ldap_accounts[label = "1"];
+  ldap_accounts -> accounts[label = "2"];
+  accounts -> psql_accounts[color = red, label = "3"];
+  psql_accounts -> ldap_accounts[orientation = 30, color = red, label = "4"];
+  ldap_accounts -> psql_accounts[color = red, label = "5"];
 }
