@@ -4580,16 +4580,28 @@ user2
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Допилить!
-\end_layout
-
-\end_inset
-
-
+Пользователь вводит имя своего аккаунта на клиентской машине и пароль.
+ Пароль отсылается LDAP-серверу в закрытом виде и проверяется на совпадение.
+ Если переданный и хранимый пароль совпадают, пользователь успешно проходит
+ аутентификацию на клиенте.
+ Далее при подключении к базе данных с помощью клиента 
+\family typewriter
+psql
+\family default
+, пользователь передает свой 
+\family typewriter
+uid 
+\family default
+(логин пользователя) и пароль в PostgreSQL.
+ PostgreSQL генерирует запрос на основе данных клиента, а также адресу LDAP-серв
+ера в 
+\family typewriter
+pg_hba.conf
+\family default
+.
+ LDAP-сервер выполняет поиск сгенерированной сущности и сверяет пароль.
+ Если такой сущности нет или пароль неверный, в подключении к базе данных
+ отказывается.
 \end_layout
 
 \begin_layout Standard
@@ -6643,24 +6655,13 @@ status open
 
 \begin_layout Plain Layout
 
-local all all ldap ldapserver=192.168.100.3 ldapprefix="cn=" ldapsuffix=",ou=Admins
-,dc=ldap-server,dc=ru"
-\end_layout
-
-\begin_layout Plain Layout
-
-host all all 192.168.100.2/32 ldap ldapserver=192.168.100.3 ldapprefix="cn=" ldapsuffi
-x=",ou=Users,dc=ldap-server,dc=ru"
+host all all 192.168.100.2/32 ldap ldapserver=192.168.100.3 ldapprefix="uid="
+ ldapsuffix=",ou=People,dc=ldap-server,dc=ru"
 \end_layout
 
 \end_inset
 
-В первой строке разрешается подключаться локально (с IP 
-\family typewriter
-127.0.0.1
-\family default
-) к любой баз данных с использованием метода аутентификации ldap.
- Сам метод аутентификации задается тремя полями: 
+Сам метод аутентификации задается тремя полями: 
 \family typewriter
 ldapserver 
 \family default

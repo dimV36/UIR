@@ -1,39 +1,74 @@
-digraph LDAP {
-  rankdir = LR
+digraph g {
+  graph [fontsize=30 labelloc="t" label="" splines=true overlap=false rankdir = "LR"];
+  ratio = auto;
   edge[color = darkgreen, fontcolor=blue, fontsize = 10];
   
-  subgraph cluster_client {
-    node [layout = fdp, shape = box, fontcolor = black, fontsize = 9];
-    label = "Клиент\n IP:192.168.100.2";
-    subgraph cluster_accounts {
-      node [shape = box, style = filled, fontcolor = black, fontsize = 9];
-      label = "Аккаунты пользователей" 
-      accounts [shape = record, label = "{pvolkov | nivanov | asidorov}"];
-    }
-  }
+  ldap_client [ style = "filled" penwidth = 1 fillcolor = "white" fontname = "Courier New" shape = "Mrecord" label =<
+  <table border="0" cellborder="1" cellpadding="2" bgcolor="white">
+    <tr>
+      <td bgcolor="black" align="center" colspan="2">
+	<font color="white">Клиент:192.168.100.2</font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="white" align="center" colspan="2">
+	<font color="black">Доступные аккаунты пользователей:</font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="grey" align="center" colspan="2">
+	<font color="black"><br/>pvolkov<br/>nivanov<br/>asidorov<br/></font>
+      </td>
+    </tr>
+  </table>>
+  ];  
+
+  ldap_server [ style = "filled" penwidth = 1 fillcolor = "white" fontname = "Courier New" shape = "Mrecord" label =<
+  <table border="0" cellborder="1" cellpadding="2" bgcolor="white">
+    <tr>
+      <td bgcolor="black" align="center" colspan="2">
+	<font color="white">LDAP-сервер 192.168.100.3</font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="white" align="center" colspan="2">
+	<font color="black">Записи LDAP:</font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="grey" align="center" colspan="2">
+	<font color="black"><br/>pvolkov<br/>nivanov<br/>asidorov<br/></font>
+      </td>
+    </tr>
+  </table>>
+  ];  
   
-  subgraph cluster_ldap_server {
-    node [layout = fdp, shape = box, fontcolor = black, fontsize = 9];
-    label = "LDAP-сервер\n IP:192.168.100.3"
-    subgraph cluster_ldap_accounts {
-      node [shape = box, style = filled, fontcolor = black, fontsize = 9];
-      label = "Записи LDAP"
-      ldap_accounts [shape = record, label = "{pvolkov | nivanov | asidorov}"];
-    }
-  }
+  postgresql [ style = "filled" penwidth = 1 fillcolor = "white" fontname = "Courier New" shape = "Mrecord" label =<
+  <table border="0" cellborder="1" cellpadding="2" bgcolor="white">
+    <tr>
+      <td bgcolor="black" align="center" colspan="2">
+	<font color="white">PostgreSQL 192.168.100.4</font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="white" align="center" colspan="2">
+	<font color="black">Аккаунты пользователей СУБД:</font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="grey" align="center" colspan="2">
+	<font color="black"><br/>pvolkov<br/>nivanov<br/>asidorov<br/></font>
+      </td>
+    </tr>
+  </table>>
+  ];  
   
-  subgraph cluster_psql_server {
-    node [layout = fdp, shape = box, fontcolor = black, fontsize = 9];
-    label = "PostgreSQL\n IP:192.168.100.4"
-    subgraph cluster_postgresql_accounts {
-      node [shape = box, style = filled, fontcolor = black, fontsize = 9];
-      label = "Аккаунты пользователей БД"
-      psql_accounts [shape = record, label = "{pvolkov | nivanov | asidorov}"];
-    }
-  }
-  accounts -> ldap_accounts[label = "1"];
-  ldap_accounts -> accounts[label = "2"];
-  accounts -> psql_accounts[color = red, label = "3"];
-  psql_accounts -> ldap_accounts[orientation = 30, color = red, label = "4"];
-  ldap_accounts -> psql_accounts[color = red, label = "5"];
+  ldap_client -> ldap_server[label = 1];
+  ldap_server -> ldap_client[label = 2];
+  
+  postgresql -> ldap_server[label = 4];
+  ldap_server -> postgresql[label = 5];
+  
+  ldap_client -> postgresql[label = 3];
+  postgresql -> ldap_client[label = 6];
 }
