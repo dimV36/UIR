@@ -1,63 +1,92 @@
 digraph g {
   graph [fontsize=30 labelloc="t" label="" splines=true overlap=false rankdir = "LR"];
   ratio = auto;
-  edge[color = darkgreen, fontcolor=blue, fontsize = 10];
-  
-  ldap_client [ style = "filled" penwidth = 1 fillcolor = "white" fontname = "Courier New" shape = "Mrecord" label =<
-  <table border="0" cellborder="1" cellpadding="2" bgcolor="white">
+  edge[color = darkgreen, fontcolor=blue, fontsize = 12];
+  ldap_client [style = filled penwidth = 1 fillcolor = white fontsize = 14 fontname = "Courier New" shape = "Mrecord" label =<
+  <table border="0" cellborder="0" bgcolor="white">
     <tr>
-      <td bgcolor="black" align="center" colspan="2">
-	<font color="white">Клиент:192.168.100.2</font>
+      <td border="0" align="center" bgcolor="black" colspan="2">
+	<font point-size = "20" color="white">Клиент<br/>IP: 192.168.100.2</font>
       </td>
     </tr>
     <tr>
-      <td bgcolor="white" align="center" colspan="2">
-	<font color="black">Доступные аккаунты пользователей:</font>
+      <td bgcolor="white" colspan="2">
+	<font color="black">Аккаунты пользователей:</font>
       </td>
     </tr>
     <tr>
       <td bgcolor="grey" align="center" colspan="2">
-	<font color="black"><br/>pvolkov<br/>nivanov<br/>asidorov<br/></font>
+	<font color="black">pvolkov</font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="grey" align="center" colspan="2">
+	<font color="black">nivanov</font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="grey" align="center" colspan="2">
+	<font color="black">asidorov</font>
       </td>
     </tr>
   </table>>
   ];  
 
-  ldap_server [ style = "filled" penwidth = 1 fillcolor = "white" fontname = "Courier New" shape = "Mrecord" label =<
-  <table border="0" cellborder="1" cellpadding="2" bgcolor="white">
+  ldap_server [style = filled penwidth = 1 fillcolor = white fontsize = 14 fontname = "Courier New" shape = "Mrecord" label =<
+  <table border="0" cellborder="0" bgcolor="white">
     <tr>
-      <td bgcolor="black" align="center" colspan="2">
-	<font color="white">LDAP-сервер 192.168.100.3</font>
+      <td border="0" align="center" bgcolor="black" colspan="2">
+	<font point-size = "20" color="white">LDAP<br/>IP: 192.168.100.3</font>
       </td>
     </tr>
     <tr>
-      <td bgcolor="white" align="center" colspan="2">
+      <td bgcolor="white" colspan="2">
 	<font color="black">Записи LDAP:</font>
       </td>
     </tr>
     <tr>
       <td bgcolor="grey" align="center" colspan="2">
-	<font color="black"><br/>pvolkov<br/>nivanov<br/>asidorov<br/></font>
+	<font color="black">pvolkov</font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="grey" align="center" colspan="2">
+	<font color="black">nivanov</font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="grey" align="center" colspan="2">
+	<font color="black">asidorov</font>
       </td>
     </tr>
   </table>>
   ];  
   
-  postgresql [ style = "filled" penwidth = 1 fillcolor = "white" fontname = "Courier New" shape = "Mrecord" label =<
-  <table border="0" cellborder="1" cellpadding="2" bgcolor="white">
+  postgresql [style = filled penwidth = 1 fillcolor = white fontsize = 14 fontname = "Courier New" shape = "Mrecord" label =<
+  <table border="0" cellborder="0" bgcolor="white">
     <tr>
-      <td bgcolor="black" align="center" colspan="2">
-	<font color="white">PostgreSQL 192.168.100.4</font>
+      <td border="0" align="center" bgcolor="black" colspan="2">
+	<font point-size = "20" color="white">PostgreSQL<br/>IP: 192.168.100.4</font>
       </td>
     </tr>
     <tr>
-      <td bgcolor="white" align="center" colspan="2">
-	<font color="black">Аккаунты пользователей СУБД:</font>
+      <td bgcolor="white" colspan="2">
+	<font color="black">Пользователи СУБД:</font>
       </td>
     </tr>
     <tr>
       <td bgcolor="grey" align="center" colspan="2">
-	<font color="black"><br/>pvolkov<br/>nivanov<br/>asidorov<br/></font>
+	<font color="black">pvolkov</font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="grey" align="center" colspan="2">
+	<font color="black">nivanov</font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="grey" align="center" colspan="2">
+	<font color="black">asidorov</font>
       </td>
     </tr>
   </table>>
@@ -66,9 +95,9 @@ digraph g {
   ldap_client -> ldap_server[label = 1];
   ldap_server -> ldap_client[label = 2];
   
-  postgresql -> ldap_server[label = 4];
-  ldap_server -> postgresql[label = 5];
+  postgresql -> ldap_server[color = red, label = 4];
+  ldap_server -> postgresql[color = red, label = 5];
   
-  ldap_client -> postgresql[label = 3];
-  postgresql -> ldap_client[label = 6];
+  ldap_client -> postgresql[color = red, label = 3];
+  postgresql -> ldap_client[color = red, label = 6];
 }

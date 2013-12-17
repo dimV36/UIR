@@ -4489,8 +4489,8 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename files/cluster.svg
-	scale 65
+	filename files/cluster.png
+	width 90text%
 
 \end_inset
 
@@ -4525,28 +4525,28 @@ name "fig:Схема-разворачиваемого-стенда"
 Клиент с IP 192.168.100.2 позволяет проводит аутентификацию своих пользователей
  (
 \family typewriter
-user1
+pvolkov
 \family default
 , 
 \family typewriter
-user2
+nivanov
 \family default
  и 
 \family typewriter
-user3
+asidorov
 \family default
 ) на сервере LDAP (IP 192.168.100.3), который хранит записи с данными пользователей
  
 \family typewriter
-user1
+pvolkov
 \family default
 , 
 \family typewriter
-user2
+nivanov
 \family default
 , 
 \family typewriter
-user3
+asidorov
 \family default
 .
 \end_layout
@@ -4560,15 +4560,15 @@ postgres
 , который является пользователем операционной системы, а также пользователей
  базы данных 
 \family typewriter
-user1
+pvolkov
 \family default
 , 
 \family typewriter
-user2 
+nivanov 
 \family default
 и
 \family typewriter
- user3
+ asidorov
 \family default
  в базе данных.
 \end_layout
@@ -4599,13 +4599,17 @@ uid
 pg_hba.conf
 \family default
 .
- LDAP-сервер выполняет поиск сгенерированной сущности и сверяет пароль.
- Если такой сущности нет или пароль неверный, в подключении к базе данных
+ LDAP-сервер выполняет поиск записи и сверяет пароль.
+ Если такой записи нет или пароль неверный, в подключении к базе данных
  отказывается.
 \end_layout
 
 \begin_layout Standard
 Настройка стенда будет состоять из следующих этапов:
+\end_layout
+
+\begin_layout Subsection
+Настройка машин стенда
 \end_layout
 
 \begin_layout Enumerate
@@ -4644,7 +4648,7 @@ pg_hba.conf
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Настройка клиентской машины
 \end_layout
 
@@ -5042,7 +5046,7 @@ status open
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Настройка сервера LDAP
 \end_layout
 
@@ -5929,7 +5933,7 @@ status open
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Создание сертификата сервера LDAP
 \end_layout
 
@@ -6356,7 +6360,7 @@ status open
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Загрузка аккаунтов пользователей в LDAP
 \end_layout
 
@@ -6405,7 +6409,7 @@ admin
 .
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Настройка аутентификации пользователей клиента на LDAP-сервере с помощью
  SSSD
 \end_layout
@@ -6581,7 +6585,7 @@ ldap_tls_reqcert = allow
  
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Настройка сервера PostgreSQL
 \end_layout
 
