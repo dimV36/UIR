@@ -6041,17 +6041,17 @@ status open
 
 \begin_layout Plain Layout
 
-# mkdir /etc/openldap/certs
+# mkdir /etc/openldap/cacerts/
 \end_layout
 
 \begin_layout Plain Layout
 
-# mkdir /etc/openldap/certs/keys
+# mkdir /etc/openldap/cacerts/keys
 \end_layout
 
 \begin_layout Plain Layout
 
-# cd /etc/openldap/certs
+# cd /etc/openldap/cacerts
 \end_layout
 
 \end_inset
@@ -6157,11 +6157,66 @@ cacert.pem
 \end_layout
 
 \begin_layout Standard
+Создается закрытый ключ LDAP-сервера:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# openssl genrsa -out keys/ldapkey.pem 2048
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+На основании закрытого ключа создается заявка на подпись SSL-ключа (
+\emph on
+Certificate signing request
+\emph default
+):
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# openssl req -new -text -key keys/ldapkey.pem -out ldapcert.csr
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+После чего удостоверяющий центр выпускает сертификат по заявке:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# openssl ca -out ldapcert.crt -in ldapcert.csr
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Сертификат сгенерирован в папке 
 \family typewriter
 /etc/openldap/certs/
 \family default
-, созданный ключ cгенерирован в папке 
+, созданный ключ находится в папке 
 \family typewriter
 /etc/openldap/certs/keys/
 \family default
@@ -6183,12 +6238,17 @@ status open
 
 \begin_layout Plain Layout
 
-# chown -R ldap:ldap /etc/openldap/cers/*
+# chown -R ldap:ldap /etc/openldap/cacers/*
 \end_layout
 
 \begin_layout Plain Layout
 
 # chmod 0400 keys/ldapkey.pem
+\end_layout
+
+\begin_layout Plain Layout
+
+# chmod 0600 /etc/openldap/cacerts/ldapcert.pem
 \end_layout
 
 \end_inset
@@ -6221,7 +6281,7 @@ replace: olcTLSCertificateFile
 
 \begin_layout Plain Layout
 
-olcTLSCertificateFile: /etc/openldap/certs/ldapcert.pem
+olcTLSCertificateFile: /etc/openldap/cacerts/ldapcert.pem
 \end_layout
 
 \begin_layout Plain Layout
@@ -6245,7 +6305,7 @@ replace: olcTLSCertificateKeyFile
 
 \begin_layout Plain Layout
 
-olcTLSCertificateKeyFile: /etc/openldap/certs/keys/ldapkey.pem
+olcTLSCertificateKeyFile: /etc/openldap/cacerts/keys/ldapkey.pem
 \end_layout
 
 \begin_layout Plain Layout
@@ -6659,8 +6719,8 @@ ldap_tls_reqcert = allow
 Настройка сервера PostgreSQL
 \end_layout
 
-\begin_layout Enumerate
-Установить пакеты сервера:
+\begin_layout Standard
+С помощью команды 
 \begin_inset listings
 inline false
 status open
@@ -6675,7 +6735,37 @@ status open
 
 \end_layout
 
-\begin_layout Enumerate
+\begin_layout Standard
+устанавливаются пакеты сервера СУБД PostgreSQL и клиентские программы.
+ При этом в системе создается администратор базы данных --- 
+\family typewriter
+postgres
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Установить пароль пользователю 
+\family typewriter
+postgres
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# passwd postgres
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Инициализировать сервер базы данных:
 \begin_inset listings
 inline false
@@ -6691,9 +6781,144 @@ status open
 
 \end_layout
 
-\begin_layout Enumerate
-Установить спектр адресов, с которых возможно подключение к серверу базы
- данных: 
+\begin_layout Standard
+Результатом выполнения данной команды является создание каталога конфигурационны
+х файлов в
+\family typewriter
+ /var/lib/pgsq/9.3/data
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Создается приватный ключ сервера:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ cd /var/lib/pgsql/9.3/data
+\end_layout
+
+\begin_layout Plain Layout
+
+$ openssl genrsa -out server.key 2048
+\end_layout
+
+\begin_layout Plain Layout
+
+$ chmod 0600 server.key
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+С помощью приватного ключа создается запрос на подпись сертификата удостоверяюще
+го центра:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ openssl req -new -text -key server.key -out server.csr
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Данный запрос копируется на LDAP-сервер для выпуска сертификата PostgreSQL:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ scp server.csr root@192.168.100.3:/etc/pki/tls/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+На LDAP-сервере удостоверяющий центр выпускает сертификат, копируются сертификат
+ы сервера PostgreSQL и удостоверяющего центра в каталог базы данных: 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# openssl ca -out server.crt -in server.csr
+\end_layout
+
+\begin_layout Plain Layout
+
+# scp server.crt postgres@192.168.100.4:/var/lib/pgsql/9.3/data/
+\end_layout
+
+\begin_layout Plain Layout
+
+# scp /etc/pki/CA/cacert.pem postgres@192.168.100.4:/var/lib/pgsql/9.3/data/root.crt
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+На сервере базы данных устанавливается владелец 
+\family typewriter
+postgres
+\family default
+ сертификата и назначаются права:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# chown postgres.postgres /var/lib/pgsql/9.3/data/server.crt
+\end_layout
+
+\begin_layout Plain Layout
+
+# chmod 0600 /var/lib/pgsq/9.3/data/server.crt
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В конфигурационном файле 
+\family typewriter
+postgresql.conf 
+\family default
+разрешается подключение с любого IP-адреса к серверу базы данных: 
 \begin_inset listings
 inline false
 status open
@@ -6705,12 +6930,44 @@ listen_addresses = '*'
 
 \end_inset
 
-в файле 
-\family typewriter
-/var/lib/pgsql/9.3/data/pg_hba.conf
+
 \end_layout
 
-\begin_layout Enumerate
+\begin_layout Standard
+Изменяются опции SSL-соединения:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ssl = on
+\end_layout
+
+\begin_layout Plain Layout
+
+ssl_cert_file = 'server.crt'
+\end_layout
+
+\begin_layout Plain Layout
+
+ssl_key_file = 'server.key'
+\end_layout
+
+\begin_layout Plain Layout
+
+ssl_ca_file = 'root.crt'
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Установить метод аутентификации ldap в 
 \family typewriter
 pg_hba.conf
@@ -6771,7 +7028,7 @@ Users
 .
 \end_layout
 
-\begin_layout Enumerate
+\begin_layout Standard
 Открыть порт 5432 в межсетевом экране iptables:
 \begin_inset listings
 inline false
@@ -6809,7 +7066,7 @@ status open
 
 \end_layout
 
-\begin_layout Enumerate
+\begin_layout Standard
 Перезапустить сервер базы данных PostgreSQL:
 \begin_inset listings
 inline false
@@ -6825,7 +7082,7 @@ status open
 
 \end_layout
 
-\begin_layout Enumerate
+\begin_layout Standard
 Создать базу данных 
 \family typewriter
 testdb
@@ -6845,7 +7102,7 @@ $ createdb testdb
 
 \end_layout
 
-\begin_layout Enumerate
+\begin_layout Standard
 Создать пользователей базы данных:
 \begin_inset listings
 inline false
