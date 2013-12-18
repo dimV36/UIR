@@ -6060,20 +6060,7 @@ status open
 \end_layout
 
 \begin_layout Standard
-Создаются самоподписанный (
-\emph on
-self-signed
-\emph default
-) сертификат сервера (
-\family typewriter
-ldapcert.pem
-\family default
-) и закрытй ключ сервера (
-\family typewriter
-ldapkey.pem
-\family default
-) закрытый ключ без пароля, действительный в течение 10 лет.
- При генерации ключа используется RSA в качестве протокола обмена ключами:
+На машине сервера создается удостоверяющий центр:
 \end_layout
 
 \begin_layout Standard
@@ -6083,8 +6070,7 @@ status open
 
 \begin_layout Plain Layout
 
-# openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout keys/ldapkey.pem
- -out ldapcert.pem
+# /etc/pki/tls/misc/CA -newca
 \end_layout
 
 \end_inset
@@ -6093,8 +6079,80 @@ status open
 \end_layout
 
 \begin_layout Standard
-Созданный сертификат может быть использован в качестве сертификата сервера
- и удостоверяющего центра.
+При создании удостоверяющего центра должна быть введена информация о расположени
+и удостоверяющего центра, организации и подразделении, а также пользователе
+ или о хосте машины, от имени которого создается удостоверяющий центр:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Enter PEM pass phrase: <пароль>
+\end_layout
+
+\begin_layout Plain Layout
+
+Verifying - Enter PEM pass phrase: <пароль>
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+Country Name (2 letter code) [XX]:ru
+\end_layout
+
+\begin_layout Plain Layout
+
+State or Province Name (full name) []:msk
+\end_layout
+
+\begin_layout Plain Layout
+
+Locality Name (eg, city) [Default City]:msk
+\end_layout
+
+\begin_layout Plain Layout
+
+Organization Name (eg, complany) [Default Company Ltd]:mephi
+\end_layout
+
+\begin_layout Plain Layout
+
+Organizational Unit Name (eg, section) []:kaf36
+\end_layout
+
+\begin_layout Plain Layout
+
+Common Name (eg, your name or your server's hostname) []:root
+\end_layout
+
+\begin_layout Plain Layout
+
+Email Address []:root@kaf36
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В результате выполнения этой команды будет создан удостоверяющий центр с
+ публичным ключом 
+\family typewriter
+cacert.pem
+\family default
+.
+ Удостоверяющий центр гарантирует, что обладатель подписанного сертификата
+ является доверенным субъектом в сети.
  
 \end_layout
 
@@ -6103,23 +6161,11 @@ status open
 \family typewriter
 /etc/openldap/certs/
 \family default
-, созданный ключ копируется в папку 
+, созданный ключ cгенерирован в папке 
 \family typewriter
 /etc/openldap/certs/keys/
 \family default
-:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# cp ldapkey.pem keys/
-\end_layout
-
-\end_inset
-
-
+.
 \end_layout
 
 \begin_layout Standard
