@@ -92,11 +92,12 @@ digraph g {
   </table>>
   ];  
   
-  ldap_client -> ldap_server[label = "uid, userPassword"];
+  ldap_client -> ldap_server[label = "uid, userPassword, SELinux context"];
   ldap_server -> ldap_client[label = "Ответ LDAP"];
   
-  ldap_client -> postgresql[color = red, label = "uid, userPassword"];
+  ldap_client -> postgresql[color = red, label = "uid, userPassword, SELinux context"];
   postgresql -> ldap_server[color = red, label = "Запрос LDAP"];
   ldap_server -> postgresql[color = red, label = "Ответ LDAP"];
+  
   postgresql -> ldap_client[color = red, label = "Ответ клиенту"];
 }
