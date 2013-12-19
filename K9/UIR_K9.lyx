@@ -1279,7 +1279,7 @@ year
 
 \size large
 \begin_inset Tabular
-<lyxtabular version="3" rows="11" columns="1">
+<lyxtabular version="3" rows="13" columns="1">
 <features tabularvalignment="middle">
 <column alignment="left" valignment="top" width="0">
 <row>
@@ -1339,7 +1339,32 @@ year
 
 \size small
 2.
- Исследовать метод аутентификации LDAP и выявить его достоинства и недостатки.
+ Исследовать метод аутентификации LDAP и оценить возможность применения
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+в распределенной информационной системе.
 \end_layout
 
 \end_inset
@@ -1808,9 +1833,9 @@ addcontentsline{toc}{part}{Введение}
 ации пользователей в PostgreSQL, производится выбор метода аутентификации
  для распределенной многопользовательской информационной системы, а также
  описывается процесс настройки аутентификации пользователей на сервере OpenLDAP.
- Задачей учебно-исследовательской работы является выявление достоинств и
- недостатков данных методов, а также исследование возможностей дальнейшей
- доработки метода аутентификации LDAP.
+ Целью учебно-исследовательской работы является выявление достоинств и недостатк
+ов данных методов, а также исследование возможностей дальнейшей доработки
+ метода аутентификации LDAP.
  
 \begin_inset Newpage newpage
 \end_inset
@@ -2001,7 +2026,7 @@ ALTER USER
 \end_layout
 
 \begin_layout Subsubsection*
-Недостатки методов аутентификации по паролю
+Недостатки методов аутентификации по паролю:
 \end_layout
 
 \begin_layout Itemize
@@ -3016,7 +3041,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename files/DIT.png
-	width 100text%
+	width 85text%
 
 \end_inset
 
@@ -4459,6 +4484,114 @@ slaptest
 \end_layout
 
 \begin_layout Standard
+При построении распределенной информационной системы одним из важных вопросов
+ является аутентификация пользователей в данной системе.
+\end_layout
+
+\begin_layout Standard
+Пусть информационная система представляет из себя 2 машины, одна из которых
+ является сервером PostgreSQL, другая --- клиент, который имеет возможность
+ удаленно подключаться к ней.
+ 
+\end_layout
+
+\begin_layout Standard
+Использовать метод аутентификации 
+\family typewriter
+trust
+\family default
+ нецелесообразно, т.к.
+ данный метод всего лишь разрешает подключение клиентам по IP-адресам.
+ Кроме того, соединение между клиентом и сервером не является шифрованным.
+ 
+\end_layout
+
+\begin_layout Standard
+Методы, основанные на шифровании пароля небезопасны, т.к.
+ пароль для проверки серверу базы данных передается в незашифрованном виде,
+ что может стать причиной компрометации пароля.
+\end_layout
+
+\begin_layout Standard
+Метод 
+\family typewriter
+Ident
+\family default
+ требует создания локального пользователя для сопоставления его имени с
+ именем пользователя базы данных, кроме того, данный протокол он не предназначен
+ для аутентификации или контроля доступа.
+\end_layout
+
+\begin_layout Standard
+Метод 
+\family typewriter
+Peer
+\family default
+ может быть использован только для аутентификации локальных клиентов.
+ 
+\end_layout
+
+\begin_layout Standard
+Использовать 
+\family typewriter
+PAM 
+\family default
+в качестве основного метода аутентификации затруднено ввиду необходимости
+ длительной настройки и тестирования соединения.
+ Кроме того, при использовании данного метода существует проблема подмены
+ 
+\family typewriter
+PAM
+\family default
+-модуля и сложности обнаружения этой уязвимости.
+\end_layout
+
+\begin_layout Standard
+Использование же LDAP для аутентификации клиентом позволяет решить все перечисле
+нные проблемы:
+\end_layout
+
+\begin_layout Itemize
+Сервер LDAP можно использовать в качестве аутентификации не только клиентов
+ баз данных, но и пользователей системы.
+ Таким образом нет необходимости создавать локальных пользователей на клиентских
+ машинах.
+ 
+\end_layout
+
+\begin_layout Itemize
+Написание политики доступа позволит предотвратить неконтролируемый доступ
+ к информации пользователей.
+\end_layout
+
+\begin_layout Itemize
+Сервер LDAP позволяет создавать иерархические структуры пользователей, т.о.
+ разделять права доступа к информации.
+ 
+\end_layout
+
+\begin_layout Itemize
+Шифрование соединения по протоколу SSL.
+\end_layout
+
+\begin_layout Itemize
+Расширяемость.
+ При увеличении нагрузки на сервер LDAP применяется репликация данных между
+ серверами.
+ Кроме того, существует возможность хранения поддеревьев информации на отдельной
+ машине для более быстрого доступа к ней.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Поэтому предлагается использовать LDAP в качестве основного метода аутентификаци
+и в PostgreSQL.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Newpage clearpage
 \end_inset
 
@@ -4579,7 +4712,7 @@ nivanov
 \family typewriter
  asidorov
 \family default
- в базе данных.
+.
 \end_layout
 
 \begin_layout Standard
