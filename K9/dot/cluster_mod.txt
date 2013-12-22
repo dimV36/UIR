@@ -93,7 +93,7 @@ digraph g {
   ];  
   
   ldap_client -> ldap_server[label = "uid, userPassword, SELinux context"];
-  ldap_server -> ldap_client[label = "Ответ LDAP"];
+  ldap_server -> ldap_client[label = "SELinux context/\nОшибка аутентификации"];
   
   ldap_client -> postgresql[color = red, label = "uid, userPassword, SELinux context"];
   postgresql -> ldap_server[color = red, label = "Запрос LDAP"];

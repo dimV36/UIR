@@ -1858,14 +1858,14 @@ Trust
 \series bold
 trust 
 \series default
-позволяет любому, кто подключится к серверу базы данных, получить доступ
+позволяет любому, кто подключится к серверу баз данных, получить доступ
  к любой базе данных, включая базу данных администратора.
  
 \end_layout
 
 \begin_layout Standard
-Данный вид аутентификации часто применяется для локальных подключений в
- однопользовательских рабочих станциях.
+Данный метод часто применяется для локальных подключений в однопользовательских
+ рабочих станциях.
  Однако его не рекомендуется использовать на многопользовательских машинах.
  При использовании 
 \family typewriter
@@ -1916,7 +1916,7 @@ trust
 \end_layout
 
 \begin_layout Subsubsection*
-Недостатки метода аутентификации trust
+Ограничения метода аутентификации trust
 \end_layout
 
 \begin_layout Itemize
@@ -2034,7 +2034,7 @@ ALTER USER
 \end_layout
 
 \begin_layout Subsubsection*
-Недостатки методов аутентификации по паролю:
+Ограничения методов аутентификации по паролю:
 \end_layout
 
 \begin_layout Itemize
@@ -2042,12 +2042,16 @@ ALTER USER
 \end_layout
 
 \begin_layout Itemize
-Ввиду использования простых схем шифрования паролей, могут быть скомпрометирован
-ы.
-\end_layout
-
-\begin_layout Itemize
-Пароли пользователей хранятся в публичной таблице базы данных.
+При шифровании паролей при методах 
+\family typewriter
+md5
+\family default
+, 
+\family typewriter
+crypt
+\family default
+ используются простые методы шифрования.
+ Поэтому они могут быть дешифрованы и скомпрометированы.
 \end_layout
 
 \begin_layout Itemize
@@ -2349,15 +2353,15 @@ UNKNOWN-ERROR
 \end_layout
 
 \begin_layout Subsubsection
-Достоинства и недостатки Ident
+Преимущества и недостатки Ident
 \end_layout
 
 \begin_layout Standard
-Достоинствами протокола Ident являются:
+Преимущества протокола Ident:
 \end_layout
 
 \begin_layout Enumerate
-Может быть использован в архитектуре клиент-сервер.
+Используется в архитектуре клиент-сервер.
 \end_layout
 
 \begin_layout Enumerate
@@ -2478,15 +2482,20 @@ Pluggable Authentication Modules
 \series bold
 PAM
 \series default
-, подключаемые модули аутентификации) 
+, подключаемые модули аутентификации)
+\begin_inset space ~
+\end_inset
+
+
 \begin_inset CommandInset citation
 LatexCommand cite
 key "PAM"
 
 \end_inset
 
- --- это набор разделяемых библиотек, которые позволяют интегрировать различные
- низкоуровневые методы аутентификации в виде единого высокоуровневого API.
+ представляют собой набор разделяемых библиотек, которые позволяют интегрировать
+ различные низкоуровневые методы аутентификации в виде единого высокоуровневого
+ API.
  
 \end_layout
 
@@ -2707,9 +2716,9 @@ session
 \family typewriter
 required
 \family default
- --- аутентификация в этом модуле необходима для аутентификации в целом.
- В случае провала аутентификации в этом модуле будут выполняться оставшиеся
- модули.
+ --- Аутентификация в этом модуле необходима для аутентификации в целом.
+ В случае отказа в аутентификации в этом модуле проводится попытка аутентификаци
+и в оставшихся модулях с данным флагом.
 \end_layout
 
 \begin_layout Itemize
@@ -2717,8 +2726,8 @@ required
 \family typewriter
 requisite
 \family default
- --- аутентификация в этом модуле также необходима для аутентификации в
- целом, но в случае провала аутентификации в этом модуле, управление будет
+ --- Аутентификация в этом модуле также необходима для аутентификации в
+ целом, но в случае отказа в аутентификации в этом модуле, управление будет
  возвращено приложению.
 \end_layout
 
@@ -2728,14 +2737,14 @@ requisite
 sufficient 
 \family default
 --- Успешная аутентификация в этом модуле считается достаточном для признания
- всей аутентификации в целом, если не провалилась проверка на предшествующих
- модулях с флагом 
+ всей аутентификации в целом, если не было отказа на предшествующих модулях
+ с флагом 
 \family typewriter
 required
 \family default
 .
- Провал аутентификации в этом модуле не считается фатальной для всей последующей
- аутентификации.
+ Отказ в аутентификации в этом модуле не считается фатальной для всей последующе
+й аутентификации.
 \end_layout
 
 \begin_layout Itemize
@@ -2752,11 +2761,7 @@ optional
 \end_layout
 
 \begin_layout Standard
-В следующем столбце указывается путь к 
-\family typewriter
-so
-\family default
--библиотеке модуля.
+В следующем столбце указывается путь к динамической библиотеки модуля.
 \end_layout
 
 \begin_layout Standard
@@ -2949,14 +2954,35 @@ key "LDAP"
 
 .
  Как следует из названия, это облегченный протокол доступа к службам каталогов,
- предназначенный для доступа к службам каталогов на основе X.500.
+ предназначенный для доступа к службам каталогов на основе X.500 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "X-500"
+
+\end_inset
+
+.
  LDAP работает поверх TCP/IP или других ориентированных на соединение сетевых
  протоколов.
- LDAP стандартизирован в качестве протокола IETF.
+ LDAP стандартизирован в качестве протокола IETF 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "IETF"
+
+\end_inset
+
+.
  Он описан в стандарте 
 \series bold
 RFC4510
 \series default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "RFC4510"
+
+\end_inset
+
 .
 \end_layout
 
@@ -3037,6 +3063,13 @@ ASN.1
 \series bold
 100
 \series default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ASN.1.100"
+
+\end_inset
+
 .
 \end_layout
 
@@ -3406,7 +3439,7 @@ attributetype ( 2.5.4.41 NAME 'name'
 \end_layout
 
 \begin_layout Standard
-Объектные классы представляют собой хранилищем атрибутов, определяют перечень
+Объектные классы представляют собой хранилище атрибутов, определяют перечень
  атрибутов, которые обязательно должны присутствовать в случае загрузки
  записи в LDAP, а также перечень необязательных атрибутов.
  Объектный класс может быть унаследован от другого класса, при этом дочерний
@@ -3619,7 +3652,14 @@ slapd
 --- сервер службы каталогов, реализующую 3ю версию протокола LDAP.
  В качестве хранилища поддерживаются механизмы манипуляции данных.
  Одним из самых распространенных является BDB (высокопроизводительный механизм
- манипуляции с поддержкой транзакций) на базе Berklery DB.
+ манипуляции с поддержкой транзакций) на базе Berklery DB 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Berkley DB"
+
+\end_inset
+
+.
  Сервер 
 \family typewriter
 slapd
@@ -3633,7 +3673,7 @@ master-slave
 \end_layout
 
 \begin_layout Subsubsection
-Использование OLC в OpenLDAP
+Использование динамической конфигурации сервера OpenLDAP
 \end_layout
 
 \begin_layout Standard
@@ -4049,7 +4089,14 @@ ldapsearch
  открывает соединение с сервером LDAP, подключается и производит поиск,
  используя указанные параметры.
  Указываемый фильтр должен соответствовать строковому представлению поисковых
- фильтров, определенному в RFC 4515.
+ фильтров, определенному в RFC4515 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "RFC4515"
+
+\end_inset
+
+.
  Если фильтр не был указан, используется фильтр по умолчанию 
 \family typewriter
 (objectClass=*)
@@ -4531,16 +4578,17 @@ slaptest
 \family typewriter
 trust
 \family default
- нецелесообразно, т.к.
- данный метод всего лишь разрешает подключение клиентам по IP-адресам.
+ для сетевой аутентификации пользователей PostgreSQL небезопасно, т.к.
+ данный метод разрешает подключение всем пользователям к любой базе данных.
+ Единственным возможным ограничением доступа является диапазон IP-адресов.
  Кроме того, соединение между клиентом и сервером не является шифрованным.
  
 \end_layout
 
 \begin_layout Standard
-Методы, основанные на шифровании пароля небезопасны, т.к.
- пароль для проверки серверу базы данных передается в незашифрованном виде,
- что может стать причиной компрометации пароля.
+Методы, основанные на шифровании пароля также небезопасны, т.к.
+ пароль шифруется с помощью простых схем шифрований.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -4549,7 +4597,7 @@ trust
 Ident
 \family default
  требует создания локального пользователя для сопоставления его имени с
- именем пользователя базы данных, кроме того, данный протокол он не предназначен
+ именем пользователя базы данных, кроме того, данный протокол не предназначен
  для аутентификации или контроля доступа.
 \end_layout
 
@@ -4583,8 +4631,8 @@ PAM
 \end_layout
 
 \begin_layout Itemize
-Сервер LDAP можно использовать в качестве аутентификации не только клиентов
- баз данных, но и пользователей системы.
+Сервер LDAP можно использовать в для аутентификации не только клиентов баз
+ данных, но и пользователей системы.
  Таким образом нет необходимости создавать локальных пользователей на клиентских
  машинах.
  
@@ -4602,7 +4650,7 @@ PAM
 \end_layout
 
 \begin_layout Itemize
-Шифрование соединения по протоколу SSL.
+Шифрование соединения по протоколу TLS.
 \end_layout
 
 \begin_layout Itemize
@@ -4620,8 +4668,7 @@ PAM
 \begin_layout Standard
 Поэтому предлагается использовать LDAP в качестве основного метода аутентификаци
 и в PostgreSQL в данной системе.
- При этом информационную систему предлагается расширить до 3 машин: клиент,
- сервер PostgreSQL и сервер OpenLDAP.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -4697,8 +4744,11 @@ name "fig:Схема-разворачиваемого-стенда"
 \end_layout
 
 \begin_layout Standard
-Клиент с IP 192.168.100.2 позволяет проводит аутентификацию своих пользователей
- (
+Сервер LDAP (
+\family typewriter
+IP 192.168.100.3
+\family default
+) хранит записи пользователей (
 \family typewriter
 pvolkov
 \family default
@@ -4710,20 +4760,11 @@ nivanov
 \family typewriter
 asidorov
 \family default
-) на сервере LDAP (IP 192.168.100.3), который хранит записи с данными пользователей
- 
+) и проводит аутентификацию этих пользователей на клиенте (
 \family typewriter
-pvolkov
+IP 192.168.100.2
 \family default
-, 
-\family typewriter
-nivanov
-\family default
-, 
-\family typewriter
-asidorov
-\family default
-.
+).
 \end_layout
 
 \begin_layout Standard
@@ -4809,408 +4850,6 @@ name "sub:Настройка-машин-стенда"
 \end_layout
 
 \begin_layout Subsubsection
-Настройка клиентской машины
-\end_layout
-
-\begin_layout Standard
-Первоначальная настройка клиентской машины состоит в установке необходимых
- пакетов для настройки аутентификации на сервере LDAP и клиентских пакетов
- базы данных.
- 
-\end_layout
-
-\begin_layout Standard
-Устанавливаются пакеты скриптов, позволяющие импортировать данные пользователей,
- их паролей, групп в LDAP:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# yum install -y migrationtools
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Данный пакет содержит Perl-скрипты, генерирующий на основе файлов 
-\family typewriter
-/etc/passwd
-\family default
-, 
-\family typewriter
-/etc/shadow 
-\family default
-сущности пользователей LDAP и сервисов.
-\end_layout
-
-\begin_layout Standard
-Установить пакет клиента Postgresql psql:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# yum install -y postgresql93
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-После выполнения данной команды будет установлен клиент 
-\family typewriter
-psql
-\family default
- для версии Postgresql 9.3.
-\end_layout
-
-\begin_layout Standard
-Создать локальных пользователей, чьи аккаунты будут храниться в LDAP:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# useradd pvolkov
-\end_layout
-
-\begin_layout Plain Layout
-
-# useradd nivanov
-\end_layout
-
-\begin_layout Plain Layout
-
-# useradd asidorov
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-Для каждого пользователя назначается пароль с помощью утилиты 
-\family typewriter
-passwd
-\family default
-:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# passwd pvolkov
-\end_layout
-
-\begin_layout Plain Layout
-
-# passwd nivanov
-\end_layout
-
-\begin_layout Plain Layout
-
-# passwd asidorov
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Создать папку 
-\family typewriter
-ldif
-\family default
-, в которой будут храниться сгенерированные LDIF-файлы для загрузки в LDAP-серве
-р:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# mkdir /root/ldif
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Перейти в каталог скриптов 
-\family typewriter
-migrationtools
-\family default
-:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# cd /usr/share/migrationtools
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Отредактировать файл 
-\family typewriter
-migrate_common.ph
-\family default
-, установив имя DIT:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-$DEFAULT_BASE = "dc=ldap-server,dc=ru"
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-После чего запустить скрипт 
-\family typewriter
-migrate_base.pl
-\family default
-, который создаст корневой элемент дерева и дочерние сущности для хостов,
- сети, групп и пользователей:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# ./migrate_base.pl > /root/ldif/base.ldif
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Скрипт 
-\family typewriter
-migrate_group.pl
-\family default
- выполняет создание LDAP-сущностей групп на основе файла 
-\family typewriter
-/etc/group
-\family default
-.
- Так как помимо пользовательских групп в системе содержится ещё системные,
- то необходимо получить строки пользовательских групп
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-Так как диапазон 
-\family typewriter
-uid
-\family default
- пользователей в CentOS 6 начинается с 500, то для получения данных групп
- и аккаунтов пользователй используется следующее регулярное выражение
-\end_layout
-
-\end_inset
-
-:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# grep [5-9][0-9][0-9] /etc/group > groups
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-После чего выполняется преобразование этих данных в LDIF:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# ./migrate_group.pl groups > /root/ldif/groups.ldif
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Скрипт 
-\family typewriter
-migration_passwd.pl
-\family default
- создает сущности пользователей и их пароли.
- Аналогично файлу 
-\family typewriter
-/etc/group
-\family default
- файл пользователей 
-\family typewriter
-/etc/passwd
-\family default
- содержит множество системных пользователей.
- Поэтому с помощью следующей команды получаются строки аккаунтов реальных
- пользователей:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# grep [0-9][0-9] /etc/passwd > passwd
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Далее создаются сущности:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# ./migrate_group.pl passwd > /root/ldif/passwd.ldif
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Полученные LDIF-файлы копируются на LDAP-сервер:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# ssh -T root@192.168.100.3
-\end_layout
-
-\begin_layout Plain Layout
-
-# mkdit /etc/openldap/ldif
-\end_layout
-
-\begin_layout Plain Layout
-
-# exit
-\end_layout
-
-\begin_layout Plain Layout
-
-# scp -R /root/ldif root@192.168.100.3:/etc/openldap/ldif/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-При выполнении команды требуется ввод пароля пользователя 
-\family typewriter
-root
-\family default
- на сервере LDAP.
-\end_layout
-
-\begin_layout Standard
-Все локальные аккаунты пользователей удаляются:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# userdel pvolkov
-\end_layout
-
-\begin_layout Plain Layout
-
-# userdel nivanov
-\end_layout
-
-\begin_layout Plain Layout
-
-# userdel asidorov
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
 Настройка сервера LDAP
 \end_layout
 
@@ -5290,7 +4929,7 @@ REJECT
 \end_layout
 
 \begin_layout Standard
-Изменение конфигурационного файла межсетевого экрана требует перезапуска:
+Изменение конфигурационного файла межсетевого экрана требует его перезапуска:
  
 \begin_inset listings
 inline false
@@ -6098,6 +5737,414 @@ status open
 \end_layout
 
 \begin_layout Subsubsection
+Создание пользовательских аккаунтов
+\end_layout
+
+\begin_layout Standard
+Создание пользовательских аккаунтов происходит на сервере LDAP.
+ 
+\end_layout
+
+\begin_layout Standard
+Сначала создается корневая сущность каталога 
+\family typewriter
+/etc/openldap/base.ldif
+\family default
+.
+ В данном файле описывается запись корня, сущность групп (
+\family typewriter
+ou=Group
+\family default
+), которая хранит группы пользователей, а также группа пользователей (
+\family typewriter
+ou=People
+\family default
+) 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+dn: dc=ldap-server,dc=ru
+\end_layout
+
+\begin_layout Plain Layout
+
+dc: ldap-server
+\end_layout
+
+\begin_layout Plain Layout
+
+objectClass: top
+\end_layout
+
+\begin_layout Plain Layout
+
+objectClass: domain
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+dn: ou=Group,dc=ldap-server,dc=ru
+\end_layout
+
+\begin_layout Plain Layout
+
+ou: Group
+\end_layout
+
+\begin_layout Plain Layout
+
+objectClass: top
+\end_layout
+
+\begin_layout Plain Layout
+
+objectClass: organizationalUnit
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+dn: ou=People,dc=ldap-server,dc=ru
+\end_layout
+
+\begin_layout Plain Layout
+
+ou: People
+\end_layout
+
+\begin_layout Plain Layout
+
+objectClass: top
+\end_layout
+
+\begin_layout Plain Layout
+
+objectClass: organizationalUnit
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Для загрузки в каталог LDAP используется следующая команда: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# ldapadd -D cn=admin,dc=ldap-server,dc=ru -f /etc/openldap/ldif/base.ldif
+ -W
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+При выполнении данной команды потребуется ввести пароль администратора каталога
+ 
+\family typewriter
+admin
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Для создания записи пользователя 
+\family typewriter
+pvolkov
+\family default
+ требуется выполнить следующие действия:
+\end_layout
+
+\begin_layout Enumerate
+Создается запись группы пользователя 
+\family typewriter
+pvolkov_group.ldif
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+dn: cn=pvolkov,ou=Group,dc=ldap-server,dc=ru
+\end_layout
+
+\begin_layout Plain Layout
+
+objectClass: posixGroup
+\end_layout
+
+\begin_layout Plain Layout
+
+objectClass: top
+\end_layout
+
+\begin_layout Plain Layout
+
+cn: pvolkov
+\end_layout
+
+\begin_layout Plain Layout
+
+userPassword: {SSHA}x
+\end_layout
+
+\begin_layout Plain Layout
+
+gidNumber: 500
+\end_layout
+
+\end_inset
+
+Каждая запись группы содержит название группы (
+\family typewriter
+cn
+\family default
+), поле 
+\family typewriter
+userPassword
+\family default
+, отвечающий за пароль, а также 
+\family typewriter
+gidNumber
+\family default
+ --- порядковый идентификатор группы в операционной системе
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Диапазон 
+\family typewriter
+uid
+\family default
+ пользователей в CentOS 6 начинается с 500
+\end_layout
+
+\end_inset
+
+.
+ Каждая запись использует классы 
+\family typewriter
+posixGroup 
+\family default
+и 
+\family typewriter
+top
+\family default
+.
+\end_layout
+
+\begin_layout Enumerate
+Командой 
+\family typewriter
+ldappasswd
+\family default
+ шифруется пароль пользователя.
+\end_layout
+
+\begin_layout Enumerate
+Создается файл 
+\family typewriter
+/etc/openldap/ldif/pvolkov.ldif
+\family default
+ следующего содержания:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+dn: uid=pvolkov,ou=People,dc=ldap-server,dc=ru
+\end_layout
+
+\begin_layout Plain Layout
+
+uid: pvolkov
+\end_layout
+
+\begin_layout Plain Layout
+
+cn: pvolkov
+\end_layout
+
+\begin_layout Plain Layout
+
+objectClass: account
+\end_layout
+
+\begin_layout Plain Layout
+
+objectClass: posixAccount
+\end_layout
+
+\begin_layout Plain Layout
+
+objectClass: top
+\end_layout
+
+\begin_layout Plain Layout
+
+objectClass: shadowAccount
+\end_layout
+
+\begin_layout Plain Layout
+
+userPassword: {SSHA}US0VGNxhxro/QD3B4wIbjRa5re9i8cX1
+\end_layout
+
+\begin_layout Plain Layout
+
+shadowLastChange: 15997
+\end_layout
+
+\begin_layout Plain Layout
+
+shadowMin: 0
+\end_layout
+
+\begin_layout Plain Layout
+
+shadowMax: 99999
+\end_layout
+
+\begin_layout Plain Layout
+
+shadowWarning: 7
+\end_layout
+
+\begin_layout Plain Layout
+
+loginShell: /bin/bash
+\end_layout
+
+\begin_layout Plain Layout
+
+uidNumber: 500
+\end_layout
+
+\begin_layout Plain Layout
+
+gidNumber: 500
+\end_layout
+
+\begin_layout Plain Layout
+
+homeDirectory: /home/pvolkov
+\end_layout
+
+\end_inset
+
+Каждая запись использует классы 
+\family typewriter
+account
+\family default
+, 
+\family typewriter
+posixAccout
+\family default
+, 
+\family typewriter
+top 
+\family default
+и 
+\family typewriter
+shadowAccount
+\family default
+.
+ В поле 
+\family typewriter
+userPassword 
+\family default
+хранится пароль пользователя, зашифрованный командой 
+\family typewriter
+ldappasswd 
+\family default
+на предыдущем шаге.
+ Атрибуты 
+\family typewriter
+shadow
+\family default
+ являются системными и хранят информацию для возможности смены пароля.
+ Атрибут 
+\family typewriter
+loginShell
+\family default
+ определяет интерпретатор командной строки, который будет использовать пользоват
+ель.
+ 
+\family typewriter
+uidNumber
+\family default
+ и 
+\family typewriter
+gidNumber
+\family default
+ определяют идентификаторы пользователя и группы пользователя соответственно.
+ Атрибут 
+\family typewriter
+homeDirectory
+\family default
+ хранит путь к домашнему каталогу пользователя.
+  
+\end_layout
+
+\begin_layout Enumerate
+Для загрузки записей группы и пользователя используются команды:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# ldapadd -D cn=admin,dc=ldap-server,dc=ru -f /etc/openldap/ldif/pvolkov_group.ld
+if -W 
+\end_layout
+
+\begin_layout Plain Layout
+
+# ldapadd -D cn=admin,dc=ldap-server,dc=ru -f /etc/openldap/ldif/pvolkov.ldif
+ -W
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Аналогичные действия проводятся для пользователей 
+\family typewriter
+nivanov
+\family default
+, 
+\family typewriter
+asidorov
+\family default
+.
+\end_layout
+
+\begin_layout Subsubsection
 Создание сертификата сервера LDAP
 \end_layout
 
@@ -6535,15 +6582,62 @@ status open
 \end_layout
 
 \begin_layout Subsubsection
-Загрузка аккаунтов пользователей в LDAP
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Настройка-клиентской-машины"
+
+\end_inset
+
+Настройка клиентской машины
 \end_layout
 
 \begin_layout Standard
-LDIF-файлы, созданные с помощью скриптов пакета 
+Настройка клиентской машины состоит в установке клиента 
 \family typewriter
-migration_tools
+psql 
 \family default
- последовательно загружаются в LDAP:
+и настройке аутентификации пользователей с использованием демона SSSD.
+\end_layout
+
+\begin_layout Standard
+Для подключения репозитория PostgreSQL выполняется команда:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# yum install -y http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-redhat93-9.
+3-1.noarch.rpm
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+После чего выполняется обновление данных пакетного менеджера:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# yum update
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Следующей командой выполняется установка клиента 
+\family typewriter
+psql
+\family default
+:
 \end_layout
 
 \begin_layout Standard
@@ -6553,39 +6647,12 @@ status open
 
 \begin_layout Plain Layout
 
-# ldapadd -D cn=admin,dc=ldap-server,dc=ru -f /etc/openldap/ldif/base.ldif
- -W
-\end_layout
-
-\begin_layout Plain Layout
-
-# ldapadd -D cn=admin,dc=ldap-server,dc=ru -f /etc/openldap/ldif/group.ldif
- -W 
-\end_layout
-
-\begin_layout Plain Layout
-
-# ldapadd -D cn=admin,dc=ldap-server,dc=ru -f /etc/openldap/ldif/passwd.ldif
- -W
+# yum install -y postgresql93
 \end_layout
 
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-При выполнении каждой команды требуется вводить пароль администратора домашнего
- каталога 
-\family typewriter
-admin
-\family default
-.
-\end_layout
-
-\begin_layout Subsubsection
-Настройка аутентификации пользователей клиента на LDAP-сервере с помощью
- SSSD
 \end_layout
 
 \begin_layout Standard
@@ -6722,7 +6789,7 @@ authconfig --updateall
 Данная команда устанавливает аутентификацию с использованием сервера LDAP,
  находящегося по адресу 
 \family typewriter
-ldaps://192.168.100.3
+ldap://192.168.100.3
 \family default
 .
  При этом используется соединение TLS при подключении к нему.
@@ -6763,6 +6830,22 @@ ldap_tls_reqcert = allow
 \end_layout
 
 \begin_layout Standard
+Установка и настройка репозитория PostgreSQL приводится 
+\emph on
+в разделе 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Настройка-клиентской-машины"
+
+\end_inset
+
+
+\emph default
+.
+ 
+\end_layout
+
+\begin_layout Standard
 С помощью команды: 
 \begin_inset listings
 inline false
@@ -6770,7 +6853,7 @@ status open
 
 \begin_layout Plain Layout
 
-# yum install postgresql93 postgresql93-server
+# yum install postgresql93-server postgresql93
 \end_layout
 
 \end_inset
@@ -6779,7 +6862,7 @@ status open
 \end_layout
 
 \begin_layout Standard
-устанавливаются пакеты сервера СУБД PostgreSQL и клиентские программы.
+устанавливаются пакеты сервера и СУБД PostgreSQL.
  При этом в системе создается администратор базы данных --- 
 \family typewriter
 postgres
@@ -6877,7 +6960,7 @@ $ chmod 0600 server.key
 \end_layout
 
 \begin_layout Standard
-Заявка копируется на LDAP-сервер для выпуска сертификата PostgreSQL:
+Заявка копируется на удостоверяющий центр для выпуска сертификата PostgreSQL:
 \end_layout
 
 \begin_layout Standard
@@ -6896,8 +6979,8 @@ $ scp server.csr root@192.168.100.3:/etc/pki/tls/
 \end_layout
 
 \begin_layout Standard
-На LDAP-сервере удостоверяющий центр выпускает сертификат, копируются сертификат
-ы сервера PostgreSQL и удостоверяющего центра в каталог базы данных: 
+Удостоверяющий центр выпускает сертификат, копируются сертификаты сервера
+ PostgreSQL и удостоверяющего центра в каталог базы данных: 
 \end_layout
 
 \begin_layout Standard
@@ -7211,17 +7294,17 @@ status open
 
 \begin_layout Plain Layout
 
-$ psql -c "CREATE ROLE pvolkov nocreatedb nocreateuser login;"
+$ psql -c "CREATE ROLE pvolkov login;"
 \end_layout
 
 \begin_layout Plain Layout
 
-$ psql -c "CREATE ROLE nivanov nocreatedb nocreateuser login;"
+$ psql -c "CREATE ROLE nivanov login;"
 \end_layout
 
 \begin_layout Plain Layout
 
-$ psql -c "CREATE ROLE asidorov nocreatedb nocreateuser login;"
+$ psql -c "CREATE ROLE asidorov login;"
 \end_layout
 
 \end_inset
@@ -7230,20 +7313,7 @@ $ psql -c "CREATE ROLE asidorov nocreatedb nocreateuser login;"
 \end_layout
 
 \begin_layout Standard
-Пользователям не предоставляется права на создание пользователей и баз данных
- (
-\family typewriter
-nocreatedb
-\family default
-, 
-\family typewriter
-nocreateuser
-\family default
-), но они могут подключиться к базе данных (
-\family typewriter
-login) 
-\family default
-через
+С помощью данной команды разрешается подключение к базе данных через
 \family typewriter
  
 \family default
@@ -7508,11 +7578,12 @@ name "fig:Сетевая-активность-между"
 \end_layout
 
 \begin_layout Standard
-Как только пользователь подключается к базе данных с помощью клиента 
+Для аутентификации пользователя базы данных, пользователь вводит пароль
+ от своего аккаунта в клиете 
 \family typewriter
 psql
 \family default
-, ему предлагается ввести пароль от своего аккаунта (
+ (
 \emph on
 рисунок 
 \begin_inset CommandInset ref
@@ -7639,26 +7710,116 @@ SSL-соединение (шифр: DHE-RSA-AE256-SHA, бит: 256)
 
 \begin_layout Standard
 Текущий вариант аутентификации клиентов с использованием сервера LDAP не
- предполагает выполнять аутентификацию в определенном контексте SELinux.
- Более того, в комплекте классов, поставляемых вместе с сервером OpenLDAP
- нет схем, позволяющие хранить контекст пользователей.
+ предполагает использовать SELinux 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "SELinux"
+
+\end_inset
+
+ в качестве дополнительного метода контроля доступа.
+ Поэтому предлагается разработать алгоритм хранения и передачи метки SELinux
+ пользователям для их аутентификации в заданных контекстах.
  
 \end_layout
 
 \begin_layout Standard
-Для усовершенствования системы безопасности информационной системы, настройка
- которой описана в 
-\emph on
-пункте 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sub:Настройка-машин-стенда"
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/cluster_mod.png
+	width 100text%
 
 \end_inset
 
 
-\emph default
-, предлагается разработать модель хранения контекста SELinux.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Схема-механизма-передачи"
+
+\end_inset
+
+Схема механизма передачи контекста SELinux
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing single
+В таком случае аутентификация будет проходить по следующей схеме:
+\end_layout
+
+\begin_layout Enumerate
+Пользователь вводит имя своего аккаунта на клиентской машине и пароль.
+ Пароль отсылается LDAP-серверу и проверяется на совпадение.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Если переданный и хранимый пароль совпадают, пользователь успешно проходит
+ аутентификацию на сервере LDAP.
+ Пользователю назначается контекст SELinux, хранящийся в его записи.
+ 
+\end_layout
+
+\begin_layout Enumerate
+При подключении к базе данных с помощью клиента 
+\family typewriter
+psql
+\family default
+, пользователь передает свой 
+\family typewriter
+uid 
+\family default
+(логин пользователя), текущий контекст SELinux и пароль в PostgreSQL.
+ 
+\end_layout
+
+\begin_layout Enumerate
+PostgreSQL генерирует запрос на основе данных клиента.
+\end_layout
+
+\begin_layout Enumerate
+LDAP-сервер выполняет поиск записи и сверяет пароль.
+ Результат поиска отправляется PostgreSQL.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Если такой записи нет или пароль неверный, в подключении к базе данных отказывае
+тся.
+ Иначе пользователь авторизуется в переданном серверу контексте.
+ 
+\end_layout
+
+\begin_layout --Separator--
+\paragraph_spacing single
+
+\end_layout
+
+\begin_layout Standard
+Ввиду того, что в OpenLDAP не реализована поддержка хранения метки SELinux
+ предлагается разработать класс, выполняющий эту функцию.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -7915,102 +8076,10 @@ reference "fig:Схема-механизма-передачи"
 \end_layout
 
 \begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename files/cluster_mod.png
-	width 100text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Схема-механизма-передачи"
-
-\end_inset
-
-Схема механизма передачи контекста SELinux
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\paragraph_spacing single
-В таком случае аутентификация будет проходить по следующей схеме:
-\end_layout
-
-\begin_layout Enumerate
-Пользователь вводит имя своего аккаунта на клиентской машине и пароль.
- Пароль отсылается LDAP-серверу и проверяется на совпадение.
- 
-\end_layout
-
-\begin_layout Enumerate
-Если переданный и хранимый пароль совпадают, пользователь успешно проходит
- аутентификацию на клиенте.
- При этом клиенту назначается контекст SELinux, хранящийся в записи пользователя.
- 
-\end_layout
-
-\begin_layout Enumerate
-При подключении к базе данных с помощью клиента 
-\family typewriter
-psql
-\family default
-, пользователь передает свой 
-\family typewriter
-uid 
-\family default
-(логин пользователя), текущий контекст SELinux и пароль в PostgreSQL.
- 
-\end_layout
-
-\begin_layout Enumerate
-PostgreSQL генерирует запрос на основе данных клиента.
-\end_layout
-
-\begin_layout Enumerate
-LDAP-сервер выполняет поиск записи и сверяет пароль.
- Результат поиска отправляется PostgreSQL.
- 
-\end_layout
-
-\begin_layout Enumerate
-Если такой записи нет или пароль неверный, в подключении к базе данных отказывае
-тся.
- Иначе пользователь авторизовывается в переданном серверу контексте.
- 
-\end_layout
-
-\begin_layout --Separator--
-\paragraph_spacing single
-
-\end_layout
-
-\begin_layout Standard
 Таким образом, LDAP обладает возможностью настройки прав доступа к объектам
- на основе иерархической структуры, гибок при настройке и может быть использован
- для использования в качестве методов аутентификации в PostgreSQL.
+ на основе иерархической структуры, гибок в настройке и может быть использован
+ в для аутентификации как пользователей операционных систем, так и пользователей
+ PostgreSQL.
 \end_layout
 
 \begin_layout Standard
@@ -8114,32 +8183,6 @@ name "Литература"
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "1"
-key "Kerberos"
-
-\end_inset
-
- Протокол сетевой аутентификации Kerberos 5 [Электронный ресурс] --- http://www.i
-xbt.com/comm/kerberos5.shtml
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "2"
-key "Kerberos-man"
-
-\end_inset
-
- John T.
- Kohl, B.
- Clifford Neuman, Theodore Y.
- Ts’o --- The Evolution of the Kerberos Authentication Service 
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "3"
 key "Ident"
 
 \end_inset
@@ -8151,7 +8194,7 @@ s/rfc1413.html
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "4"
+label "2"
 key "Peer"
 
 \end_inset
@@ -8167,7 +8210,7 @@ PostgreSQL: Documentation: 9.3: Authentication Methods: 19.3.7.
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "5"
+label "3"
 key "PAM"
 
 \end_inset
@@ -8192,6 +8235,63 @@ u/tr/admin24/
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "7"
+key "X-500"
+
+\end_inset
+
+Серия стандартов X.500 [Электронный ресурс] --- http://ru.wikipedia.org/wiki/X.500
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "8"
+key "IETF"
+
+\end_inset
+
+Инженерный совет интернета (IETF) [Электронный ресурс] --- http://ru.wikipedia.org
+/wiki/IETF
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "9"
+key "RFC4510"
+
+\end_inset
+
+Стандарт RFC4510 [Электронный ресурс] --- http://tools.ietf.org/html/rfc4510
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "10"
+key "ASN.1.100"
+
+\end_inset
+
+Introduction to ASN.1 [Электронный ресурс] --- http://www.itu.int/ITU-T/asn1/introd
+uction/
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "11"
+key "Berkley DB"
+
+\end_inset
+
+Berkley DB [Электронный ресурс] --- http://ru.wikipedia.org/wiki/Berkeley_DB
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "12"
 key "LDAP-for-rocket-scientist"
 
 \end_inset
@@ -8203,7 +8303,18 @@ ax/
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "8"
+label "13"
+key "RFC4515"
+
+\end_inset
+
+Стандарт RFC4515 [Электронный ресурс] --- http://tools.ietf.org/html/rfc4515
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "14"
 key "TLS"
 
 \end_inset
@@ -8214,7 +8325,7 @@ TLS [Электронный ресурс] --- http://mind-control.wikia.com/wiki
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "9"
+label "15"
 key "LDAP-PostgreSQL"
 
 \end_inset
@@ -8222,6 +8333,17 @@ key "LDAP-PostgreSQL"
 PostgreSQL: Documentation: 9.3: Authentication Methods: 19.3.8.
  LDAP Authentication [Электронный ресурс] --- http://www.postgresql.org/docs/9.3/st
 atic/auth-methods.html 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "19"
+key "SELinux"
+
+\end_inset
+
+SELinux [Электронный ресурс] --- http://ru.wikipedia.org/wiki/SELinux
 \end_layout
 
 \end_body
