@@ -1,0 +1,522 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass extarticle
+\begin_preamble
+%Дополнения
+\usepackage{rotating}		%для вращения
+\usepackage{caption}		%для подписей
+\usepackage{lastpage}		%подсчёт страниц
+\usepackage{indentfirst}	%красная строка
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{graphicx}		%поддержка графики
+\usepackage{setspace}
+\usepackage{hhline}		%горизонтальные линии
+\usepackage{ifthen}		%условия
+\usepackage{ifxetex}		%проверки для XeTeX
+\usepackage{footmisc}		%настраивать сноски
+\usepackage{listings}
+\usepackage{pdflscape}
+
+%XeTeX-овский дзен
+\ifxetex
+\usepackage{xecyr} %нужно, если используется babel
+
+%Нужно для автозамены кавычек и тире
+\defaultfontfeatures{Mapping=tex-text}
+%без этого не работает шрифт...
+\newfontfamily\russianfont{Times New Roman}
+%шрифты, обычные, трутайповские
+\setmainfont{Times New Roman}
+\setmonofont[Scale=0.915]{Nimbus Mono L}
+
+%ещё один баг XeTeX! Не работают листинги с русскими буквами, печаль... Пришлось кинуть алиас на вербатим.
+\usepackage{verbatim}
+\usepackage{spverbatim}
+
+\def\verbatim@processline{\hspace{1.2cm}\raggedright\the\verbatim@line\par}
+\renewenvironment{lstlisting}{\spverbatim}{\endverbatim}
+
+\else %если не ХеТеХ а обычный ТеХ
+
+%пока отменил, с ХеТеХ работает криво
+%Это то что нужно для того, чтобы листинги выводились с моноширинным шрифтом
+\lstset{
+breaklines=true,                % sets automatic line breaking
+basicstyle=\ttfamily\footnotesize,
+%отступ примерно 4 пробела
+breakindent={-1.2cm},
+xleftmargin=0.5cm
+}
+
+\fi
+
+%русские буквы в нумерации
+\renewcommand\theenumii{\asbuk{enumii}}
+
+\sloppy %не вылезать за края листа
+\end_preamble
+\use_default_options true
+\begin_modules
+eqs-within-sections
+figs-within-sections
+\end_modules
+\maintain_unincluded_children false
+\language russian
+\language_package default
+\inputencoding koi8-r
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter cmtt
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 90
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement H
+\paperfontsize 12
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Subsection
+\paragraph_spacing onehalf
+Методика хранения меток SELinux в OpenLDAP
+\end_layout
+
+\begin_layout Standard
+Текущий вариант аутентификации клиентов с использованием сервера LDAP не
+ предполагает авторизацию пользователей в контексте SELinux 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "SELinux"
+
+\end_inset
+
+ --- реализацию системы принудительного контроля доступа.
+ 
+\end_layout
+
+\begin_layout Standard
+Поэтому предлагается разработать методику хранения метки SELinux пользователей
+ в OpenLDAP для назначения им контекста безопасности.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/dimv36/УИР/K9/files/cluster_mod.png
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Схема-механизма-передачи"
+
+\end_inset
+
+Схема механизма передачи контекста SELinux
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing single
+В таком случае аутентификация будет проходить по следующей схеме:
+\end_layout
+
+\begin_layout Enumerate
+Пользователь вводит имя своего аккаунта на клиентской машине и пароль.
+ Пароль отсылается LDAP-серверу и проверяется на совпадение.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Если переданный и хранимый пароль совпадают, пользователь успешно проходит
+ аутентификацию на сервере LDAP.
+ Клиент устанавливает контекст SELinux согласно присланной LDAP-серверу
+ метке.
+\end_layout
+
+\begin_layout Enumerate
+При подключении к базе данных с помощью клиента 
+\family typewriter
+psql
+\family default
+, пользователь передает свой 
+\family typewriter
+uid 
+\family default
+(логин пользователя), текущий контекст SELinux и пароль в PostgreSQL.
+ 
+\end_layout
+
+\begin_layout Enumerate
+PostgreSQL генерирует запрос на основе данных клиента.
+\end_layout
+
+\begin_layout Enumerate
+LDAP-сервер выполняет поиск записи и сверяет пароль.
+ Результат поиска отправляется PostgreSQL.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Если такой записи нет или пароль неверный, в подключении к базе данных отказывае
+тся.
+ Иначе пользователь авторизуется в переданном серверу контексте.
+ 
+\end_layout
+
+\begin_layout --Separator--
+\paragraph_spacing single
+
+\end_layout
+
+\begin_layout Standard
+Ввиду того, что в OpenLDAP не реализована поддержка хранения метки SELinux
+ предлагается разработать класс, выполняющий эту функцию.
+ 
+\end_layout
+
+\begin_layout Standard
+Разработку класса, хранящего контекст пользователя, предлагается осуществить
+ на основе 
+\family typewriter
+posixAccount
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+objectclass ( 2.16.840.1.113730.3.2.901
+\end_layout
+
+\begin_layout Plain Layout
+
+   NAME 'sePosixAccount'
+\end_layout
+
+\begin_layout Plain Layout
+
+   DESC 'PosixAccount with SELinux'
+\end_layout
+
+\begin_layout Plain Layout
+
+   SUP top
+\end_layout
+
+\begin_layout Plain Layout
+
+   STRUCTURAL
+\end_layout
+
+\begin_layout Plain Layout
+
+   MUST ( cn $ uid $ selinuxContext $ uidNumber $ gidNumber $ homeDirectory
+ )
+\end_layout
+
+\begin_layout Plain Layout
+
+   MAY ( userPassword $ loginShell $ description )
+\end_layout
+
+\begin_layout Plain Layout
+
+  )
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В первой строке указывается идентификатор класса.
+ Он выбран таким образом, чтобы не было совпадений уже с существующими классами
+ LDAP.
+ Директивой 
+\family typewriter
+NAME 
+\family default
+определяется имя нового класса.
+ В следующей строке указывается описание.
+ 
+\end_layout
+
+\begin_layout Standard
+Ключевым словом 
+\family typewriter
+SUP
+\family default
+ указывается класс-родитель, от которого наследуется создаваемый класс.
+ По идеологии LDAP при наследовании в классе-наследнике доступны все поля
+ родительского класса.
+ Ключевым словом 
+\family typewriter
+STRUCTURAL 
+\family default
+определяется возможность использовать класс в создании схем.
+\end_layout
+
+\begin_layout Standard
+После чего директивой 
+\family typewriter
+MUST
+\family default
+ указываются требуемые поля в классе.
+ В данном случае это: 
+\family typewriter
+cn 
+\family default
+--- имя пользователя (
+\family typewriter
+Common Name
+\family default
+), 
+\family typewriter
+uid 
+\family default
+--- логин пользователя, 
+\family typewriter
+selinuxContext 
+\family default
+--- контекст пользователя, 
+\family typewriter
+uidNumber
+\family default
+ и 
+\family typewriter
+gidNumber
+\family default
+ определяют идентификаторы пользователя и его группы.
+ Атрибут 
+\family typewriter
+homeDirectory
+\family default
+ описывает путь к домашней папке пользователя.
+ 
+\end_layout
+
+\begin_layout Standard
+Далее ключевым словом 
+\family typewriter
+MAY
+\family default
+ устанавливаются необязательные для записи атрибуты: 
+\family typewriter
+userPassword
+\family default
+ --- пароль пользователя, 
+\family typewriter
+loginShell
+\family default
+ --- командная оболочка, а в атрибуте 
+\family typewriter
+description
+\family default
+ указывается дополнительная информация об аккаунте.
+ 
+\end_layout
+
+\begin_layout Standard
+При определении класса был объявлен атрибут 
+\family typewriter
+selinuxContext
+\family default
+, описанный следующим образом:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+attributetype ( 2.16.840.1.113730.3.1.900
+\end_layout
+
+\begin_layout Plain Layout
+
+	NAME 'selinuxContext'
+\end_layout
+
+\begin_layout Plain Layout
+
+	DESC 'SeLinuxContext for LDAP'
+\end_layout
+
+\begin_layout Plain Layout
+
+	EQUALITY caseExactMatch
+\end_layout
+
+\begin_layout Plain Layout
+
+	SUBSTR caseIgnoreSubstringsMatch
+\end_layout
+
+\begin_layout Plain Layout
+
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+\end_layout
+
+\begin_layout Plain Layout
+
+	SINGLE-VALUE )
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+С помощью директивы 
+\family typewriter
+EQULITY 
+\family default
+задается правило сравнения (чувствительное к регистру, но нечувствительное
+ к количеству пробелов).
+ В следующей строке определяется правило сравнения для подстроки.
+ В данном случае это 
+\family typewriter
+caseIgnoreSubstringsMatch 
+\family default
+--- нечувствительное к регистру, нечувствительное к количеству пробельных
+ символов значение подстроки.
+ В следующей строке с помощью ключевого слова 
+\family typewriter
+SYNTAX
+\family default
+ указывается тип данных, который применяется здесь в качестве значения.
+ В данном случае идентификатор указывает на Unicode-строку.
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+SINGLE-VALUE
+\family default
+,
+\family typewriter
+ 
+\family default
+указанное в конце объявления атрибута запрещает классу иметь более одного
+ такого атрибута.
+ 
+\end_layout
+
+\begin_layout Standard
+Разработанный класс может быть применен для модификации аутентификации пользоват
+елей следующим образом (
+\emph on
+рисунок 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Схема-механизма-передачи"
+
+\end_inset
+
+
+\emph default
+).
+\end_layout
+
+\begin_layout Standard
+Таким образом, LDAP обладает возможностью настройки прав доступа к объектам
+ на основе иерархической структуры, гибок в настройке и может быть использован
+ в для аутентификации как пользователей операционных систем, так и пользователей
+ PostgreSQL.
+\end_layout
+
+\end_body
+\end_document
