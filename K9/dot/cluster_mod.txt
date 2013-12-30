@@ -2,7 +2,7 @@ digraph g {
   graph [fontsize=35 labelloc="t" label="" splines=true overlap=false rankdir = "LR"];
   ratio = auto;
   edge[color = darkgreen, fontcolor=blue, fontsize = 20];
-  ldap_client [style = filled penwidth = 1 fillcolor = white fontsize = 16 fontname = "Courier New" shape = "Mrecord" label =<
+  ldap_client [style = filled penwidth = 1 fillcolor = white fontsize = 20 fontname = "Courier New" shape = "Mrecord" label =<
   <table border="0" cellborder="0" bgcolor="white">
     <tr>
       <td border="0" align="center" bgcolor="black" colspan="2">
@@ -32,7 +32,7 @@ digraph g {
   </table>>
   ];  
 
-  ldap_server [style = filled penwidth = 1 fillcolor = white fontsize = 16 fontname = "Courier New" shape = "Mrecord" label =<
+  ldap_server [style = filled penwidth = 1 fillcolor = white fontsize = 20 fontname = "Courier New" shape = "Mrecord" label =<
   <table border="0" cellborder="0" bgcolor="white">
     <tr>
       <td border="0" align="center" bgcolor="black" colspan="2">
@@ -62,7 +62,7 @@ digraph g {
   </table>>
   ];  
   
-  postgresql [style = filled penwidth = 1 fillcolor = white fontsize = 16 fontname = "Courier New" shape = "Mrecord" label =<
+  postgresql [style = filled penwidth = 1 fillcolor = white fontsize = 20 fontname = "Courier New" shape = "Mrecord" label =<
   <table border="0" cellborder="0" bgcolor="white">
     <tr>
       <td border="0" align="center" bgcolor="black" colspan="2">
