@@ -943,22 +943,7 @@ thispagestyle{empty}
 
 
 \series bold
-Москва 
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-the
-\backslash
-year
-\end_layout
-
-\end_inset
-
-г.
+Москва 2013г.
 \end_layout
 
 \begin_layout Standard
@@ -1591,21 +1576,7 @@ year
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-the
-\backslash
-year
-\end_layout
-
-\end_inset
-
-г.
+2013г.
 \end_layout
 
 \end_inset
@@ -1727,11 +1698,11 @@ thispagestyle{empty}
 \begin_inset Quotes fld
 \end_inset
 
-23 
+23
 \begin_inset Quotes frd
 \end_inset
 
-декабря
+ декабря
 \end_layout
 
 \end_inset
@@ -1740,21 +1711,7 @@ thispagestyle{empty}
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-the
-\backslash
-year
-\end_layout
-
-\end_inset
-
-г.
+2013г.
 \end_layout
 
 \end_inset
