@@ -7,243 +7,53 @@ usepackage={tikz}
 usetikzlibrary={shadows}
 usepackage={listings}
 usepackage={color}
-date={2 декабря 2013}
-title=[Аутентификация]{Настройка аутентификации LDAP в PostgreSQL}
+date={27 января 2014}
+title=[]{Исследование возможностей сервера OpenLDAP для аутентификации пользователей СУБД PostgreSQL}
 author={Воронин Д.Л., Муравьёв С.К.}
 [autotemplate]>
 
 
-==== Общие понятия ====
+==== Аутентификация пользователей в СУБД ====
 
-'''Служба каталогов''' --- средство иерархического представления ресурсов, принадлежащих некоторой отдельно взятой организации, и информации об этих ресурсах. Под ресурсами могут пониматься материальные ресурсы, персонал, сетевые ресурсы и т. д.
++ вводное слово
 
-'''LDAP''' (''Lightweight Directory Access Protocol'' --- "облегчённый протокол доступа к каталогам") --- протокол прикладного уровня для доступа к службе каталогов.
+==== Обзор основных методов аутентификации ====
 
-==== Протокол LDAP. Основные понятия ====
+* Trust
+* Password
+* Ident
+* Peer
+* PAM
+* LDAP
 
-Данные в LDAP представлены ''иерархией записей''.
-* '''DIT'''(''Data Information Tree'' --- "информационное дерево") --- вся иерархическая структура каталога.
-* '''root'''(корень) --- верхняя часть DIT. Также называется базой ('''base''') или суффиксом ('''suffix''')
-* '''object''' (объект) --- каждая запись дерева. Каждая запись имеет ноль или более дочерних записей.
-* '''objectclass'''(объектный класс) --- тип записи. Любая запись является экземпляром одного или нескольких объектных классов.
-* '''attribute'''(атрибут) --- поля записи. Каждый объектный класс имеет ноль или более атрибутов.
+==== Схема работы метода PAM ==== 
 
-==== OpenLDAP ====
-'''OpenLDAP''' --- открытая реализация протокола LDAP.
--- 1em --
-@slapd@ --- сервер службы каталогов, реализующую 3ю версию протокола LDAP. В качестве хранилища поддерживаются механизмы манипуляции данных. Одним из самых распространенных является BDB (высокопроизводительный механизм манипуляции с поддержкой транзакций) на базе '''Berklery DB'''.
+<<<files/pam.png, height=0.75\textheight>>>
 
-==== Механизм работы ====
+==== Информационное дерево каталога LDAP ====
 
-<[figure]
-<<<cluster.png,height=0.70\textheight>>>
-[figure]>
+<<<files/DIT.png, height=0.5\textheight>>>
 
-==== Настройка сервера LDAP ====
-# Настройка клиентской машины.
-# Настройка сервера OpenLDAP.
-# Настройка сервера PostgreSQL.
+==== Схема разворачиваемого стенда ====
+<<<files/cluster.png, height=0.25\textheight>>>
 
-==== Установка сервера OpenLDAP ====
-На сервере LDAP требуется установить пакеты OpenLDAP:
-<[code][style=basic,language=XML,xleftmargin=1.5em, xrightmargin=1em, numbers=none]
-# yum install openldap openldap-clients -y
+==== Запись аккаунта пользователя LDAP ====
+<[code][style=basic, xleftmargin=1.5em, xrightmargin=1em, numbers=none]
+dn: uid=pvolkov,ou=People,dc=ldap-server,dc=ru
+uid: pvolkov
+cn: pvolkov
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {SSHA}US0VGNxhxro/QD3B4wIbjRa5re9i8cX1
+shadowLastChange:15997
+shadowMin:0
+shadowMax:99999
+shadowWarning: 7
+loginShell: /bin/bash
+uidNumber: 500
+gidNumber: 500
+homeDirectory: /home/pvolkov
 [code]>
-Добавить демон @slapd@ в список автозагрузки:
-<[code][style=basic,language=XML,xleftmargin=1.5em, xrightmargin=1em, numbers=none]
-# chkconfig slapd on
-[code]>
-
-==== Установка имени DIT ====
-При установке сервера OpenLDAP устанавливается имя информационного дерева dc=example,dc=com. Для установки своего имени информационного каталога необходимо создать @root.ldif@:
-<[code][style=basic,language=XML,xleftmargin=1.5em, xrightmargin=1em, numbers=left]
-dn: olcDatabase={2}bdb,cn=config
-changetype: modify
-replace: olcSuffix
-olcSuffix: dc=ldap-server,dc=ru
-[code]>
--- 1em --
-В данном случае имя DIT сменится на @dc=ldap-server,dc=ru@
-
-==== Создание учётной записи администратора DIT ====
-Администратор информационного каталога DIT позволяет манипулировать информацией пользователей и добавлять новых пользователей. Создайте запрос @admin.ldif@:
-<[code][style=basic,language=XML,xleftmargin=1.5em, xrightmargin=1em, numbers=left]
-dn: olcDatabase={2}bdb,cn=config
-changetype: modify
-replace: olcRootDN
-olcRootDN: cn=admin,dc=ldap-server,dc=ru
-[code]>
--- 1em --
-При выполнении запроса будет создан администратор информационного каталога @admin@ 
-
-==== Назначение пароля администратору @admin@ DIT ====
-Создать зашифрованный пароль администратора командой:
-<[code][style=basic,language=XML,xleftmargin=1.5em, xrightmargin=1em, numbers=none]
-# slappaswd
-[code]>
-Чтобы назначить пароль администратору информационного каталога требуется создать запрос @admin\_password.ldif@:
-<[code][style=basic,language=XML,xleftmargin=1.5em, xrightmargin=1em, numbers=left]
-dn: olcDatabase={2}bdb,cn=config
-changetype: modify
-add: olcRootPW
-olcRootPW: encrypt_password
-[code]>
-где вместо @encrypt\_password@ записать хэш пароля, сгенерированный командой @slappaswd@
-
-==== Списки контроля доступа ====
-ACL (''Access Control List'' --- списки контроля доступа) --- последовательность правил, с помощью которых разграничиваются права пользователей LDAP на атрибуты. Правила работают последовательно, в том порядке, в котором они записаны в конфигурационных файлах. 
-
-==== Изменение политики безопасности контроля доступа ====
-Создать файл политик @acl.ldif@:
-<[code][style=basic, language=XML, xleftmarigin=1.5em, xrightmarigin=1em, number=left]
-dn: olcDatabase={2}bdb,cn=config
-changetype: modify
-replace: olcAccess
-olcAccess: {0}to attrs=userPassword by self write
-by dn.base="cn=admin,dc=ldap-server,dc=ru" write
-by anonymous auth by * none
-
-dn: olcDatabase={2}bdb,cn=config
-changetype: modify
-add: olcAccess
-olcAccess: {1}to * by dn.base="cn=admin,dc=ldap-server,dc=ru"
-write by self write by * read
-
-dn: olcDatabase={1}monitor,cn=config
-changetype: modify
-replace: olcAccess
-olcAccess: {0}to * by dn.base="gidNumber=0+uidNumber=0,
-cn=peercred,cn=external,cn=auth" read 
-by dn.base="cn=admin,dc=ldap-server,dc=ru" read by * none
-[code]>
-
-==== Описание правил ====
-Первое правило описывает доступ к атрибуту @userPassword@. 
-Второе правило описывает правила доступа к остальным атрибутам. 
-Третье правило описывает правила доступа к мониторингу LDAP.
-
-==== Загрузка созданных LDIF в LDAP ====
-Для загрузки изменений в LDAP используется команда: 
-<[code][style=basic, language=XML, xleftmarigin=1.5em, xrightmarigin=1em, number=none]
-ldapadd -Y EXTERNAL -H ldapi:/// -f filename.ldif
-[code]>
-Таким образом для настройки изменений сервера OpenLDAP выполнить:
-<[code][style=basic, language=XML, xleftmarigin=1.5em, xrightmarigin=1em, number=none]
-# ldapadd -Y EXTERNAL -H ldapi:/// -f root.ldif
-# ldapadd -Y EXTERNAL -H ldapi:/// -f admin.ldif
-# ldapadd -Y EXTERNAL -H ldapi:/// -f admin_password.ldif
-# ldapadd -Y EXTERNAL -H ldapi:/// -f acl.ldif
-[code]>
-При успешном выполнении каждой команды будет выведена следующая строка:
-<[code][style=basic, language=XML, xleftmarigin=1.5em, xrightmarigin=1em, number=none]
-modifying entity <entity_name>
-[code]>
-
-==== Настройка клиентской машины ====
-Для аутентификации с использованием сервера LDAP требуется выполнить миграцию пользовательских аккаунтов в LDAP.
-Для этих целей используется пакет утилит @migrationtools@. Для установки пакета требуется выполнить команду:
-<[code][style=basic,language=XML,xleftmargin=1.5em, xrightmargin=1em, numbers=none]
-# yum install migrationstools -y
-[code]>
-
-==== Создание схем пользовательских аккаунтов ====
-Скрипты пакета @migrationtools@ создают LDIF(''LDAP Data Interchange Format'' --- "формат обмена данными LDAP") файлы с данными аккаунтов операционных систем. 
---1em--
-Для выполнения миграции требуется перейти в каталог с скриптами:
-<[code][style=basic,language=XML,xleftmargin=1.5em, xrightmargin=1em, numbers=none]
-# cd /usr/share/migrationtools
-[code]>  
-Выполнить команды преобразования файлов аккаунтов ОС в формат LDIF:
-<[code][style=basic,language=XML,xleftmargin=1.5em, xrightmargin=1em, numbers=none]
-# ./migrate_base.pl > /path_to_save/base.ldif
-# ./migrate_group.pl > /path_to_save/groups.ldif
-# ./migrate_hosts.pl > /path_to_save/hosts.ldif
-# ./migrate_passwd.pl > /path_to_save/passwd.ldif
-[code]>
-Эти скрипты требуется скопировать с клиентской машины на сервер LDAP.
-
-==== Удаление локальных аккаунтов пользователей с клиентской машины ====
-Так как аутентификация пользователей будет проходить с использованием сервера LDAP, то требуется удалить учётные записи пользователей с клиентской машины:
-<[code][style=basic,language=XML,xleftmargin=1.5em, xrightmargin=1em, numbers=none]
-# userdel user1
-# userdel user2
-# userdel user3
-[code]>
-
-==== SSSD ====
-'''SSSD''' (System Security Services Daemon) позволяет обращаться к удаленным механизмам аутентификации, называемым поставщиками. Таким образом стирается граница между аутентификацией локального и сетевого доступа и допускается использование разных механизмов. Информацию о пользователях предоставляет база данных, называемая доменом, которая может служить источником данных для поставщика. Допускается использование нескольких поставщиков данных идентификации, что разрешает нескольким серверам реализовать различные пространства имен. Полученная информация будет предоставлена внешним приложениям с помощью стандартных интерфейсов PAM и NSS. 
-
-==== Установка SSSD на клиентской машине ====
-Для установки SSSD на клиентской машине выполнить команду:
-<[code][style=basic,language=XML,xleftmargin=1.5em, xrightmargin=1em, numbers=none]
-# yum install -y sssd
-[code]>
-Добавить демон @sssd@ в список автозагрузки:
-<[code][style=basic,language=XML,xleftmargin=1.5em, xrightmargin=1em, numbers=none]
-# chkconfig sssd on
-[code]>
-
-==== Установка метода аутентификации с использованием LDAP ====
-<[code][style=basic,language=XML,xleftmargin=1.5em, xrightmargin=1em, numbers=none]
-# authconfig --updateall \ 
-	     --passalgo=sha512  \
-	     --enableldap \ 
-	     --enableldapauth 
-	     --ldapserver=192.168.100.3 \ 
-	     --ldapbasedn=dc=ldap-server,dc=ru 
-	     --enablesssd \ 
-	     --enablesssdauth
-[code]>
-Данная команда устанавливает метод аутентификации клиента LDAP с использованием LDAP-сервера по IP 192.168.100.3, который имеет DIT @dc=ldap-server,dc=ru@ и демона @sssd@.
--- 1em --
-На этом настройка клиента завершена. 
-
-==== Загрузка данных аккаунтов клиентской машины в сервер LDAP ====
-Для загрузки данных, полученных с помощью скриптов пакета @migrationtools@ выполнить следующие команды:
-<[code][style=basic,language=XML,xleftmargin=1.5em, xrightmargin=1em, numbers=none]
-# ldapadd -a -f /path_to_file/base.ldif -D \
-cn=admin,dc=ldap-server,dc=ru -W
-# ldapadd -a -f /path_to_file/groups.ldif -D \
-cn=admin,dc=ldap-server,dc=ru -W
-# ldapadd -a -f /path_to_file/hosts.ldif -D \ 
-cn=admin,dc=ldap-server,dc=ru -W 
-# ldapadd -a -f /path_to_file/users.ldif -D \ 
-cn=admin,dc=ldap-server,dc=ru -W 
-[code]>
-При выполнении каждой из команд требуется ввести пароль администратора @admin@ DIT @dc=ldap-server,dc=ru@.
--- 1em --
-На этом закончена настройка сервера LDAP.
-
-==== Установка сервера PostgreSQL ====
-Установить пакеты сервера PostgreSQL:
-<[code][style=basic,language=XML,xleftmargin=1.5em, xrightmargin=1em, numbers=none]
-# yum install -y postgresql93 postgresql93-server
-[code]>
-Инициализировать сервер базы данных:
-<[code][style=basic,language=XML,xleftmargin=1.5em, xrightmargin=1em, numbers=none]
-# service postgresql93 initdb
-[code]>
-Установить спектр адресов, с которых возможно подключение к серверу:
-<[code][style=basic,language=XML,xleftmargin=1.5em, xrightmargin=1em, numbers=none]
-listen_addresses = '*'
-[code]>
-в файле @/var/lib/pgsql/9.3/data/postgresql.conf@.
-
-==== Редактирование pg\_hba.conf ====
-Установить метод аутентификации пользователей LDAP в pg\_hba.conf:
-<[code][style=basic,language=XML,xleftmargin=1.5em, xrightmargin=1em, numbers=none]
-host all all 192.168.100.2/32 ldap 
-ldapserver=192.168.100.3 
-ldapprefix="uid=" 
-ldapsuffix=",ou=People,dc=ldap-server,dc=ru"
-[code]>
-Таким образом разрешается подключение с IP 192.168.100.2 всем пользователям, прошедшие аутентификацию в LDAP сервере по IP 192.168.100.3 из группы @ou=People,dc=ldap-server,dc=ru@.
--- 1em --
-Изменение конфигурационных файлов PostgreSQL требуют перезапуска сервера:
-<[code][style=basic,language=XML,xleftmargin=1.5em, xrightmargin=1em, numbers=none]
-# service postgresql93 restart
-[code]>
-
-==== Проверка работы ====
-
 
