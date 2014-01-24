@@ -12,12 +12,7 @@ title=[]{Исследование возможностей сервера OpenLD
 author={Воронин Д.Л., Муравьёв С.К.}
 [autotemplate]>
 
-
-==== Аутентификация пользователей в СУБД ====
-
-+ вводное слово
-
-==== Обзор основных методов аутентификации ====
+==== Обзор основных методов аутентификации СУБД PostgreSQL ====
 
 * Trust
 * Password
@@ -34,7 +29,7 @@ author={Воронин Д.Л., Муравьёв С.К.}
 
 <<<files/DIT.png, height=0.5\textheight>>>
 
-==== Схема разворачиваемого стенда ====
+==== Схема работы стенда ====
 <<<files/cluster.png, height=0.25\textheight>>>
 
 ==== Запись аккаунта пользователя LDAP ====
@@ -57,3 +52,27 @@ gidNumber: 500
 homeDirectory: /home/pvolkov
 [code]>
 
+==== Соединение клиента с сервером LDAP ====
+<<<files/ldap+ldaps.png, height=0.45\textheight>>>
+-- 1em --
+Слева представлен вывод утилиты @tethreal@ для соединение клиента и сервера LDAP по протоколу @ldap@, справа --- по протоколу @ldaps@ (''LDAP security'')
+
+==== Аутентификация клиентов СУБД PostgreSQL по методу LDAP ====
+
+В файл @/var/lib/pgsql/9.3/data/pg\_hba.conf@ требуется добавить строку:
+-- 1em --
+
+<[code][style=basic, xleftmargin=1.5em, xrightmargin=1em, numbers=none]
+hostssl all all 192.168.100.0/24 ldap 
+ldapserver=192.168.100.3 
+ldapprefix="uid=" 
+ldapsuffix=",ou=People,dc=ldap-server,dc=ru"
+[code]>
+
+==== Предполагаемая схема работы стенда с использованием SELinux ====
+<<<files/cluster_mod.png, height=0.25\textheight>>>
+
+==== Достигнутые результаты ====
+* Произведено исследование основных методов аутентфиикации СУБД PostgreSQL. Выявлены их достоинства и недостатки.
+* Исследованы возможности сервера OpenLDAP.
+* Описан процесс настройки метода аутентификации LDAP в PostgreSQL.

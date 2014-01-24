@@ -7,7 +7,7 @@ tex: LDAP.tex
 pdf: LDAP.pdf
 
 view: LDAP.pdf
-	okular LDAP.pdf
+	okular ../pdf/LDAP.pdf
 #	evince LDAP.pdf
 
 
@@ -16,6 +16,8 @@ LDAP.tex: LDAP.txt Makefile
 	
 LDAP.pdf: LDAP.tex Makefile
 	pdflatex LDAP.tex
+	cp LDAP.pdf ../pdf/LDAP.pdf
+	rm LDAP.aux LDAP.log LDAP.nav LDAP.out LDAP.snm LDAP.tex LDAP.toc LDAP.pdf
 
 clean:
 	rm LDAP.aux LDAP.log LDAP.nav LDAP.out LDAP.snm LDAP.tex LDAP.toc
