@@ -32,7 +32,7 @@ author={Воронин Д.Л., Муравьёв С.К.}
 ==== Информационное дерево каталога LDAP ====
 
 <[center]
-<<<files/DIT.png, height=0.4\textheight>>>
+<<<files/DIT.png, height=0.55\textheight>>>
 [center]>
 
 ==== Схема работы стенда ====
