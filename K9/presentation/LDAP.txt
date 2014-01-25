@@ -1,5 +1,7 @@
 <[autotemplate]
+documentclass=[xcolor={dvipsnames,table}]{beamer}
 usetheme={Madrid}
+%usecolortheme={dolphin}
 usepackage=[utf8]{inputenc}
 usepackage=[T2A]{fontenc}
 usepackage=[russian,english]{babel}
@@ -7,36 +9,42 @@ usepackage={tikz}
 usetikzlibrary={shadows}
 usepackage={listings}
 usepackage={color}
-date={27 января 2014}
 title=[]{Исследование возможностей сервера OpenLDAP для аутентификации пользователей СУБД PostgreSQL}
+date={27 января 2014}
 author={Воронин Д.Л., Муравьёв С.К.}
 [autotemplate]>
 
 ==== Обзор основных методов аутентификации СУБД PostgreSQL ====
 
 * Trust
-* Password
-* Ident
-* Peer
-* PAM
-* LDAP
+* <2-6>Password
+* <3-6>Ident
+* <4-6>Peer
+* <5-6>PAM
+* <6>LDAP
 
 ==== Схема работы метода PAM ==== 
 
+<[center]
 <<<files/pam.png, height=0.75\textheight>>>
+[center]>
 
 ==== Информационное дерево каталога LDAP ====
 
-<<<files/DIT.png, height=0.5\textheight>>>
+<[center]
+<<<files/DIT.png, height=0.4\textheight>>>
+[center]>
 
 ==== Схема работы стенда ====
-<<<files/cluster.png, height=0.25\textheight>>>
+<[center]
+<<<files/cluster.png, height=0.7\textheight>>>
+[center]>
 
 ==== Запись аккаунта пользователя LDAP ====
 <[code][style=basic, xleftmargin=1.5em, xrightmargin=1em, numbers=none]
-dn: uid=pvolkov,ou=People,dc=ldap-server,dc=ru
-uid: pvolkov
-cn: pvolkov
+dn: uid=nivanov,ou=People,dc=ldap-server,dc=ru
+uid: nivanov
+cn: Nikolay Ivanov
 objectClass: account
 objectClass: posixAccount
 objectClass: top
@@ -47,13 +55,21 @@ shadowMin:0
 shadowMax:99999
 shadowWarning: 7
 loginShell: /bin/bash
-uidNumber: 500
-gidNumber: 500
-homeDirectory: /home/pvolkov
+uidNumber: 501
+gidNumber: 501
+homeDirectory: /home/nivanov
 [code]>
 
+==== Аутентификация пользователя на клиентской машине ====
+
+<[center]
+<<<files/getent.png, height=0.65\textheight>>>
+[center]>
+
 ==== Соединение клиента с сервером LDAP ====
+<[center]
 <<<files/ldap+ldaps.png, height=0.45\textheight>>>
+[center]>
 -- 1em --
 Слева представлен вывод утилиты @tethreal@ для соединение клиента и сервера LDAP по протоколу @ldap@, справа --- по протоколу @ldaps@ (''LDAP security'')
 
@@ -68,9 +84,6 @@ ldapserver=192.168.100.3
 ldapprefix="uid=" 
 ldapsuffix=",ou=People,dc=ldap-server,dc=ru"
 [code]>
-
-==== Предполагаемая схема работы стенда с использованием SELinux ====
-<<<files/cluster_mod.png, height=0.25\textheight>>>
 
 ==== Достигнутые результаты ====
 * Произведено исследование основных методов аутентфиикации СУБД PostgreSQL. Выявлены их достоинства и недостатки.

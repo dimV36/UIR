@@ -1,12 +1,27 @@
 digraph g {
-  graph [fontsize = 35 labelloc="t" label="" splines=true overlap=false rankdir = "LR" size = 800,400];
+  graph [fontsize = 35 labelloc="t" label="" splines=true overlap=false rankdir = "TB"]
   ratio = auto;
   edge[color = darkgreen, fontcolor=blue, fontsize = 24];
+  
+  {
+    node [shape = plaintext, style = invisible];
+    edge [color = white];
+    1 -> 2 -> 3 -> 4;
+  }
+  
+  subgraph ldap_cluster {
+  ldap_client;
+  ldap_server;
+  postgresql;
+  { rank = same; 1; ldap_client; }
+  { rank = same; 4; ldap_server; }
+  { rank = same; 4; postgresql; }
+  
   ldap_client [style = filled penwidth = 1 fillcolor = white fontsize = 20 fontname = "Courier New" shape = "Mrecord" label =<
   <table border="0" cellborder="0" bgcolor="white">
     <tr>
       <td border="0" align="center" bgcolor="black" colspan="2">
-	<font point-size = "25" color="white">Клиент<br/>IP: 192.168.100.2</font>
+	<font point-size = "25" color="white"> <b>Клиент<br/>IP: 192.168.100.2</b></font>
       </td>
     </tr>
     <tr>
@@ -36,7 +51,7 @@ digraph g {
   <table border="0" cellborder="0" bgcolor="white">
     <tr>
       <td border="0" align="center" bgcolor="black" colspan="2">
-	<font point-size = "25" color="white">LDAP<br/>IP: 192.168.100.3</font>
+	<font point-size = "25" color="white"><b>LDAP<br/>IP: 192.168.100.3</b></font>
       </td>
     </tr>
     <tr>
@@ -66,7 +81,7 @@ digraph g {
   <table border="0" cellborder="0" bgcolor="white">
     <tr>
       <td border="0" align="center" bgcolor="black" colspan="2">
-	<font point-size = "25" color="white">PostgreSQL<br/>IP: 192.168.100.4</font>
+	<font point-size = "25" color="white"><b>PostgreSQL<br/>IP: 192.168.100.4</b></font>
       </td>
     </tr>
     <tr>
@@ -92,11 +107,12 @@ digraph g {
   </table>>
   ];  
   
-  ldap_client -> ldap_server[label = "uid, userPassword"];
-  ldap_server -> ldap_client[label = "Ответ LDAP"];
+  ldap_client -> ldap_server[fontcolor = green, label = "uid,\n userPassword"];
+  ldap_server -> ldap_client[fontcolor = green, label = "Ответ LDAP"];
   
-  ldap_client -> postgresql[color = red, label = "uid, userPassword"];
-  postgresql -> ldap_server[color = red, label = "Запрос LDAP"];
-  ldap_server -> postgresql[color = red, label = "Ответ LDAP"];
-  postgresql -> ldap_client[color = red, label = "Ответ клиенту"];
+  ldap_client -> postgresql[color = blue, label = "uid,\n userPassword"];
+  postgresql -> ldap_server[color = blue, label = "Запрос LDAP"];
+  ldap_server -> postgresql[color = blue, label = "Ответ LDAP"];
+  postgresql -> ldap_client[color = blue, label = "Ответ клиенту"];
+  }
 }
