@@ -1,0 +1,683 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language russian
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1cm
+\topmargin 1cm
+\rightmargin 1cm
+\bottommargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Subsection*
+Слайд 1
+\end_layout
+
+\begin_layout Standard
+Системы управления базами данных являются необходимыми программными продуктами
+ при построении информационных систем.
+ Однако в этих системах СУБД часто являются основными целями атак злоумышленнико
+в.
+\end_layout
+
+\begin_layout Standard
+Для предотвращения нежелательного доступа к информации в базах данных используют
+ся различные подходы к реализации безопасности.
+ Одним из подходов является аутентификация --- процедура проверки подлинности.
+ Правильно выбранный метод аутентификации в СУБД позволяет минимизировать
+ шанс взлома, а следовательно, и предотвратить предотвратить несанкционированный
+ доступ к информации, хранящейся в ней.
+ 
+\end_layout
+
+\begin_layout Standard
+Одной из наиболее развитых систем управления базами данных является PostgreSQL.
+ PostgreSQL --- это свободно распространяемая объектно-реляционная система
+ управления базами данных.
+ Благодаря открытой лицензии и подробной документации PostgreSQL широко
+ используется в различных информационных системах.
+ 
+\end_layout
+
+\begin_layout Standard
+В учебно-исследовательской работе предлагается обзор основных методов аутентифик
+ации в системе управления базами данных PostgreSQL, производится выбор метода
+ аутентификации пользователей СУБД в распределенной многопользовательской
+ системе с использованием сервера OpenLDAP и описывается процесс настройки
+ данного метода аутентификации.
+ Целью данной учебно-исследовательской работы является исследование принципов
+ работы сервера OpenLDAP и возможностей дальнейшей его доработки для интеграции
+ с системой принудительного контроля доступа SELinux.
+ 
+\end_layout
+
+\begin_layout Subsection*
+Слайд 2
+\end_layout
+
+\begin_layout Standard
+В данной работе были исследованы основные методы аутентификации СУБД PostgreSQL:
+\end_layout
+
+\begin_layout Itemize
+Trust
+\end_layout
+
+\begin_layout Itemize
+Password
+\end_layout
+
+\begin_layout Itemize
+Ident
+\end_layout
+
+\begin_layout Itemize
+Peer
+\end_layout
+
+\begin_layout Itemize
+PAM
+\end_layout
+
+\begin_layout Itemize
+LDAP
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Метод 
+\series bold
+Trust
+\series default
+ позволяет любому, кто подключится к серверу баз данных получить доступ
+ к любой базе данных, включая базу данных администратора.
+ 
+\emph on
+Достоинства
+\emph default
+: не требуется создание дополнительных пользователей ОС.
+ Соответственно, в качестве основного 
+\emph on
+недостатка
+\emph default
+ является отсутствие возможности разграничить доступ пользователей к СУБД.
+ 
+\end_layout
+
+\begin_layout Standard
+Группа методов 
+\series bold
+Password
+\series default
+ включает в себя методы md5, crypt и password.
+ В данных методах каждому пользователю при создании создается пароль, который
+ хранится к системной таблице pg_shadow.
+ При подключении к серверу СУБД пользователь вводит пароль от своего аккаунта,
+ после чего СУБД выполняет поиск на соответствие пользователя введенному
+ паролю в данной таблице.
+ 
+\emph on
+Достоинства
+\emph default
+: не требуется создание дополнительных пользователей ОС.
+ Основным 
+\emph on
+недостатком
+\emph default
+ данных методов является передача пароля по нешифрованному каналу.
+ 
+\end_layout
+
+\begin_layout Standard
+Работа метода аутентификации 
+\series bold
+Ident 
+\series default
+следующая: при подключении пользователя PostgreSQL сверяет имя пользователя
+ с именем пользователя СУБД.
+ Если совпадение пользователей ОС и СУБД успешно, то доступ разрешается.
+ 
+\emph on
+Достоинства
+\emph default
+: используется в архитектуре клиент-сервер, простота архитектуры.
+ 
+\emph on
+Недостатки
+\emph default
+: данный протокол не предназначен для аутентификации или контроля доступа,
+ а также существует вероятность подмены сервера/хоста.
+ 
+\end_layout
+
+\begin_layout Standard
+Метод 
+\series bold
+Peer 
+\series default
+работает следующим образом: имя пользователя ОС сопоставляется с именем
+ базы данных.
+ 
+\emph on
+Достоинства
+\emph default
+: простота архитектуры.
+ 
+\emph on
+Недостатки
+\emph default
+: применяется исключительно для локальных соединений.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+PAM
+\series default
+ (Pluggable Authentication Modules --- 
+\begin_inset Quotes fld
+\end_inset
+
+подключаемые модули аутентификации
+\begin_inset Quotes frd
+\end_inset
+
+) представляют собой набор разделяемых библиотек, которые позволяют интегрироват
+ь различные низкоуровневые методы аутентификации в виде единого высокоуровневого
+ API.
+\end_layout
+
+\begin_layout Standard
+Приложениям, в т.ч.
+ и PostgreSQL, которым необходимо выполнить аутентификацию пользователя
+ обращаются в службу PAM.
+ PAM проводит процедуру аутентификации и возвращает результат: PAM_SUCCESS
+ или PAM_AUTH_ERR.
+ PAM состоит из динамических библиотек (они проводят процедуру аутентификации)
+ и конфигурационных файлов (в них описан порядок использования модулей при
+ аутентификации).
+ 
+\emph on
+Достоинствами
+\emph default
+ метода является простота реализации, расширяемость, поддерживает клиент-серверн
+ую архитектуру.
+ Основным 
+\emph on
+недостатком
+\emph default
+ является подмена модуля и необходимость тонкой настройки.
+ 
+\end_layout
+
+\begin_layout Standard
+Метод 
+\series bold
+LDAP
+\series default
+.
+ Данный метод аутентификации работает аналогично методам аутентификации
+ по паролю, за исключением того, что используется LDAP для проверки подлинности.
+ При этом серверу LDAP высылается имя пользователя и его пароль, после чего
+ он выполняет поиск записи по этим данным.
+ Если такая запись найдена, то пользователю разрешается доступ в базу данных,
+ иначе --- запрещается.
+ 
+\emph on
+Достоинствами 
+\emph default
+являются: централизованное хранилище аккаунтов пользователей, что не требует
+ создания локальных пользователей ОС, поддержка клиент-серверной архитектуры,
+ расширяемость, шифрование соединения по протоколу TLS.
+ В качестве 
+\emph on
+недостатков
+\emph default
+ можно отметить необходимость постоянно работающего сервера LDAP для аутентифика
+ции пользователей.
+\end_layout
+
+\begin_layout Subsection*
+Слайд 3
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+LDAP
+\series default
+ - это аббревиатура от
+\emph on
+ Lightweight Directory Access Protocol
+\emph default
+.
+ Как следует из названия, это облегченный протокол доступа к службам каталогов,
+ предназначенный для доступа к службам каталогов.
+ LDAP работает поверх TCP/IP или других ориентированных на соединение сетевых
+ протоколов.
+ 
+\end_layout
+
+\begin_layout Standard
+Каталоги LDAP используют модель данных, которая считает или представляет
+ данные как иерархию объектов.
+ Это не означает, что LDAP является объектно-ориентированной базой данных.
+\end_layout
+
+\begin_layout Standard
+В LDAP-каталоге данные представлены как иерархия записей.
+ Полученная в результате древовидная структура называется 
+\series bold
+информационным деревом каталога 
+\series default
+(
+\emph on
+Data Information Tree
+\emph default
+, 
+\emph on
+DIT
+\emph default
+).
+ Верхнюю часть данного дерева обычно называют 
+\series bold
+корнем 
+\series default
+(
+\series bold
+root
+\series default
+), (а также базой (
+\series bold
+base
+\series default
+) или суффиксом (
+\series bold
+suffix
+\series default
+)).
+\end_layout
+
+\begin_layout Standard
+Каждый элемент DIT называется записью (
+\series bold
+object
+\series default
+).
+ Каждая запись имеет ноль или более дочерних записей.
+ Каждая дочерняя запись является одноуровневой (братской) по отношению к
+ другим дочерним записям своей родительской записи.
+ Каждая запись является экземпляром одного или нескольких объектных классов
+ (
+\series bold
+objectClass
+\series default
+).
+\end_layout
+
+\begin_layout Standard
+Объектные классы содержат ноль или более атрибутов (
+\series bold
+attribute
+\series default
+).
+ Атрибуты имеют имена (и, иногда, аббревиатуры или псевдонимы) и обычно
+ содержат данные.
+\end_layout
+
+\begin_layout Standard
+OpenLDAP --- открытая реализация протокола LDAP.
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+slapd 
+\family default
+--- сервер службы каталогов, реализующую 3ю версию протокола LDAP.
+ В качестве хранилища поддерживаются механизмы манипуляции данных.
+ Одним из самых распространенных является BDB (высокопроизводительный механизм
+ манипуляции с поддержкой транзакций) на базе Berklery DB.
+ Данные в этой БД хранятся в виде ключ-значение.
+\end_layout
+
+\begin_layout Subsection*
+Слайд 4
+\end_layout
+
+\begin_layout Standard
+В рамках учебно-исследовательской работы была поставлена задача развернуть
+ стенд из трех машин, демонстрирующий принцип работы метода аутентификации
+ LDAP в PostgreSQL.
+ 
+\end_layout
+
+\begin_layout Standard
+Стенд представляет собой 3 машины: клиента, сервера LDAP, сервера СУБД PostgreSQ
+L.
+ 
+\end_layout
+
+\begin_layout Standard
+Условно работу стенда можно разделить на 2 процесса: аутентификация пользователя
+ на клиентской машине и аутентификацию пользователей в СУБД.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Принцип работы стенда следующий:
+\end_layout
+
+\begin_layout Enumerate
+Пользователь вводит имя своего аккаунта на клиентской машине и пароль.
+ Пароль отсылается LDAP-серверу в закрытом виде и проверяется на совпадение.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Если переданный и хранимый пароль совпадают, пользователь успешно проходит
+ аутентификацию на клиенте.
+ 
+\end_layout
+
+\begin_layout Enumerate
+При подключении к базе данных с помощью клиента 
+\family typewriter
+psql
+\family default
+, пользователь передает свой 
+\family typewriter
+uid 
+\family default
+(логин пользователя) и пароль в PostgreSQL.
+ 
+\end_layout
+
+\begin_layout Enumerate
+PostgreSQL генерирует запрос на основе данных клиента.
+\end_layout
+
+\begin_layout Enumerate
+LDAP-сервер выполняет поиск записи и сверяет пароль.
+ Результат поиска отправляется PostgreSQL.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Если такой записи нет или пароль неверный, в подключении к базе данных отказывае
+тся.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Соединение между машинами шифруется с помощью SSL/TLS.
+\end_layout
+
+\begin_layout Subsection*
+Слайд 5
+\end_layout
+
+\begin_layout Standard
+Каждому пользователю создаются записи на сервере LDAP.
+ На слайде приведена запись пользователя Nikolay Ivanov.
+ 
+\family typewriter
+dn
+\family default
+ (
+\emph on
+Distrbution name
+\emph default
+) --- путь к записи в каталоге, 
+\family typewriter
+cn 
+\family default
+(
+\emph on
+Common Name
+\emph default
+) --- имя пользователя.
+ С помощью директив 
+\family typewriter
+objectClass
+\family default
+ указывается принадлежность атрибутов записи к объектным классам, 
+\family typewriter
+shadowLastChange
+\family default
+, 
+\family typewriter
+shadowMin
+\family default
+, 
+\family typewriter
+shadowMax
+\family default
+, 
+\family typewriter
+shadowWarning 
+\family default
+--- служебные поля.
+\end_layout
+
+\begin_layout Subsection*
+Слайд 6
+\end_layout
+
+\begin_layout Standard
+Настройка аутентификации пользователей на клиентской машине реализуется
+ с помощью демона 
+\series bold
+SSSD 
+\series default
+(
+\emph on
+System Security Services Deamon 
+\emph default
+--- демон сервисов системной безопасности).
+ Он позволяет обращаться к удаленным механизмам аутентификации.
+\end_layout
+
+\begin_layout Standard
+На слайде приведен вывод команды 
+\family typewriter
+getent
+\family default
+.
+ Она позволяет получить информацию о конкретном пользователе.
+\end_layout
+
+\begin_layout Subsection*
+Слайд 7
+\end_layout
+
+\begin_layout Standard
+Шифрование соединения достигается с помощью TLS-соединения.
+ Для этого создаются SSL-ключи и их пути заносятся в каталог LDAP.
+ Дополнительно опцией демона SSSD указывается активность соединения с LDAP
+ с использованием шифрования.
+ Слева приведен вывод утилиты 
+\family typewriter
+tethreal 
+\family default
+(показывает сетевую активность интерфейса и порта) при использовании нешифрованн
+ом соединении и с с использованием шифрования по протоколу TLS (
+\emph on
+Transport Socket Layer 
+\emph default
+--- 
+\begin_inset Quotes fld
+\end_inset
+
+уровень защищенных сокетов
+\begin_inset Quotes frd
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Subsection*
+Слайд 8
+\end_layout
+
+\begin_layout Standard
+Файл 
+\family typewriter
+pg_hba.conf 
+\family default
+представляет собой таблицу с правилами аутентификации пользователей.
+ Для установки аутентификации 
+\family typewriter
+ldap
+\family default
+ используется следующая строка.
+\end_layout
+
+\begin_layout Standard
+Она означает, что разрешено подключение ко всем базам данных всем пользователям,
+ IP-адреса клиентов которых находятся в подсети 
+\family typewriter
+192.168.100.0
+\family default
+ при успешной аутентификации по методу 
+\family typewriter
+ldap
+\family default
+.
+ При этом подключение между клиентом и сервером будет зашифровано по протоколу
+ SSL (на это указывает параметр 
+\family typewriter
+hostssl
+\family default
+).
+\end_layout
+
+\begin_layout Standard
+В качестве аргументов метода аутентификации 
+\family typewriter
+ldap
+\family default
+ указывается IP-адрес LDAP-сервера --- 
+\family typewriter
+192.168.100.3
+\family default
+, префикс 
+\family typewriter
+ldapprefix
+\family default
+ --- идентификатор записи в каталоге LDAP, а также суффикс 
+\family typewriter
+ldapsuffix 
+\family default
+--- адрес записи в каталоге.
+ 
+\end_layout
+
+\begin_layout Subsection*
+Слайд 9
+\end_layout
+
+\begin_layout Standard
+Данная учебно-исследовательская работа посвящена исследованию возможностей
+ сервера OpenLDAP для аутентификации пользователей баз данных PostgreSQL.
+\end_layout
+
+\begin_layout Standard
+Были достигнуты следующие основные результаты:
+\end_layout
+
+\begin_layout Enumerate
+Произведено исследование основных методов аутентификации в PostgreSQL.
+ Выявлены их достоинства и недостатки.
+\end_layout
+
+\begin_layout Enumerate
+Исследованы возможности сервера OpenLDAP.
+\end_layout
+
+\begin_layout Enumerate
+Описан процесс настройки метода аутентификации LDAP в PostgreSQL.
+ 
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Таким образом, можно судить о достижении поставленной цели.
+ Продолжением темы учебно-исследовательской работы может послужить программная
+ реализация механизма хранения метки SELinux в OpenLDAP и ее передачи для
+ присвоения контекста безопасности пользователям операционных систем и баз
+ данных.
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\end_body
+\end_document
