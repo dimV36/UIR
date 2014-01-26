@@ -65,7 +65,7 @@ homeDirectory: /home/nivanov
 [center]>
 Вывод утилиты @tethreal@ соединения клиента и сервера LDAP без TLS и с TLS.
 
-==== Аутентификация клиентов СУБД PostgreSQL по методу LDAP ====
+==== Аутентификация пользователей СУБД PostgreSQL по методу LDAP ====[longsectionnane]
 
 В файл @/var/lib/pgsql/9.3/data/pg\_hba.conf@ требуется добавить строку:
 -- 1em --
