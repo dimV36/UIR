@@ -63,8 +63,7 @@ homeDirectory: /home/nivanov
 <[center]
 <<<files/ldap+ldaps.png, height=0.45\textheight>>>
 [center]>
--- 1em --
-Слева представлен вывод утилиты @tethreal@ для соединение клиента и сервера LDAP по протоколу @ldap@, справа --- по протоколу @ldaps@ (''LDAP security'')
+Вывод утилиты @tethreal@ соединения клиента и сервера LDAP без TLS и с TLS.
 
 ==== Аутентификация клиентов СУБД PostgreSQL по методу LDAP ====
 
