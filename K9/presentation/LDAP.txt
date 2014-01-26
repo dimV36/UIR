@@ -1,7 +1,6 @@
 <[autotemplate]
 documentclass=[xcolor={dvipsnames,table}]{beamer}
 usetheme={Madrid}
-%usecolortheme={dolphin}
 usepackage=[utf8]{inputenc}
 usepackage=[T2A]{fontenc}
 usepackage=[russian,english]{babel}
@@ -16,7 +15,7 @@ author={Воронин Д.Л., Муравьёв С.К.}
 
 ==== Обзор основных методов аутентификации СУБД PostgreSQL ====
 
-* Trust
+* <1-6>Trust
 * <2-6>Password
 * <3-6>Ident
 * <4-6>Peer
@@ -32,12 +31,12 @@ author={Воронин Д.Л., Муравьёв С.К.}
 ==== Информационное дерево каталога LDAP ====
 
 <[center]
-<<<files/DIT.png, height=0.55\textheight>>>
+<<<files/DIT.png, height=0.65\textheight>>>
 [center]>
 
 ==== Схема работы стенда ====
 <[center]
-<<<files/cluster.png, height=0.7\textheight>>>
+<<<files/cluster.png, height=0.75\textheight>>>
 [center]>
 
 ==== Запись аккаунта пользователя LDAP ====
@@ -63,7 +62,7 @@ homeDirectory: /home/nivanov
 ==== Аутентификация пользователя на клиентской машине ====
 
 <[center]
-<<<files/getent.png, height=0.65\textheight>>>
+<<<files/getent.png, height=0.70\textheight>>>
 [center]>
 
 ==== Соединение клиента с сервером LDAP ====

@@ -15,9 +15,8 @@ LDAP.tex: LDAP.txt Makefile
 	wiki2beamer LDAP.txt > LDAP.tex
 	
 LDAP.pdf: LDAP.tex Makefile
-	pdflatex LDAP.tex
+	pdflatex LDAP.tex 
 	cp LDAP.pdf ../pdf/LDAP.pdf
-	rm LDAP.aux LDAP.log LDAP.nav LDAP.out LDAP.snm LDAP.tex LDAP.toc LDAP.pdf
-
+	
 clean:
-	rm LDAP.aux LDAP.log LDAP.nav LDAP.out LDAP.snm LDAP.tex LDAP.toc
+	rm LDAP.aux LDAP.log LDAP.nav LDAP.out LDAP.snm LDAP.tex LDAP.toc LDAP.vrb LDAP.pdf
