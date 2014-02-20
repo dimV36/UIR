@@ -6,3 +6,6 @@ http://meego.e-werest.org/blog/general/2902.html
 http://fossies.org/dox/openssl-1.0.1f/obj__dat_8c.html#a3b61b4fdb7883e92ea4ee2898a9d76c4
 http://docs.huihoo.com/doxygen/openssl/1.0.1c/a__object_8c.html#a1eefe35f951e01034f8431ab617b5dc9
 http://www.plam.ru/compinet/jazyk_programmirovanija_python/p14.php
+http://www.frank4dd.com/howto/openssl/add_oids_to_openssl.htm
+
+int OBJ_create(const char* oid, const char *ln, const char *sn) определен в openssl.h/objects.h

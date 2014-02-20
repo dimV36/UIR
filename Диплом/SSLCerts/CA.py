@@ -1,8 +1,5 @@
 __author__ = 'dimv36'
-from M2Crypto import RSA, X509, m2, EVP
-
-
-from M2Crypto import RSA, X509, EVP, m2, Rand, ASN1
+from M2Crypto import RSA, X509, m2, EVP, Rand
 
 # XXX Do I actually need more keys?
 # XXX Check return values from functions
@@ -26,8 +23,6 @@ def make_request(public_key):
     object = m2.obj_txt2obj("1.2.3.4.5", 200)
     print(m2.obj_obj2nid(object))
     print(object)
-
-
 #    m2.asn1_object_new("1.2.3.4.5", "SC", "SELinuxContext")
 #    print(X509.new_extension("SELinuxContext", "user_u:user_t:user_r:s0-s3", 1))
 #    print(X509.X509_Name.nid)
