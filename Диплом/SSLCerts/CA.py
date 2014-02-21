@@ -20,9 +20,7 @@ def make_request(public_key):
     request.set_pubkey(public_key)
     name = X509.X509_Name()
     name.add_entry_by_txt(field='O', type=X509.ASN1.MBSTRING_ASC, entry='user@example', len=-1, loc=-1, set=0)
-    object = m2.obj_txt2obj("1.2.3.4.5", 200)
-    print(m2.obj_obj2nid(object))
-    print(object)
+
 #    m2.asn1_object_new("1.2.3.4.5", "SC", "SELinuxContext")
 #    print(X509.new_extension("SELinuxContext", "user_u:user_t:user_r:s0-s3", 1))
 #    print(X509.X509_Name.nid)

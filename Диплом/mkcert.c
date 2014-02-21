@@ -92,7 +92,7 @@ int mkcert(X509 **x509p, EVP_PKEY **pkeyp, int bits, int serial, int days)
 		}
 	rsa=NULL;
 
-	X509_set_version(x,2);
+	X509_set_version(x,3);
 	ASN1_INTEGER_set(X509_get_serialNumber(x),serial);
 	X509_gmtime_adj(X509_get_notBefore(x),0);
 	X509_gmtime_adj(X509_get_notAfter(x),(long)60*60*24*days);
@@ -115,26 +115,21 @@ int mkcert(X509 **x509p, EVP_PKEY **pkeyp, int bits, int serial, int days)
 	X509_set_issuer_name(x,name);
 
 	/* Add various extensions: standard extensions */
-	add_ext(x, NID_basic_constraints, "critical,CA:TRUE");
-	add_ext(x, NID_key_usage, "critical,keyCertSign,cRLSign");
+//	add_ext(x, NID_basic_constraints, "critical,CA:TRUE");
+//	add_ext(x, NID_key_usage, "critical,keyCertSign,cRLSign");
 
-	add_ext(x, NID_subject_key_identifier, "hash");
+//	add_ext(x, NID_subject_key_identifier, "hash");
 
 	/* Some Netscape specific extensions */
-	add_ext(x, NID_netscape_cert_type, "sslCA");
+//	add_ext(x, NID_netscape_cert_type, "sslCA");
 
-	add_ext(x, NID_netscape_comment, "example comment extension");
+//	add_ext(x, NID_netscape_comment, "example comment extension");
 
-
-//#ifdef CUSTOM_EXT
-	/* Maybe even add our own extension based on existing */
-	{
-		int nid;
-		nid = OBJ_create("1.2.3.4", "TestExtension", "My Test Extension");
-		X509V3_EXT_add_alias(nid, NID_netscape_comment);
-		add_ext(x, nid, "So Test Extension!");
-	}
-//#endif
+	int nid;
+	nid = OBJ_create("1.2.3.4", "TestExtension", "My Test Extension");
+	printf("new_nid %i\n", nid);
+	X509V3_EXT_add_alias(nid, NID_netscape_comment);
+	add_ext(x, nid, "So Test Extension!");
 	
 	if (!X509_sign(x,pk,EVP_sha1()))
 		goto err;
@@ -162,8 +157,8 @@ int add_ext(X509 *cert, int nid, char *value)
 	 */
 	X509V3_set_ctx(&ctx, cert, cert, NULL, NULL, 0);
 	ex = X509V3_EXT_conf_nid(NULL, &ctx, nid, value);
-	if (!ex)
-		return 0;
+//	if (!ex)
+//		return 0;
 
 	X509_add_ext(cert,ex,-1);
 	X509_EXTENSION_free(ex);
