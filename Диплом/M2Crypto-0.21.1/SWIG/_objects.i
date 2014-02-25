@@ -39,10 +39,6 @@ extern ASN1_OBJECT * OBJ_txt2obj(const char *s, int no_name);
 %rename(_obj_obj2txt) OBJ_obj2txt;
 extern int OBJ_obj2txt(char *, int, const ASN1_OBJECT *, int);
 
-/* Впилено мной */
-%rename(obj_create) OBJ_create;
-extern int OBJ_create(char *oid, char *sn, char *ln);
-
 
 %inline %{
 /*

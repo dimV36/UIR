@@ -68,13 +68,13 @@ static PyObject *ssl_set_tmp_rsa_cb_func;
 %include _dsa.i
 %include _ssl.i
 %include _x509.i
-%include _x509v3.i
 %include _asn1.i
 %include _pkcs7.i
 %include _util.i
 %include _ec.i
 %include _engine.i
 %include _objects.i
+%include _extension_modules.i
 
 #ifdef SWIG_VERSION
 %constant int encrypt = 1;

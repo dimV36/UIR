@@ -9,6 +9,7 @@
 #include <openssl/pem.h>
 #include <openssl/conf.h>
 #include <openssl/x509v3.h>
+//#include <openssl/x509.h>
 #ifndef OPENSSL_NO_ENGINE
 #include <openssl/engine.h>
 #endif
@@ -126,10 +127,11 @@ int mkcert(X509 **x509p, EVP_PKEY **pkeyp, int bits, int serial, int days)
 //	add_ext(x, NID_netscape_comment, "example comment extension");
 
 	int nid;
-	nid = OBJ_create("1.2.3.4", "TestExtension", "My Test Extension");
+	nid = OBJ_create("1.2.3.4", "SELinuxContext", "My Test Extension");
 	printf("new_nid %i\n", nid);
-	X509V3_EXT_add_alias(nid, NID_netscape_comment);
-	add_ext(x, nid, "So Test Extension!");
+	X509_NAME_add_entry_by_NID(name, nid, MBSTRING_ASC, "MyTest", -1, -1, 0);
+//	X509V3_EXT_add_alias(nid, NID_netscape_comment);
+//	add_ext(x, nid, "So Test Extension!");
 	
 	if (!X509_sign(x,pk,EVP_sha1()))
 		goto err;

@@ -453,6 +453,10 @@ int x509_name_add_entry_by_txt(X509_NAME *name, char *field, int type, char *byt
     return X509_NAME_add_entry_by_txt(name, field, type, (unsigned char *)bytes, len, loc, set);
 }
 
+int x509_name_add_entry_by_nid(X509_NAME *name, int nid, int type, char *bytes, int len, int loc, int set) {
+    return X509_NAME_add_entry_by_NID(name, nid, MBSTRING_ASC, (unsigned char *)bytes, len, loc, set);
+}
+
 PyObject *x509_name_get_der(X509_NAME *name)
 {
     i2d_X509_NAME(name, 0);
@@ -550,24 +554,6 @@ x509v3_ext_conf(LHASH                *conf, X509V3_CTX *ctx, char *name, char *v
       lh_free(conf);
 #endif
       return ext;
-}
-
-/* Впилено мной */
-X509_EXTENSION *
-#if OPENSSL_VERSION_NUMBER >= 0x10000000L
-x509v3_ext_conf_nid(LHASH_OF(CONF_VALUE) *conf, X509V3_CTX *ctx, int ext_nid, char *value) {
-#else
-x509v3_ext_conf_nid(LHASH *conf, X509V3_CTX *ctx, int ext_nid, char *value) {
-#endif
-    X509_EXTENSION *ext = NULL;
-    ext = X509V3_EXT_conf_nid(conf, ctx, ext_nid, value);
-    PyMem_Free(ctx);
-#if OPENSSL_VERSION_NUMBER >= 0x10000000L
-    lh_CONF_VALUE_free(conf);
-#else
-    lh_free(conf);
-#endif
-    return ext;
 }
 
 /* X509_EXTENSION_free() might be a macro, didn't find definition. */

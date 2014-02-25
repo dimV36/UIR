@@ -41,9 +41,6 @@ class RSA:
             return m2.rsa_get_n(self.rsa)
         else:
             raise AttributeError
-    
-    def rsa_f4(self):
-	return m2.RSA_F4
 
     def pub(self):
         assert self.check_key(), 'key is not initialised'

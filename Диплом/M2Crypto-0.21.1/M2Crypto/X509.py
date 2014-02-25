@@ -33,7 +33,11 @@ def new_extension(name, value, critical=0, _pyfree=1):
     x509_ext = X509_Extension(x509_ext_ptr, _pyfree)
     x509_ext.set_critical(critical)
     return x509_ext 
+  
+def obj_create(oid, long_name, short_name):
+    return m2.obj_create(oid, long_name, short_name)
 
+RSA_F4 = m2.RSA_F4
 
 class X509_Extension:
     """
@@ -89,18 +93,7 @@ class X509_Extension:
         """
         buf=BIO.MemoryBuffer()
         m2.x509_ext_print(buf.bio_ptr(), self.x509_ext, flag, indent)
-        return buf.read_all()
-    
-    def create_extension(oid, short_name, long_name, critical=1):
-      """
-      Create new custom extension
-      @param oid: oid string
-      @param short_name: short name of extension (CN, O, etc.)
-      @param long_name: long name of extension (Common name, Organization, etc.)
-      @return: extension
-      """
-      nid = m2.obj_create(oid, short_name, long_name)
-      m2.x509v3_add_alias(nid, m2.NID_netscape_comment)
+        return buf.read_all()    
 
 
 class X509_Extension_Stack:
@@ -290,6 +283,9 @@ class X509_Name:
     def add_entry_by_txt(self, field, type, entry, len, loc, set):
         return m2.x509_name_add_entry_by_txt(self.x509_name, field, type,
                                              entry, len, loc, set )
+    
+    def add_entry_by_nid(self, nid, type, entry, len, loc, set):
+	return m2.x509_name_add_entry_by_nid(self.x509_name, nid, type, entry, len, loc, set)
 
     def entry_count( self ):
         return m2.x509_name_entry_count( self.x509_name )
