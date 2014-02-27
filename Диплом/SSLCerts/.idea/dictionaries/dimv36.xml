@@ -4,9 +4,12 @@
       <w>cakey</w>
       <w>dimv</w>
       <w>elinux</w>
+      <w>genrsa</w>
       <w>mbstring</w>
       <w>mephi</w>
+      <w>mykey</w>
       <w>pathlen</w>
+      <w>prog</w>
       <w>whoami</w>
     </words>
   </dictionary>

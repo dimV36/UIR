@@ -1,10 +1,10 @@
 __author__ = 'dimv36'
-from M2Crypto import RSA, X509, EVP, Rand, ASN1
+from M2Crypto import RSA, X509, EVP, ASN1
 from subprocess import check_output, check_call
 from datetime import datetime
 from optparse import OptionParser
+from os import path
 
-# -*- coding: utf-8 -*-
 
 DEFAULT_FIELDS = {'C': 'ru',
                   'ST': 'msk',
@@ -12,28 +12,32 @@ DEFAULT_FIELDS = {'C': 'ru',
                   'O': 'mephi',
                   'OU': 'kaf36',
                   'CN': str(check_output("whoami", shell=True).split('\n')[0])}
-bits = 1024
 
 
-def make_public_key(bits):
+def make_private_key(bits, output):
     rsa_key = RSA.gen_key(bits, X509.RSA_F4)
-    public_key = EVP.PKey()
-    public_key.assign_rsa(rsa_key)
-    return public_key
+    private_key = EVP.PKey()
+    private_key.assign_rsa(rsa_key)
+    if not output:
+        output = path.abspath(path.curdir) + "/mykey.pem"
+    else:
+        output = path.abspath(path.curdir) + "/" + output
+    private_key.save_key(output)
+    return "Key was saved to %s" % output
 
 
-def make_request(public_key, path):
+def make_request(private_key, output):
     request = X509.Request()
-    request.set_pubkey(public_key)
+    request.set_pubkey(private_key)
     request.set_version(3)
     name = X509.X509_Name()
     fields = dict()
-    fields['C'] = raw_input("Country Name (2 letter code) [ru]: ")
-    fields['ST'] = raw_input("State or Province Name (full name) [msk]: ")
-    fields['L'] = raw_input("Locality Name (eg, city) [msk]: ")
-    fields['O'] = raw_input("Organization Name (eg, company) [mephi]: ")
-    fields['OU'] = raw_input("Organization Unit Name (eg, section) [kaf36]: ")
-    fields['CN'] = raw_input("Common Name (eg, your name) [your_name]: ")
+    fields['C'] = raw_input("Country Name (2 letter code) [%s]: " % DEFAULT_FIELDS['C'])
+    fields['ST'] = raw_input("State or Province Name (full name) [%s]: " % DEFAULT_FIELDS['ST'])
+    fields['L'] = raw_input("Locality Name (eg, city) [%s]: " % DEFAULT_FIELDS['L'])
+    fields['O'] = raw_input("Organization Name (eg, company) [%s]: " % DEFAULT_FIELDS['O'])
+    fields['OU'] = raw_input("Organization Unit Name (eg, section) [%s]: " % DEFAULT_FIELDS['OU'])
+    fields['CN'] = raw_input("Common Name (eg, your name) [%s]: " % DEFAULT_FIELDS['CN'])
     for key in fields.keys():
         if len(fields[key]) == 0:
             fields[key] = DEFAULT_FIELDS[key]
@@ -49,8 +53,8 @@ def make_request(public_key, path):
     context = check_output("id -Z", shell=True).split('\n')[0]
     name.add_entry_by_nid(nid, X509.ASN1.MBSTRING_ASC, context, len=-1, loc=-1, set=0)
     request.set_subject_name(name)
-    request.sign(public_key, 'sha1')
-    request.save_pem(path)
+    request.sign(private_key, 'sha1')
+    request.save_pem(output)
 
 
 def make_certificate(request, ca_public_key):
@@ -78,8 +82,14 @@ def make_certificate(request, ca_public_key):
 
 if __name__ == "__main__":
     parser = OptionParser(usage="usage: %prog [options] filename", version="%prog 1.0")
-    parser.add_option("--genrsa", "--rsa", dest="bits", help="Generate RSA-key with bits length")
-    parser.add_option("--output", dest="output", help="Save to file output")
-    (options, args) = parser.parse_args()
-    
-
+    parser.add_option("--rsa", dest="bits", help="Generate private key with bits length")
+    parser.add_option("--req", dest="private_key", help="Generate request for private_key")
+    parser.add_option("-o", "--output", type="string", dest="output", help="Save to file output")
+    options, args = parser.parse_args()
+    output = options.output
+    bits = int(options.bits)
+    private_key = options.private_key
+    if options.bits:
+        print(make_private_key(bits, output))
+    if options.private_key:
+        print(make_request(private_key, output))
