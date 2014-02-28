@@ -127,7 +127,7 @@ int mkcert(X509 **x509p, EVP_PKEY **pkeyp, int bits, int serial, int days)
 //	add_ext(x, NID_netscape_comment, "example comment extension");
 
 	int nid;
-	nid = OBJ_create("1.2.3.4", "SELinuxContext", "My Test Extension");
+	nid = OBJ_create("1.2.3.4", "SC", "SC");
 	printf("new_nid %i\n", nid);
 	X509_NAME_add_entry_by_NID(name, nid, MBSTRING_ASC, "MyTest", -1, -1, 0);
 //	X509V3_EXT_add_alias(nid, NID_netscape_comment);
