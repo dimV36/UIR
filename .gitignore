@@ -32,3 +32,8 @@
 *.tdo
 *.lyx~
 *.*~
+*.pyc
+*.pem
+*.cert
+*.crt
+*.csr
