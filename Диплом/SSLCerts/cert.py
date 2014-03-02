@@ -1,10 +1,10 @@
+#!/usr/bin/python
 __author__ = 'dimv36'
 from M2Crypto import RSA, X509, EVP, ASN1
-from subprocess import check_output, check_call
+from subprocess import check_output
 from datetime import datetime
 from optparse import OptionParser
 from os import path
-
 
 DEFAULT_FIELDS = {'C': 'ru',
                   'ST': 'msk',
@@ -57,7 +57,7 @@ def make_request(key_file, output):
     request.set_subject_name(name)
     request.sign(public_key, 'sha1')
     if not output:
-        output = path.abspath(path.curdir) + "/%s.crt" % DEFAULT_FIELDS['CN']
+        output = path.abspath(path.curdir) + "/%s.csr" % DEFAULT_FIELDS['CN']
     else:
         output = path.abspath(path.curdir) + "/" + output
     request.save_pem(output)
@@ -86,7 +86,7 @@ def make_certificate(request_file, ca_public_key_file, ca_certificate_file, outp
     certificate.set_not_after(not_after)
     certificate.set_issuer(issuer)
     certificate.set_pubkey(public_key)
-    certificate.add_ext(X509.X509_Extension())
+    certificate.add_ext(X509.new_extension("basicConstraints", "CA:FALSE", 1))
     if not output:
         output = path.abspath(path.curdir) + "/%s.cert" % DEFAULT_FIELDS['CN']
     else:
@@ -113,7 +113,9 @@ if __name__ == "__main__":
     request = options.request
     if options.bits:
         print(make_public_key(int(bits), output))
-    if options.public_key:
+    elif options.public_key:
         print(make_request(public_key, output))
-    if options.request and options.ca_public_key and options.ca_certificate:
+    elif options.request and options.ca_public_key and options.ca_certificate:
         print(make_certificate(request, ca_public_key, ca_certificate, output))
+    else:
+        parser.print_help()
