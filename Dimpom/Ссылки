@@ -8,4 +8,4 @@ http://docs.huihoo.com/doxygen/openssl/1.0.1c/a__object_8c.html#a1eefe35f951e010
 http://www.plam.ru/compinet/jazyk_programmirovanija_python/p14.php
 http://www.frank4dd.com/howto/openssl/add_oids_to_openssl.htm
 
-int OBJ_create(const char* oid, const char *ln, const char *sn) определен в openssl.h/objects.h
+http://www.ibm.com/developerworks/ru/library/l-polyinstantiation/ -- Многоэкземплярность
