@@ -1,7 +1,7 @@
 #!/usr/bin/python
 __author__ = 'dimv36'
 from M2Crypto import RSA, X509, EVP, ASN1
-from subprocess import check_output
+from subprocess import Popen, PIPE
 from datetime import datetime
 from optparse import OptionParser
 from os import path
@@ -11,7 +11,12 @@ DEFAULT_FIELDS = {'C': 'ru',
                   'L': 'msk',
                   'O': 'mephi',
                   'OU': 'kaf36',
-                  'CN': str(check_output("whoami", shell=True).split('\n')[0])}
+                  'CN': str(Popen("whoami", stdout=PIPE).communicate()[0]).split('\n')[0]}
+DEFAULT_PASSWORD = '123456'
+
+
+def password(*args, **kwargs):
+    return DEFAULT_PASSWORD
 
 
 def make_private_key(bits, output):
@@ -22,35 +27,25 @@ def make_private_key(bits, output):
         output = path.abspath(path.curdir) + "/mykey.pem"
     else:
         output = path.abspath(path.curdir) + "/" + output
-    private_key.save_key(output)
+    private_key.save_key(output, callback=password)
     return "Key was saved to %s" % output
 
 
 def make_request(private_key_file, output):
-    private_key = EVP.load_key(private_key_file)
+    private_key = EVP.load_key(private_key_file, callback=password)
     if not private_key:
         raise ValueError, "Not correct key path"
     request = X509.Request()
     request.set_pubkey(private_key)
     request.set_version(3)
     name = X509.X509_Name()
-    fields = dict()
-    fields['C'] = raw_input("Country Name (2 letter code) [%s]: " % DEFAULT_FIELDS['C'])
-    fields['ST'] = raw_input("State or Province Name (full name) [%s]: " % DEFAULT_FIELDS['ST'])
-    fields['L'] = raw_input("Locality Name (eg, city) [%s]: " % DEFAULT_FIELDS['L'])
-    fields['O'] = raw_input("Organization Name (eg, company) [%s]: " % DEFAULT_FIELDS['O'])
-    fields['OU'] = raw_input("Organization Unit Name (eg, section) [%s]: " % DEFAULT_FIELDS['OU'])
-    fields['CN'] = raw_input("Common Name (eg, your name) [%s]: " % DEFAULT_FIELDS['CN'])
-    for key in fields.keys():
-        if len(fields[key]) == 0:
-            fields[key] = DEFAULT_FIELDS[key]
-    name.C = fields['C']
-    name.ST = fields['ST']
-    name.L = fields['L']
-    name.O = fields['O']
-    name.OU = fields['OU']
-    name.CN = fields['CN']
-    context = check_output("id -Z", shell=True).split('\n')[0]
+    name.C = DEFAULT_FIELDS['C']
+    name.ST = DEFAULT_FIELDS['ST']
+    name.L = DEFAULT_FIELDS['L']
+    name.O = DEFAULT_FIELDS['O']
+    name.OU = DEFAULT_FIELDS['OU']
+    name.CN = DEFAULT_FIELDS['CN']
+    context = str(Popen(["id", "-Z"], stdout=PIPE).communicate()[0]).split('\n')[0]
     if not context:
         raise ValueError, 'Command `id -Z` return with error code'
     name.SC = context
@@ -72,7 +67,7 @@ def make_certificate(request_file, ca_private_key_file, ca_certificate_file, out
         raise ValueError, 'Error verifying request'
     subject = request.get_subject()
     ca_certificate = X509.load_cert(ca_certificate_file)
-    ca_private_key = EVP.load_key(ca_private_key_file)
+    ca_private_key = EVP.load_key(ca_private_key_file, callback=password)
     certificate = X509.X509()
     certificate.set_serial_number(1)
     certificate.set_version(3)
