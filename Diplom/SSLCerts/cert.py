@@ -25,8 +25,6 @@ def make_private_key(bits, output):
     private_key.assign_rsa(rsa_key)
     if not output:
         output = path.abspath(path.curdir) + "/mykey.pem"
-    else:
-        output = path.abspath(path.curdir) + "/" + output
     private_key.save_key(output, callback=password)
     return "Key was saved to %s" % output
 
@@ -53,8 +51,6 @@ def make_request(private_key_file, output):
     request.sign(private_key, 'sha1')
     if not output:
         output = path.abspath(path.curdir) + "/%s.csr" % DEFAULT_FIELDS['CN']
-    else:
-        output = path.abspath(path.curdir) + "/" + output
     request.save_pem(output)
     print(request.as_text())
     return "Request was saved to %s" % output
@@ -84,8 +80,6 @@ def make_certificate(request_file, ca_private_key_file, ca_certificate_file, out
     certificate.add_ext(X509.new_extension("basicConstraints", "CA:FALSE", 1))
     if not output:
         output = path.abspath(path.curdir) + "/%s.cert" % DEFAULT_FIELDS['CN']
-    else:
-        output = path.abspath(path.curdir) + "/" + output
     certificate.sign(ca_private_key, 'sha1')
     print(certificate.as_text())
     certificate.save(output)

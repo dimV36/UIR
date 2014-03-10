@@ -26,7 +26,7 @@
       <file leaf-file-name="cert.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cert.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="86" column="9" selection-start="3149" selection-end="3149" vertical-scroll-proportion="0.7877462" vertical-offset="570" max-vertical-offset="2220">
+            <state line="81" column="78" selection-start="3003" selection-end="3003" vertical-scroll-proportion="-0.0010940919" vertical-offset="1216" max-vertical-offset="2130">
               <folding>
                 <element signature="e#40#81#0" expanded="true" />
               </folding>
@@ -145,7 +145,7 @@
     <property name="recentsLimit" value="5" />
     <property name="SearchEverywhereHistory" value="" />
     <property name="FullScreen" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Загрузки/m2crypto-0.21.1-12.fc20.src/M2Crypto-0.21.1/M2Crypto" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -372,7 +372,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-5" y="-12" width="1930" height="1062" extended-state="6" />
+    <frame x="-5" y="-12" width="1930" height="1062" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -411,6 +411,24 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/cert.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="86" column="9" selection-start="3149" selection-end="3149" vertical-scroll-proportion="0.0" vertical-offset="1230" max-vertical-offset="2220">
+          <folding>
+            <element signature="e#40#81#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cert.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="86" column="9" selection-start="3149" selection-end="3149" vertical-scroll-proportion="0.0" vertical-offset="630" max-vertical-offset="2220">
+          <folding>
+            <element signature="e#40#81#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/cert.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="14" column="0" selection-start="438" selection-end="438" vertical-scroll-proportion="0.0" vertical-offset="1369" max-vertical-offset="2295">
@@ -548,7 +566,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cert.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="86" column="9" selection-start="3149" selection-end="3149" vertical-scroll-proportion="0.7877462" vertical-offset="570" max-vertical-offset="2220">
+        <state line="81" column="78" selection-start="3003" selection-end="3003" vertical-scroll-proportion="-0.0010940919" vertical-offset="1216" max-vertical-offset="2130">
           <folding>
             <element signature="e#40#81#0" expanded="true" />
           </folding>
