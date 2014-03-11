@@ -1,0 +1,35 @@
+#!/bin/sh -p
+# It receives polydir path as $1, the instance path as $2, 
+# a flag whether the instance dir was newly created (0 - no, 1 - yes) in $3,
+# and user name in $4.
+#
+# The following section will copy the contents of /etc/skel if this is a
+# newly created home directory.
+if [ "$3" = 1 ]; then
+        # This line will fix the labeling on all newly created directories
+        [ -x /sbin/restorecon ] && /sbin/restorecon "$1"
+        user="$4"
+        passwd=$(getent passwd "$user")
+        homedir=$(echo "$passwd" | cut -f6 -d":")
+	pgcertdir=$1/.postgresql
+        if [ "$1" = "$homedir" ]; then
+                gid=$(echo "$passwd" | cut -f4 -d":")
+                cp -rT /etc/skel "$homedir"
+                chown -R "$user":"$gid" "$homedir"
+                mask=$(awk '/^UMASK/{gsub("#.*$", "", $2); print $2; exit}' /etc/login.defs)
+                mode=$(printf "%o" $((0777 & ~$mask)))
+                chmod ${mode:-700} "$homedir"
+                [ -x /sbin/restorecon ] && /sbin/restorecon -R "$homedir"
+
+		mkdir $pgcertdir
+		chown -R $user $pgcertdir
+		su -l $user -c "/etc/pki/cert.py --genrsa --bits 2048 -o $pgcertdir/postgresql.key"
+		su -l $user -c "/etc/pki/cert.py --genreq --pkey $pgcertdir/postgresql.key -o $pgcertdir/postgresql.csr"
+		su -l $user -c "/etc/pki/cert.py --gencert --request $pgcertdir/postgresql.csr -o $pgcertdir/postgresql.cert"
+		cp /etc/pki/CA/cacert.pem $pgcertdir/root.cert
+		chown $user $pgcertdir/root.cert
+		chmod 0600 $pgcertdir/postgresql.key
+        fi
+fi
+
+exit 0
