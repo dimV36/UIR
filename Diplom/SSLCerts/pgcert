@@ -6,6 +6,7 @@ from datetime import datetime
 from optparse import OptionParser
 from os import path
 
+
 DEFAULT_FIELDS = {'C': 'ru',
                   'ST': 'msk',
                   'L': 'msk',
@@ -16,20 +17,19 @@ DEFAULT_PASSWORD = '123456'
 
 
 def password(*args, **kwargs):
-    return DEFAULT_PASSWORD
+    return '123456'
 
 
 def make_private_key(bits, output):
-    rsa_key = RSA.gen_key(bits, X509.RSA_F4)
-    private_key = EVP.PKey()
-    private_key.assign_rsa(rsa_key)
+    rsa_key = RSA.gen_key(bits, 65537, callback=password)
     if not output:
         output = path.abspath(path.curdir) + "/mykey.pem"
-    private_key.save_key(output, callback=password)
+    rsa_key.save_key(output, None)
     return "Key was saved to %s" % output
 
 
 def make_request(private_key_file, output):
+#    private_key = RSA.load_key(private_key_file, callback=password)
     private_key = EVP.load_key(private_key_file, callback=password)
     if not private_key:
         raise ValueError, "Not correct key path"
@@ -52,7 +52,6 @@ def make_request(private_key_file, output):
     if not output:
         output = path.abspath(path.curdir) + "/%s.csr" % DEFAULT_FIELDS['CN']
     request.save_pem(output)
-    print(request.as_text())
     return "Request was saved to %s" % output
 
 
