@@ -1,0 +1,23 @@
+--- M2Crypto-0.21.1/SWIG/_x509.i	2014-03-15 21:29:07.846053013 +0400
++++ M2Crypto-0.21.1/SWIG/_x509.i	2014-03-15 21:30:24.412867730 +0400
+@@ -258,6 +258,7 @@
+ %constant int NID_surname                     = 100;
+ %constant int NID_givenName                   = 99;
+ %constant int NID_pkcs9_emailAddress          = 48;
++%constant int NID_selinuxContext              = 920;
+ 
+ /* Cribbed from x509_vfy.h. */
+ %constant int        X509_V_OK                                      = 0;
+--- M2Crypto-0.21.1/M2Crypto/X509.py	2011-01-15 22:10:05.000000000 +0300
++++ M2Crypto-0.21.1/M2Crypto/X509_new.py	2014-03-15 21:34:07.658266987 +0400
+@@ -221,7 +221,9 @@
+            'SN'                     : m2.NID_surname,
+            'surname'                : m2.NID_surname,
+            'GN'                     : m2.NID_givenName,
+-           'givenName'              : m2.NID_givenName
++           'givenName'              : m2.NID_givenName,
++           'SC'                     : m2.NID_selinuxContext,
++           'selinuxContext'         : m2.NID_selinuxContext
+            }
+ 
+     m2_x509_name_free = m2.x509_name_free

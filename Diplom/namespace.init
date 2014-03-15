@@ -20,15 +20,20 @@ if [ "$3" = 1 ]; then
                 mode=$(printf "%o" $((0777 & ~$mask)))
                 chmod ${mode:-700} "$homedir"
                 [ -x /sbin/restorecon ] && /sbin/restorecon -R "$homedir"
-
+	
+		if [ ! -f /etc/pki/CA/cacert.pem ]
+		then
+			/etc/pki/pgcert --gencacert
+		fi
+		password="$user"
 		mkdir $pgcertdir
 		chown -R $user $pgcertdir
-		su -l $user -c "/etc/pki/cert.py --genrsa --bits 2048 -o $pgcertdir/postgresql.key"
-		su -l $user -c "/etc/pki/cert.py --genreq --pkey $pgcertdir/postgresql.key -o $pgcertdir/postgresql.csr"
-		su -l $user -c "/etc/pki/cert.py --gencert --request $pgcertdir/postgresql.csr -o $pgcertdir/postgresql.cert"
-		cp /etc/pki/CA/cacert.pem $pgcertdir/root.cert
-		chown $user $pgcertdir/root.cert
-		chmod 0600 $pgcertdir/postgresql.key
+		sshpass -p $password ssh -o StrictHostKeyChecking=no $user@localhost "/etc/pki/pgcert --genrsa --bits 2048 --output $pgcertdir/postgresql.key"
+		sshpass -p $password ssh -o StrictHostKeyChecking=no $user@localhost "chmod 0600 $pgcertdir/postgresql.key"
+		sshpass -p $password ssh -o StrictHostKeyChecking=no $user@localhost "/etc/pki/pgcert --genreq --pkey $pgcertdir/postgresql.key --output $pgcertdir/postgresql.csr"
+		/etc/pki/pgcert --gencert --request $pgcertdir/postgresql.csr --output $pgcertdir/postgresql.crt	
+		cp /etc/pki/CA/cacert.pem $pgcertdir/root.crt
+		chown -R $user $pgcertdir
         fi
 fi
 

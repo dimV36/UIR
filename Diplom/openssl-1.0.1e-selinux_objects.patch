@@ -1,0 +1,24 @@
+--- openssl-1.0.1e/crypto/objects/objects.txt	2014-03-15 19:20:55.274107959 +0400
++++ openssl-1.0.1e/crypto/objects/objects.txt	2014-03-15 19:21:28.382458877 +0400
+@@ -717,6 +717,7 @@
+ X509 54			: dmdName		:
+ X509 65			:			: pseudonym
+ X509 72			: role			: role
++X509 920		: SC			: selinuxContext
+ 
+ X500 8			: X500algorithms	: directory services - algorithms
+ X500algorithms 1 1	: RSA			: rsa
+
+--- openssl-1.0.1e/crypto/objects/objects.h	2014-03-15 19:24:41.559507131 +0400
++++ openssl-1.0.1e/crypto/objects/objects_new.h	2014-03-15 19:26:56.812941708 +0400
+@@ -144,6 +144,10 @@
+ #define NID_localityName		15
+ #define OBJ_localityName		OBJ_X509,7L
+ 
++#define SN_selinuxContext		"SC"
++#define LN_selinuxContext		"selinuxContext"
++#define NID_selinuxContext		920
++#define OBJ_selinuxContext		OBJ_X509,13L
+ /* Postal Address? PA */
+ 
+ /* should be "ST" (rfc1327) but MS uses 'S' */
