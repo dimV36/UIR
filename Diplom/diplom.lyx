@@ -60,6 +60,9 @@ xleftmargin=0.5cm
 \sloppy %не вылезать за края листа
 
 \renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}.} % Сквозная нумерация 
+
+\newcommand{\NormalStretch}{\renewcommand{\baselinestretch}{1.0}\selectfont}
+\newcommand{\LargeStretch} {\renewcommand{\baselinestretch}{1.5}\selectfont}
 \end_preamble
 \use_default_options true
 \begin_modules
@@ -97,7 +100,7 @@ figs-within-sections
 \pdf_breaklinks false
 \pdf_pdfborder true
 \pdf_colorlinks false
-\pdf_backref false
+\pdf_backref page
 \pdf_pdfusetitle true
 \papersize default
 \use_geometry true
@@ -115,10 +118,10 @@ figs-within-sections
 \shortcut idx
 \color #008000
 \end_index
-\leftmargin 3cm
+\leftmargin 2.5cm
 \topmargin 2cm
 \rightmargin 1.5cm
-\bottommargin 2.5cm
+\bottommargin 3cm
 \secnumdepth 3
 \tocdepth 3
 \paragraph_separation indent
@@ -156,6 +159,7 @@ figs-within-sections
 \align center
 
 \series bold
+\size large
 \begin_inset Quotes fld
 \end_inset
 
@@ -169,6 +173,7 @@ figs-within-sections
 
 
 \series default
+\size default
 
 \begin_inset Newline newline
 \end_inset
@@ -200,7 +205,7 @@ height "1pt"
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename files/mephi.png
+	filename ../template/files/mephi.png
 
 \end_inset
 
@@ -347,7 +352,6 @@ height "1pt"
 \end_layout
 
 \begin_layout Standard
-\align center
 \begin_inset VSpace 1cm
 \end_inset
 
@@ -419,7 +423,6 @@ height "1pt"
 \end_layout
 
 \begin_layout Standard
-\align center
 \begin_inset VSpace vfill
 \end_inset
 
@@ -427,7 +430,6 @@ height "1pt"
 \end_layout
 
 \begin_layout Standard
-\align center
 
 \size large
 \begin_inset Tabular
@@ -938,7 +940,6 @@ height "1pt"
 \end_layout
 
 \begin_layout Standard
-\align center
 \begin_inset VSpace vfill
 \end_inset
 
@@ -982,7 +983,6 @@ year
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 \begin_inset Newpage newpage
 \end_inset
 
@@ -990,91 +990,6 @@ year
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-onehalfspacing
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-righthyphenmin=3
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-lefthyphenmin=3
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\paragraph_spacing single
-Дипломный проект изложен на 
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-pageref{LastPage}
-\end_layout
-
-\end_inset
-
- страницах, приложений, рисунков, список литературы из наименований.
-\end_layout
-
-\begin_layout Standard
-\paragraph_spacing single
-\begin_inset VSpace defskip
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\paragraph_spacing single
-
-\size large
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-thispagestyle{empty}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\paragraph_spacing single
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\paragraph_spacing single
 \begin_inset CommandInset toc
 LatexCommand tableofcontents
 
@@ -1084,7 +999,6 @@ LatexCommand tableofcontents
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 \begin_inset Newpage newpage
 \end_inset
 
@@ -1092,12 +1006,10 @@ LatexCommand tableofcontents
 \end_layout
 
 \begin_layout Section*
-\paragraph_spacing single
 Введение
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 \begin_inset ERT
 status open
 
@@ -1114,14 +1026,28 @@ addcontentsline{toc}{part}{Введение}
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+LargeStretch
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 В современных информационных системах часто возникает задача разграничения
  полномочий пользователей на основе правил доступа к компонентам файловой
  системы операционной системы.
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 В операционной системе Linux традиционно используется дискреционная модель
  контроля прав доступа.
  Он предполагает создание недвусмысленного соответствия субъект-объект.
@@ -1131,7 +1057,6 @@ addcontentsline{toc}{part}{Введение}
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 Другим способом является мандатная модель контроля прав пользователей.
  При реализации этой модели пользователю и объекту операционной системы
  субъектам и объектам назначаются классификационные метки.
@@ -1140,7 +1065,6 @@ addcontentsline{toc}{part}{Введение}
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 SELinux --- реализация системы принудительного контроля доступа, которая
  может быть использована вместе с дискреционной.
  Каждый объект операционной системы имеет свой контекст.
@@ -1148,8 +1072,7 @@ SELinux --- реализация системы принудительного �
  
 \end_layout
 
-\begin_layout LyX-Code
-\paragraph_spacing single
+\begin_layout Standard
 \begin_inset Newpage newpage
 \end_inset
 
@@ -1157,22 +1080,18 @@ SELinux --- реализация системы принудительного �
 \end_layout
 
 \begin_layout Section
-\paragraph_spacing single
 Теоретические сведения
 \end_layout
 
 \begin_layout Subsection
-\paragraph_spacing single
 Механизмы контроля доступа в операционной системе Linux
 \end_layout
 
 \begin_layout Subsubsection
-\paragraph_spacing single
 Дискреционный механизм контроля доступа
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 
 \series bold
 Дискреционный
@@ -1207,20 +1126,17 @@ key "DAC"
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 В качестве преимуществ данного механизма выделяются прозрачность и гибкость
  администрирования.
  
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 При этом у него существуют недостатки.
  
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 Одним из недостатков DAC является неполная гарантия, что информация не станет
  доступна другим субъектам, которые не имеют к ней доступа.
  Причина этого кроется в том, что субъект, имеющий право чтения информации
@@ -1231,7 +1147,6 @@ key "DAC"
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 Также, к недостаткам можно отнести ещё одну особенность дискреционной модели
  контроля доступа: объекты в системе принадлежат субъектам, которые настраивают
  к ним доступ для других.
@@ -1241,12 +1156,10 @@ key "DAC"
 \end_layout
 
 \begin_layout Subsubsection
-\paragraph_spacing single
 Мандатный механизм контроля доступа
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 
 \series bold
 Мандатный
@@ -1280,7 +1193,6 @@ Mandatory access control
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 При санкционированном занесении в список пользователей нового субъекта должно
  осуществляться сопоставление ему классификационных меток.
  Внешние классификационные метки (субъектов, объектов) должны точно соответствов
@@ -1288,13 +1200,11 @@ Mandatory access control
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 КСЗ должен реализовывать мандатный принцип контроля доступа применительно
  ко всем объектам при явном и скрытом доступе со стороны любого из субъектов:
 \end_layout
 
 \begin_layout Itemize
-\paragraph_spacing single
 субъект может читать объект, только если иерархическая классификация в классифик
 ационном уровне субъекта не меньше, чем иерархическая классификация в классифика
 ционном уровне объекта, и неиерархические категории в классификационном
@@ -1303,7 +1213,6 @@ Mandatory access control
 \end_layout
 
 \begin_layout Itemize
-\paragraph_spacing single
 субъект осуществляет запись в объект, только если классификационный уровень
  субъекта в иерархической классификации не больше, чем классификационный
  уровень объекта в иерархической классификации, и все иерархические категории
@@ -1312,24 +1221,20 @@ Mandatory access control
 \end_layout
 
 \begin_layout --Separator--
-\paragraph_spacing single
 
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 Реализация мандатных правил разграничения доступа должна предусматривать
  возможности сопровождения: изменения классификационных уровней субъектов
  и объектов специально выделенными субъектами.
 \end_layout
 
 \begin_layout Subsection
-\paragraph_spacing single
 SELinux
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 
 \series bold
 SELinux 
@@ -1351,7 +1256,6 @@ key "SELinux,SELinux-введение,SELinux-IBM"
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 SELinux входит в официальное ядро Linux начиная с версии 2.6.
  Система разрабатывается Национальным агентством по безопасности США (
 \emph on
@@ -1364,7 +1268,6 @@ National Security Agency
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 SELinux интегрирован в дистрибутивы, в частности, Feodra и Red Hat.
  Для функционирования в них поставляются модифицированные версии некоторых
  утилит (
@@ -1379,7 +1282,6 @@ ls
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 В SELinux права доступа определяются самой системой при помощи специально
  определённых политик.
  Политики работают на уровне системных вызовов и применяются самим ядром.
@@ -1393,7 +1295,6 @@ ls
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 \begin_inset listings
 inline false
 status open
@@ -1409,12 +1310,10 @@ user:role:type:sensitivity:category
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 Рассмотрим подробнее эти объекты:
 \end_layout
 
 \begin_layout Itemize
-\paragraph_spacing single
 
 \family typewriter
 user
@@ -1429,7 +1328,6 @@ user
 \end_layout
 
 \begin_layout Itemize
-\paragraph_spacing single
 
 \family typewriter
 role
@@ -1447,7 +1345,6 @@ role
 \end_layout
 
 \begin_layout Itemize
-\paragraph_spacing single
 
 \family typewriter
 type
@@ -1461,7 +1358,6 @@ type
 \end_layout
 
 \begin_layout Itemize
-\paragraph_spacing single
 
 \family typewriter
 sensitivity
@@ -1475,7 +1371,6 @@ sensitivity
 \end_layout
 
 \begin_layout Itemize
-\paragraph_spacing single
 
 \family typewriter
 category
@@ -1490,12 +1385,10 @@ category
 \end_layout
 
 \begin_layout --Separator--
-\paragraph_spacing single
 
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 Для каждого объекта используются строковые идентификаторы.
  Контекст безопасности должен содержать действующего пользователя, роль
  и идентификатор типа, причём идентификатор типа определяются в политике.
@@ -1503,23 +1396,19 @@ category
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 SELinux начинает работать после того, как дискреционный механизм контроля
  разрешил доступ пользователю.
 \end_layout
 
 \begin_layout Subsubsection
-\paragraph_spacing single
 Режимы работы SELinux
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 SELinux может работать в трёх режимах: 
 \end_layout
 
 \begin_layout Itemize
-\paragraph_spacing single
 
 \family typewriter
 disabled
@@ -1534,7 +1423,6 @@ disabled
 \end_layout
 
 \begin_layout Itemize
-\paragraph_spacing single
 
 \family typewriter
 permissive
@@ -1639,12 +1527,10 @@ status open
 \end_layout
 
 \begin_layout Subsubsection
-\paragraph_spacing single
 Политики SELinux
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 Политики --- это наборы правил, определяющие список ролей, к которым имеет
  доступ пользователь, какие роли имеют доступ к каким доменам и какие домены
  имеют доступ к каким типам.
@@ -1691,12 +1577,10 @@ httpd_log_t
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 Выделяют несколько типов политик SELinux:
 \end_layout
 
 \begin_layout Itemize
-\paragraph_spacing single
 
 \family typewriter
 target
@@ -1712,7 +1596,6 @@ target
 \end_layout
 
 \begin_layout Itemize
-\paragraph_spacing single
 
 \family typewriter
 strict
@@ -1727,7 +1610,6 @@ strict
 \end_layout
 
 \begin_layout Itemize
-\paragraph_spacing single
 
 \family typewriter
 mls
@@ -1744,7 +1626,6 @@ mls
 \end_layout
 
 \begin_layout --Separator--
-\paragraph_spacing single
 
 \end_layout
 
@@ -1761,7 +1642,6 @@ SELINUXTYPE
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 При смене режима работы политики или типа политики требуется расстановка
  меток безопасности файловой системы.
  Это можно сделать с помощью создания пустого файла 
@@ -1772,7 +1652,6 @@ SELINUXTYPE
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 \begin_inset listings
 inline false
 status open
@@ -1793,7 +1672,6 @@ status open
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 Сам процесс расстановки меток безопасности длится несколько минут и зависит
  от размера жесткого диска.
 \end_layout
@@ -1931,12 +1809,10 @@ id
 \end_layout
 
 \begin_layout Itemize
-\paragraph_spacing single
 Монолитный;
 \end_layout
 
 \begin_layout Itemize
-\paragraph_spacing single
 Модульный;
 \end_layout
 
@@ -2037,7 +1913,311 @@ status open
 \end_layout
 
 \begin_layout Subsection
+Формат сертификатов открытых ключей X509
+\end_layout
 
+\begin_layout Standard
+Формат сертификата открытого ключа 
+\series bold
+X509
+\series default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "X509,PKI"
+
+\end_inset
+
+ определен в рекомендациях Международного Союза по телекоммуникациям ITU
+ (X.509) и документе 
+\series bold
+RFC 3280 Certificate & CRL Profile 
+\series default
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "RFC 3280"
+
+\end_inset
+
+ организации инженерной поддержки Интернета.
+ В настоящее время основным принятым форматом является формат версии 3,
+ позволяющий задавать дополнения, с помощью которых реализуется определенная
+ политика безопасности в системе.
+ 
+\end_layout
+
+\begin_layout Standard
+Сертификат открытого ключа или шифрования представляет собой структурированную
+ двоичную запись в абстрактной синтаксической нотации 
+\series bold
+ASN1
+\series default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ASN1"
+
+\end_inset
+
+.
+ В сертификате имеются элементы данных, сопровождаемые цифровой подписью.
+ Сертификат содержит 6 обязательных и 4 необязательных поля.
+ К обязательным полям сертификата относятся:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Certificate Serial Number
+\family default
+ --- серийный номер сертификата;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Signature Algorithm Identifier
+\family default
+ --- идентификатор алгоритма подписи;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Validity
+\family default
+ --- период действия (когда выдан и до какого времени может быть использован);
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Subject Public Key Information
+\family default
+ --- открытый ключ субъекта;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Subject Name
+\family default
+ --- имя субъекта.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Субъект сертификата определяет объект, контролирующая секретный ключ и обладающа
+я открытым ключом.
+ Поле 
+\family typewriter
+Version
+\family default
+ определяет версию сертификата.
+ Наличие необязательных полей характерно для версий 2 и 3.
+ Структура сертификата X509 приведена на 
+\emph on
+рис.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Структура-сертификата-X509"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/x509.jpg
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Структура-сертификата-X509"
+
+\end_inset
+
+Структура сертификата X509
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Издатель сертификатов присваивает каждому выпускаемому сертификату серийный
+ номер Certificate Serial Number, который должен быть уникален.
+ Комбинация имени издателя и серийного номера однозначно идентифицирует
+ каждый сертификат.
+\end_layout
+
+\begin_layout Standard
+В поле 
+\family typewriter
+Signature Аlgorithm Identifier
+\family default
+ указывается идентификатор алгоритма электронно-цифровой подписи, который
+ использовался издателем сертификата для подписи сертификата.
+\end_layout
+
+\begin_layout Standard
+Поле 
+\family typewriter
+Issuer Name
+\family default
+ содержит отличительное имя издателя, который выпустил этот сертификат.
+ В поле "
+\family typewriter
+Validity
+\family default
+" (
+\family typewriter
+Not Before/After
+\family default
+) указываются даты начала и окончания периода действия сертификата.
+\end_layout
+
+\begin_layout Standard
+Поле 
+\family typewriter
+Subject Name
+\family default
+ содержит владельца секретного ключа, соответствующего открытому ключу данного
+ сертификата.
+ Субъектом сертификата может выступать удостоверяющий центр, регистрационный
+ центр или конечный субъект.
+\end_layout
+
+\begin_layout Standard
+Поле 
+\family typewriter
+Subject Public Key Information
+\family default
+ содержит информацию об открытом ключе субъекта: сам открытый ключ, необязательн
+ые параметры и идентификатор алгоритма генерации ключа.
+ Это поле всегда должно содержать значение.
+ Открытый ключ и необязательные параметры алгоритма используются для верификации
+ цифровой подписи (если субъектом сертификата является удостоверяющий центр)
+ или управления ключами.
+\end_layout
+
+\begin_layout Standard
+Важная информация находится также в дополнениях сертификата.
+ Они позволяют включать в сертификат информацию, которая отсутствует в основном
+ содержании, определять валидность сертификата и наличие у владельца сертификата
+ прав доступа к той или иной системе.
+ Кроме того, в дополнениях содержится технологическая информация, позволяющая
+ легко проверить подлинность сертификата.
+ Каждая организация может использовать свои частные дополнения, удовлетворяющие
+ конкретным требованиям ведения бизнеса.
+ Однако большинство требований включено в стандартные дополнения, поддержку
+ которых обеспечивают коммерческие программные продукты.
+\end_layout
+
+\begin_layout Standard
+Опциональное поле 
+\family typewriter
+Extensions
+\family default
+ (дополнения) появляется в сертификатах третьей версии.
+ Каждое дополнение состоит из идентификатора типа дополнения 
+\family typewriter
+Extension identifier
+\family default
+, признака критичности 
+\family typewriter
+Criticality flag
+\family default
+ и собственно значения дополнения 
+\family typewriter
+Extension value
+\family default
+.
+ Идентификатор типа дополнения задает формат и семантику значения дополнения.
+ Признак критичности сообщает приложению, использующему данный сертификат,
+ существенна ли информация о назначении сертификата и может ли приложение
+ игнорировать данный тип дополнения.
+\end_layout
+
+\begin_layout Standard
+Субъектом сертификата может быть конечный пользователь, система или удостоверяющ
+ий центр.
+ Основные поля сертификата одинаковы для всех субъектов.
+ Различать субъекты сертификатов и оценивать возможность построения пути
+ сертификации позволяет дополнение 
+\family typewriter
+Basic Constraints
+\family default
+ (основные ограничения), используемое только для удостоверяющих центров.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Создание утилиты генерации X509 сертификата
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+OpenSSL
+\series default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "OpenSSL"
+
+\end_inset
+
+ --- криптографический пакет с открытым исходным кодом для работы с протоколами
+ SSL/TLS.
+ Предоставляет широкие возможности по генерации ключей и сертификатов X509.
+ Позволяет создавать запросы на подпись (
+\emph on
+Certificate Signing Request
+\emph default
+, CSR) и подписывать их.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -2048,12 +2228,10 @@ status open
 \end_layout
 
 \begin_layout Section*
-\paragraph_spacing single
 Заключение
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 \begin_inset ERT
 status open
 
@@ -2070,7 +2248,6 @@ addcontentsline{toc}{part}{Заключение}
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 
 \color black
 \begin_inset Newpage newpage
@@ -2080,7 +2257,6 @@ addcontentsline{toc}{part}{Заключение}
 \end_layout
 
 \begin_layout Standard
-\paragraph_spacing single
 \begin_inset ERT
 status open
 
@@ -2096,8 +2272,23 @@ addcontentsline{toc}{part}{Список литературы}
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+NormalStretch
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Bibliography
-\paragraph_spacing single
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "1"
@@ -2111,7 +2302,6 @@ key "DAC"
 \end_layout
 
 \begin_layout Bibliography
-\paragraph_spacing single
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "2"
@@ -2125,7 +2315,6 @@ key "MAC"
 \end_layout
 
 \begin_layout Bibliography
-\paragraph_spacing single
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "3"
@@ -2150,7 +2339,6 @@ key "SELinux"
 \end_layout
 
 \begin_layout Bibliography
-\paragraph_spacing single
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "4"
@@ -2167,7 +2355,6 @@ key "SELinux-введение"
 \end_layout
 
 \begin_layout Bibliography
-\paragraph_spacing single
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "5"
@@ -2178,6 +2365,82 @@ key "SELinux-IBM"
 Безопасный Linux: Часть 2.
  SELinux --- запуск подсистемы безопасности [Электронный ресурс] --- http://www.i
 bm.com/developerworks/ru/library/l-se_linux_02
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "6"
+key "X509"
+
+\end_inset
+
+ Формат сертификатов открытых ключей X.509 [Электронный ресурс] --- http://www.ins
+sl.com/x509-open-key-specifications.html
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "7"
+key "PKI"
+
+\end_inset
+
+ Полянская О.Ю., Горбатов В.С.
+\begin_inset space ~
+\end_inset
+
+--- Инфраструктуры открытых ключей
+\begin_inset space ~
+\end_inset
+
+--- М.: Изд-во "Интернет-университет информационных технологий - ИНТУИТ.ру",
+ "БИНОМ.
+ Лаборатория знаний", 2007.
+ - 368 c.: ил., ISBN: 978-5-9556-0081-9 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "8"
+key "RFC 3280"
+
+\end_inset
+
+ RFC 3280 [Электронный ресурс]
+\begin_inset space ~
+\end_inset
+
+--- http://www.ietf.org/rfc/rfc3280 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "9"
+key "ASN1"
+
+\end_inset
+
+ASN.1 простыми словами [Электронный ресурс]
+\begin_inset space ~
+\end_inset
+
+--- http://www.rsdn.ru/article/ASN/ASN.xml
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "10"
+key "OpenSSL"
+
+\end_inset
+
+ OpenSSL: The Open Source toolkit for SSL/TLS [Электронный ресурс] --- http://ww
+w.openssl.org
 \end_layout
 
 \end_body

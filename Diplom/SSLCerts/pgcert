@@ -25,13 +25,13 @@ def make_private_key(bits, output):
     if not output:
         output = path.abspath(path.curdir) + "/mykey.pem"
     rsa_key.save_key(output, None)
-    return "Key was saved to %s" % output
+    return 'Key was saved to %s' % output
 
 
 def make_request(private_key_file, output):
     private_key = EVP.load_key(private_key_file, callback=password)
     if not private_key:
-        raise ValueError, "Not correct key path"
+        raise ValueError, 'Not correct key path'
     request = X509.Request()
     request.set_pubkey(private_key)
     request.set_version(3)
@@ -49,9 +49,9 @@ def make_request(private_key_file, output):
     request.set_subject_name(name)
     request.sign(private_key, 'sha1')
     if not output:
-        output = path.abspath(path.curdir) + "/%s.csr" % DEFAULT_FIELDS['CN']
+        output = path.abspath(path.curdir) + '/%s.csr' % DEFAULT_FIELDS['CN']
     request.save_pem(output)
-    return "Request was saved to %s" % output
+    return 'Request was saved to %s' % output
 
 
 def make_certificate(request_file, ca_private_key_file, ca_certificate_file, output):
@@ -77,10 +77,10 @@ def make_certificate(request_file, ca_private_key_file, ca_certificate_file, out
     certificate.set_pubkey(public_key)
     certificate.add_ext(X509.new_extension("basicConstraints", "CA:FALSE", 1))
     if not output:
-        output = path.abspath(path.curdir) + "/%s.cert" % DEFAULT_FIELDS['CN']
+        output = path.abspath(path.curdir) + '/%s.cert' % DEFAULT_FIELDS['CN']
     certificate.sign(ca_private_key, 'sha1')
     certificate.save(output)
-    return "Certificate was saved to %s" % output
+    return 'Certificate was saved to %s' % output
 
 
 def verify_certificate(certificate_file, ca_certificate):
@@ -131,7 +131,7 @@ def make_ca(bits, cakey_file_path, cacert_file_path):
     certificate.add_ext(X509.new_extension("basicConstraints", "CA:TRUE", 1))
     certificate.sign(private_key, 'sha1')
     certificate.save(cacert_file_path)
-    return "Certificate was saved to %s" % cacert_file_path
+    return 'Certificate was saved to %s' % cacert_file_path
 
 
 if __name__ == "__main__":
