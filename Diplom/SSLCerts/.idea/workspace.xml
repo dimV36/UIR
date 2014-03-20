@@ -26,7 +26,7 @@
       <file leaf-file-name="pgcert" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pgcert">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="133" column="40" selection-start="5017" selection-end="5017" vertical-scroll-proportion="0.10907128" vertical-offset="1834" max-vertical-offset="2760">
+            <state line="26" column="15" selection-start="679" selection-end="679" vertical-scroll-proportion="-1.4784018" vertical-offset="1684" max-vertical-offset="3015">
               <folding />
             </state>
           </provider>
@@ -47,6 +47,7 @@
         <option value="/usr/lib64/python2.7/site-packages/M2Crypto-0.21.1-py2.7-linux-x86_64.egg!/M2Crypto/__m2crypto.py" />
         <option value="$PROJECT_DIR$/CA.py" />
         <option value="$PROJECT_DIR$/cert.py" />
+        <option value="$PROJECT_DIR$/level.py" />
         <option value="$PROJECT_DIR$/pgcert" />
       </list>
     </option>
@@ -154,7 +155,7 @@
       </console-settings>
     </option>
   </component>
-  <component name="RunManager" selected="Python.cert">
+  <component name="RunManager" selected="Python.level">
     <configuration default="false" name="GenerateSSLCerts" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -207,6 +208,35 @@
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="level" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="SSLCerts" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/level.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="true" type="BashConfigurationType" factoryName="Bash">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="INTERPRETER_PATH" value="/bin/bash" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <module name="SSLCerts" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="py.test">
@@ -330,16 +360,18 @@
       <option name="USE_PATTERN" value="false" />
       <method />
     </configuration>
-    <list size="3">
+    <list size="4">
       <item index="0" class="java.lang.String" itemvalue="Python.GenerateSSLCerts" />
       <item index="1" class="java.lang.String" itemvalue="Python.CA" />
       <item index="2" class="java.lang.String" itemvalue="Python.cert" />
+      <item index="3" class="java.lang.String" itemvalue="Python.level" />
     </list>
     <recent_temporary>
-      <list size="3">
-        <item index="0" class="java.lang.String" itemvalue="Python.cert" />
-        <item index="1" class="java.lang.String" itemvalue="Python.CA" />
-        <item index="2" class="java.lang.String" itemvalue="Python.GenerateSSLCerts" />
+      <list size="4">
+        <item index="0" class="java.lang.String" itemvalue="Python.level" />
+        <item index="1" class="java.lang.String" itemvalue="Python.cert" />
+        <item index="2" class="java.lang.String" itemvalue="Python.CA" />
+        <item index="3" class="java.lang.String" itemvalue="Python.GenerateSSLCerts" />
       </list>
     </recent_temporary>
   </component>
@@ -412,7 +444,21 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/pgcert">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="133" column="40" selection-start="5017" selection-end="5017" vertical-scroll-proportion="0.10907128" vertical-offset="1834" max-vertical-offset="2760">
+        <state line="166" column="39" selection-start="7412" selection-end="7447" vertical-scroll-proportion="0.0" vertical-offset="2196" max-vertical-offset="2940">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pgcert">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="133" column="40" selection-start="5017" selection-end="5017" vertical-scroll-proportion="0.0" vertical-offset="1995" max-vertical-offset="2760">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pgcert">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="15" selection-start="679" selection-end="679" vertical-scroll-proportion="-1.4784018" vertical-offset="1684" max-vertical-offset="3015">
           <folding />
         </state>
       </provider>

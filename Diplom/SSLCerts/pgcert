@@ -4,7 +4,8 @@ from M2Crypto import RSA, X509, EVP, ASN1
 from subprocess import Popen, PIPE
 from datetime import datetime
 from optparse import OptionParser
-from os import path
+from os import path, getuid
+from time import time
 
 
 DEFAULT_FIELDS = {'C': 'ru',
@@ -20,6 +21,12 @@ def password(*args, **kwargs):
     return '123456'
 
 
+def check_permissions():
+    if getuid() != 0:
+        print("Please, login as `root` and try again")
+        exit(1)
+
+
 def make_private_key(bits, output):
     rsa_key = RSA.gen_key(bits, 65537, callback=password)
     if not output:
@@ -28,7 +35,7 @@ def make_private_key(bits, output):
     return 'Key was saved to %s' % output
 
 
-def make_request(private_key_file, output):
+def make_request(private_key_file, username, context_string, output):
     private_key = EVP.load_key(private_key_file, callback=password)
     if not private_key:
         raise ValueError, 'Not correct key path'
@@ -41,8 +48,11 @@ def make_request(private_key_file, output):
     name.L = DEFAULT_FIELDS['L']
     name.O = DEFAULT_FIELDS['O']
     name.OU = DEFAULT_FIELDS['OU']
-    name.CN = DEFAULT_FIELDS['CN']
-    context = str(Popen(["id", "-Z"], stdout=PIPE).communicate()[0]).split('\n')[0]
+    name.CN = username
+    if getuid() == 0:
+        context = context_string
+    else:
+        context = str(Popen(["id", "-Z"], stdout=PIPE).communicate()[0]).split('\n')[0]
     if not context:
         raise ValueError, 'Command `id -Z` return with error code'
     name.SC = context
@@ -63,7 +73,7 @@ def make_certificate(request_file, ca_private_key_file, ca_certificate_file, out
     ca_certificate = X509.load_cert(ca_certificate_file)
     ca_private_key = EVP.load_key(ca_private_key_file, callback=password)
     certificate = X509.X509()
-    certificate.set_serial_number(1)
+    certificate.set_serial_number(time().as_integer_ratio()[0])
     certificate.set_version(3)
     certificate.set_subject(subject)
     issuer = ca_certificate.get_issuer()
@@ -145,10 +155,12 @@ if __name__ == "__main__":
                       help="generate request for private key")
     parser.add_option("--gencert", dest="gencert", action="store_true", default=False,
                       help="generate certificate for user")
-    parser.add_option("--gencacert", dest="gencacert", action="store_true", default=False,
+    parser.add_option("--makeca", dest="makeca", action="store_true", default=False,
                       help="generate ca certificate and private key")
     parser.add_option("--text", dest="print_cert", action="store_true", default=False, help="print certificate")
     parser.add_option("--verify", dest="verify", action="store_true", default=False, help="verify certificate")
+    parser.add_option("--user", dest="user", default=DEFAULT_FIELDS['CN'], help="add username to certificate CN")
+    parser.add_option("--context", dest="context", default=None, help="add user context to certificate")
     parser.add_option("--bits", dest="bits", type="int", default="2048", help="bits for generate RSA-key")
     parser.add_option("--request", dest="request", help="add path to request file")
     parser.add_option("--cakey", dest="cakey", default="/etc/pki/CA/private/cakey.pem", type="string",
@@ -159,6 +171,8 @@ if __name__ == "__main__":
     parser.add_option("--cert", dest="certificate", help="add path of certificate")
     parser.add_option("--output", type="string", dest="output", help="save to file output")
     options, args = parser.parse_args()
+    user = options.user
+    context = options.context
     bits = options.bits
     request = options.request
     cakey = options.cakey
@@ -167,16 +181,20 @@ if __name__ == "__main__":
     certificate = options.certificate
     output = options.output
     if options.genrsa and options.bits:
+        check_permissions()
         print(make_private_key(bits, output))
     elif options.genreq and options.pkey:
-        print(make_request(pkey, output))
+        check_permissions()
+        print(make_request(pkey, user, context, output))
     elif options.gencert and options.request:
+        check_permissions()
         print(make_certificate(request, cakey, cacert, output))
     elif options.verify and options.certificate and options.cacert:
         print(verify_certificate(certificate, cacert))
     elif options.print_cert and options.certificate:
         print(print_certificate(certificate))
-    elif options.gencacert:
+    elif options.makeca:
+        check_permissions()
         print(make_ca(bits, cakey, cacert))
     else:
         parser.print_help()

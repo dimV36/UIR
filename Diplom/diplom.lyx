@@ -2186,6 +2186,763 @@ Basic Constraints
  (основные ограничения), используемое только для удостоверяющих центров.
 \end_layout
 
+\begin_layout Section
+Менеджер пакетов RPM
+\end_layout
+
+\begin_layout Standard
+RPM Package Manager (RPM)
+\begin_inset space ~
+\end_inset
+
+--- менеджер пакетов (ранее раскрывался как Red Hat Package Manager
+\begin_inset space ~
+\end_inset
+
+--- менеджер пакетов Red Hat) обозначает формат пакетов, в
+\begin_inset space ~
+\end_inset
+
+котором распространяется дистрибутив и
+\begin_inset space ~
+\end_inset
+
+программное обеспечение, а также программу, предназначенную для управления
+ этими пакетами.
+ Программа позволяет устанавливать, удалять и
+\begin_inset space ~
+\end_inset
+
+обновлять программное обеспечение.
+\end_layout
+
+\begin_layout Standard
+Различают несколько видов пакетов: 
+\end_layout
+
+\begin_layout Itemize
+пакеты с исходным кодом
+\begin_inset space ~
+\end_inset
+
+--- предназначены для модификации программного обеспечения;
+\end_layout
+
+\begin_layout Itemize
+бинарные пакеты
+\begin_inset space ~
+\end_inset
+
+--- предназначены для установки, обновлении программ.
+ В свою очередь данный тип делится на пакеты, собранные под конкретную архитекту
+ру (например, 
+\family typewriter
+x86
+\family default
+), а также пакеты, которые могут работать на всех архитектурах одновременно
+ (
+\family typewriter
+noarch
+\family default
+).
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Программа 
+\family typewriter
+rpm 
+\family default
+позволяет выполнять установку, удаление или обновление пакетов, но не позволяет
+ разрешать зависимости между ними.
+ Зависимости --- список пакетов, которые необходимо установить для корректной
+ работы конкретного пакета.
+\end_layout
+
+\begin_layout Standard
+Для автоматического разрешения зависимостей при установке пакетов может
+ быть использована программа, аналогичная 
+\family typewriter
+rpm 
+\family default
+--- 
+\family typewriter
+yum
+\family default
+.
+ Данная программа выполняет поиск зависимостей при установке пакета и разрешает
+ их.
+\end_layout
+
+\begin_layout Standard
+Для того, чтобы собрать пакет из исходных кодов, используется набор утилит,
+ называемый 
+\family typewriter
+rpm-build
+\family default
+.
+ Программа rpm-build позволяет собирать пакет из исходных текстов, накладывать
+ патчи, устанавливать пакеты из исходных текстов.
+ 
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Модификация-исходных-текстов"
+
+\end_inset
+
+Модификация исходных текстов программ
+\end_layout
+
+\begin_layout Standard
+Для того, чтобы доработать функционал, исправить ошибки приложения, требуется
+ внести изменения в исходный код этого приложения.
+ Исходные коды, как правило, находятся в свободном доступе.
+\end_layout
+
+\begin_layout Standard
+Процесс доработки программ в дистрибутивах Red Hat, Fedora и CentOS представляет
+ собой следующие действия:
+\end_layout
+
+\begin_layout Itemize
+Берется пакет исходных кодов программы и распаковывается (он имеет расширение
+ 
+\family typewriter
+.src.rpm
+\family default
+);
+\end_layout
+
+\begin_layout Itemize
+Выполняется модификация кода программы с помощью патчей;
+\end_layout
+
+\begin_layout Itemize
+Патчи заносятся в пакет исходных текстов программ;
+\end_layout
+
+\begin_layout Itemize
+Выполняется пересборка пакета.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+Инструкции по сборке пакетов находятся в
+\begin_inset space ~
+\end_inset
+
+особых файлах спецификации с
+\begin_inset space ~
+\end_inset
+
+расширением 
+\emph on
+.spec
+\emph default
+.
+ После распаковки пакета с
+\begin_inset space ~
+\end_inset
+
+исходным кодом в
+\begin_inset space ~
+\end_inset
+
+каталоге 
+\emph on
+~/rpmbuild
+\emph default
+ появятся следующие каталоги:
+\end_layout
+
+\begin_layout Itemize
+BUILD
+\begin_inset space ~
+\end_inset
+
+--- служебный каталог, в
+\begin_inset space ~
+\end_inset
+
+котором содержится распакованный исходный код с
+\begin_inset space ~
+\end_inset
+
+наложенными патчами.
+ В
+\begin_inset space ~
+\end_inset
+
+этой же папке происходит сборка пакета.
+ Все изменения, внесённые в
+\begin_inset space ~
+\end_inset
+
+данную папку, теряются, однако, она полезна при изготовлении собственных
+ патчей;
+\end_layout
+
+\begin_layout Itemize
+BUILDROOT
+\begin_inset space ~
+\end_inset
+
+--- служебная папка, в
+\begin_inset space ~
+\end_inset
+
+которую происходит инсталляция программ.
+ Используется только для сборки готового бинарного пакета и
+\begin_inset space ~
+\end_inset
+
+после сборки содержимое этой папки очищается;
+\end_layout
+
+\begin_layout Itemize
+RPMS
+\begin_inset space ~
+\end_inset
+
+--- в
+\begin_inset space ~
+\end_inset
+
+данную папку складываются сборки пакетов для различных архитектур, бинарные
+ rpm-пакеты;
+\end_layout
+
+\begin_layout Itemize
+SOURCES
+\begin_inset space ~
+\end_inset
+
+--- содержит в
+\begin_inset space ~
+\end_inset
+
+себе архивы с
+\begin_inset space ~
+\end_inset
+
+исходным кодом и
+\begin_inset space ~
+\end_inset
+
+патчи;
+\end_layout
+
+\begin_layout Itemize
+SPECS
+\begin_inset space ~
+\end_inset
+
+--- в
+\begin_inset space ~
+\end_inset
+
+данной папке, как правило, располагается один файл
+\begin_inset space ~
+\end_inset
+
+--- файл спецификации, который содержит в
+\begin_inset space ~
+\end_inset
+
+себе все сценарии для сборки пакета, список исходных текстов, патчей, порядок
+ применения патчей, список изменений;
+\end_layout
+
+\begin_layout Itemize
+SRPMS
+\begin_inset space ~
+\end_inset
+
+--- в
+\begin_inset space ~
+\end_inset
+
+данный каталог записывается 
+\emph on
+.scr.rpm
+\emph default
+ пакет, если нужно собрать не
+\begin_inset space ~
+\end_inset
+
+бинарный пакет, а пакет с
+\begin_inset space ~
+\end_inset
+
+исходным кодом.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+В папке 
+\emph on
+SPECS
+\emph default
+ после распаковки будет находиться 
+\emph on
+.spec
+\emph default
+ файл.
+\end_layout
+
+\begin_layout Standard
+Для того, чтобы работать с
+\begin_inset space ~
+\end_inset
+
+исходными текстами программы, необходимы следующие компоненты:
+\end_layout
+
+\begin_layout Itemize
+набор компиляторов 
+\emph on
+gcc
+\emph default
+;
+\end_layout
+
+\begin_layout Itemize
+редактор исходного кода;
+\end_layout
+
+\begin_layout Itemize
+программы 
+\emph on
+make
+\emph default
+, 
+\emph on
+autotools
+\emph default
+, 
+\emph on
+cmake
+\emph default
+;
+\end_layout
+
+\begin_layout Itemize
+заголовочный файлы основных библиотек;
+\end_layout
+
+\begin_layout Itemize
+при необходимости
+\begin_inset space ~
+\end_inset
+
+--- заголовочные файлы библиотек, которые использует конкретная программа.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Для того, чтобы установить минимальный набор пакетов для разработчика достаточно
+ выполнить следующую команду:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+yum groupinstall development
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Дополнительные пакеты, если они не
+\begin_inset space ~
+\end_inset
+
+установлены, программа 
+\emph on
+rpmbuild
+\emph default
+ запросит самостоятельно при попытке сборки.
+ Для продолжения нужно будет установить при помощи команды 
+\emph on
+yum
+\emph default
+ недостающие development-версии пакетов.
+\end_layout
+
+\begin_layout Standard
+Приём, описанный в
+\begin_inset space ~
+\end_inset
+
+данном разделе, неоднократно будет использоваться на
+\begin_inset space ~
+\end_inset
+
+протяжении выполнения работы, так как многие пакеты, входящие в
+\begin_inset space ~
+\end_inset
+
+состав дистрибутива, нуждаются в
+\begin_inset space ~
+\end_inset
+
+доработке.
+\end_layout
+
+\begin_layout Standard
+Модификация пакета 
+\emph on
+.scr.rpm
+\emph default
+ происходит следующим образом:
+\end_layout
+
+\begin_layout Enumerate
+Необходимо установить программу 
+\emph on
+rpm-build
+\emph default
+, компилятор (
+\emph on
+gcc
+\emph default
+).
+\end_layout
+
+\begin_layout Enumerate
+От имени пользователя запустить команду: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+rpm -i пакет.src.rpm
+\end_layout
+
+\end_inset
+
+Пакет распакуется в
+\begin_inset space ~
+\end_inset
+
+папку 
+\emph on
+~/rpmbuild
+\emph default
+.
+\end_layout
+
+\begin_layout Enumerate
+В пакете имеются патчи, которые необходимо применить к архиву с
+\begin_inset space ~
+\end_inset
+
+исходными текстами.
+ Данное действие выполняется следующей командой:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+rpmbuild -bp rpmbuild/SPEC/пакет.spec
+\end_layout
+
+\end_inset
+
+Данная команда выполняет процедуру подготовки: распаковывает содержимое
+ архива с
+\begin_inset space ~
+\end_inset
+
+исходными текстами программы и
+\begin_inset space ~
+\end_inset
+
+применяет все патчи, входящие в
+\begin_inset space ~
+\end_inset
+
+состав пакета.
+\end_layout
+
+\begin_layout Enumerate
+В каталоге 
+\emph on
+~/rpmbuild/BUILD
+\emph default
+ появится директория, содержащая исходные тексты программы, содержащие все
+ необходимые патчи.
+\end_layout
+
+\begin_layout Enumerate
+Изменить исходные тексты программы нужным образом, убедиться в
+\begin_inset space ~
+\end_inset
+
+работоспособности внесённых изменений, перед изменением файла нужно создать
+ его копию с
+\begin_inset space ~
+\end_inset
+
+суффиксом .<название патча>.
+ Например, нужно исправить файл 
+\emph on
+main.c
+\emph default
+, патч будет называться 
+\emph on
+mypatch
+\emph default
+, нужно создать копию файла 
+\emph on
+main.c
+\emph default
+, которая называется 
+\emph on
+main.c.mypatch
+\emph default
+, и
+\begin_inset space ~
+\end_inset
+
+не
+\begin_inset space ~
+\end_inset
+
+изменять её.
+\end_layout
+
+\begin_layout Enumerate
+Создание патча происходит следующей командой:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+cd rpmbuild/BUILD
+\end_layout
+
+\begin_layout Plain Layout
+
+gendiff <папка спрограммой> .<имя патча> > ../SOURCES/<файл патча>
+\end_layout
+
+\end_inset
+
+Следуя предыдущему примеру, нужно будет выполнить команду: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+gendiff <папка> .mypatch > ../SOURCES/my.patch
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Открыть файл 
+\emph on
+~/rpmbuild/SPECS/пакет.spec
+\emph default
+.
+ В
+\begin_inset space ~
+\end_inset
+
+этот файл необходимо добавить патч дважды: первый раз после ключевого слова
+ 
+\emph on
+Sources: 
+\emph default
+добавляется 
+\emph on
+Patch1: my.patch
+\emph default
+, а после ключевого слова 
+\emph on
+%setup
+\emph default
+ добавляются команды запуска патчей: 
+\emph on
+%patch1 -p1 -b <имя патча>
+\emph default
+.
+\end_layout
+
+\begin_layout Enumerate
+Добавить свой патч в
+\begin_inset space ~
+\end_inset
+
+папку 
+\emph on
+~/rpmbuild/SOURCES
+\emph default
+, если этого ещё не
+\begin_inset space ~
+\end_inset
+
+выполнено на
+\begin_inset space ~
+\end_inset
+
+7 шаге.
+\end_layout
+
+\begin_layout Enumerate
+Убедиться, что патч работает нормально:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+rpmbuild -bp ~/rpmbuild/SPECS/пакет.spec
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Если предыдущий шаг выполняется без ошибок, можно собрать rpm-пакет:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+rpmbuild -ba ~/rpmbuild/SPECS/.....spec
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Собрать пакет с
+\begin_inset space ~
+\end_inset
+
+исходными текстами и с
+\begin_inset space ~
+\end_inset
+
+новым патчем:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+rpmbuild -bs ~/rpmbuild/SPECS/.....spec
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Собранные бинарные пакеты находятся в
+\begin_inset space ~
+\end_inset
+
+каталоге 
+\emph on
+~/rpmbuild/RPMS
+\emph default
+, а собранные пакеты с
+\begin_inset space ~
+\end_inset
+
+исходными текстами
+\begin_inset space ~
+\end_inset
+
+--- в
+\begin_inset space ~
+\end_inset
+
+каталоге 
+\emph on
+~/rpmbuild/SRPMS
+\emph default
+.
+\end_layout
+
+\begin_layout Enumerate
+Установить собранный пакет можно командой:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+rpm -i пакет.rpm
+\end_layout
+
+\end_inset
+
+Если пакет не
+\begin_inset space ~
+\end_inset
+
+устанавливается (например, он уже есть в
+\begin_inset space ~
+\end_inset
+
+системе), нужно его установить принудительно:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+rpm -i --force --replacefiles пакет.rpm
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 \begin_inset Newpage newpage
 \end_inset
@@ -2435,6 +3192,36 @@ ASN.1 простыми словами [Электронный ресурс]
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "10"
+key "RPM"
+
+\end_inset
+
+ RPM [Электронный ресурс]
+\begin_inset space ~
+\end_inset
+
+--- http://www.rpm.org
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "11"
+key "RH-RPM"
+
+\end_inset
+
+Red Hat RPM Guide [Электронный ресурс]
+\begin_inset space ~
+\end_inset
+
+---http://www.lexpr.ru/node/11
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "11"
 key "OpenSSL"
 
 \end_inset

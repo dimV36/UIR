@@ -9,6 +9,7 @@
       <w>gencert</w>
       <w>genreq</w>
       <w>genrsa</w>
+      <w>makeca</w>
       <w>mbstring</w>
       <w>mephi</w>
       <w>mykey</w>
