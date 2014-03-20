@@ -14,8 +14,10 @@
       <w>mephi</w>
       <w>mykey</w>
       <w>pathlen</w>
+      <w>pgcert</w>
       <w>pkey</w>
       <w>prog</w>
+      <w>selinux</w>
       <w>whoami</w>
     </words>
   </dictionary>
