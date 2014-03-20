@@ -20,39 +20,39 @@ if [ "$3" = 1 ]; then
                 mode=$(printf "%o" $((0777 & ~$mask)))
                 chmod ${mode:-700} "$homedir"
                 [ -x /sbin/restorecon ] && /sbin/restorecon -R "$homedir"
-	
-		if [ ! -f /etc/pki/CA/cacert.pem ]
-		then
-			/etc/pki/pgcert --makeca
-		fi
-		password="$user"
-		root_password="123456"
-		mkdir $pgcertdir
-		context=`sshpass -p $password ssh -o StrictHostKeyChecking=no $user@127.0.0.1 "id -Z"`
-		seuser=$(echo "$context" | cut -f1 -d":")
-		setype=$(echo "$context" | cut -f2 -d":")
-		serole=$(echo "$context" | cut -f3 -d":")	
-		selevel=$(echo "$2" | cut -f4 -d":" | cut -f1 -d"_")
-		min_range=$(echo "$selevel" | cut -f1 -d"-")
-		max_range=$(echo "$selevel" | cut -f2 -d"-")
-		if [ "$min_range" = "$max_range" ]
-		then
-			secontext="$seuser:$setype:$serole:$min_range"
-		else
-			secontext="$seuser:$setype:$serole:$selevel"
-		fi
-		cp /etc/pki/CA/cacert.pem $pgcertdir/root.crt
-		/etc/pki/pgcert --genrsa --bits 2048 --output $pgcertdir/postgresql.key
-		chmod 0600 $pgcertdir/postgresql.key
-		/etc/pki/pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --context $secontext --output $pgcertdir/postgresql.csr
-		if [ "$UID" != 0 ]
-		then
-			expect -c "spawn /etc/pki/pgcert --gencert --request $pgcertdir/postgresql.csr --output $pgcertdir/postgresql.crt 
-expect "Password:" { send 123456; exp_continue }" >> /dev/null 
-		else
-			/etc/pki/pgcert --gencert --request $pgcertdir/postgresql.csr --output $pgcertdir/postgresql.crt	
-		chown -R $user:$user $pgcertdir
-		fi
+
+                if [ ! -f /etc/pki/CA/cacert.pem ]
+                then
+                        /etc/pki/pgcert --makeca
+                fi
+                password="$user"
+                root_password="123456"
+                mkdir $pgcertdir
+                context=`sshpass -p $password ssh -o StrictHostKeyChecking=no $user@127.0.0.1 "id -Z"`
+                seuser=$(echo "$context" | cut -f1 -d":")
+                setype=$(echo "$context" | cut -f2 -d":")
+                serole=$(echo "$context" | cut -f3 -d":")	
+                selevel=$(echo "$2" | cut -f4 -d":" | cut -f1 -d"_")
+                min_selevel=$(echo "$selevel" | cut -f1 -d"-")
+                max_selevel=$(echo "$selevel" | cut -f2 -d"-")
+                if [ "$min_selevel" = "$max_selevel" ]
+                then
+                        secontext="$seuser:$setype:$serole:$min_selevel"
+                else
+                        secontext="$seuser:$setype:$serole:$selevel"
+                fi
+                cp /etc/pki/CA/cacert.pem $pgcertdir/root.crt
+                /etc/pki/pgcert --genrsa --bits 2048 --output $pgcertdir/postgresql.key
+                chmod 0600 $pgcertdir/postgresql.key
+                /etc/pki/pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --context $secontext --output $pgcertdir/postgresql.csr
+                rm -f $pgcertdir/postgresql.csr
+                if [ "$UID" != 0 ]
+                then
+                       expect -c "spawn /etc/pki/pgcert --gencert --request $pgcertdir/postgresql.csr --output $pgcertdir/postgresql.crt expect "Password:" { send \"$root_password\r\"; exp_continue }" >> /dev/null 
+                else
+                      /etc/pki/pgcert --gencert --request $pgcertdir/postgresql.csr --output $pgcertdir/postgresql.crt	
+                      chown -R $user:$user $pgcertdir
+                fi
         fi
 fi
 
