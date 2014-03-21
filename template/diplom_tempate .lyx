@@ -60,6 +60,9 @@ xleftmargin=0.5cm
 \sloppy %не вылезать за края листа
 
 \renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}.} % Сквозная нумерация 
+
+\newcommand{\NormalStretch}{\renewcommand{\baselinestretch}{1.0}\selectfont}
+\newcommand{\LargeStretch} {\renewcommand{\baselinestretch}{1.5}\selectfont}
 \end_preamble
 \use_default_options true
 \begin_modules
@@ -1100,6 +1103,25 @@ addcontentsline{toc}{part}{Введение}
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+LargeStretch
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset Newpage newpage
 \end_inset
 
@@ -1158,10 +1180,26 @@ addcontentsline{toc}{part}{Список литературы}
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+NormalStretch
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-key "key-8"
+key "DAC"
 
 \end_inset
 
