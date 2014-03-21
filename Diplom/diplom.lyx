@@ -2324,7 +2324,7 @@ name "sub:Модификация-исходных-текстов"
 \end_layout
 
 \begin_layout Itemize
-Патчи заносятся в пакет исходных текстов программ;
+Патчи заносятся в пакет исходных кодов программ;
 \end_layout
 
 \begin_layout Itemize
@@ -2336,36 +2336,67 @@ name "sub:Модификация-исходных-текстов"
 \end_layout
 
 \begin_layout Standard
+Инструкция по сборе пакетов находятся в текстовых файлах с расширением 
+\family typewriter
+.spec
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Для сборки или пересборки пакета рекомендуется создать дополнительного пользоват
+еля, от имени которого будет запускаться сценарий сборки пакета.
+ Эта рекомендация позволяет предотвратить удаление системных библиотек,
+ файлов при некорректно написанном 
+\family typewriter
+spec
+\family default
+-файле.
+\end_layout
+
+\begin_layout Standard
+С помощью команды
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# yum install rpmdevtools -y
+\end_layout
+
+\end_inset
+
+ производится установка утилит, облегчающие сборку пакетов.
+ 
+\end_layout
+
+\begin_layout Standard
+Для инициализации каталога, в котором будет проводиться сборка пакетов,
+ выполняется команда
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ rpmdev-setuptree
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
 \begin_layout Standard
-Инструкции по сборке пакетов находятся в
-\begin_inset space ~
-\end_inset
-
-особых файлах спецификации с
-\begin_inset space ~
-\end_inset
-
-расширением 
-\emph on
-.spec
-\emph default
-.
- После распаковки пакета с
-\begin_inset space ~
-\end_inset
-
-исходным кодом в
-\begin_inset space ~
-\end_inset
-
-каталоге 
-\emph on
-~/rpmbuild
-\emph default
- появятся следующие каталоги:
+Эта команда создаст структуру каталогов следующего вида:
 \end_layout
 
 \begin_layout Itemize
@@ -2373,26 +2404,8 @@ BUILD
 \begin_inset space ~
 \end_inset
 
---- служебный каталог, в
-\begin_inset space ~
-\end_inset
-
-котором содержится распакованный исходный код с
-\begin_inset space ~
-\end_inset
-
-наложенными патчами.
- В
-\begin_inset space ~
-\end_inset
-
-этой же папке происходит сборка пакета.
- Все изменения, внесённые в
-\begin_inset space ~
-\end_inset
-
-данную папку, теряются, однако, она полезна при изготовлении собственных
- патчей;
+--- в нём содержится распакованный исходный код программы с наложенными
+ патчами;
 \end_layout
 
 \begin_layout Itemize
@@ -2400,16 +2413,7 @@ BUILDROOT
 \begin_inset space ~
 \end_inset
 
---- служебная папка, в
-\begin_inset space ~
-\end_inset
-
-которую происходит инсталляция программ.
- Используется только для сборки готового бинарного пакета и
-\begin_inset space ~
-\end_inset
-
-после сборки содержимое этой папки очищается;
+--- используется для инсталляции программ, после чего каталог очищается;
 \end_layout
 
 \begin_layout Itemize
@@ -2417,12 +2421,7 @@ RPMS
 \begin_inset space ~
 \end_inset
 
---- в
-\begin_inset space ~
-\end_inset
-
-данную папку складываются сборки пакетов для различных архитектур, бинарные
- rpm-пакеты;
+--- содержит собранные бинарные RPM-пакеты;
 \end_layout
 
 \begin_layout Itemize
@@ -2450,20 +2449,12 @@ SPECS
 \begin_inset space ~
 \end_inset
 
---- в
-\begin_inset space ~
-\end_inset
-
-данной папке, как правило, располагается один файл
-\begin_inset space ~
-\end_inset
-
---- файл спецификации, который содержит в
-\begin_inset space ~
-\end_inset
-
-себе все сценарии для сборки пакета, список исходных текстов, патчей, порядок
- применения патчей, список изменений;
+--- содержит файл спецификаций с расширением 
+\family typewriter
+.spec
+\family default
+, в котором содержится перечень инструкций по сборке программы из исходного
+ кода и её установки;
 \end_layout
 
 \begin_layout Itemize
@@ -2471,39 +2462,12 @@ SRPMS
 \begin_inset space ~
 \end_inset
 
---- в
-\begin_inset space ~
-\end_inset
-
-данный каталог записывается 
-\emph on
-.scr.rpm
-\emph default
- пакет, если нужно собрать не
-\begin_inset space ~
-\end_inset
-
-бинарный пакет, а пакет с
-\begin_inset space ~
-\end_inset
-
-исходным кодом.
+--- в данный каталог записывается RPM-пакет с исходным кодом.
+ 
 \end_layout
 
 \begin_layout --Separator--
 
-\end_layout
-
-\begin_layout Standard
-В папке 
-\emph on
-SPECS
-\emph default
- после распаковки будет находиться 
-\emph on
-.spec
-\emph default
- файл.
 \end_layout
 
 \begin_layout Standard
