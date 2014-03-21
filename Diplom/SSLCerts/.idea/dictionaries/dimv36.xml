@@ -15,6 +15,7 @@
       <w>mykey</w>
       <w>pathlen</w>
       <w>pgcert</w>
+      <w>pgcertcore</w>
       <w>pkey</w>
       <w>prog</w>
       <w>selinux</w>
