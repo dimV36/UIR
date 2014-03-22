@@ -152,7 +152,7 @@ def make_ca(bits, cakey_file_path, cacert_file_path):
 
 
 if __name__ == "__main__":
-    parser = OptionParser(usage="usage: %prog [--genrsa | --genreq | --gencert | --gencacert | --text] options",
+    parser = OptionParser(usage="usage: %prog [--genrsa | --genreq | --gencert | --makeca | --text] options",
                           add_help_option=True,
                           description="This program use M2Crypto library and can generate X509 certificate "
                                       "with extension field SELinux Context")

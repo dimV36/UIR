@@ -2186,6 +2186,13 @@ Basic Constraints
  (основные ограничения), используемое только для удостоверяющих центров.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Менеджер пакетов RPM
 \end_layout
@@ -2453,7 +2460,7 @@ SPECS
 \family typewriter
 .spec
 \family default
-, в котором содержится перечень инструкций по сборке программы из исходного
+, в котором описывается перечень инструкций по сборке программы из исходного
  кода и её установки;
 \end_layout
 
@@ -2475,14 +2482,14 @@ SRPMS
 \begin_inset space ~
 \end_inset
 
-исходными текстами программы, необходимы следующие компоненты:
+исходными кодом требуется установить следующие программы:
 \end_layout
 
 \begin_layout Itemize
-набор компиляторов 
-\emph on
+Компиляторы 
+\family typewriter
 gcc
-\emph default
+\family default
 ;
 \end_layout
 
@@ -2492,17 +2499,17 @@ gcc
 
 \begin_layout Itemize
 программы 
-\emph on
+\family typewriter
 make
-\emph default
+\family default
 , 
-\emph on
+\family typewriter
 autotools
-\emph default
+\family default
 , 
-\emph on
+\family typewriter
 cmake
-\emph default
+\family default
 ;
 \end_layout
 
@@ -2523,388 +2530,150 @@ cmake
 \end_layout
 
 \begin_layout Standard
-Для того, чтобы установить минимальный набор пакетов для разработчика достаточно
- выполнить следующую команду:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-yum groupinstall development
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Дополнительные пакеты, если они не
-\begin_inset space ~
-\end_inset
-
-установлены, программа 
-\emph on
+Программа 
+\family typewriter
 rpmbuild
-\emph default
- запросит самостоятельно при попытке сборки.
- Для продолжения нужно будет установить при помощи команды 
-\emph on
-yum
-\emph default
- недостающие development-версии пакетов.
-\end_layout
-
-\begin_layout Standard
-Приём, описанный в
-\begin_inset space ~
-\end_inset
-
-данном разделе, неоднократно будет использоваться на
-\begin_inset space ~
-\end_inset
-
-протяжении выполнения работы, так как многие пакеты, входящие в
-\begin_inset space ~
-\end_inset
-
-состав дистрибутива, нуждаются в
-\begin_inset space ~
-\end_inset
-
-доработке.
+\family default
+ запросит необходимые для сборки пакетов, если будет необходимо.
+ В таком случае требуется установить требуемые пакеты и повторить сборку.
 \end_layout
 
 \begin_layout Standard
 Модификация пакета 
-\emph on
+\family typewriter
 .scr.rpm
-\emph default
+\family default
  происходит следующим образом:
 \end_layout
 
 \begin_layout Enumerate
-Необходимо установить программу 
-\emph on
-rpm-build
-\emph default
-, компилятор (
-\emph on
+Устанавливается компилятор 
+\family typewriter
 gcc
-\emph default
-).
+\family default
+, 
+\family typewriter
+rpmbuild
+\family default
+;
 \end_layout
 
 \begin_layout Enumerate
-От имени пользователя запустить команду: 
+Выполняется распаковка исходного кода в папку 
+\family typewriter
+SOURCES
+\family default
+, 
+\family typewriter
+spec
+\family default
+-файл переносится в папку 
+\family typewriter
+SPECS
+\family default
+;
+\end_layout
+
+\begin_layout Enumerate
+Производится модификация программного кода;
+\end_layout
+
+\begin_layout Enumerate
+С помощью утилиты 
+\family typewriter
+diff 
+\family default
+выполняется создание патча.
+ Для каждого изменённого файла требуется взять файл, поставляемый из пакета
+ и выполнить команду: 
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-rpm -i пакет.src.rpm
+$ diff -Naur файл_из_пакета модифицированный_файл > my_patch.patch
 \end_layout
 
 \end_inset
 
-Пакет распакуется в
-\begin_inset space ~
-\end_inset
-
-папку 
-\emph on
-~/rpmbuild
-\emph default
-.
+При желании патчи объединяются в один;
 \end_layout
 
 \begin_layout Enumerate
-В пакете имеются патчи, которые необходимо применить к архиву с
-\begin_inset space ~
-\end_inset
-
-исходными текстами.
- Данное действие выполняется следующей командой:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-rpmbuild -bp rpmbuild/SPEC/пакет.spec
-\end_layout
-
-\end_inset
-
-Данная команда выполняет процедуру подготовки: распаковывает содержимое
- архива с
-\begin_inset space ~
-\end_inset
-
-исходными текстами программы и
-\begin_inset space ~
-\end_inset
-
-применяет все патчи, входящие в
-\begin_inset space ~
-\end_inset
-
-состав пакета.
-\end_layout
-
-\begin_layout Enumerate
-В каталоге 
-\emph on
-~/rpmbuild/BUILD
-\emph default
- появится директория, содержащая исходные тексты программы, содержащие все
- необходимые патчи.
-\end_layout
-
-\begin_layout Enumerate
-Изменить исходные тексты программы нужным образом, убедиться в
-\begin_inset space ~
-\end_inset
-
-работоспособности внесённых изменений, перед изменением файла нужно создать
- его копию с
-\begin_inset space ~
-\end_inset
-
-суффиксом .<название патча>.
- Например, нужно исправить файл 
-\emph on
-main.c
-\emph default
-, патч будет называться 
-\emph on
-mypatch
-\emph default
-, нужно создать копию файла 
-\emph on
-main.c
-\emph default
-, которая называется 
-\emph on
-main.c.mypatch
-\emph default
-, и
-\begin_inset space ~
-\end_inset
-
-не
-\begin_inset space ~
-\end_inset
-
-изменять её.
-\end_layout
-
-\begin_layout Enumerate
-Создание патча происходит следующей командой:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-cd rpmbuild/BUILD
-\end_layout
-
-\begin_layout Plain Layout
-
-gendiff <папка спрограммой> .<имя патча> > ../SOURCES/<файл патча>
-\end_layout
-
-\end_inset
-
-Следуя предыдущему примеру, нужно будет выполнить команду: 
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-gendiff <папка> .mypatch > ../SOURCES/my.patch
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Открыть файл 
-\emph on
-~/rpmbuild/SPECS/пакет.spec
-\emph default
-.
- В
-\begin_inset space ~
-\end_inset
-
-этот файл необходимо добавить патч дважды: первый раз после ключевого слова
+Созданный патч кладётся в папку 
+\family typewriter
+SOURCES
+\family default
+, выполняется модификация 
+\family typewriter
+spec
+\family default
+-файла.
+ В него дописывается с помощью директивы 
+\family typewriter
+Patch 
+\family default
+имя патча, а в раздел 
+\family typewriter
+%prep
+\family default
+ записывается команда применения патча, опционально меняется версия в поле
  
-\emph on
-Sources: 
-\emph default
-добавляется 
-\emph on
-Patch1: my.patch
-\emph default
-, а после ключевого слова 
-\emph on
-%setup
-\emph default
- добавляются команды запуска патчей: 
-\emph on
-%patch1 -p1 -b <имя патча>
-\emph default
+\family typewriter
+release
+\family default
+;
+\end_layout
+
+\begin_layout Enumerate
+Выполняется сборка пакетов (бинарного и с исходными кодами):
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+rpmbuild -ba package.spec
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Если при сборке пакета не будет ошибок, бинарный пакет будет находиться
+ в папке 
+\family typewriter
+RPMS
+\family default
+, а пакет с исходными кодами --- в папке 
+\family typewriter
+SRPMS
+\family default
 .
 \end_layout
 
-\begin_layout Enumerate
-Добавить свой патч в
-\begin_inset space ~
-\end_inset
-
-папку 
-\emph on
-~/rpmbuild/SOURCES
-\emph default
-, если этого ещё не
-\begin_inset space ~
-\end_inset
-
-выполнено на
-\begin_inset space ~
-\end_inset
-
-7 шаге.
-\end_layout
-
-\begin_layout Enumerate
-Убедиться, что патч работает нормально:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-rpmbuild -bp ~/rpmbuild/SPECS/пакет.spec
-\end_layout
-
-\end_inset
-
+\begin_layout --Separator--
 
 \end_layout
 
-\begin_layout Enumerate
-Если предыдущий шаг выполняется без ошибок, можно собрать rpm-пакет:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-rpmbuild -ba ~/rpmbuild/SPECS/.....spec
+\begin_layout Standard
+Данный алгоритм, размещённый в данном разделе будет применяться для модификации
+ исходного кода библиотек.
 \end_layout
 
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Собрать пакет с
-\begin_inset space ~
-\end_inset
-
-исходными текстами и с
-\begin_inset space ~
-\end_inset
-
-новым патчем:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-rpmbuild -bs ~/rpmbuild/SPECS/.....spec
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Собранные бинарные пакеты находятся в
-\begin_inset space ~
-\end_inset
-
-каталоге 
-\emph on
-~/rpmbuild/RPMS
-\emph default
-, а собранные пакеты с
-\begin_inset space ~
-\end_inset
-
-исходными текстами
-\begin_inset space ~
-\end_inset
-
---- в
-\begin_inset space ~
-\end_inset
-
-каталоге 
-\emph on
-~/rpmbuild/SRPMS
-\emph default
-.
-\end_layout
-
-\begin_layout Enumerate
-Установить собранный пакет можно командой:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-rpm -i пакет.rpm
-\end_layout
-
-\end_inset
-
-Если пакет не
-\begin_inset space ~
-\end_inset
-
-устанавливается (например, он уже есть в
-\begin_inset space ~
-\end_inset
-
-системе), нужно его установить принудительно:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-rpm -i --force --replacefiles пакет.rpm
-\end_layout
-
-\end_inset
-
-
+\begin_layout Standard
+Таким образом, программа 
+\family typewriter
+rpmbuild
+\family default
+ позволяет выполнять быструю модификацию программ для ускорения процесса
+ их доработки.
+ Создание RPM-пакетов позволяет чётко описать дерево зависимостей пакета,
+ что позволяет выполнить быструю установку и удаления пакета, а также гарантируе
+т корректность работы программы на системах с одинаковой архитектурой.
 \end_layout
 
 \begin_layout Standard
@@ -2939,6 +2708,46 @@ Certificate Signing Request
 \emph default
 , CSR) и подписывать их.
  
+\end_layout
+
+\begin_layout Standard
+TODO:
+\end_layout
+
+\begin_layout Enumerate
+Описать, почему не выбрали C, как язык разработки
+\end_layout
+
+\begin_layout Enumerate
+Объектную модель objects.txt OpenSSL
+\end_layout
+
+\begin_layout Enumerate
+Описать преимущества M2Crypto по сравнению с PyOpenSSL
+\end_layout
+
+\begin_layout Enumerate
+Патчи OpenSSL и M2Crypto
+\end_layout
+
+\begin_layout Enumerate
+pgcert, основные компоненты
+\end_layout
+
+\begin_layout Enumerate
+Стенд, его настройка, init-скрипт
+\end_layout
+
+\begin_layout Enumerate
+Postgres...
+\end_layout
+
+\begin_layout Enumerate
+...
+\end_layout
+
+\begin_layout Enumerate
+PROFIT!!!!
 \end_layout
 
 \begin_layout Standard
@@ -3192,6 +3001,1141 @@ key "OpenSSL"
 
  OpenSSL: The Open Source toolkit for SSL/TLS [Электронный ресурс] --- http://ww
 w.openssl.org
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Приложения
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+addcontentsline{toc}{section}{Приложения}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Приложение 1.
+ Программный код утилиты 
+\family typewriter
+pgcert
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+addcontentsline{toc}{subsection}{Приложение 1.
+ Программный код утилиты pgcert}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Утилита 
+\family typewriter
+pgcert 
+\family default
+--- это программа, написанная на языке программирования Python, позволяющая
+ создавать сертификаты X.509, создавать приватные ключи, запросы на подпись
+ сертификатов с полем 
+\family typewriter
+SC
+\family default
+, в котором хранится контекст пользователя, выполнять их подпись, а также
+ проверить подлинность.
+ Кроме того, в функционал программы включена функция создания удостоверяющего
+ центра, а также функции просмотра в текстовом виде запроса на создания
+ сертификата и самого сертификата.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+\series bold
+pgcert
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Python,numbers=left,showstringspaces=false"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+#!/usr/bin/python
+\end_layout
+
+\begin_layout Plain Layout
+
+__author__ = 'dimv36'
+\end_layout
+
+\begin_layout Plain Layout
+
+from M2Crypto import RSA, X509, EVP, ASN1
+\end_layout
+
+\begin_layout Plain Layout
+
+from subprocess import check_output
+\end_layout
+
+\begin_layout Plain Layout
+
+from datetime import datetime
+\end_layout
+
+\begin_layout Plain Layout
+
+from optparse import OptionParser
+\end_layout
+
+\begin_layout Plain Layout
+
+from os import path, getuid
+\end_layout
+
+\begin_layout Plain Layout
+
+from time import time
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+DEFAULT_FIELDS = {'C': 'ru',
+\end_layout
+
+\begin_layout Plain Layout
+
+                  'ST': 'msk',
+\end_layout
+
+\begin_layout Plain Layout
+
+                  'L': 'msk',
+\end_layout
+
+\begin_layout Plain Layout
+
+                  'O': 'mephi',
+\end_layout
+
+\begin_layout Plain Layout
+
+                  'OU': 'kaf36',
+\end_layout
+
+\begin_layout Plain Layout
+
+                  'CN': check_output("whoami", shell=True)[0].split('
+\backslash
+n')[0]}
+\end_layout
+
+\begin_layout Plain Layout
+
+DEFAULT_PASSWORD = '123456'
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def password(*args, **kwargs):
+\end_layout
+
+\begin_layout Plain Layout
+
+    return DEFAULT_PASSWORD
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def check_permissions():
+\end_layout
+
+\begin_layout Plain Layout
+
+    if getuid() != 0:
+\end_layout
+
+\begin_layout Plain Layout
+
+        print("Please, login as `root` and try again")
+\end_layout
+
+\begin_layout Plain Layout
+
+        exit(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def make_private_key(bits, output):
+\end_layout
+
+\begin_layout Plain Layout
+
+    rsa_key = RSA.gen_key(bits, 65537, callback=password)
+\end_layout
+
+\begin_layout Plain Layout
+
+    if not output:
+\end_layout
+
+\begin_layout Plain Layout
+
+        output = path.abspath(path.curdir) + "/mykey.pem"
+\end_layout
+
+\begin_layout Plain Layout
+
+    rsa_key.save_key(output, None)
+\end_layout
+
+\begin_layout Plain Layout
+
+    return 'Key was saved to %s' % output
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def make_request(private_key_file, username, context_string, output):
+\end_layout
+
+\begin_layout Plain Layout
+
+    private_key = EVP.load_key(private_key_file, callback=password)
+\end_layout
+
+\begin_layout Plain Layout
+
+    if not private_key:
+\end_layout
+
+\begin_layout Plain Layout
+
+        raise ValueError, 'Not correct key path'
+\end_layout
+
+\begin_layout Plain Layout
+
+    request = X509.Request()
+\end_layout
+
+\begin_layout Plain Layout
+
+    request.set_pubkey(private_key)
+\end_layout
+
+\begin_layout Plain Layout
+
+    request.set_version(3)
+\end_layout
+
+\begin_layout Plain Layout
+
+    name = X509.X509_Name()
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.C = DEFAULT_FIELDS['C']
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.ST = DEFAULT_FIELDS['ST']
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.L = DEFAULT_FIELDS['L']
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.O = DEFAULT_FIELDS['O']
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.OU = DEFAULT_FIELDS['OU']
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.CN = username
+\end_layout
+
+\begin_layout Plain Layout
+
+    if context_string:
+\end_layout
+
+\begin_layout Plain Layout
+
+        context = context_string
+\end_layout
+
+\begin_layout Plain Layout
+
+    else:
+\end_layout
+
+\begin_layout Plain Layout
+
+        context = check_output("id -Z", shell=True).split('
+\backslash
+n')[0]
+\end_layout
+
+\begin_layout Plain Layout
+
+    if not context:
+\end_layout
+
+\begin_layout Plain Layout
+
+        raise ValueError, 'Command `id -Z` return with error code'
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.SC = context
+\end_layout
+
+\begin_layout Plain Layout
+
+    request.set_subject_name(name)
+\end_layout
+
+\begin_layout Plain Layout
+
+    request.sign(private_key, 'sha1')
+\end_layout
+
+\begin_layout Plain Layout
+
+    if not output:
+\end_layout
+
+\begin_layout Plain Layout
+
+        output = path.abspath(path.curdir) + '/%s.csr' % DEFAULT_FIELDS['CN']
+\end_layout
+
+\begin_layout Plain Layout
+
+    request.save_pem(output)
+\end_layout
+
+\begin_layout Plain Layout
+
+    return 'Request was saved to %s' % output
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def make_certificate(request_file, ca_private_key_file, ca_certificate_file,
+ output):
+\end_layout
+
+\begin_layout Plain Layout
+
+    request = X509.load_request(request_file)
+\end_layout
+
+\begin_layout Plain Layout
+
+    public_key = request.get_pubkey()
+\end_layout
+
+\begin_layout Plain Layout
+
+    if not request.verify(public_key):
+\end_layout
+
+\begin_layout Plain Layout
+
+        raise ValueError, 'Error verifying request'
+\end_layout
+
+\begin_layout Plain Layout
+
+    subject = request.get_subject()
+\end_layout
+
+\begin_layout Plain Layout
+
+    ca_certificate = X509.load_cert(ca_certificate_file)
+\end_layout
+
+\begin_layout Plain Layout
+
+    ca_private_key = EVP.load_key(ca_private_key_file, callback=password)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate = X509.X509()
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_serial_number(time().as_integer_ratio()[0])
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_version(3)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_subject(subject)
+\end_layout
+
+\begin_layout Plain Layout
+
+    issuer = ca_certificate.get_issuer()
+\end_layout
+
+\begin_layout Plain Layout
+
+    not_before = ASN1.ASN1_UTCTIME()
+\end_layout
+
+\begin_layout Plain Layout
+
+    not_before.set_datetime(datetime.today())
+\end_layout
+
+\begin_layout Plain Layout
+
+    not_after = ASN1.ASN1_UTCTIME()
+\end_layout
+
+\begin_layout Plain Layout
+
+    not_after.set_datetime(datetime(datetime.today().year + 1, datetime.today().month
+, datetime.today().day))
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_not_before(not_before)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_not_after(not_after)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_issuer(issuer)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_pubkey(public_key)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.add_ext(X509.new_extension("basicConstraints", "CA:FALSE",
+ 1))
+\end_layout
+
+\begin_layout Plain Layout
+
+    if not output:
+\end_layout
+
+\begin_layout Plain Layout
+
+        output = path.abspath(path.curdir) + '/%s.cert' % DEFAULT_FIELDS['CN']
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.sign(ca_private_key, 'sha1')
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.save(output)
+\end_layout
+
+\begin_layout Plain Layout
+
+    return 'Certificate was saved to %s' % output
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def verify_certificate(certificate_file, ca_certificate):
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate = X509.load_cert(certificate_file)
+\end_layout
+
+\begin_layout Plain Layout
+
+    if not certificate:
+\end_layout
+
+\begin_layout Plain Layout
+
+        raise ValueError, 'Error loading certificate file'
+\end_layout
+
+\begin_layout Plain Layout
+
+    ca_certificate = X509.load_cert(ca_certificate)
+\end_layout
+
+\begin_layout Plain Layout
+
+    ca_public_key = ca_certificate.get_pubkey()
+\end_layout
+
+\begin_layout Plain Layout
+
+    if not ca_certificate:
+\end_layout
+
+\begin_layout Plain Layout
+
+        raise ValueError, 'Error loading certificate key file'
+\end_layout
+
+\begin_layout Plain Layout
+
+    if certificate.verify(ca_public_key):
+\end_layout
+
+\begin_layout Plain Layout
+
+        return 'status verification ok'
+\end_layout
+
+\begin_layout Plain Layout
+
+    else:
+\end_layout
+
+\begin_layout Plain Layout
+
+        return 'status: verification failed'
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def print_certificate(certificate_file_path):
+\end_layout
+
+\begin_layout Plain Layout
+
+    if not path.exists(certificate_file_path):
+\end_layout
+
+\begin_layout Plain Layout
+
+        raise ValueError, 'Certificate path %s not exist' % certificate_file_pat
+h
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate = X509.load_cert(certificate_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    return certificate.as_text()
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def print_request(request_file_path):
+\end_layout
+
+\begin_layout Plain Layout
+
+    if not path.exists(request_file_path):
+\end_layout
+
+\begin_layout Plain Layout
+
+        raise ValueError, 'Request path %s not exist' % request_file_path
+\end_layout
+
+\begin_layout Plain Layout
+
+    request = X509.load_request(request_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    return request.as_text()
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def make_ca(bits, cakey_file_path, cacert_file_path):
+\end_layout
+
+\begin_layout Plain Layout
+
+    make_private_key(bits, cakey_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    private_key = EVP.load_key(cakey_file_path, callback=password)
+\end_layout
+
+\begin_layout Plain Layout
+
+    if not private_key:
+\end_layout
+
+\begin_layout Plain Layout
+
+        raise ValueError, 'Error loading CA private key'
+\end_layout
+
+\begin_layout Plain Layout
+
+    name = X509.X509_Name()
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.C = DEFAULT_FIELDS['C']
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.ST = DEFAULT_FIELDS['ST']
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.L = DEFAULT_FIELDS['L']
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.O = DEFAULT_FIELDS['O']
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.OU = DEFAULT_FIELDS['OU']
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.CN = DEFAULT_FIELDS['O'] + '
+\backslash
+'s CA'
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate = X509.X509()
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_serial_number(time().as_integer_ratio()[0])
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_version(3)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_subject(name)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_issuer(name)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_pubkey(private_key)
+\end_layout
+
+\begin_layout Plain Layout
+
+    not_before = ASN1.ASN1_UTCTIME()
+\end_layout
+
+\begin_layout Plain Layout
+
+    not_before.set_datetime(datetime.today())
+\end_layout
+
+\begin_layout Plain Layout
+
+    not_after = ASN1.ASN1_UTCTIME()
+\end_layout
+
+\begin_layout Plain Layout
+
+    not_after.set_datetime(datetime(datetime.today().year + 2, datetime.today().month
+, datetime.today().day))
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_not_before(not_before)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_not_after(not_after)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.add_ext(X509.new_extension("basicConstraints", "CA:TRUE",
+ 1))
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.sign(private_key, 'sha1')
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.save(cacert_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    return 'Certificate was saved to %s' % cacert_file_path
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+if __name__ == "__main__":
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser = OptionParser(usage="usage: %prog [--genrsa | --genreq | --gencert
+ | --makeca | --text] options",
+\end_layout
+
+\begin_layout Plain Layout
+
+                          add_help_option=True,
+\end_layout
+
+\begin_layout Plain Layout
+
+                          description="This program use M2Crypto library
+ and can generate X509 certificate "
+\end_layout
+
+\begin_layout Plain Layout
+
+                                      "with extension field SELinux Context")
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser.add_option("--genrsa", dest="genrsa", action="store_true", default=Fal
+se,
+\end_layout
+
+\begin_layout Plain Layout
+
+                      help="generate private key with bits length")
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser.add_option("--genreq", dest="genreq", action="store_true", default=Fal
+se,
+\end_layout
+
+\begin_layout Plain Layout
+
+                      help="generate request for private key")
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser.add_option("--gencert", dest="gencert", action="store_true", default=F
+alse,
+\end_layout
+
+\begin_layout Plain Layout
+
+                      help="generate certificate for user")
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser.add_option("--makeca", dest="makeca", action="store_true", default=Fal
+se,
+\end_layout
+
+\begin_layout Plain Layout
+
+                      help="generate ca certificate and private key")
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser.add_option("--text", dest="print_pem", action="store_true", default=Fa
+lse,
+\end_layout
+
+\begin_layout Plain Layout
+
+                      help="print request or certificate")
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser.add_option("--verify", dest="verify", action="store_true", default=Fal
+se, help="verify certificate")
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser.add_option("--user", dest="user", default=DEFAULT_FIELDS['CN'],
+ help="add username to certificate CN")
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser.add_option("--context", dest="context", default=None, help="add
+ user context to certificate")
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser.add_option("--bits", dest="bits", type="int", default="2048",
+ help="bits for generate RSA-key")
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser.add_option("--request", dest="request", help="add path to request
+ file")
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser.add_option("--cakey", dest="cakey", default="/etc/pki/CA/private/cakey.
+pem", type="string",
+\end_layout
+
+\begin_layout Plain Layout
+
+                      help="add CA key path to generate user's certificate")
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser.add_option("--cacert", dest="cacert", default="/etc/pki/CA/cacert.pem",
+ type="string",
+\end_layout
+
+\begin_layout Plain Layout
+
+                      help="add CA certificate path to generate user's certifica
+te")
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser.add_option("--pkey", dest="pkey", help="add path of private key")
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser.add_option("--cert", dest="certificate", help="add path of certificate
+")
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser.add_option("--output", type="string", dest="output", help="save
+ to file output")
+\end_layout
+
+\begin_layout Plain Layout
+
+    options, args = parser.parse_args()
+\end_layout
+
+\begin_layout Plain Layout
+
+    user = options.user
+\end_layout
+
+\begin_layout Plain Layout
+
+    context = options.context
+\end_layout
+
+\begin_layout Plain Layout
+
+    bits = options.bits
+\end_layout
+
+\begin_layout Plain Layout
+
+    request = options.request
+\end_layout
+
+\begin_layout Plain Layout
+
+    cakey = options.cakey
+\end_layout
+
+\begin_layout Plain Layout
+
+    cacert = options.cacert
+\end_layout
+
+\begin_layout Plain Layout
+
+    pkey = options.pkey
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate = options.certificate
+\end_layout
+
+\begin_layout Plain Layout
+
+    output = options.output
+\end_layout
+
+\begin_layout Plain Layout
+
+    if options.genrsa and options.bits:
+\end_layout
+
+\begin_layout Plain Layout
+
+        print(make_private_key(bits, output))
+\end_layout
+
+\begin_layout Plain Layout
+
+    elif options.genreq and options.pkey:
+\end_layout
+
+\begin_layout Plain Layout
+
+        print(make_request(pkey, user, context, output))
+\end_layout
+
+\begin_layout Plain Layout
+
+    elif options.gencert and options.request:
+\end_layout
+
+\begin_layout Plain Layout
+
+        check_permissions()
+\end_layout
+
+\begin_layout Plain Layout
+
+        print(make_certificate(request, cakey, cacert, output))
+\end_layout
+
+\begin_layout Plain Layout
+
+    elif options.verify and options.certificate and options.cacert:
+\end_layout
+
+\begin_layout Plain Layout
+
+        print(verify_certificate(certificate, cacert))
+\end_layout
+
+\begin_layout Plain Layout
+
+    elif options.print_pem and options.certificate:
+\end_layout
+
+\begin_layout Plain Layout
+
+        print(print_certificate(certificate))
+\end_layout
+
+\begin_layout Plain Layout
+
+    elif options.print_pem and options.request:
+\end_layout
+
+\begin_layout Plain Layout
+
+        print(print_request(request))
+\end_layout
+
+\begin_layout Plain Layout
+
+    elif options.makeca:
+\end_layout
+
+\begin_layout Plain Layout
+
+        check_permissions()
+\end_layout
+
+\begin_layout Plain Layout
+
+        print(make_ca(bits, cakey, cacert))
+\end_layout
+
+\begin_layout Plain Layout
+
+    else:
+\end_layout
+
+\begin_layout Plain Layout
+
+        parser.print_help()
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body
