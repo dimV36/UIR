@@ -49,7 +49,7 @@ def make_request(private_key_file, username, context_string, output):
     name.O = DEFAULT_FIELDS['O']
     name.OU = DEFAULT_FIELDS['OU']
     name.CN = username
-    if getuid() == 0:
+    if context_string:
         context = context_string
     else:
         context = check_output("id -Z", shell=True).split('\n')[0]
@@ -134,8 +134,8 @@ def make_ca(bits, cakey_file_path, cacert_file_path):
     name.OU = DEFAULT_FIELDS['OU']
     name.CN = DEFAULT_FIELDS['O'] + '\'s CA'
     certificate = X509.X509()
-    certificate.set_serial_number(1)
-    certificate.set_version(1)
+    certificate.set_serial_number(time().as_integer_ratio()[0])
+    certificate.set_version(3)
     certificate.set_subject(name)
     certificate.set_issuer(name)
     certificate.set_pubkey(private_key)
