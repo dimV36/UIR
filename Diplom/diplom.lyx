@@ -1083,6 +1083,28 @@ SELinux --- реализация системы принудительного �
 Теоретические сведения
 \end_layout
 
+\begin_layout Standard
+В работе используется большое количество технологий и
+\begin_inset space ~
+\end_inset
+
+библиотек.
+ Понятия, имеющие особую важность, раскрыты подробно в
+\begin_inset space ~
+\end_inset
+
+данном разделе, более полный список терминов см.
+ в
+\begin_inset space ~
+\end_inset
+
+приложении
+\begin_inset space ~
+\end_inset
+
+1.
+\end_layout
+
 \begin_layout Subsection
 Механизмы контроля доступа в операционной системе Linux
 \end_layout
@@ -1929,18 +1951,8 @@ key "X509,PKI"
 \end_inset
 
  определен в рекомендациях Международного Союза по телекоммуникациям ITU
- (X.509) и документе 
-\series bold
-RFC 3280 Certificate & CRL Profile 
-\series default
-
-\begin_inset CommandInset citation
-LatexCommand cite
-key "RFC 3280"
-
-\end_inset
-
- организации инженерной поддержки Интернета.
+ (X.509) и документе RFC 3280 Certificate & CRL Profile организации инженерной
+ поддержки Интернета.
  В настоящее время основным принятым форматом является формат версии 3,
  позволяющий задавать дополнения, с помощью которых реализуется определенная
  политика безопасности в системе.
@@ -1949,18 +1961,7 @@ key "RFC 3280"
 
 \begin_layout Standard
 Сертификат открытого ключа или шифрования представляет собой структурированную
- двоичную запись в абстрактной синтаксической нотации 
-\series bold
-ASN1
-\series default
- 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "ASN1"
-
-\end_inset
-
-.
+ двоичную запись в абстрактной синтаксической нотации ASN1.
  В сертификате имеются элементы данных, сопровождаемые цифровой подписью.
  Сертификат содержит 6 обязательных и 4 необязательных поля.
  К обязательным полям сертификата относятся:
@@ -2198,8 +2199,19 @@ Basic Constraints
 \end_layout
 
 \begin_layout Standard
-RPM Package Manager (RPM)
+RPM Package Manager (
+\series bold
+RPM
+\series default
+)
 \begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "RPM,RH-RPM"
+
 \end_inset
 
 --- менеджер пакетов (ранее раскрывался как Red Hat Package Manager
@@ -2711,43 +2723,539 @@ Certificate Signing Request
 \end_layout
 
 \begin_layout Standard
-TODO:
+В состав OpenSSL входит одноимённая библиотека, написанная на языке C, позволяющ
+ая генерировать приватные ключи, запросы на подпись сертификатов, а также
+ их подписывать.
+ 
 \end_layout
 
-\begin_layout Enumerate
-Описать, почему не выбрали C, как язык разработки
+\begin_layout Standard
+Так как библиотека OpenSSL, несмотря на широкое распространение в различных
+ проектах, слабо документирована, а также приложения, написанные на языке
+ программирования C, требуют больших трудозатрат при отладке и модификации,
+ предлагается использовать другой язык программирования для написания приложения
+ генерации сертификата X509.
 \end_layout
 
-\begin_layout Enumerate
-Объектную модель objects.txt OpenSSL
+\begin_layout Standard
+Для создания данного приложения предлагается использовать скриптовый язык
+ программирования, в частности --- Python.
+ 
 \end_layout
 
-\begin_layout Enumerate
-Описать преимущества M2Crypto по сравнению с PyOpenSSL
+\begin_layout Standard
+Python
+\begin_inset space ~
+\end_inset
+
+--- высокоуровневый интерпритируемый язык программирования, ориентированный
+ на повышение производительности разработчика и читаемость кода.
+ Поддерживает различные парадигмы программирования, в том числе объектно-ориенти
+рованную и функциональную, обладает динамической типизацией и автоматическим
+ управлением памятью.
+ Отладка программ на языке программирования на Python проста: достаточно
+ модифицировать исходный текст программы и исполнить её, в то время как
+ отладка программ, написанных на языке программирования C, требует перекомпиляци
+и в исполняемый файл.
+ Благодаря наличию сборщика мусора в языке Python, память корректно освобождаетс
+я после отработки программы, в то время как на языке C требуется правильно
+ выделять память для объектов и её освобождать.
+ 
 \end_layout
 
-\begin_layout Enumerate
-Патчи OpenSSL и M2Crypto
+\begin_layout Standard
+На языке программирования Python написаны несколько библиотек, позволяющие
+ создавать сертификаты X509, такие как:
 \end_layout
 
-\begin_layout Enumerate
-pgcert, основные компоненты
+\begin_layout Itemize
+PyOpenSSL;
 \end_layout
 
-\begin_layout Enumerate
-Стенд, его настройка, init-скрипт
+\begin_layout Itemize
+M2Crypto.
 \end_layout
 
-\begin_layout Enumerate
-Postgres...
+\begin_layout --Separator--
+
 \end_layout
 
-\begin_layout Enumerate
+\begin_layout Standard
+
+\series bold
+PyOpenSSL
+\series default
+ --- это интерфейс к библиотеке OpenSSL.
+ Текущая версия --- 0.14.
+ Недостатками данной библиотеки являются неполная реализация функций OpenSSL,
+ неполная документация и сложность модификации.
+ Достоинством данной библиотеки является малый размер библиотеки.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+M2Crypto 
+\series default
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "M2Crypto"
+
+\end_inset
+
+ также является интерфейсом к библиотеки OpenSSL, текущая версия --- 0.21.
+ В качестве недостатков данной библиотеки можно выделить больший размер
+ библиотеки по сравнению с PyOpenSSL.
+ Достоинствами являются хорошая документация всех функций библиотеки, наиболее
+ полная реализация функций OpenSSL, а также возможность расширения с помощью
+ низкоуровневого API.
+ 
+\end_layout
+
+\begin_layout Standard
+Поэтому для разработки утилиты создания X509 сертификата будем использовать
+ библиотеку M2Crypto.
+\end_layout
+
+\begin_layout Subsection
+Обзор структуры библиотеки M2Crypto
+\end_layout
+
+\begin_layout Standard
+Библиотека M2Crypto представляет собой единый модуль, который состоит из
+ подмодулей.
+ Описание модулей, используемых при разработки утилиты, будет приведено
+ в данном разделе.
+ 
+\end_layout
+
+\begin_layout Standard
+Далее представлено описание некоторых модулей библиотеки M2Crypto.
+\end_layout
+
+\begin_layout Standard
+Модуль 
+\family typewriter
+M2Crypto.m2 
+\family default
+представляет собой низкоуровневый интерфейс, который генерируется автоматически
+ с помощью утилиты 
+\family typewriter
+swig
+\family default
+.
+ Данная утилита создает динамическую библиотеку с реализациями методов библиотек
+и OpenSSL, позволяющая использовать эти функции для создания высокоуровневого
+ API библиотеки.
+ С помощью особых файлов спецификаций, используемых утилитой 
+\family typewriter
+swig
+\family default
+ можно расширить библиотеку для собственных нужд.
+\end_layout
+
+\begin_layout Standard
+Модуль 
+\family typewriter
+M2Crypto.RSA
+\family default
+ содержит набор методов, необходимых для различных манипуляций с RSA-ключами:
+ генерирование и сохранение в различных форматах.
+\end_layout
+
+\begin_layout Standard
+Модуль 
+\family typewriter
+M2Crypto.EVP
+\family default
+ используется уже сохранённого на жесткий диск ключа.
+ 
+\end_layout
+
+\begin_layout Standard
+Модуль 
+\family typewriter
+M2Crypto.ASN1
+\family default
+ необходим для создания ASN.1 объектов сертификата и для их идентификации
+ в сертификате.
+\end_layout
+
+\begin_layout Standard
+Модуль 
+\family typewriter
+M2Crypto.X509
+\family default
+ содержит в себе ряд функций для загрузки запроса на создания сертификата,
+ сертификата, а также подмодули, отвечающие за манипуляции с объектами сертифика
+та: расширения (
+\family typewriter
+M2Crypto.X509.X509_Extension
+\family default
+), имени, необходимого для подписи или идентификации сертификата (
+\family typewriter
+M2Crypto.X509.X509_Name
+\family default
+).
+ 
+\end_layout
+
+\begin_layout Standard
+Дополнительного рассмотрения требует модуль 
+\family typewriter
+M2Crypto.X509.X509_Name
+\family default
+: в этом модуле происходит идентификация объектов в имени сертификата с
+ помощью переменной класса 
+\family typewriter
+nid
+\family default
+.
+ Эта переменная является словарём.
+ В ней описывается соответствие поля сертификата (C, ST, SN и других) с
+ идентификатором объекта из библиотеки OpenSSL.
+ Таким образом, незнакомые поля в сертификате не будут переведены в текстовый
+ вид.
+ 
+\end_layout
+
+\begin_layout Subsection
+Модификация библиотеки OpenSSL
+\end_layout
+
+\begin_layout Standard
+При чтении сертификата с помощью OpenSSL выполняется перевод нотации ASN.1
+ в текстовый вид.
+ Соответствие ASN.1 и текстового представления описывается в файле 
+\family typewriter
+objects.txt
+\family default
+ с помощью особого синтаксиса.
+ 
+\end_layout
+
+\begin_layout Standard
+Синтаксис этого файла следующий:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+1 2 3 4		: shortName	: Long Name
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+1 2 3 4
+\family default
+ обозначает числовой код объекта в спецификации ASN1, 
+\family typewriter
+shortName
+\family default
+
+\begin_inset space ~
+\end_inset
+
+ --- короткое имя объекта (например 
+\family typewriter
+SN
+\family default
+, 
+\family typewriter
+C
+\family default
+, 
+\family typewriter
+ST
+\family default
+), 
+\family typewriter
+Long Name
+\family default
+ --- полное имя (например, 
+\family typewriter
+surname
+\family default
+, 
+\family typewriter
+countryName
+\family default
+, 
+\family typewriter
+stateOrProvinceName
+\family default
+).
+\end_layout
+
+\begin_layout Standard
+Важно отметить, что для числового кода можно использовать наименование объекта
+ на верхнем уровне уже объявленного ранее.
+\end_layout
+
+\begin_layout Standard
+На следующем листинге представлено описание текстовых полей сертфиката X509:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+X509 3			: CN			: commonName
+\end_layout
+
+\begin_layout Plain Layout
+
+X509 4			: SN			: surname
+\end_layout
+
+\begin_layout Plain Layout
+
 ...
 \end_layout
 
-\begin_layout Enumerate
-PROFIT!!!!
+\begin_layout Plain Layout
+
+X509 72			: role			: role
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В данном случае наименование объекта 
+\family typewriter
+CN 
+\family default
+использует код объекта 
+\family typewriter
+X509
+\family default
+, который должен быть объявлен ранее.
+\end_layout
+
+\begin_layout Standard
+Данный механизм позволяет выполнить однозначную идентификацию поля в сертификате.
+ 
+\end_layout
+
+\begin_layout Standard
+В файле 
+\family typewriter
+objects.h
+\family default
+ определяется 
+\family typewriter
+nid
+\family default
+ --- числовой идентификатор объекта.
+ Если при чтении сертификата встретится незнакомое ранее поле, OpenSSL присвоит
+ числовой идентифкатор объекту 
+\family typewriter
+NID_undef
+\family default
+, что не позволит перевести поле в текстовый вид.
+\end_layout
+
+\begin_layout Standard
+Формат записи в файле 
+\family typewriter
+objects.h
+\family default
+ следующий: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+#define SN_commonName                   "CN"
+\end_layout
+
+\begin_layout Plain Layout
+
+#define LN_commonName                   "commonName"
+\end_layout
+
+\begin_layout Plain Layout
+
+#define NID_commonName                  13
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В первой строке определяется короткое имя, во второй --- полное имя, в третей
+ --- его числовой код.
+\end_layout
+
+\begin_layout Standard
+В рамках дипломной работы был написан патч, добавляющий возможность идентификаци
+и поля 
+\family typewriter
+SC
+\family default
+ (хранящий контекст пользователя) в библиотеке OpenSSL.
+ Текст этого патча приведён в 
+\emph on
+приложении 2
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+Для того, чтобы собрать библиотеку OpenSSL с разработанным патчем, необходимо
+ воспользоваться инструкциями 
+\emph on
+раздела
+\emph default
+ 
+\emph on
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Модификация-исходных-текстов"
+
+\end_inset
+
+
+\emph default
+.
+\end_layout
+
+\begin_layout Subsection
+Модификация библиотеки M2Crypto
+\end_layout
+
+\begin_layout Standard
+Получение текстового значения в библиотеке M2Crypto реализуется с помощью
+ метода 
+\family typewriter
+__getattr__(self, attr)
+\family default
+ класса 
+\family typewriter
+X509_Name
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Python,showstringspaces=false"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+def __getattr__(self, attr):
+\end_layout
+
+\begin_layout Plain Layout
+
+	if attr in self.nid:
+\end_layout
+
+\begin_layout Plain Layout
+
+		assert m2.x509_name_type_check(self.x509_name), "'x509_name' type error"
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+        return m2.x509_name_by_nid(self.x509_name, self.nid[attr])
+\end_layout
+
+\begin_layout Plain Layout
+
+	if attr in self.__dict__:
+\end_layout
+
+\begin_layout Plain Layout
+
+    	return self.__dict__[attr]
+\end_layout
+
+\begin_layout Plain Layout
+
+        raise AttributeError, (self, attr)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Данный метод возвращает имя объекта по переданному числовому идентификатору.
+ В случае, если передан идентификатор из словаря, то выполняется функция
+ OpenSSL 
+\family typewriter
+x509_name_by_nid()
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Данная функция импортирована в библиотеку с помощью утилиты 
+\family typewriter
+swig
+\end_layout
+
+\end_inset
+
+.
+ Таким образом, требуется дополнить словарь антидетонаторами поля 
+\family typewriter
+SC
+\family default
+, которые были описаны в патче для библиотеки OpenSSL.
+ 
+\end_layout
+
+\begin_layout Standard
+Для этого был написан следующий патч, реализующий указанные действия.
+ Ознакомиться с ним можно в 
+\emph on
+приложении 3.
+\end_layout
+
+\begin_layout Standard
+Для того, чтобы собрать библиотеку M2Crypto с разработанным патчем, необходимо
+ воспользоваться инструкциями 
+\emph on
+раздела
+\emph default
+ 
+\emph on
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Модификация-исходных-текстов"
+
+\end_inset
+
+
+\emph default
+.
 \end_layout
 
 \begin_layout Standard
@@ -2935,36 +3443,6 @@ key "PKI"
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "8"
-key "RFC 3280"
-
-\end_inset
-
- RFC 3280 [Электронный ресурс]
-\begin_inset space ~
-\end_inset
-
---- http://www.ietf.org/rfc/rfc3280 
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "9"
-key "ASN1"
-
-\end_inset
-
-ASN.1 простыми словами [Электронный ресурс]
-\begin_inset space ~
-\end_inset
-
---- http://www.rsdn.ru/article/ASN/ASN.xml
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "10"
 key "RPM"
 
 \end_inset
@@ -2979,7 +3457,7 @@ key "RPM"
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "11"
+label "9"
 key "RH-RPM"
 
 \end_inset
@@ -2994,13 +3472,24 @@ Red Hat RPM Guide [Электронный ресурс]
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "11"
+label "10"
 key "OpenSSL"
 
 \end_inset
 
  OpenSSL: The Open Source toolkit for SSL/TLS [Электронный ресурс] --- http://ww
 w.openssl.org
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "11"
+key "M2Crypto"
+
+\end_inset
+
+M2Crypto [Электронный ресурс] --- https://github.com/martinpaljak/M2Crypto
 \end_layout
 
 \begin_layout Standard
@@ -3032,6 +3521,424 @@ addcontentsline{toc}{section}{Приложения}
 
 \begin_layout Subsection*
 Приложение 1.
+ Список терминов и
+\begin_inset space ~
+\end_inset
+
+сокращений
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+addcontentsline{toc}{subsection}{Приложение 1.
+ Список терминов и сокращений}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+RFC 3280 Certificate & CRL Profile --- документ, в котором описаны основные
+ принципы построения сертификата X509.
+\end_layout
+
+\begin_layout Enumerate
+ASN1 --- стандарт, позволяющий выполнить классификацию различных объектов.
+\end_layout
+
+\begin_layout Enumerate
+Патч --- файл, используемый для быстрой модификации исходного кода программы,
+ когда невозможно вмешательство в основную ветку разработки.
+ 
+\end_layout
+
+\begin_layout Enumerate
+C --- функциональный язык программирования среднего уровня.
+ Использован для написания UNIX-подобных операционных систем.
+\end_layout
+
+\begin_layout Enumerate
+Python --- динамический скриптовой язык программирования высокого уровня.
+\end_layout
+
+\begin_layout Enumerate
+PyOpenSSL --- интерфейс библиотеки OpenSSL, реализованный на языке Python.
+\end_layout
+
+\begin_layout Enumerate
+swig --- утилита, позволяющая с помощью специального синтаксиса вызывать
+ функции, написанные на языке C.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Приложение 2.
+ Патч для библиотеки OpenSSL
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+addcontentsline{toc}{subsection}{Приложение 2.
+ Патч для библиотеки OpenSSL}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Данный патч добавляет идентификацию поля SC в сертификате.
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+\series bold
+openssl-1.0.1e-selinux_objects.patch
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+--- openssl-1.0.1e/crypto/objects/objects.txt	2014-03-15 19:20:55.274107959
+ +0400
+\end_layout
+
+\begin_layout Plain Layout
+
++++ openssl-1.0.1e/crypto/objects/objects.txt	2014-03-15 19:21:28.382458877
+ +0400
+\end_layout
+
+\begin_layout Plain Layout
+
+@@ -717,6 +717,7 @@
+\end_layout
+
+\begin_layout Plain Layout
+
+ X509 54			: dmdName		:
+\end_layout
+
+\begin_layout Plain Layout
+
+ X509 65			:			: pseudonym
+\end_layout
+
+\begin_layout Plain Layout
+
+ X509 72			: role			: role
+\end_layout
+
+\begin_layout Plain Layout
+
++X509 920		: SC			: selinuxContext
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ X500 8			: X500algorithms	: directory services - algorithms
+\end_layout
+
+\begin_layout Plain Layout
+
+ X500algorithms 1 1	: RSA			: rsa
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+--- openssl-1.0.1e/crypto/objects/objects.h	2014-03-15 19:24:41.559507131 +0400
+\end_layout
+
+\begin_layout Plain Layout
+
++++ openssl-1.0.1e/crypto/objects/objects_new.h	2014-03-15 19:26:56.812941708
+ +0400
+\end_layout
+
+\begin_layout Plain Layout
+
+@@ -144,6 +144,10 @@
+\end_layout
+
+\begin_layout Plain Layout
+
+ #define NID_localityName		15
+\end_layout
+
+\begin_layout Plain Layout
+
+ #define OBJ_localityName		OBJ_X509,7L
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
++#define SN_selinuxContext		"SC"
+\end_layout
+
+\begin_layout Plain Layout
+
++#define LN_selinuxContext		"selinuxContext"
+\end_layout
+
+\begin_layout Plain Layout
+
++#define NID_selinuxContext		920
+\end_layout
+
+\begin_layout Plain Layout
+
++#define OBJ_selinuxContext		OBJ_X509,13L
+\end_layout
+
+\begin_layout Plain Layout
+
+ /* Postal Address? PA */
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ /* should be "ST" (rfc1327) but MS uses 'S' */
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Приложение 3.
+ Патч для библиотеки M2Crypto
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+addcontentsline{toc}{subsection}{Приложение 3.
+ Патч для библиотеки M2Crypto}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Данный патч добавляет идентификацию поля SC в библиотеке M2Crypto.
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+\series bold
+m2crypto-0.21.1-selinux.patch
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+--- M2Crypto-0.21.1/SWIG/_x509.i	2014-03-15 21:29:07.846053013 +0400
+\end_layout
+
+\begin_layout Plain Layout
+
++++ M2Crypto-0.21.1/SWIG/_x509.i	2014-03-15 21:30:24.412867730 +0400
+\end_layout
+
+\begin_layout Plain Layout
+
+@@ -258,6 +258,7 @@
+\end_layout
+
+\begin_layout Plain Layout
+
+ %constant int NID_surname                     = 100;
+\end_layout
+
+\begin_layout Plain Layout
+
+ %constant int NID_givenName                   = 99;
+\end_layout
+
+\begin_layout Plain Layout
+
+ %constant int NID_pkcs9_emailAddress          = 48;
+\end_layout
+
+\begin_layout Plain Layout
+
++%constant int NID_selinuxContext              = 920;
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ /* Cribbed from x509_vfy.h.
+ */
+\end_layout
+
+\begin_layout Plain Layout
+
+ %constant int        X509_V_OK                                      = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+--- M2Crypto-0.21.1/M2Crypto/X509.py	2011-01-15 22:10:05.000000000 +0300
+\end_layout
+
+\begin_layout Plain Layout
+
++++ M2Crypto-0.21.1/M2Crypto/X509_new.py	2014-03-15 21:34:07.658266987 +0400
+\end_layout
+
+\begin_layout Plain Layout
+
+@@ -221,7 +221,9 @@
+\end_layout
+
+\begin_layout Plain Layout
+
+            'SN'                     : m2.NID_surname,
+\end_layout
+
+\begin_layout Plain Layout
+
+            'surname'                : m2.NID_surname,
+\end_layout
+
+\begin_layout Plain Layout
+
+            'GN'                     : m2.NID_givenName,
+\end_layout
+
+\begin_layout Plain Layout
+
+-           'givenName'              : m2.NID_givenName
+\end_layout
+
+\begin_layout Plain Layout
+
++           'givenName'              : m2.NID_givenName,
+\end_layout
+
+\begin_layout Plain Layout
+
++           'SC'                     : m2.NID_selinuxContext,
+\end_layout
+
+\begin_layout Plain Layout
+
++           'selinuxContext'         : m2.NID_selinuxContext
+\end_layout
+
+\begin_layout Plain Layout
+
+            }
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+     m2_x509_name_free = m2.x509_name_free
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Приложение 4.
  Программный код утилиты 
 \family typewriter
 pgcert
@@ -3045,7 +3952,7 @@ status open
 
 
 \backslash
-addcontentsline{toc}{subsection}{Приложение 1.
+addcontentsline{toc}{subsection}{Приложение 4.
  Программный код утилиты pgcert}
 \end_layout
 
@@ -3071,6 +3978,10 @@ SC
  центра, а также функции просмотра в текстовом виде запроса на создания
  сертификата и самого сертификата.
  
+\begin_inset Newline newline
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
