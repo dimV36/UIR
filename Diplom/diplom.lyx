@@ -4004,7 +4004,7 @@ status open
 
 \begin_layout Plain Layout
 
-__author__ = 'dimv36'
+# -*- coding: utf-8 -*-
 \end_layout
 
 \begin_layout Plain Layout
@@ -4035,6 +4035,11 @@ from os import path, getuid
 \begin_layout Plain Layout
 
 from time import time
+\end_layout
+
+\begin_layout Plain Layout
+
+__author__ = 'dimv36'
 \end_layout
 
 \begin_layout Plain Layout
@@ -4120,7 +4125,7 @@ def check_permissions():
 
 \begin_layout Plain Layout
 
-        print("Please, login as `root` and try again")
+        print('Пожалуйста, зайдите за пользователя `root` и повторите команду')
 \end_layout
 
 \begin_layout Plain Layout
@@ -4153,7 +4158,7 @@ def make_private_key(bits, output):
 
 \begin_layout Plain Layout
 
-        output = path.abspath(path.curdir) + "/mykey.pem"
+        output = path.abspath(path.curdir) + '/mykey.pem'
 \end_layout
 
 \begin_layout Plain Layout
@@ -4163,7 +4168,7 @@ def make_private_key(bits, output):
 
 \begin_layout Plain Layout
 
-    return 'Key was saved to %s' % output
+    return 'Сертификат сохранён в %s' % output
 \end_layout
 
 \begin_layout Plain Layout
@@ -4191,7 +4196,7 @@ def make_request(private_key_file, username, context_string, output):
 
 \begin_layout Plain Layout
 
-        raise ValueError, 'Not correct key path'
+        raise ValueError, 'Неверный путь к приватному ключу'
 \end_layout
 
 \begin_layout Plain Layout
@@ -4261,7 +4266,7 @@ def make_request(private_key_file, username, context_string, output):
 
 \begin_layout Plain Layout
 
-        context = check_output("id -Z", shell=True).split('
+        context = check_output('id -Z', shell=True).split('
 \backslash
 n')[0]
 \end_layout
@@ -4273,7 +4278,7 @@ n')[0]
 
 \begin_layout Plain Layout
 
-        raise ValueError, 'Command `id -Z` return with error code'
+        raise ValueError, 'Команда`id -Z` возвратила ошибку'
 \end_layout
 
 \begin_layout Plain Layout
@@ -4308,7 +4313,7 @@ n')[0]
 
 \begin_layout Plain Layout
 
-    return 'Request was saved to %s' % output
+    return 'Запрос на подпись сертификата сохранён в %s' % output
 \end_layout
 
 \begin_layout Plain Layout
@@ -4342,7 +4347,7 @@ def make_certificate(request_file, ca_private_key_file, ca_certificate_file,
 
 \begin_layout Plain Layout
 
-        raise ValueError, 'Error verifying request'
+        raise ValueError, 'Ошибка при проверке запроса на подпись сертификата'
 \end_layout
 
 \begin_layout Plain Layout
@@ -4428,7 +4433,7 @@ def make_certificate(request_file, ca_private_key_file, ca_certificate_file,
 
 \begin_layout Plain Layout
 
-    certificate.add_ext(X509.new_extension("basicConstraints", "CA:FALSE",
+    certificate.add_ext(X509.new_extension('basicConstraints', 'CA:FALSE',
  1))
 \end_layout
 
@@ -4454,7 +4459,7 @@ def make_certificate(request_file, ca_private_key_file, ca_certificate_file,
 
 \begin_layout Plain Layout
 
-    return 'Certificate was saved to %s' % output
+    return 'Сертифкат сохранён в %s' % output
 \end_layout
 
 \begin_layout Plain Layout
@@ -4482,7 +4487,7 @@ def verify_certificate(certificate_file, ca_certificate):
 
 \begin_layout Plain Layout
 
-        raise ValueError, 'Error loading certificate file'
+        raise ValueError, 'Ошибка при загрузке сертифката'
 \end_layout
 
 \begin_layout Plain Layout
@@ -4502,7 +4507,7 @@ def verify_certificate(certificate_file, ca_certificate):
 
 \begin_layout Plain Layout
 
-        raise ValueError, 'Error loading certificate key file'
+        raise ValueError, 'Ошибка при загрузке приватного ключа пользователя'
 \end_layout
 
 \begin_layout Plain Layout
@@ -4512,7 +4517,7 @@ def verify_certificate(certificate_file, ca_certificate):
 
 \begin_layout Plain Layout
 
-        return 'status verification ok'
+        return 'Сертифкат достоверный'
 \end_layout
 
 \begin_layout Plain Layout
@@ -4522,7 +4527,12 @@ def verify_certificate(certificate_file, ca_certificate):
 
 \begin_layout Plain Layout
 
-        return 'status: verification failed'
+        pass
+\end_layout
+
+\begin_layout Plain Layout
+
+    return 'Сертифкат не достоверный'
 \end_layout
 
 \begin_layout Plain Layout
@@ -4545,8 +4555,8 @@ def print_certificate(certificate_file_path):
 
 \begin_layout Plain Layout
 
-        raise ValueError, 'Certificate path %s not exist' % certificate_file_pat
-h
+        raise ValueError, 'Путь к сертифкату %s не существует' % certificate_fil
+e_path
 \end_layout
 
 \begin_layout Plain Layout
@@ -4579,7 +4589,8 @@ def print_request(request_file_path):
 
 \begin_layout Plain Layout
 
-        raise ValueError, 'Request path %s not exist' % request_file_path
+        raise ValueError, 'Путь к запросу на подпись сертифката %s не существует
+' % request_file_path
 \end_layout
 
 \begin_layout Plain Layout
@@ -4622,7 +4633,8 @@ def make_ca(bits, cakey_file_path, cacert_file_path):
 
 \begin_layout Plain Layout
 
-        raise ValueError, 'Error loading CA private key'
+        raise ValueError, 'Ошибка при загрзке приватного ключа удостоверяющего
+ центра'
 \end_layout
 
 \begin_layout Plain Layout
@@ -4725,7 +4737,7 @@ def make_ca(bits, cakey_file_path, cacert_file_path):
 
 \begin_layout Plain Layout
 
-    certificate.add_ext(X509.new_extension("basicConstraints", "CA:TRUE",
+    certificate.add_ext(X509.new_extension('basicConstraints', 'CA:TRUE',
  1))
 \end_layout
 
@@ -4741,7 +4753,7 @@ def make_ca(bits, cakey_file_path, cacert_file_path):
 
 \begin_layout Plain Layout
 
-    return 'Certificate was saved to %s' % cacert_file_path
+    return 'Сертифкат сохранён %s' % cacert_file_path
 \end_layout
 
 \begin_layout Plain Layout
@@ -4770,13 +4782,19 @@ if __name__ == "__main__":
 
 \begin_layout Plain Layout
 
-                          description="This program use M2Crypto library
- and can generate X509 certificate "
+                          description="Pgcert - утилита, позволяющая генерироват
+ь сертификаты X509 с полем SC, "
 \end_layout
 
 \begin_layout Plain Layout
 
-                                      "with extension field SELinux Context")
+                                      "в котором хранится текущий контекст
+ пользователя, а также выполнять различные "
+\end_layout
+
+\begin_layout Plain Layout
+
+                                      "операции с ними.")
 \end_layout
 
 \begin_layout Plain Layout
@@ -4787,7 +4805,7 @@ se,
 
 \begin_layout Plain Layout
 
-                      help="generate private key with bits length")
+                      help="Создать приватный RSA-ключ по количеству bits")
 \end_layout
 
 \begin_layout Plain Layout
@@ -4798,7 +4816,8 @@ se,
 
 \begin_layout Plain Layout
 
-                      help="generate request for private key")
+                      help="Создать запрос на подпись сертификата по приватному
+ ключу pkey")
 \end_layout
 
 \begin_layout Plain Layout
@@ -4809,7 +4828,7 @@ alse,
 
 \begin_layout Plain Layout
 
-                      help="generate certificate for user")
+                      help="Создать сертификат пользователя по request")
 \end_layout
 
 \begin_layout Plain Layout
@@ -4820,7 +4839,7 @@ se,
 
 \begin_layout Plain Layout
 
-                      help="generate ca certificate and private key")
+                      help="Развернуть удостоверяющий центр")
 \end_layout
 
 \begin_layout Plain Layout
@@ -4831,37 +4850,58 @@ lse,
 
 \begin_layout Plain Layout
 
-                      help="print request or certificate")
+                      help="Распечатать сертификат или запрос на подпись
+ сертификата")
 \end_layout
 
 \begin_layout Plain Layout
 
     parser.add_option("--verify", dest="verify", action="store_true", default=Fal
-se, help="verify certificate")
+se,
+\end_layout
+
+\begin_layout Plain Layout
+
+                      help="Проверить, выдан ли сертификат пользователя
+ данным удостоверяющим центром")
 \end_layout
 
 \begin_layout Plain Layout
 
     parser.add_option("--user", dest="user", default=DEFAULT_FIELDS['CN'],
- help="add username to certificate CN")
 \end_layout
 
 \begin_layout Plain Layout
 
-    parser.add_option("--context", dest="context", default=None, help="add
- user context to certificate")
+                      help="Добавить имя пользователя в запрос на подпись
+ сертификата (опционально)")
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser.add_option("--context", dest="context", default=None,
+\end_layout
+
+\begin_layout Plain Layout
+
+                      help="Добавить контекст пользователя в запрос на подпись
+ сертфиката (опционально)")
 \end_layout
 
 \begin_layout Plain Layout
 
     parser.add_option("--bits", dest="bits", type="int", default="2048",
- help="bits for generate RSA-key")
 \end_layout
 
 \begin_layout Plain Layout
 
-    parser.add_option("--request", dest="request", help="add path to request
- file")
+                      help="Длина приватного ключа (по умолчанию %default)")
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser.add_option("--request", dest="request", help="Путь к файлу запроса
+ на подпись сертификата")
 \end_layout
 
 \begin_layout Plain Layout
@@ -4872,7 +4912,8 @@ pem", type="string",
 
 \begin_layout Plain Layout
 
-                      help="add CA key path to generate user's certificate")
+                      help="Путь до приватного ключа удостоверяющего центра
+ (по умолчанию %default)")
 \end_layout
 
 \begin_layout Plain Layout
@@ -4883,25 +4924,25 @@ pem", type="string",
 
 \begin_layout Plain Layout
 
-                      help="add CA certificate path to generate user's certifica
-te")
+                      help="Путь к сертификату удостоверяющего центра (по
+ умолчанию %default)")
 \end_layout
 
 \begin_layout Plain Layout
 
-    parser.add_option("--pkey", dest="pkey", help="add path of private key")
+    parser.add_option("--pkey", dest="pkey", help="Путь к приватному ключу
+ пользователя")
 \end_layout
 
 \begin_layout Plain Layout
 
-    parser.add_option("--cert", dest="certificate", help="add path of certificate
-")
+    parser.add_option("--cert", dest="certificate", help="Путь к сертифкату")
 \end_layout
 
 \begin_layout Plain Layout
 
-    parser.add_option("--output", type="string", dest="output", help="save
- to file output")
+    parser.add_option("--output", type="string", dest="output", help="Путь
+ к файлу вывода")
 \end_layout
 
 \begin_layout Plain Layout
