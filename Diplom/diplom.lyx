@@ -3258,6 +3258,194 @@ reference "sub:Модификация-исходных-текстов"
 .
 \end_layout
 
+\begin_layout Subsection
+Разработка утилиты pgcert
+\end_layout
+
+\begin_layout Standard
+Программа для создания сертификатов X509 должна удовлетворять следующим
+ требованиям:
+\end_layout
+
+\begin_layout Enumerate
+Возможность создавать приватный ключ RSA пользователя произвольной длины
+ без пароля;
+\end_layout
+
+\begin_layout Enumerate
+Создавать запросы на подпись сертификатов, удовлетворяющий принципам построения
+ сертификата X509, в котором будет содержаться контекст безопасности пользовател
+я;
+\end_layout
+
+\begin_layout Enumerate
+Подписывать запрос с помощью удостоверяющего центра;
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Дополнительно:
+\end_layout
+
+\begin_layout Enumerate
+Реализовать возможность распечатать в текстовом виде сертификат и запрос
+ пользователя, создание удостоверяющего центра;
+\end_layout
+
+\begin_layout Enumerate
+Предусмотреть функционал для проверки сертификата пользователя удостоверяющим
+ центром;
+\end_layout
+
+\begin_layout Enumerate
+Расширяемость и модульность утилиты.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Выполнение перечисленных выше требований определяют минимальный функционал,
+ который позволит выполнять стандартные для сертификата действия (создание
+ приватного ключа, создание запроса на подпись сертификата, подпись сертификата,
+ его проверку).
+ Выполнение дополнительных требований при создании утилиты необязательны,
+ но их реализация повышает удобство при пользовании утилитой.
+ 
+\end_layout
+
+\begin_layout Standard
+Утилита 
+\family typewriter
+pgcert
+\family default
+ представляет собой программу, написанной на языке программирования Python
+ 2.7 в функциональном стиле.
+ Ознакомиться с исходным текстом можно в 
+\emph on
+приложении 4
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+Её исполнение начинается с точки входа: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if __name__ == "__main__"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В данном блоке когда создается объект класса 
+\family typewriter
+OptionParser
+\family default
+, который позволяет парсить опции командой строки и автоматически создавать
+ справочные сообщения.
+\end_layout
+
+\begin_layout Standard
+Объект парсера создается вызовом конструктора класса 
+\family typewriter
+OptionParse
+\family default
+, в который передаются необязательные опции:
+\family typewriter
+ usage
+\family default
+ --- строка, в которой определяются правила использования опций, 
+\family typewriter
+add_help_options
+\family default
+ --- передается 
+\family typewriter
+True
+\family default
+, если необходимо создавать справочные сообщения, 
+\family typewriter
+description
+\family default
+ --- подробное описание утилиты.
+ 
+\end_layout
+
+\begin_layout Standard
+Далее с помощью метода 
+\family typewriter
+add_option 
+\family default
+добавляются опции командной строки, значение которых хранятся в поле, указанном
+ в параметре 
+\family typewriter
+dest 
+\family default
+данного метода.
+ В данном методе можно задать значение опции по умолчанию с помощью параметра
+ 
+\family typewriter
+default
+\family default
+, тип ожидаемого значения с помощью параметра 
+\family typewriter
+type
+\family default
+.
+ Параметром 
+\family typewriter
+description 
+\family default
+указывается описание опции.
+\end_layout
+
+\begin_layout Standard
+С помощью метода 
+\family typewriter
+parse_args()
+\family default
+ выполняется парсинг аргументов командной строки, переданные скрипту значения,
+ которые хранятся в полях переменной 
+\family typewriter
+options
+\family default
+ (
+\emph on
+cтрока 188
+\emph default
+).
+\end_layout
+
+\begin_layout Standard
+Начиная со 
+\emph on
+строки 198
+\emph default
+ выполняется проверка на корректность переданных параметров командной строки
+ и их параметров.
+ Если данный набор не удовлетворяет ни одному условию, выводится страница
+ помощи (
+\emph on
+строка 215
+\emph default
+).
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
 \begin_layout Standard
 \begin_inset Newpage newpage
 \end_inset
@@ -3578,6 +3766,12 @@ swig --- утилита, позволяющая с помощью специал
  функции, написанные на языке C.
 \end_layout
 
+\begin_layout Enumerate
+Парсер --- программа, автоматизирующая получение информации по заданному
+ алгоритму.
+ 
+\end_layout
+
 \begin_layout --Separator--
 
 \end_layout
@@ -3630,7 +3824,7 @@ openssl-1.0.1e-selinux_objects.patch
 \begin_layout Standard
 \begin_inset listings
 inline false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -3807,7 +4001,7 @@ m2crypto-0.21.1-selinux.patch
 \begin_layout Standard
 \begin_inset listings
 inline false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -4009,6 +4203,11 @@ status open
 
 \begin_layout Plain Layout
 
+__author__ = 'Dmitry Voronin'
+\end_layout
+
+\begin_layout Plain Layout
+
 from M2Crypto import RSA, X509, EVP, ASN1
 \end_layout
 
@@ -4035,11 +4234,6 @@ from os import path, getuid
 \begin_layout Plain Layout
 
 from time import time
-\end_layout
-
-\begin_layout Plain Layout
-
-__author__ = 'dimv36'
 \end_layout
 
 \begin_layout Plain Layout
@@ -5083,6 +5277,359 @@ pem", type="string",
 \begin_layout Plain Layout
 
         parser.print_help()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Приложение 5.
+ Скрипт инициализации namespace.init
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+addcontentsline{toc}{subsection}{Приложение 5.
+ Скрипт инициализации namespace.init}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Скрипт используется для инициализации многоэкземплярных папок пользователей
+ при их аутентификации в системе, а также при переходе на другой уровень
+ безопасности с помощью команды 
+\family typewriter
+newrole
+\family default
+.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+\series bold
+namespace.init
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=bash,showstringspaces=false"
+inline false
+status collapsed
+
+\begin_layout Plain Layout
+
+#!/bin/sh -p
+\end_layout
+
+\begin_layout Plain Layout
+
+if [ "$3" = 1 ]; then
+\end_layout
+
+\begin_layout Plain Layout
+
+	[ -x /sbin/restorecon ] && /sbin/restorecon "$1"
+\end_layout
+
+\begin_layout Plain Layout
+
+    user="$4"
+\end_layout
+
+\begin_layout Plain Layout
+
+    passwd=$(getent passwd "$user")
+\end_layout
+
+\begin_layout Plain Layout
+
+    homedir=$(echo "$passwd" | cut -f6 -d":")
+\end_layout
+
+\begin_layout Plain Layout
+
+    if [ "$1" = "$homedir" ]; then
+\end_layout
+
+\begin_layout Plain Layout
+
+    	gid=$(echo "$passwd" | cut -f4 -d":")
+\end_layout
+
+\begin_layout Plain Layout
+
+        cp -rT /etc/skel "$homedir"
+\end_layout
+
+\begin_layout Plain Layout
+
+        chown -R "$user":"$gid" "$homedir"
+\end_layout
+
+\begin_layout Plain Layout
+
+        mask=$(awk '/^UMASK/{gsub("#.*$", "", $2); print $2; exit}' /etc/login.def
+s)
+\end_layout
+
+\begin_layout Plain Layout
+
+        mode=$(printf "%o" $((0777 & ~$mask)))
+\end_layout
+
+\begin_layout Plain Layout
+
+        chmod ${mode:-700} "$homedir"
+\end_layout
+
+\begin_layout Plain Layout
+
+        [ -x /sbin/restorecon ] && /sbin/restorecon -R "$homedir"
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		pgcertdir="$1/.postgresql"
+\end_layout
+
+\begin_layout Plain Layout
+
+    	ca="192.168.100.4"
+\end_layout
+
+\begin_layout Plain Layout
+
+    	certdir="/root/certs"
+\end_layout
+
+\begin_layout Plain Layout
+
+    	password="123456"
+\end_layout
+
+\begin_layout Plain Layout
+
+        mkdir $pgcertdir
+\end_layout
+
+\begin_layout Plain Layout
+
+        context=`sshpass -p $password ssh -o StrictHostKeyChecking=no $user@127.0.
+0.1 "id -Z"` >> /dev/null
+\end_layout
+
+\begin_layout Plain Layout
+
+        seuser=$(echo "$context" | cut -f1 -d":")
+\end_layout
+
+\begin_layout Plain Layout
+
+        setype=$(echo "$context" | cut -f2 -d":")
+\end_layout
+
+\begin_layout Plain Layout
+
+		serole=$(echo "$context" | cut -f3 -d":")	
+\end_layout
+
+\begin_layout Plain Layout
+
+        selevel=$(echo "$2" | cut -f4 -d":" | cut -f1 -d"_")
+\end_layout
+
+\begin_layout Plain Layout
+
+        secategory=$(echo "$2" | cut -f5 -d ":" | cut -f1 -d"_")
+\end_layout
+
+\begin_layout Plain Layout
+
+        min_selevel=$(echo "$selevel" | cut -f1 -d"-")
+\end_layout
+
+\begin_layout Plain Layout
+
+        max_selevel=$(echo "$selevel" | cut -f2 -d"-")
+\end_layout
+
+\begin_layout Plain Layout
+
+        if [ "$min_selevel" = "$max_selevel" ]
+\end_layout
+
+\begin_layout Plain Layout
+
+        then
+\end_layout
+
+\begin_layout Plain Layout
+
+        	secontext="$seuser:$setype:$serole:$min_selevel"
+\end_layout
+
+\begin_layout Plain Layout
+
+		else
+\end_layout
+
+\begin_layout Plain Layout
+
+        	secontext="$seuser:$setype:$serole:$selevel"
+\end_layout
+
+\begin_layout Plain Layout
+
+		fi
+\end_layout
+
+\begin_layout Plain Layout
+
+        if [ ! "$secategory" = "" ]
+\end_layout
+
+\begin_layout Plain Layout
+
+        then
+\end_layout
+
+\begin_layout Plain Layout
+
+        	min_secategory=$(echo "$secategory" | cut -f1 -d".")
+\end_layout
+
+\begin_layout Plain Layout
+
+            max_secategory=$(echo "$secategory" | cut -f2 -d".")
+\end_layout
+
+\begin_layout Plain Layout
+
+            if [ "$min_secategory" = "$max_secategory" ]
+\end_layout
+
+\begin_layout Plain Layout
+
+            then
+\end_layout
+
+\begin_layout Plain Layout
+
+            	secontext="$secontext:$secategory"
+\end_layout
+
+\begin_layout Plain Layout
+
+			else
+\end_layout
+
+\begin_layout Plain Layout
+
+            	secontext="$secontext:$min_secategory.$max_secategory"
+\end_layout
+
+\begin_layout Plain Layout
+
+			fi
+\end_layout
+
+\begin_layout Plain Layout
+
+		fi
+\end_layout
+
+\begin_layout Plain Layout
+
+        pgcert --genrsa --bits 2048 --output $pgcertdir/postgresql.key >>
+ /dev/null
+\end_layout
+
+\begin_layout Plain Layout
+
+        chmod 0600 $pgcertdir/postgresql.key
+\end_layout
+
+\begin_layout Plain Layout
+
+        pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --context
+ $secontext --output $pgcertdir/postgresql.csr >> /dev/null
+\end_layout
+
+\begin_layout Plain Layout
+
+        sshpass -p $password scp -o StrictHostKeyChecking=no $pgcertdir/postgres
+ql.csr root@$ca:$certdir
+\end_layout
+
+\begin_layout Plain Layout
+
+    	sshpass -p $password ssh -o StrictHostKeyChecking=no -T root@$ca "pgcert
+ --gencert --request $certdir/postgresql.csr --output $certdir/postgresql.crt"
+\end_layout
+
+\begin_layout Plain Layout
+
+        sshpass -p $password scp -o StrictHostKeyChecking=no root@$ca:$certdir/p
+ostgresql.crt $pgcertdir/postgresql.crt
+\end_layout
+
+\begin_layout Plain Layout
+
+        sshpass -p $password scp -o StrictHostKeyChecking=no root@$ca:/etc/pki/C
+A/cacert.pem $pgcertdir/root.crt
+\end_layout
+
+\begin_layout Plain Layout
+
+        #rm -f $pgcertdir/postgresql.csr
+\end_layout
+
+\begin_layout Plain Layout
+
+        chown -R $user.$user $pgcertdir
+\end_layout
+
+\begin_layout Plain Layout
+
+	fi
+\end_layout
+
+\begin_layout Plain Layout
+
+fi
+\end_layout
+
+\begin_layout Plain Layout
+
+exit 0
 \end_layout
 
 \end_inset
