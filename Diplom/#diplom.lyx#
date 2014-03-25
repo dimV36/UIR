@@ -4090,22 +4090,6 @@ pgcert.spec
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-NormalStretch
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 \begin_inset listings
 inline false
 status open
@@ -4263,22 +4247,6 @@ rm -rf %{_buildroot}
 \begin_layout Plain Layout
 
 %{_bindir}/pgcert
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-LargeStretch
 \end_layout
 
 \end_inset
@@ -4474,12 +4442,7 @@ pgcert-1.0.0-1.fc20.src.rpm
 \end_layout
 
 \begin_layout Standard
-Созданный пакет может использоваться для установки на операционной системе
- 
-\family typewriter
-Fedora 20
-\family default
-, но также может быть пересобран под другие системы.
+Созданный пакет может использоваться для установки на рабочих  
 \end_layout
 
 \begin_layout Standard
