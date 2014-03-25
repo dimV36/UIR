@@ -3456,26 +3456,14 @@ parse_args()
 \family typewriter
 options
 \family default
- (
-\emph on
-cтрока 188
-\emph default
-).
+.
 \end_layout
 
 \begin_layout Standard
-Начиная со 
-\emph on
-строки 198
-\emph default
- выполняется проверка на корректность переданных параметров командной строки
- и их параметров.
+После чего выполняется проверка на корректность переданных параметров командной
+ строки и их параметров.
  Если данный набор не удовлетворяет ни одному условию, выводится страница
- помощи (
-\emph on
-строка 215
-\emph default
-).
+ помощи.
 \end_layout
 
 \begin_layout Standard
@@ -4713,6 +4701,19 @@ SELINUXTYPE=mls
 \end_deeper
 \begin_layout Enumerate
 После чего расставляются метки безопасности в файловой системе:
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+NormalStretch
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -4729,6 +4730,19 @@ status open
 \begin_layout Plain Layout
 
 # reboot
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+LargeStretch
 \end_layout
 
 \end_inset
@@ -4824,7 +4838,31 @@ cacert.pem
 \family default
 .
  При этом не рекомендуется менять права доступа к данным файлам во избежание
- компрометации.
+ компрометации ключа и сертификата.
+\end_layout
+
+\begin_layout Standard
+Создается папка 
+\family typewriter
+certs
+\family default
+, в которую будут присылаться запросы на подпись сертификатов и в которую
+ будут генерироваться сертификаты:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# mkdir /root/certs
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -4840,9 +4878,6 @@ cacert.pem
 \begin_layout Enumerate
 Для установки клиентской части PostgreSQL требуется подключить репозиторий
  PostgreSQL 9.3.4 и выполнить команду:
-\end_layout
-
-\begin_layout Enumerate
 \begin_inset listings
 inline false
 status open
@@ -5158,6 +5193,27 @@ LargeStretch
 \end_layout
 
 \begin_layout Enumerate
+Устанавливается утилита 
+\family typewriter
+sshpass
+\family default
+ --- утилита, позволяющая вставлять в командую строку демона SSH строку
+ пароля:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# yum install -y sshpass
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
 Модифицируется скрипт инициализации многоэкземплярных директорий 
 \family typewriter
 /etc/security/namespace.init
@@ -5317,7 +5373,537 @@ sshpass -p $password ssh -o StrictHostKeyChecking=no -T root@$ca "pgcert
 \end_layout
 
 \begin_layout Standard
-В настройку сервера PostgreSQL входит установка пакетов базы данных, 
+В настройку сервера PostgreSQL входит установка пакетов базы данных, генерирован
+ие сертификата сервера, настройка метода аутентификации 
+\family typewriter
+cert
+\family default
+ и настройка межсетевого экрана.
+\end_layout
+
+\begin_layout Standard
+Для установки пакетов PostgreSQL требуется подключить репозиторий и выполнить
+ следующую команду:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# yum install -y postgresql93 postgresql93-server postgresql93-contrib
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Инициализация сервера базы данных выполняется командой:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# /usr/pgsql-9.3/bin/postgresql93-setup initdb
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Редактируются конфигурационный файл 
+\family typewriter
+/var/lib/pgsql/9.3/data/postgresql.conf
+\family default
+:
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+NormalStretch
+\end_layout
+
+\end_inset
+
+
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+listen_addresses = '*'
+\end_layout
+
+\begin_layout Plain Layout
+
+ssl = on
+\end_layout
+
+\begin_layout Plain Layout
+
+ssl_cert_file = 'server.crt'
+\end_layout
+
+\begin_layout Plain Layout
+
+ssl_key_file = 'server.key'
+\end_layout
+
+\begin_layout Plain Layout
+
+ssl_ca_file = 'root.crt'
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+LargeStretch
+\end_layout
+
+\end_inset
+
+В первой строке указывается диапазон прослушиваемых адресов.
+\end_layout
+
+\begin_layout Standard
+Во второй указана активность соединения.
+ В третьей, четвертой и пятой строках указывается имена файлов, хранящие
+ сертификат, приватный ключ сервера и удостоверяющего центра.
+\end_layout
+
+\begin_layout Standard
+Файл 
+\family typewriter
+pg_hba.conf
+\family default
+ представляет собой таблицу со следующими полями:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+TYPE DATABASE USER ADDRESS METHOD
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Поле 
+\family typewriter
+TYPE 
+\family default
+устанавливает тип подключения (
+\family typewriter
+local 
+\family default
+--- локальное, 
+\family typewriter
+host 
+\family default
+--- удаленное нешифрованное по протоколу TCP/IP и т.д.).
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+DATABASE 
+\family default
+указывает имена баз данных, к которым разрешено подключаться.
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+USER
+\family default
+ определяет пользователей, которые могут подключаться.
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+ADDRESS
+\family default
+ --- IP-адреса, с которых возможно подключение.
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+METHOD
+\family default
+ --- Метод аутентификации, используемый в подключении.
+\end_layout
+
+\begin_layout Standard
+Для установки метода аутентификации 
+\family typewriter
+cert 
+\family default
+используется следующая строка 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "PostgreSQL-cert"
+
+\end_inset
+
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+hostssl all all 192.168.100.0/24 ldap cert clientcert=1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Она означает, что разрешено подключение ко всем базам данных всем пользователям,
+ IP-адреса клиентов которых находятся в подсети 
+\family typewriter
+192.168.100.0
+\family default
+ при успешной аутентификации по методу cert.
+ При этом подключение между клиентом и сервером будет зашифровано по протоколу
+ SSL (на это указывает параметр 
+\family typewriter
+hostssl
+\family default
+).
+ Дополнительный параметр метода аутентификации 
+\family typewriter
+clientcert=1 
+\family default
+указывает на проверку сертификатов, высылаемых клиентами базы данных.
+ В случае некорректных сертификатов в подключении к базе данных отказывается.
+\end_layout
+
+\begin_layout Standard
+Для создания сертификата пользователя выполняются следующие действия:
+\end_layout
+
+\begin_layout Enumerate
+Создается приватный ключ и назначаются права на него 0600:
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+NormalStretch
+\end_layout
+
+\end_inset
+
+
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ pgcert --genrsa --output server.key
+\end_layout
+
+\begin_layout Plain Layout
+
+$ chmod 0600 server.key
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+LargeStretch
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Создается запрос на подпись сертификата: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ pgcert --genreq --pkey server.key
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Запрос на подпись сертификата копируется на удостоверяющий центр:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ ssh server.csr root@192.168.100.4:/root/certs/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Удостоверяющий центр подписывает сертификат:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# pgcert --gencert --request server.csr --output server.crt
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Удостоверяющий центр копирует сертифкат сервера и свой сертификат в каталог
+ 
+\family typewriter
+PGDATA
+\family default
+:
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+NormalStretch
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# scp /root/certs/server.crt postgres@192.168.100.2:/var/lib/pgsql/9.3/data/
+\end_layout
+
+\begin_layout Plain Layout
+
+# scp /etc/pki/cacert.pem postgres@192.168.100.2:/var/lib/pgsql/9.3/data/
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+LargeStretch
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Сервер PostgreSQL устанавливает владельца файлов 
+\family typewriter
+postgres.postgres
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ su -c "chown postgres.postgres *"
+\end_layout
+
+\end_inset
+
+При выполнении данной команды требуется ввести пароль от пользователя 
+\family typewriter
+root
+\family default
+.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+СУБД PostgreSQL принимает по умолчанию подключения на порте 
+\family typewriter
+5432
+\family default
+.
+ Для возможности удаленного подключения требуется открыть этот порт 
+\family typewriter
+5432
+\family default
+ в межсетевом экране 
+\family typewriter
+firewall
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# firewall-cmd --add-port 5432/tcp
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Межсетевой экран и сервер базы данных перезагружаются:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# service postgresql-9.3 restart
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Для подключения клиентов базы данных требуется создать пользователей PostgreSQL:
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+NormalStretch
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ psql -c "CREATE ROLE user1 login;"
+\end_layout
+
+\begin_layout Plain Layout
+
+$ psql -c "CREATE ROLE user2 login;"
+\end_layout
+
+\begin_layout Plain Layout
+
+$ psql -c "CREATE ROLE user3 login;"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+LargeStretch
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Сервис базы данных добавляется в список автозагрузки:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# chkconfig postgresql-9.3 on
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -5462,7 +6048,7 @@ key "SELinux-IBM"
 
 \end_inset
 
-Безопасный Linux: Часть 2.
+ Безопасный Linux: Часть 2.
  SELinux --- запуск подсистемы безопасности [Электронный ресурс] --- http://www.i
 bm.com/developerworks/ru/library/l-se_linux_02
 \end_layout
@@ -5524,7 +6110,7 @@ key "RH-RPM"
 
 \end_inset
 
-Red Hat RPM Guide [Электронный ресурс]
+ Red Hat RPM Guide [Электронный ресурс]
 \begin_inset space ~
 \end_inset
 
@@ -5551,7 +6137,20 @@ key "M2Crypto"
 
 \end_inset
 
-M2Crypto [Электронный ресурс] --- https://github.com/martinpaljak/M2Crypto
+ M2Crypto [Электронный ресурс] --- https://github.com/martinpaljak/M2Crypto
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "12"
+key "PostgreSQL-cert"
+
+\end_inset
+
+ PostgreSQL: 19.3.10.
+ Certificate Authentication [Электронный ресурс] --- http://www.postgresql.org/doc
+s/9.3/static/auth-methods.html#AUTH-CERT
 \end_layout
 
 \begin_layout Standard
@@ -6078,12 +6677,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-# -*- coding: utf-8 -*-
-\end_layout
-
-\begin_layout Plain Layout
-
-__author__ = 'Dmitry Voronin'
+__author__ = 'dimv36'
 \end_layout
 
 \begin_layout Plain Layout
@@ -6151,7 +6745,7 @@ DEFAULT_FIELDS = {'C': 'ru',
 
 \begin_layout Plain Layout
 
-                  'CN': check_output("whoami", shell=True)[0].split('
+                  'CN': check_output("whoami", shell=True).split('
 \backslash
 n')[0]}
 \end_layout
@@ -6199,7 +6793,7 @@ def check_permissions():
 
 \begin_layout Plain Layout
 
-        print('Пожалуйста, зайдите за пользователя `root` и повторите команду')
+        print("Please, login as `root` and try again")
 \end_layout
 
 \begin_layout Plain Layout
@@ -6232,7 +6826,7 @@ def make_private_key(bits, output):
 
 \begin_layout Plain Layout
 
-        output = path.abspath(path.curdir) + '/mykey.pem'
+        output = path.abspath(path.curdir) + "/mykey.pem"
 \end_layout
 
 \begin_layout Plain Layout
@@ -6242,7 +6836,7 @@ def make_private_key(bits, output):
 
 \begin_layout Plain Layout
 
-    return 'Сертификат сохранён в %s' % output
+    return 'Key was saved to %s' % output
 \end_layout
 
 \begin_layout Plain Layout
@@ -6270,7 +6864,7 @@ def make_request(private_key_file, username, context_string, output):
 
 \begin_layout Plain Layout
 
-        raise ValueError, 'Неверный путь к приватному ключу'
+        raise ValueError, 'Not correct key path'
 \end_layout
 
 \begin_layout Plain Layout
@@ -6340,7 +6934,7 @@ def make_request(private_key_file, username, context_string, output):
 
 \begin_layout Plain Layout
 
-        context = check_output('id -Z', shell=True).split('
+        context = check_output("id -Z", shell=True).split('
 \backslash
 n')[0]
 \end_layout
@@ -6352,7 +6946,7 @@ n')[0]
 
 \begin_layout Plain Layout
 
-        raise ValueError, 'Команда`id -Z` возвратила ошибку'
+        raise ValueError, 'Command `id -Z` return with error code'
 \end_layout
 
 \begin_layout Plain Layout
@@ -6387,7 +6981,7 @@ n')[0]
 
 \begin_layout Plain Layout
 
-    return 'Запрос на подпись сертификата сохранён в %s' % output
+    return 'Request was saved to %s' % output
 \end_layout
 
 \begin_layout Plain Layout
@@ -6421,7 +7015,7 @@ def make_certificate(request_file, ca_private_key_file, ca_certificate_file,
 
 \begin_layout Plain Layout
 
-        raise ValueError, 'Ошибка при проверке запроса на подпись сертификата'
+        raise ValueError, 'Error verifying request'
 \end_layout
 
 \begin_layout Plain Layout
@@ -6507,7 +7101,7 @@ def make_certificate(request_file, ca_private_key_file, ca_certificate_file,
 
 \begin_layout Plain Layout
 
-    certificate.add_ext(X509.new_extension('basicConstraints', 'CA:FALSE',
+    certificate.add_ext(X509.new_extension("basicConstraints", "CA:FALSE",
  1))
 \end_layout
 
@@ -6533,7 +7127,7 @@ def make_certificate(request_file, ca_private_key_file, ca_certificate_file,
 
 \begin_layout Plain Layout
 
-    return 'Сертифкат сохранён в %s' % output
+    return 'Certificate was saved to %s' % output
 \end_layout
 
 \begin_layout Plain Layout
@@ -6561,7 +7155,7 @@ def verify_certificate(certificate_file, ca_certificate):
 
 \begin_layout Plain Layout
 
-        raise ValueError, 'Ошибка при загрузке сертифката'
+        raise ValueError, 'Error loading certificate file'
 \end_layout
 
 \begin_layout Plain Layout
@@ -6581,7 +7175,7 @@ def verify_certificate(certificate_file, ca_certificate):
 
 \begin_layout Plain Layout
 
-        raise ValueError, 'Ошибка при загрузке приватного ключа пользователя'
+        raise ValueError, 'Error loading certificate key file'
 \end_layout
 
 \begin_layout Plain Layout
@@ -6591,7 +7185,7 @@ def verify_certificate(certificate_file, ca_certificate):
 
 \begin_layout Plain Layout
 
-        return 'Сертифкат достоверный'
+        return 'status verification ok'
 \end_layout
 
 \begin_layout Plain Layout
@@ -6601,12 +7195,7 @@ def verify_certificate(certificate_file, ca_certificate):
 
 \begin_layout Plain Layout
 
-        pass
-\end_layout
-
-\begin_layout Plain Layout
-
-    return 'Сертифкат не достоверный'
+        return 'status: verification failed'
 \end_layout
 
 \begin_layout Plain Layout
@@ -6629,8 +7218,8 @@ def print_certificate(certificate_file_path):
 
 \begin_layout Plain Layout
 
-        raise ValueError, 'Путь к сертифкату %s не существует' % certificate_fil
-e_path
+        raise ValueError, 'Certificate path %s not exist' % certificate_file_pat
+h
 \end_layout
 
 \begin_layout Plain Layout
@@ -6663,8 +7252,7 @@ def print_request(request_file_path):
 
 \begin_layout Plain Layout
 
-        raise ValueError, 'Путь к запросу на подпись сертифката %s не существует
-' % request_file_path
+        raise ValueError, 'Request path %s not exist' % request_file_path
 \end_layout
 
 \begin_layout Plain Layout
@@ -6707,8 +7295,7 @@ def make_ca(bits, cakey_file_path, cacert_file_path):
 
 \begin_layout Plain Layout
 
-        raise ValueError, 'Ошибка при загрзке приватного ключа удостоверяющего
- центра'
+        raise ValueError, 'Error loading CA private key'
 \end_layout
 
 \begin_layout Plain Layout
@@ -6811,7 +7398,7 @@ def make_ca(bits, cakey_file_path, cacert_file_path):
 
 \begin_layout Plain Layout
 
-    certificate.add_ext(X509.new_extension('basicConstraints', 'CA:TRUE',
+    certificate.add_ext(X509.new_extension("basicConstraints", "CA:TRUE",
  1))
 \end_layout
 
@@ -6827,7 +7414,7 @@ def make_ca(bits, cakey_file_path, cacert_file_path):
 
 \begin_layout Plain Layout
 
-    return 'Сертифкат сохранён %s' % cacert_file_path
+    return 'Certificate was saved to %s' % cacert_file_path
 \end_layout
 
 \begin_layout Plain Layout
@@ -6846,7 +7433,7 @@ if __name__ == "__main__":
 \begin_layout Plain Layout
 
     parser = OptionParser(usage="usage: %prog [--genrsa | --genreq | --gencert
- | --makeca | --text] options",
+ | --gencacert | --text] options",
 \end_layout
 
 \begin_layout Plain Layout
@@ -6856,19 +7443,13 @@ if __name__ == "__main__":
 
 \begin_layout Plain Layout
 
-                          description="Pgcert - утилита, позволяющая генерироват
-ь сертификаты X509 с полем SC, "
+                          description="This program use M2Crypto library
+ and can generate X509 certificate "
 \end_layout
 
 \begin_layout Plain Layout
 
-                                      "в котором хранится текущий контекст
- пользователя, а также выполнять различные "
-\end_layout
-
-\begin_layout Plain Layout
-
-                                      "операции с ними.")
+                                      "with extension field SELinux Context")
 \end_layout
 
 \begin_layout Plain Layout
@@ -6879,7 +7460,7 @@ se,
 
 \begin_layout Plain Layout
 
-                      help="Создать приватный RSA-ключ по количеству bits")
+                      help="generate private key with bits length")
 \end_layout
 
 \begin_layout Plain Layout
@@ -6890,8 +7471,7 @@ se,
 
 \begin_layout Plain Layout
 
-                      help="Создать запрос на подпись сертификата по приватному
- ключу pkey")
+                      help="generate request for private key")
 \end_layout
 
 \begin_layout Plain Layout
@@ -6902,7 +7482,7 @@ alse,
 
 \begin_layout Plain Layout
 
-                      help="Создать сертификат пользователя по request")
+                      help="generate certificate for user")
 \end_layout
 
 \begin_layout Plain Layout
@@ -6913,7 +7493,7 @@ se,
 
 \begin_layout Plain Layout
 
-                      help="Развернуть удостоверяющий центр")
+                      help="generate ca certificate and private key")
 \end_layout
 
 \begin_layout Plain Layout
@@ -6924,20 +7504,13 @@ lse,
 
 \begin_layout Plain Layout
 
-                      help="Распечатать сертификат или запрос на подпись
- сертификата")
+                      help="print request or certificate")
 \end_layout
 
 \begin_layout Plain Layout
 
     parser.add_option("--verify", dest="verify", action="store_true", default=Fal
-se,
-\end_layout
-
-\begin_layout Plain Layout
-
-                      help="Проверить, выдан ли сертификат пользователя
- данным удостоверяющим центром")
+se, help="verify certificate")
 \end_layout
 
 \begin_layout Plain Layout
@@ -6947,19 +7520,14 @@ se,
 
 \begin_layout Plain Layout
 
-                      help="Добавить имя пользователя в запрос на подпись
- сертификата (опционально)")
+                      help="add username to certificate CN, default=%s"
+ % DEFAULT_FIELDS['CN'])
 \end_layout
 
 \begin_layout Plain Layout
 
-    parser.add_option("--context", dest="context", default=None,
-\end_layout
-
-\begin_layout Plain Layout
-
-                      help="Добавить контекст пользователя в запрос на подпись
- сертфиката (опционально)")
+    parser.add_option("--context", dest="context", default=None, help="add
+ user context to certificate")
 \end_layout
 
 \begin_layout Plain Layout
@@ -6969,13 +7537,13 @@ se,
 
 \begin_layout Plain Layout
 
-                      help="Длина приватного ключа (по умолчанию %default)")
+                      help="bits for generate RSA-key, default=%default")
 \end_layout
 
 \begin_layout Plain Layout
 
-    parser.add_option("--request", dest="request", help="Путь к файлу запроса
- на подпись сертификата")
+    parser.add_option("--request", dest="request", help="add path to request
+ file")
 \end_layout
 
 \begin_layout Plain Layout
@@ -6986,8 +7554,8 @@ pem", type="string",
 
 \begin_layout Plain Layout
 
-                      help="Путь до приватного ключа удостоверяющего центра
- (по умолчанию %default)")
+                      help="add CA key path to generate user's certificate,
+ default=%default")
 \end_layout
 
 \begin_layout Plain Layout
@@ -6998,25 +7566,25 @@ pem", type="string",
 
 \begin_layout Plain Layout
 
-                      help="Путь к сертификату удостоверяющего центра (по
- умолчанию %default)")
+                      help="add CA certificate path to generate user's certifica
+te, default=%default")
 \end_layout
 
 \begin_layout Plain Layout
 
-    parser.add_option("--pkey", dest="pkey", help="Путь к приватному ключу
- пользователя")
+    parser.add_option("--pkey", dest="pkey", help="add path of private key")
 \end_layout
 
 \begin_layout Plain Layout
 
-    parser.add_option("--cert", dest="certificate", help="Путь к сертифкату")
+    parser.add_option("--cert", dest="certificate", help="add path of certificate
+")
 \end_layout
 
 \begin_layout Plain Layout
 
-    parser.add_option("--output", type="string", dest="output", help="Путь
- к файлу вывода")
+    parser.add_option("--output", type="string", dest="output", help="save
+ to file output")
 \end_layout
 
 \begin_layout Plain Layout
