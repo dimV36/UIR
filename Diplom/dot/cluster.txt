@@ -1,0 +1,99 @@
+digraph g {
+  graph [fontsize = 35 labelloc="t" label="" splines=true overlap=false rankdir = "TB"]
+  ratio = auto;
+  edge[fontsize = 24];
+  
+  {
+    node [shape = plaintext, style = invisible];
+    edge [color = white];
+    1 -> 2 -> 3 -> 4;
+  }
+  
+  subgraph client_cluster {
+  postgresql_client;
+  postgresql_server;
+  server_ca;
+  { rank = same; 1; postgresql_client; }
+  { rank = same; 4; postgresql_server; }
+  { rank = same; 4; server_ca; }
+  
+  postgresql_client [style = filled penwidth = 1 fillcolor = white fontsize = 20 fontname = "Courier New" shape = "Mrecord" label =<
+  <table border="0" cellborder="0" bgcolor="white">
+    <tr>
+      <td border="0" align="center" bgcolor="black" colspan="2">
+	<font point-size = "25" color="white"> <b>Клиент<br/>IP: 192.168.100.3</b></font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="white" colspan="2">
+	<font color="black">Пользователи:</font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="grey" align="center" colspan="2">
+	<font color="black">user1 : user_u:user_r:user_t:s0</font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="grey" align="center" colspan="2">
+	<font color="black">user2 : user_u:user_r:user_t:s0-s2</font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="grey" align="center" colspan="2">
+	<font color="black">user3 : user_u:user_r:user_t:s1-s3:c0.c10</font>
+      </td>
+    </tr>
+  </table>>
+  ];  
+
+  server_ca [style = filled penwidth = 1 fillcolor = white fontsize = 20 fontname = "Courier New" shape = "Mrecord" label =<
+  <table border="0" cellborder="0" bgcolor="white">
+    <tr>
+      <td border="0" align="center" bgcolor="black" colspan="2">
+	<font point-size = "25" color="white"><b>Удостоверяющий центр<br/>IP: 192.168.100.4</b></font>
+      </td>
+    </tr>
+  </table>>
+  ];  
+  
+  postgresql_server [style = filled penwidth = 1 fillcolor = white fontsize = 20 fontname = "Courier New" shape = "Mrecord" label =<
+  <table border="0" cellborder="0" bgcolor="white">
+    <tr>
+      <td border="0" align="center" bgcolor="black" colspan="2">
+	<font point-size = "25" color="white"><b>PostgreSQL<br/>IP: 192.168.100.2</b></font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="white" colspan="2">
+	<font color="black">Пользователи СУБД:</font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="grey" align="center" colspan="2">
+	<font color="black">user1</font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="grey" align="center" colspan="2">
+	<font color="black">user2</font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="grey" align="center" colspan="2">
+	<font color="black">user3</font>
+      </td>
+    </tr>
+  </table>>
+  ];  
+  
+  postgresql_client -> server_ca[fontcolor = green, color = green, label = "Запрос \nна подпись \nсертификата"];
+  server_ca -> postgresql_client[fontcolor = green, color = green, label = "Сертификат \nпользователя"];
+  
+  postgresql_client -> postgresql_server[fontcolor = blue, color = blue, label = "Запрос к БД"];
+  postgresql_server -> postgresql_client[fontcolor = blue, color = blue, label = "Ответ БД"];
+
+  postgresql_server -> server_ca[fontcolor = red, color = red, label = "Запрос \nна подпись \nсертификата\n"];
+  server_ca -> postgresql_server[fontcolor = red, color = red, label = "\n\nСертификат \nсервера"];
+  }
+}
