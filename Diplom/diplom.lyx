@@ -4076,17 +4076,6 @@ SPEC
 pgcert
 \family default
 :
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset Newline newline
-\end_inset
-
-
-\family typewriter
-\series bold
-pgcert.spec
 \end_layout
 
 \begin_layout Standard
