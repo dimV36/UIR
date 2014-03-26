@@ -13,7 +13,8 @@ DEFAULT_FIELDS = {'C': 'ru',
                   'L': 'msk',
                   'O': 'mephi',
                   'OU': 'kaf36',
-                  'CN': check_output("whoami", shell=True).split('\n')[0]}
+                  'CN': check_output("whoami", shell=True).split('\n')[0],
+                  'SC': ''}
 DEFAULT_PASSWORD = '123456'
 
 
@@ -23,7 +24,7 @@ def password(*args, **kwargs):
 
 def check_path(file_path):
     if not path.exists(file_path):
-        print("ERROR: File path %s not exist")
+        print("ERROR: File path %s not exist" % file_path)
         exit(1)
 
 
@@ -53,7 +54,9 @@ def make_request(private_key_path, username, user_context, output):
     name.L = DEFAULT_FIELDS['L']
     name.O = DEFAULT_FIELDS['O']
     name.OU = DEFAULT_FIELDS['OU']
-    name.CN = username
+    name.CN = DEFAULT_FIELDS['CN']
+    if username:
+        name.CN = username
     if user_context:
         context = user_context
     else:
@@ -70,8 +73,9 @@ def make_request(private_key_path, username, user_context, output):
     return 'Request was saved to %s' % output
 
 
-def make_certificate(request_file, ca_private_key_file, ca_certificate_file, output):
-    request = X509.load_request(request_file)
+def make_certificate(request_path, ca_private_key_file, ca_certificate_file, output):
+    check_path(request_path)
+    request = X509.load_request(request_path)
     public_key = request.get_pubkey()
     if not request.verify(public_key):
         print('Error verifying request')
@@ -100,11 +104,11 @@ def make_certificate(request_file, ca_private_key_file, ca_certificate_file, out
     return 'Certificate was saved to %s' % output
 
 
-def verify_certificate(certificate_file, ca_certificate_file):
-    check_path(certificate_file)
-    check_path(ca_certificate_file)
-    certificate = X509.load_cert(certificate_file)
-    ca_certificate = X509.load_cert(ca_certificate_file)
+def verify_certificate(certificate_path, ca_certificate_path):
+    check_path(certificate_path)
+    check_path(ca_certificate_path)
+    certificate = X509.load_cert(certificate_path)
+    ca_certificate = X509.load_cert(ca_certificate_path)
     ca_public_key = ca_certificate.get_pubkey()
     if certificate.verify(ca_public_key):
         return 'status verification ok'
@@ -124,7 +128,7 @@ def print_request(request_file_path):
     return request.as_text()
 
 
-def get_subject_by_field(certificate_file_path, field):
+def get_subject_field(certificate_file_path, field):
     check_path(certificate_file_path)
     certificate = X509.load_cert(certificate_file_path)
     subject = certificate.get_subject()
@@ -141,7 +145,13 @@ def get_subject(certificate_file_path):
     return certificate.get_subject().as_text()
 
 
-def get_issuer_by_field(certificate_file_path, field):
+def get_issuer(certificate_file_path):
+    check_path(certificate_file_path)
+    certificate = X509.load_cert(certificate_file_path)
+    return certificate.get_issuer().as_text()
+
+
+def get_issuer_field(certificate_file_path, field):
     check_path(certificate_file_path)
     certificate = X509.load_cert(certificate_file_path)
     subject = certificate.get_subject()
@@ -181,69 +191,75 @@ def make_ca(bits, cakey_file_path, cacert_file_path):
 
 
 if __name__ == "__main__":
-    parser = OptionParser(usage="usage: %prog [--genrsa | --genreq | --gencert | --gencacert | --text] options",
+    parser = OptionParser(usage="usage: %prog [Main Options] options",
                           add_help_option=True,
                           description="This program use M2Crypto library and can generate X509 certificate "
                                       "with extension field SELinux Context")
-    parser.add_option("--genrsa", dest="genrsa", action="store_true", default=False,
-                      help="generate private key with bits length")
-    parser.add_option("--genreq", dest="genreq", action="store_true", default=False,
-                      help="generate request for private key")
-    parser.add_option("--gencert", dest="gencert", action="store_true", default=False,
-                      help="generate certificate for user")
-    parser.add_option("--makeca", dest="makeca", action="store_true", default=False,
-                      help="generate ca certificate and private key")
-    parser.add_option("--text", dest="print_pem", action="store_true", default=False,
-                      help="print request or certificate")
-    parser.add_option("--verify", dest="verify", action="store_true", default=False, help="verify certificate")
-    parser.add_option("--user", dest="user", default=DEFAULT_FIELDS['CN'],
-                      help="add username to certificate CN, default=%s" % DEFAULT_FIELDS['CN'])
-    parser.add_option("--context", dest="context", default=None, help="add user context to certificate")
-    parser.add_option("--bits", dest="bits", type="int", default="2048",
-                      help="bits for generate RSA-key, default=%default")
+    main_options = OptionGroup(parser, "Main Options")
+    main_options.add_option("--genrsa", dest="genrsa", action="store_true", default=False,
+                            help="generate private key with bits length")
+    main_options.add_option("--genreq", dest="genreq", action="store_true", default=False,
+                            help="generate request for private key")
+    main_options.add_option("--gencert", dest="gencert", action="store_true", default=False,
+                            help="generate certificate for user")
+    main_options.add_option("--makeca", dest="makeca", action="store_true", default=False,
+                            help="generate ca certificate and private key")
+    parser.add_option_group(main_options)
+
+    additional_group = OptionGroup(parser, "Additional options",)
+    additional_group.add_option("--get-issuer", dest="issuer", action="store_true", default=False,
+                                help="get issuer of certificate")
+    additional_group.add_option("--get-subject", dest="subject", action="store_true", default=False,
+                                help="get subject of certificate")
+    additional_group.add_option("--field", dest="field", help="field name")
+    additional_group.add_option("--text", dest="print_pem", action="store_true", default=False,
+                                help="print request or certificate")
+    additional_group.add_option("--verify", dest="verify", action="store_true", default=False,
+                                help="verify certificate")
+    additional_group.add_option("--output", type="string", dest="output", help="save to file output")
+    parser.add_option_group(additional_group)
+
+    request_group = OptionGroup(parser, "Request options")
+    request_group.add_option("--pkey", dest="pkey", help="add path of private key")
+    request_group.add_option("--user", dest="user", default=DEFAULT_FIELDS['CN'],
+                             help="add username to certificate CN, default=%s" % DEFAULT_FIELDS['CN'])
+    request_group.add_option("--context", dest="context", default=None, help="add user context to request")
+    parser.add_option_group(request_group)
+
+    pkey_group = OptionGroup(parser, "Private key options")
+    pkey_group.add_option("--bits", dest="bits", type="int", default="2048",
+                          help="bits for generate RSA-key, default: %default")
+    parser.add_option_group(pkey_group)
     parser.add_option("--request", dest="request", help="add path to request file")
     parser.add_option("--cakey", dest="cakey", default="/etc/pki/CA/private/cakey.pem", type="string",
-                      help="add CA key path to generate user's certificate, default=%default")
+                      help="add CA key path to generate user's certificate, default: %default")
     parser.add_option("--cacert", dest="cacert", default="/etc/pki/CA/cacert.pem", type="string",
-                      help="add CA certificate path to generate user's certificate, default=%default")
-    parser.add_option("--pkey", dest="pkey", help="add path of private key")
+                      help="add CA certificate path to generate user's certificate, default: %default")
     parser.add_option("--cert", dest="certificate", help="add path of certificate")
-    parser.add_option("--output", type="string", dest="output", help="save to file output")
-    group = OptionGroup(parser, "Additional options",)
-    group.add_option("--get-issuer", dest="issuer", action="store_true", default=False,
-                     help="get issuer of certificate")
-    group.add_option("--get_subject", dest="subject", action="store_true", default=False,
-                     help="get subject of certificate")
-    group.add_option("--field", dest="field", help="set field")
-    parser.add_option_group(group)
     options, args = parser.parse_args()
-    user = options.user
-    context = options.context
-    bits = options.bits
-    request = options.request
-    cakey = options.cakey
-    cacert = options.cacert
-    pkey = options.pkey
-    certificate = options.certificate
-    output = options.output
-    field = options.field
     if options.genrsa and options.bits:
-        print(make_private_key(bits, output))
+        print(make_private_key(options.bits, options.output))
     elif options.genreq and options.pkey:
-        print(make_request(pkey, user, context, output))
+        print(make_request(options.pkey, options.user, options.context, options.output))
     elif options.gencert and options.request:
         check_permissions()
-        print(make_certificate(request, cakey, cacert, output))
+        print(make_certificate(options.request, options.cakey, options.cacert, options.output))
     elif options.verify and options.certificate and options.cacert:
-        print(verify_certificate(certificate, cacert))
-    elif options.field and options.certificate:
-        print(get_subject_by_field(certificate, field))
+        print(verify_certificate(options.certificate, options.cacert))
+    elif options.issuer and options.certificate:
+        print(get_issuer(options.certificate))
+    elif options.issuer and options.field and options.certificate:
+        print(get_issuer_field(options.certificate, options.field))
+    elif options.subject and options.certificate:
+        print(get_subject(options.certificate))
+    elif options.subject and options.certificate and options.field:
+        print(get_subject_field(options.output, options.field))
     elif options.print_pem and options.certificate:
-        print(print_certificate(certificate))
+        print(print_certificate(options.certificate))
     elif options.print_pem and options.request:
-        print(print_request(request))
+        print(print_request(options.request))
     elif options.makeca:
         check_permissions()
-        print(make_ca(bits, cakey, cacert))
+        print(make_ca(options.bits, options.cakey, options.cacert))
     else:
         parser.print_help()
