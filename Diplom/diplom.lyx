@@ -22,6 +22,25 @@
 \usepackage{pdflscape}
 \usepackage{totcount}
 
+
+%\usepackage{titlesec}
+%\titleformat{\section}[hang]{\normalsize\centering\uppercase}{\thesection.}{1em}{}
+%\titleformat{\subsection}[hang]{\normalsize\centering}{\thesubsection.}{1em}{}
+%\titleformat{\subsubsection}[hang]{\normalsize\centering}{\thesubsubsection.}{1em}{}
+%\titleformat{\paragraph}[hang]{\normalsize\centering}{\thesubsubsection.}{1em}{}
+\usepackage{tocloft}
+\renewcommand{\cftsubsecindent}{0pt}
+\renewcommand{\cftsubsubsecindent}{0pt}
+
+\setlength{\cftbeforesecskip}{0pt}
+
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsecaftersnum}{.}
+\renewcommand{\cftsubsecaftersnum}{.}
+\renewcommand{\cftsubsubsecaftersnum}{.}
+\renewcommand{\cftsecfont}{\normalsize}
+\renewcommand{\cftsecpagefont}{\normalsize}
+
 %XeTeX-овский дзен
 \ifxetex
 \usepackage{xecyr} %нужно, если используется babel
@@ -1017,7 +1036,7 @@ status open
 
 
 \backslash
-addcontentsline{toc}{part}{Введение}
+addcontentsline{toc}{section}{Введение}
 \end_layout
 
 \end_inset
@@ -1094,7 +1113,9 @@ SELinux --- реализация системы принудительного �
 \end_inset
 
 данном разделе, более полный список терминов см.
- в
+ 
+\emph on
+в
 \begin_inset space ~
 \end_inset
 
@@ -1935,6 +1956,353 @@ status open
 \end_layout
 
 \begin_layout Subsection
+Многоэкземплярность
+\end_layout
+
+\begin_layout Standard
+Многоэкземплярность
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Polyinstance"
+
+\end_inset
+
+ --- это концепция создания для одного экземпляра какого-либо объекта или
+ класса нескольких независимых копий.
+ Она может быть применена для создание копий по различным признаками: по
+ имени пользователя, по уровню или контексту безопасности пользователя.
+ Механизм многоэкземплярности применяется для обеспечение большей безопасности
+ при работе пользователей на различных уровнях доступа на одной машине.
+ 
+\end_layout
+
+\begin_layout Standard
+Создание копий реализуется с помощью модулей PAM.
+ Во время входа пользователя в операционную систему модуль PAM создает в
+ пределах системной экземплярной директории свою личную, которую 
+\begin_inset Quotes fld
+\end_inset
+
+видит
+\begin_inset Quotes frd
+\end_inset
+
+ только пользователь, а также файлы и папки, находящиеся в его личной папке.
+ Если же уровень безопасности пользователя будет изменён в процессе его
+ работы, пользователь будет 
+\begin_inset Quotes fld
+\end_inset
+
+видеть
+\begin_inset Quotes frd
+\end_inset
+
+ другой экземпляр директории, соответствующей новому уровню.
+ Более наглядно механизм многоэкземплярности представлен
+\emph on
+ на рисунке 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Многоэкземплярность-директории-/"
+
+\end_inset
+
+
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/polyinstance.png
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Многоэкземплярность-директории-/"
+
+\end_inset
+
+Многоэкземплярность директории 
+\family typewriter
+/tmp
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Настройка многоэкземплярности в дистрибутивах 
+\family typewriter
+Fedora
+\family default
+ предусматривает редактирование конфигурационных файлов:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+/etc/security/namespace.conf
+\family default
+ --- файл, в котором указываются многоэкземплярные папки, которые создаст
+ PAM при запуске системы;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+/etc/security/namespace.init
+\family default
+ --- скрипт инициализации многоэкземплярных папок;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+/etc/pam.d/<deamon> 
+\family default
+--- конфигурационные файлы PAM демонов.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Синтаксис конфигурационного файла 
+\family typewriter
+/etc/security/namespace.conf 
+\family default
+следующий:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+polydir instance_prefix method list_of_uids
+\end_layout
+
+\end_inset
+
+
+\family typewriter
+polydir
+\family default
+ --- путь к многоэкземплярной папке;
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+instance_prefix
+\family default
+ --- базовая директория для многоэкземплярной директории;
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+method
+\family default
+ --- метод, с помощью которого создаются экземпляры, может принимать следующие
+ значения: 
+\family typewriter
+user
+\family default
+, 
+\family typewriter
+context
+\family default
+, 
+\family typewriter
+level
+\family default
+;
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+list_of_uids
+\family default
+ --- список пользователей, для которых PAM не будет создавать многоэкземплярные
+ папки.
+\end_layout
+
+\begin_layout Standard
+Далее приводится пример создания многоэкземплярных директорий 
+\family typewriter
+/tmp
+\family default
+ и 
+\family typewriter
+/var/tmp
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+/tmp		/tmp/tmp-inst/		level	root
+\end_layout
+
+\begin_layout Plain Layout
+
+/var/tmp	/var/tmp/tmp-inst/	level	root
+\end_layout
+
+\end_inset
+
+В данном случае создаются многоэкземплярные папки 
+\family typewriter
+/tmp/
+\family default
+ и 
+\family typewriter
+/var/tmp
+\family default
+, принцип создания которых основан на переключении уровней пользователей
+ для всех пользователей, за исключением 
+\family typewriter
+root
+\family default
+.
+ В данном случае пользователь 
+\family typewriter
+root 
+\family default
+может 
+\begin_inset Quotes fld
+\end_inset
+
+видеть
+\begin_inset Quotes frd
+\end_inset
+
+ директории 
+\family typewriter
+/tmp/tmp-inst/
+\family default
+ и 
+\family typewriter
+/var/tmp/tmp-inst/ 
+\family default
+и все экземпляры данных папок, находящихся в них.
+\end_layout
+
+\begin_layout Standard
+Далее требуется создать вручную эти многоэкземплярные папки:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# mkdir /tmp/tmp-inst/ /var/tmp/tmp-inst/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Данным директориям необходимо назначить права 
+\family typewriter
+000
+\family default
+ и установить владельца папки 
+\family typewriter
+root
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# chmod 000 /tmp/tmp-inst/ /var/tmp/tmp-inst/
+\end_layout
+
+\begin_layout Plain Layout
+
+# chown root.root /tmp/tmp-inst/ /var/tmp/tmp-inst/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В данном примере многоэкземплярные папки 
+\family typewriter
+/var/tmp 
+\family default
+и 
+\family typewriter
+/tmp/ 
+\family default
+создаются для всех пользователей, за исключением пользователя 
+\family typewriter
+root
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+При необходимости работы программ с многоэкземплярными директориями, в конфигура
+ционный файл PAM соответствующей программы добавляется строка:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+session	required	pam_namespace.so
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
 Формат сертификатов открытых ключей X509
 \end_layout
 
@@ -2187,14 +2555,11 @@ Basic Constraints
  (основные ограничения), используемое только для удостоверяющих центров.
 \end_layout
 
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
+\begin_layout --Separator--
 
 \end_layout
 
-\begin_layout Section
+\begin_layout Subsection
 Менеджер пакетов RPM
 \end_layout
 
@@ -2308,7 +2673,7 @@ rpm-build
  
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 \begin_inset CommandInset label
 LatexCommand label
 name "sub:Модификация-исходных-текстов"
@@ -4067,22 +4432,6 @@ pgcert
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-NormalStretch
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 \begin_inset listings
 inline false
 status open
@@ -4240,22 +4589,6 @@ rm -rf %{_buildroot}
 \begin_layout Plain Layout
 
 %{_bindir}/pgcert
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-LargeStretch
 \end_layout
 
 \end_inset
@@ -4701,19 +5034,6 @@ SELINUXTYPE=mls
 \end_deeper
 \begin_layout Enumerate
 После чего расставляются метки безопасности в файловой системе:
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-NormalStretch
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_deeper
@@ -4730,19 +5050,6 @@ status open
 \begin_layout Plain Layout
 
 # reboot
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-LargeStretch
 \end_layout
 
 \end_inset
@@ -4896,25 +5203,13 @@ status open
 Настроить механизм многоэкземплярности папок:
 \end_layout
 
+\begin_deeper
 \begin_layout Enumerate
 В конфигурационном файле 
 \family typewriter
 /etc/security/namespace.conf
 \family default
  записать следующие строки:
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-NormalStretch
-\end_layout
-
-\end_inset
-
-
 \begin_inset listings
 inline false
 status open
@@ -4932,19 +5227,6 @@ status open
 \begin_layout Plain Layout
 
 $HOME		$HOME/$USER.int/    level root
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-LargeStretch
 \end_layout
 
 \end_inset
@@ -4989,87 +5271,13 @@ session required pam_namespace.so
 
 \end_layout
 
-\begin_layout Enumerate
-Создается пользователь 
-\family typewriter
-user1
-\family default
- и назначается пароль 
-\family typewriter
-123456
-\family default
-:
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-NormalStretch
-\end_layout
-
-\end_inset
-
- 
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# useradd user1
-\end_layout
-
-\begin_layout Plain Layout
-
-# passwd user1
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-LargeStretch
-\end_layout
-
-\end_inset
-
-Аналогично и для 
-\family typewriter
-user2
-\family default
-, 
-\family typewriter
-user3
-\family default
-.
-\end_layout
-
+\end_deeper
 \begin_layout Enumerate
 Создается пользователь SELinux 
 \family typewriter
 user_u
 \family default
-, сущность которого будет сопоставлена с пользователями 
-\family typewriter
-user1
-\family default
-, 
-\family typewriter
-user2
-\family default
- и 
-\family typewriter
-user3
-\family default
-:
+, сущность которого будет сопоставлена с пользователями клиентской машины:
 \begin_inset listings
 inline false
 status open
@@ -5077,114 +5285,6 @@ status open
 \begin_layout Plain Layout
 
 # semanage user -m -r s0-s3:c0.c1023 user_u
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Пользователям системы ставится в соответствие пользователь 
-\family typewriter
-user_u
-\family default
- и назначается диапазон уровней:
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-NormalStretch
-\end_layout
-
-\end_inset
-
-
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# semanage login -a -s user_u -r s0 user1
-\end_layout
-
-\begin_layout Plain Layout
-
-# semanage login -a -s user_u -r s0-s2 user2
-\end_layout
-
-\begin_layout Plain Layout
-
-# senanage login -a -s user_u -r s1-s3:c0.c10 user3
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-LargeStretch
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-В соответствии с контекстами пользователей, маркируются их домашние каталоги:
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-NormalStretch
-\end_layout
-
-\end_inset
-
-
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# chcon -R -l 's0' /home/user1
-\end_layout
-
-\begin_layout Plain Layout
-
-# chcon -R -l 's0-s2' /home/user2
-\end_layout
-
-\begin_layout Plain Layout
-
-# chcon -R -l 's1-s3:c0.c10' /home/user3
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-LargeStretch
 \end_layout
 
 \end_inset
@@ -5420,19 +5520,6 @@ status open
 /var/lib/pgsql/9.3/data/postgresql.conf
 \family default
 :
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-NormalStretch
-\end_layout
-
-\end_inset
-
-
 \begin_inset listings
 inline false
 status open
@@ -5468,18 +5555,6 @@ ssl_ca_file = 'root.crt'
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-LargeStretch
-\end_layout
-
-\end_inset
-
 В первой строке указывается диапазон прослушиваемых адресов.
 \end_layout
 
@@ -5611,22 +5686,6 @@ clientcert=1
 
 \begin_layout Enumerate
 Создается приватный ключ и назначаются права на него 0600:
-\end_layout
-
-\begin_layout Enumerate
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-NormalStretch
-\end_layout
-
-\end_inset
-
-
 \begin_inset listings
 inline false
 status open
@@ -5639,19 +5698,6 @@ $ pgcert --genrsa --output server.key
 \begin_layout Plain Layout
 
 $ chmod 0600 server.key
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-LargeStretch
 \end_layout
 
 \end_inset
@@ -5713,20 +5759,7 @@ status open
 \family typewriter
 PGDATA
 \family default
-:
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-NormalStretch
-\end_layout
-
-\end_inset
-
- 
+: 
 \begin_inset listings
 inline false
 status open
@@ -5739,19 +5772,6 @@ status open
 \begin_layout Plain Layout
 
 # scp /etc/pki/cacert.pem postgres@192.168.100.2:/var/lib/pgsql/9.3/data/
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-LargeStretch
 \end_layout
 
 \end_inset
@@ -5834,18 +5854,6 @@ status open
 
 \begin_layout Standard
 Для подключения клиентов базы данных требуется создать пользователей PostgreSQL:
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-NormalStretch
-\end_layout
-
-\end_inset
-
  
 \begin_inset listings
 inline false
@@ -5864,22 +5872,6 @@ $ psql -c "CREATE ROLE user2 login;"
 \begin_layout Plain Layout
 
 $ psql -c "CREATE ROLE user3 login;"
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-LargeStretch
 \end_layout
 
 \end_inset
@@ -5913,6 +5905,475 @@ status open
 
 \end_layout
 
+\begin_layout Section
+Тестирование стенда
+\end_layout
+
+\begin_layout Standard
+В данном разделе будет описан процесс проверки корректности создания пользовател
+ьских сертификатов и их использование в СУБД PostgreSQL.
+\end_layout
+
+\begin_layout Subsection
+Автоматическая генерация сертификатов, содержащие метку пользователя
+\end_layout
+
+\begin_layout Standard
+Для тестирования автоматической генерации сертификатов, содержащих метку
+ пользователя, требует постоянно работающего удостоверяющего центра, а также
+ клиентской машины.
+\end_layout
+
+\begin_layout Standard
+На клиентской машине создаются пользователи 
+\family typewriter
+user1
+\family default
+, 
+\family typewriter
+user2
+\family default
+, 
+\family typewriter
+user3
+\family default
+.
+ Их пользовательские контексты представлены в 
+\emph on
+таблице 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Контексты-пользователей-клиентск"
+
+\end_inset
+
+
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="8" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell multirow="3" alignment="left" valignment="middle" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Пользователь
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="3" alignment="left" valignment="middle" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+контекст SELinux
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="4" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="3" alignment="left" valignment="middle" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+user1
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="3" alignment="left" valignment="middle" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+user_u:user_r:user_t:s0
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="4" alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="3" alignment="left" valignment="middle" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+user2
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="3" alignment="left" valignment="middle" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+user_u:user_r:user_t:s0-s2
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="4" alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="3" alignment="left" valignment="middle" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+user3
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="3" alignment="left" valignment="middle" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+user_u:user_r:user_t:s1-s3:c0.c10
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="4" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Контексты-пользователей-клиентск"
+
+\end_inset
+
+Контексты пользователей клиентской машины
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Далее будет приведена последовательность команд, необходимых для создания
+ пользователей и для назначения требуемого контекста безопасности.
+ Данная последовательность действий должна быть выполнена аналогично для
+ пользователей 
+\family typewriter
+user2
+\family default
+ и 
+\family typewriter
+user3
+\family default
+.
+\end_layout
+
+\begin_layout Enumerate
+Создается пользователь системы 
+\family typewriter
+user1
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# useradd user1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Назначается пароль 
+\family typewriter
+123456
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# passwd user1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Пользователю сопоставляется пользователь SELinux 
+\family typewriter
+user_u
+\family default
+ и назначается контекст согласно 
+\emph on
+таблице 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Контексты-пользователей-клиентск"
+
+\end_inset
+
+
+\emph default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# semanage login -a -s user_u -r s0 user1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Меняется контекст домашней папки пользователя в соответствии с его уровнем:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# chcon -R -l 's0' /home/user1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Для проверки корректности создания пользовательских сертификатов выполняются
+ следующие действия:
+\end_layout
+
+\begin_layout Enumerate
+Зайти за пользователя 
+\family typewriter
+user1
+\family default
+ в систему на клиентской машине.
+\end_layout
+
+\begin_layout Enumerate
+Выполнить команду, возвращающей текущий контекст пользователя:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ id -Z
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Удостовериться, что была создана папка 
+\family typewriter
+.postgresql
+\family default
+ и в ней находится 4 файла: 
+\family typewriter
+postgresql.key
+\family default
+, 
+\family typewriter
+postgresql.csr
+\family default
+, 
+\family typewriter
+postgresql.crt
+\family default
+ и
+\family typewriter
+ root.crt
+\family default
+ и удостовериться, что файлы промаркированы в соответствии с уровнем пользовател
+я:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ ls -alZ ~/.postgresql
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Удостовериться, что контекст безопасности, указанный в поле 
+\family typewriter
+SC
+\family default
+ сертификата пользователя 
+\family typewriter
+~/.postgresql/postgresql.crt
+\family default
+ соответствует текущему контексту безопасности пользователя:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ pgcert --text --cert ~/.postgresql/postgresql.crt
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section*
 Заключение
 \end_layout
@@ -5925,7 +6386,7 @@ status open
 
 
 \backslash
-addcontentsline{toc}{part}{Заключение}
+addcontentsline{toc}{section}{Заключение}
 \end_layout
 
 \end_inset
@@ -5950,7 +6411,7 @@ status open
 
 
 \backslash
-addcontentsline{toc}{part}{Список литературы}
+addcontentsline{toc}{section}{Список литературы}
 \end_layout
 
 \end_inset
@@ -6057,6 +6518,20 @@ bm.com/developerworks/ru/library/l-se_linux_02
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "6"
+key "Polyinstance"
+
+\end_inset
+
+ Robb R.
+ Romans --- Improve security with polyinstantiation [Электронный ресурс]
+ --- http://www.ibm.com/developerworks/linux/library/l-polyinstantiation/index.html
+?S_TACT=105AGX99&S_CMP=CP
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "7"
 key "X509"
 
 \end_inset
@@ -6068,7 +6543,7 @@ sl.com/x509-open-key-specifications.html
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "7"
+label "8"
 key "PKI"
 
 \end_inset
@@ -6090,7 +6565,7 @@ key "PKI"
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "8"
+label "9"
 key "RPM"
 
 \end_inset
@@ -6105,7 +6580,7 @@ key "RPM"
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "9"
+label "10"
 key "RH-RPM"
 
 \end_inset
@@ -6120,7 +6595,7 @@ key "RH-RPM"
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "10"
+label "11"
 key "OpenSSL"
 
 \end_inset
@@ -6132,7 +6607,7 @@ w.openssl.org
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "11"
+label "12"
 key "M2Crypto"
 
 \end_inset
@@ -6143,7 +6618,7 @@ key "M2Crypto"
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "12"
+label "13"
 key "PostgreSQL-cert"
 
 \end_inset
@@ -6204,6 +6679,18 @@ addcontentsline{toc}{subsection}{Приложение 1.
 \end_inset
 
 
+\end_layout
+
+\begin_layout Enumerate
+PAM
+\series bold
+ 
+\series default
+--- (Pluggable Authentication Modules, подключаемые модули аутентификации)
+ представляют собой набор разделяемых библиотек, которые позволяют интегрировать
+ различные низкоуровневые методы аутентификации в виде единого высокоуровневого
+ API.
+ 
 \end_layout
 
 \begin_layout Enumerate
