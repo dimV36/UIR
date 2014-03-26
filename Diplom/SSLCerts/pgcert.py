@@ -3,7 +3,7 @@ __author__ = 'dimv36'
 from M2Crypto import RSA, X509, EVP, ASN1
 from subprocess import check_output
 from datetime import datetime
-from optparse import OptionParser
+from optparse import OptionParser, OptionGroup
 from os import path, getuid
 from time import time
 
@@ -21,6 +21,12 @@ def password(*args, **kwargs):
     return DEFAULT_PASSWORD
 
 
+def check_path(file_path):
+    if not path.exists(file_path):
+        print("ERROR: File path %s not exist")
+        exit(1)
+
+
 def check_permissions():
     if getuid() != 0:
         print("Please, login as `root` and try again")
@@ -35,10 +41,9 @@ def make_private_key(bits, output):
     return 'Key was saved to %s' % output
 
 
-def make_request(private_key_file, username, context_string, output):
-    private_key = EVP.load_key(private_key_file, callback=password)
-    if not private_key:
-        raise ValueError, 'Not correct key path'
+def make_request(private_key_path, username, user_context, output):
+    check_path(private_key_path)
+    private_key = EVP.load_key(private_key_path, callback=password)
     request = X509.Request()
     request.set_pubkey(private_key)
     request.set_version(3)
@@ -49,12 +54,13 @@ def make_request(private_key_file, username, context_string, output):
     name.O = DEFAULT_FIELDS['O']
     name.OU = DEFAULT_FIELDS['OU']
     name.CN = username
-    if context_string:
-        context = context_string
+    if user_context:
+        context = user_context
     else:
         context = check_output("id -Z", shell=True).split('\n')[0]
     if not context:
-        raise ValueError, 'Command `id -Z` return with error code'
+        print('Command `id -Z` return with error code')
+        exit(1)
     name.SC = context
     request.set_subject_name(name)
     request.sign(private_key, 'sha1')
@@ -68,7 +74,8 @@ def make_certificate(request_file, ca_private_key_file, ca_certificate_file, out
     request = X509.load_request(request_file)
     public_key = request.get_pubkey()
     if not request.verify(public_key):
-        raise ValueError, 'Error verifying request'
+        print('Error verifying request')
+        exit(1)
     subject = request.get_subject()
     ca_certificate = X509.load_cert(ca_certificate_file)
     ca_private_key = EVP.load_key(ca_private_key_file, callback=password)
@@ -87,20 +94,18 @@ def make_certificate(request_file, ca_private_key_file, ca_certificate_file, out
     certificate.set_pubkey(public_key)
     certificate.add_ext(X509.new_extension("basicConstraints", "CA:FALSE", 1))
     if not output:
-        output = path.abspath(path.curdir) + '/%s.cert' % DEFAULT_FIELDS['CN']
+        output = path.abspath(path.curdir) + '/%s.crt' % DEFAULT_FIELDS['CN']
     certificate.sign(ca_private_key, 'sha1')
     certificate.save(output)
     return 'Certificate was saved to %s' % output
 
 
-def verify_certificate(certificate_file, ca_certificate):
+def verify_certificate(certificate_file, ca_certificate_file):
+    check_path(certificate_file)
+    check_path(ca_certificate_file)
     certificate = X509.load_cert(certificate_file)
-    if not certificate:
-        raise ValueError, 'Error loading certificate file'
-    ca_certificate = X509.load_cert(ca_certificate)
+    ca_certificate = X509.load_cert(ca_certificate_file)
     ca_public_key = ca_certificate.get_pubkey()
-    if not ca_certificate:
-        raise ValueError, 'Error loading certificate key file'
     if certificate.verify(ca_public_key):
         return 'status verification ok'
     else:
@@ -108,24 +113,48 @@ def verify_certificate(certificate_file, ca_certificate):
 
 
 def print_certificate(certificate_file_path):
-    if not path.exists(certificate_file_path):
-        raise ValueError, 'Certificate path %s not exist' % certificate_file_path
+    check_path(certificate_file_path)
     certificate = X509.load_cert(certificate_file_path)
     return certificate.as_text()
 
 
 def print_request(request_file_path):
-    if not path.exists(request_file_path):
-        raise ValueError, 'Request path %s not exist' % request_file_path
+    check_path(request_file_path)
     request = X509.load_request(request_file_path)
     return request.as_text()
 
 
+def get_subject_by_field(certificate_file_path, field):
+    check_path(certificate_file_path)
+    certificate = X509.load_cert(certificate_file_path)
+    subject = certificate.get_subject()
+    try:
+        result = subject.__getattr__(field)
+    except AttributeError:
+        return 'No field %s in subject of %s' % (field, certificate_file_path)
+    return result
+
+
+def get_subject(certificate_file_path):
+    check_path(certificate_file_path)
+    certificate = X509.load_cert(certificate_file_path)
+    return certificate.get_subject().as_text()
+
+
+def get_issuer_by_field(certificate_file_path, field):
+    check_path(certificate_file_path)
+    certificate = X509.load_cert(certificate_file_path)
+    subject = certificate.get_subject()
+    try:
+        result = subject.__getattr__(field)
+    except AttributeError:
+        return 'No field %s in issuer of %s'
+
+
 def make_ca(bits, cakey_file_path, cacert_file_path):
     make_private_key(bits, cakey_file_path)
+    check_path(cakey_file_path)
     private_key = EVP.load_key(cakey_file_path, callback=password)
-    if not private_key:
-        raise ValueError, 'Error loading CA private key'
     name = X509.X509_Name()
     name.C = DEFAULT_FIELDS['C']
     name.ST = DEFAULT_FIELDS['ST']
@@ -180,6 +209,13 @@ if __name__ == "__main__":
     parser.add_option("--pkey", dest="pkey", help="add path of private key")
     parser.add_option("--cert", dest="certificate", help="add path of certificate")
     parser.add_option("--output", type="string", dest="output", help="save to file output")
+    group = OptionGroup(parser, "Additional options",)
+    group.add_option("--get-issuer", dest="issuer", action="store_true", default=False,
+                     help="get issuer of certificate")
+    group.add_option("--get_subject", dest="subject", action="store_true", default=False,
+                     help="get subject of certificate")
+    group.add_option("--field", dest="field", help="set field")
+    parser.add_option_group(group)
     options, args = parser.parse_args()
     user = options.user
     context = options.context
@@ -190,6 +226,7 @@ if __name__ == "__main__":
     pkey = options.pkey
     certificate = options.certificate
     output = options.output
+    field = options.field
     if options.genrsa and options.bits:
         print(make_private_key(bits, output))
     elif options.genreq and options.pkey:
@@ -199,6 +236,8 @@ if __name__ == "__main__":
         print(make_certificate(request, cakey, cacert, output))
     elif options.verify and options.certificate and options.cacert:
         print(verify_certificate(certificate, cacert))
+    elif options.field and options.certificate:
+        print(get_subject_by_field(certificate, field))
     elif options.print_pem and options.certificate:
         print(print_certificate(certificate))
     elif options.print_pem and options.request:
