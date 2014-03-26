@@ -2026,7 +2026,7 @@ status collapsed
 \align center
 \begin_inset Graphics
 	filename files/polyinstance.png
-	width 100text%
+	width 95text%
 
 \end_inset
 
@@ -2408,13 +2408,13 @@ reference "fig:Структура-сертификата-X509"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
 	filename files/x509.jpg
-	width 75text%
+	width 95text%
 
 \end_inset
 
@@ -3763,7 +3763,7 @@ OptionParser
 \family typewriter
 OptionParse
 \family default
-, в который передаются необязательные опции:
+r, в который передаются необязательные опции:
 \family typewriter
  usage
 \family default
@@ -3775,7 +3775,7 @@ add_help_options
 \family typewriter
 True
 \family default
-, если необходимо создавать справочные сообщения, 
+, если необходимо создавать справочную страницу с доступными ключами, 
 \family typewriter
 description
 \family default
@@ -3784,18 +3784,70 @@ description
 \end_layout
 
 \begin_layout Standard
-Далее с помощью метода 
+Чтобы разделить опции на логические группы, используется класс 
 \family typewriter
-add_option 
+OptionGroup
 \family default
-добавляются опции командной строки, значение которых хранятся в поле, указанном
- в параметре 
-\family typewriter
-dest 
-\family default
-данного метода.
- В данном методе можно задать значение опции по умолчанию с помощью параметра
+.
+ При его создании нужно передать объект парсера, а также заголовок группы.
+ При желании указывается описание данной группы опций.
+ Чтобы отобразить группу в справочной странице, необходимо вызвать метод
  
+\family typewriter
+add_group_option()
+\family default
+: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+parser.add_group_option(group_object)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Если не требуется добавлять опцию в какую-либо из групп, то можно воспользоватьс
+я методом 
+\family typewriter
+add_option()
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+parser.add_option("option", dest="my_option", description="my_description",
+ ...)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В качестве параметров данного метода указывается 
+\family typewriter
+dest
+\family default
+ ---
+\family typewriter
+ 
+\family default
+поле, в котором будет храниться значение переменной после парсинга аргументов
+ командной строки.
+ Задать значение опции по умолчанию с помощью параметра 
 \family typewriter
 default
 \family default
@@ -3804,11 +3856,7 @@ default
 type
 \family default
 .
- Параметром 
-\family typewriter
-description 
-\family default
-указывается описание опции.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -3860,7 +3908,7 @@ status collapsed
 \align center
 \begin_inset Graphics
 	filename files/pgcert.png
-	width 75text%
+	width 95text%
 
 \end_inset
 
@@ -3877,7 +3925,7 @@ name "fig:Опции-утилиты-pgcert"
 
 \end_inset
 
-Опции утилиты 
+Справочная страница утилиты 
 \family typewriter
 pgcert
 \end_layout
@@ -3942,44 +3990,77 @@ output
 \begin_layout Standard
 Создание ключа реализуется с помощью метода 
 \family typewriter
-gen_key
+gen_key()
 \family default
  модуля 
 \family typewriter
 RSA
 \family default
-.
- Для автоматического создания ключа предлагается реализовать функцию 
-\family typewriter
-password
-\family default
-, которая будет возвращать пароль, определённый в утилите в глобальной переменно
-й 
-\family typewriter
-DEFAULT_PASSWORD
-\family default
-.
- Функция 
-\family typewriter
-password
-\family default
- передается в качестве аргумента функции 
-\family typewriter
-gen_key 
-\family default
-и её возвращаемое значение используется для генерации ключа.
- 
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+rsa_key = RSA.gen_key(bits, 65537, callback=password)
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-Далее в функции проверяется корректность пути, переданного в переменной
- 
+Вторым параметром передается экспонента --- простое число, используемое
+ при создании шифра парольной фразы в алгоритме RSA.
+ Для автоматического ввода пароля используется функция 
+\family typewriter
+password()
+\family default
+, чьё описание приведено дальше.
+\end_layout
+
+\begin_layout Standard
+Для сохранения ключа на жесткий диск используется метод 
+\family typewriter
+save()
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+rsa_key.save_key(output, None)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Функция допускает сохранение ключа по 
+\begin_inset Quotes fld
+\end_inset
+
+альтернативному
+\begin_inset Quotes frd
+\end_inset
+
+ пути, в случае, если функции передано пустое значение в переменной 
 \family typewriter
 output
 \family default
 .
- Если путь неверный, то ключ будет сохранён в файл, находящийся в текущей
- папке пользователя, запустивший утилиту.
+ В таком случае путь файла, в который сохраняется ключ генерируется на основе
+ пути текущей директории и имени ключа 
+\family typewriter
+mykey.pem
+\family default
+.
 \end_layout
 
 \begin_layout Subsubsection
@@ -3989,7 +4070,7 @@ output
 \begin_layout Standard
 Создание запроса на подпись сертификата реализовано в функции 
 \family typewriter
-make_request(private_key_file, username, context_string, output)
+make_request(private_key_path, username, user_context, output)
 \family default
 .
 \end_layout
@@ -4002,7 +4083,7 @@ make_request(private_key_file, username, context_string, output)
 
 \family typewriter
 \series bold
-private_key_file
+private_key_path
 \family default
  
 \series default
@@ -4023,7 +4104,7 @@ username
 
 \family typewriter
 \series bold
-context_string
+user_context
 \family default
 \series default
  --- контекст безопасности пользователя;
@@ -4037,7 +4118,7 @@ output
 \family default
  
 \series default
---- путь к файлу, в который будет сохранён запрос.
+--- путь к файлу, в который будет сохранён запрос
 \end_layout
 
 \begin_layout --Separator--
@@ -4045,35 +4126,144 @@ output
 \end_layout
 
 \begin_layout Standard
-На первых этапах загружается приватный ключ по переданному пути 
+Работа данной функции начинается с 
 \family typewriter
-private_key_file
+check_path()
 \family default
-, поэтому для правильной работы программы необходимо, чтобы этот путь был
- правильным.
- Субъект сертификата устанавливается в соответствии с полями словаря 
+, определяющей, корректный ли путь был передан утилите, после чего предпринимает
+ся попытка загрузки приватного ключа пользователя.
+\end_layout
+
+\begin_layout Standard
+Субъект сертификата устанавливается автоматически по значениям полей переменной
+ 
 \family typewriter
 DEFAULT_FIELDS
 \family default
-, а также уточняется при помощи значений переданных переменных (
+.
+ Значение поля 
+\family typewriter
+CN
+\family default
+ субъекта корректируется значением переменной 
 \family typewriter
 username
 \family default
-, 
+, если оно непустое:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+name.CN = DEFAULT_FIELDS['CN']
+\end_layout
+
+\begin_layout Plain Layout
+
+if username:
+\end_layout
+
+\begin_layout Plain Layout
+
+	name.CN = username
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Аналогично и с полем 
 \family typewriter
-context_string
+SC
 \family default
-), если они не пустые.
- В случае, если данные переменные пустые, используется текущие имя пользователя
- и его контекст, вычисленные системным вызовом.
- Объект запроса, созданный ранее в функции, подписывается приватным ключом
+, но в данном случае контекст пользователя берётся из системы посредством
+ вызова команды 
+\family typewriter
+id -Z
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if user_context:
+\end_layout
+
+\begin_layout Plain Layout
+
+        context = user_context
+\end_layout
+
+\begin_layout Plain Layout
+
+    else:
+\end_layout
+
+\begin_layout Plain Layout
+
+        context = check_output("id -Z", shell=True).split('
+\backslash
+n')[0]
+\end_layout
+
+\begin_layout Plain Layout
+
+    if not context:
+\end_layout
+
+\begin_layout Plain Layout
+
+        print('Command `id -Z` return with error code')
+\end_layout
+
+\begin_layout Plain Layout
+
+        exit(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+name.SC = context
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В случае ошибки получения контекста (это может произойти только, если SELinux
+ отключён), происходит незамедлительный выход из утилиты.
+\end_layout
+
+\begin_layout Standard
+Объект запроса, созданный ранее в функции, подписывается приватным ключом
  пользователя и сохраняется по пути 
 \family typewriter
 output
 \family default
 .
- Предварительно выполняется проверка на корректность переданного в данной
- переменной пути.
+ Аналогично функции 
+\family typewriter
+make_private_key()
+\family default
+ допускается 
+\begin_inset Quotes fld
+\end_inset
+
+альтернативное 
+\begin_inset Quotes frd
+\end_inset
+
+сохранение запроса на подпись сертификата.
  
 \end_layout
 
@@ -4084,7 +4274,7 @@ output
 \begin_layout Standard
 Создание сертификата пользователя реализовано в функции 
 \family typewriter
-make_certificate(request_file, ca_private_key_file, ca_certificate_file,
+make_certificate(request_path, ca_private_key_path, ca_certificate_path,
  output)
 \family default
 .
@@ -4097,14 +4287,14 @@ root
 \end_layout
 
 \begin_layout Standard
-Аргументы фунrции:
+Аргументы функции:
 \end_layout
 
 \begin_layout Itemize
 
 \family typewriter
 \series bold
-request_file
+request_path
 \family default
 \series default
  --- путь к запросу на подпись;
@@ -4114,7 +4304,7 @@ request_file
 
 \family typewriter
 \series bold
-ca_private_key_file
+ca_private_key_path
 \family default
 \series default
  --- путь к приватному ключу удостоверяющего центра;
@@ -4124,7 +4314,7 @@ ca_private_key_file
 
 \family typewriter
 \series bold
-ca_certificate_file 
+ca_certificate_path 
 \family default
 \series default
 --- путь к сертификату удостоверяющего центра;
@@ -4145,17 +4335,130 @@ output
 \end_layout
 
 \begin_layout Standard
-При работе данной функции выполняется загрузка сертификата, импортируется
- публичный ключ, субъект сертификата и устанавливается в объект сертификата.
- Для того, чтобы номер сертификата был уникальным, он генерируется на основе
- unix_time.
- Срок действия пользовательского сертификата --- 1 год с момента подписи.
- Дополнительно устанавливается расширение сертификата методом 
+Работа функции начинается с вызова функции 
 \family typewriter
-add_ext
+check_path()
 \family default
-, определяющая, что данный сертификат нельзя использовать в качестве локального
- удостоверяющего центра:
+, определяющая корректность пути, переданной утилите, после чего выполняется
+ загрузка запроса из файла.
+ 
+\end_layout
+
+\begin_layout Standard
+Создается объект сертификата, вызовом конструктора 
+\family typewriter
+X509.X509()
+\family default
+.
+ Порядковый номер создается на основе 
+\family typewriter
+UNIX_TIME
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+certificate.set_serial_number(time().as_integer_ratio()[0])
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Срок действия сертификата устанавливается следующим образом:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+not_before = ASN1.ASN1_UTCTIME()
+\end_layout
+
+\begin_layout Plain Layout
+
+not_before.set_datetime(datetime.today())
+\end_layout
+
+\begin_layout Plain Layout
+
+not_after = ASN1.ASN1_UTCTIME()
+\end_layout
+
+\begin_layout Plain Layout
+
+not_after.set_datetime(datetime(datetime.today().year + 1, datetime.today().month,
+ datetime.today().day))
+\end_layout
+
+\begin_layout Plain Layout
+
+certificate.set_not_before(not_before)
+\end_layout
+
+\begin_layout Plain Layout
+
+certificate.set_not_after(not_after)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Таким образом, сертификат действителен с момента выпуска его удостоверяющим
+ центром в течение 1 года.
+\end_layout
+
+\begin_layout Standard
+Выполняется загрузка сертификата удостоверяющего центра и приватного ключа
+ в переменные 
+\family typewriter
+ca_certificate 
+\family default
+и
+\family typewriter
+ ca_private_
+\family default
+key.
+ Подписчик сертификата устанавливается из сертификата удостоверяющего центра:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+issuer = ca_certificate.get_issuer()
+\end_layout
+
+\begin_layout Plain Layout
+
+certificate.set_issuer(issuer)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Сертификат X509 версии 3 позволяет иметь расширения сертификата.
+ Для их добавления используется функция 
+\family typewriter
+add_ext()
+\family default
+.
+ Следующейс строкой добавляется расширение, которое не позволяет использовать
+ данный сертификат и приватный ключ в качестве удостоверяющего центра:
 \end_layout
 
 \begin_layout Standard
@@ -4174,22 +4477,22 @@ certificate.add_ext(X509.new_extension('basicConstraints', 'CA:FALSE', 1))
 \end_layout
 
 \begin_layout Standard
-
-\family typewriter
-Issuer
-\family default
- (подписывающий сертификат) --- субъект сертификата удостоверяющего центра.
-\end_layout
-
-\begin_layout Standard
-После того, как сертификат подписан приватным ключом удостоверяющего центра,
- он сохраняется на жесткий диск по пути 
+Сертификат подписывается приватным ключом удостоверяющего центра, затем
+ сохраняется по пути, указанном в переменной 
 \family typewriter
 output
 \family default
-, при условии его корректности.
- Иначе, сертификат сохраняется в текущую папку пользователя.
- 
+.
+ Аналогично функциям создания приватного ключа и запроса на подпись сертификата,
+ допускается сохранение сертификата по 
+\begin_inset Quotes fld
+\end_inset
+
+альтернативному
+\begin_inset Quotes frd
+\end_inset
+
+ пути.
 \end_layout
 
 \begin_layout Subsubsection
@@ -4209,10 +4512,11 @@ pgcert
 
 \family typewriter
 \series bold
-verify_certificate(certificate_file, ca_certificate) 
+verify_certificate(certificate_file, ca_certificate_file) 
 \family default
 \series default
---- действительно ли пользовательский сертификат был удостоверяющим центром;
+--- действительно ли пользовательский сертификат был выдан удостоверяющим
+ центром;
 \end_layout
 
 \begin_layout Itemize
@@ -4233,6 +4537,68 @@ print_request(request_file_path)
 \family default
 \series default
 --- распечатать запрос на создание сертификата в текстовом виде;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+get_subject_field(certificate_file_path, field)
+\family default
+ 
+\series default
+--- получить поле субъекта сертификата, указанное аргументом функции 
+\family typewriter
+field
+\family default
+;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+get_issuer_field(certificate_file_path)
+\family default
+ 
+\series default
+---
+\family typewriter
+\series bold
+ 
+\family default
+\series default
+получить поле подписывающего сертификат, указанное аргументом функции 
+\family typewriter
+field
+\series bold
+;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+get_subject(certificate_file_path) 
+\family default
+\series default
+--- получить имя субъекта сертификата
+\family typewriter
+\series bold
+;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+get_issuer(certificate_file_path) --- 
+\family default
+\series default
+получить имя подписывающего сертификата
+\family typewriter
+\series bold
+;
 \end_layout
 
 \begin_layout Itemize
@@ -4271,6 +4637,70 @@ cacert_file_path
 \family default
 .
  
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Subsubsection
+Вспомогательные функции утилиты
+\end_layout
+
+\begin_layout Standard
+Для реализации основных функций утилиты были созданы дополнительные функции:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+password(*args, **kwargs)
+\family default
+\series default
+ --- необходима, чтобы реализовать автоматическую генерацию RSA-ключа по
+ парольной фразе, ввод которой реализован в этой функции, а также используется
+ при загрузке ключа из файла.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+check_path(file_path)
+\family default
+ 
+\series default
+--- проверяет корректность пути, переданного при генерации запроса на подпись
+ сертификата, сертификата или при развёртывании удостоверяющего центра.
+ Если переданный функции путь не существует, возвращается соответствующее
+ сообщение и выполнение работы утилиты прекращается.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+check_permissions() 
+\family default
+\series default
+--- проверяет, запущена ли утилита от имени суперпользователя 
+\family typewriter
+root
+\family default
+, если нет, то выводит сообщение
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Please, login as `roor` and try again
+\end_layout
+
+\end_inset
+
+и завершает свою работу.
 \end_layout
 
 \begin_layout --Separator--
@@ -4386,6 +4816,58 @@ status open
 \begin_layout Plain Layout
 
 # pgcert --makeca
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Получить поле 
+\family typewriter
+CN
+\family default
+ имени субъекта:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ pgcert --get-subject --field CN
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Получить имя подписывающего сертификат:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ pgcert --get-issuer
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Проверить сертификат пользователя:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ pgcert --verify --cert mycert.pem
 \end_layout
 
 \end_inset
