@@ -406,7 +406,7 @@ height "1pt"
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Реализация механизма управления сертификатами пользователей, 
 \end_layout
 
 \end_inset
@@ -428,7 +428,7 @@ height "1pt"
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+содержащими метки безопасности
 \end_layout
 
 \end_inset
@@ -1061,33 +1061,92 @@ LargeStretch
 \end_layout
 
 \begin_layout Standard
-В современных информационных системах часто возникает задача разграничения
- полномочий пользователей на основе правил доступа к компонентам файловой
- системы операционной системы.
+Система мандатного разграничения доступа обладает возможностью назначения
+ мандатных меток для объектов и субъектов.
+ Многоуровневая система доступа необходима для обеспечения работы пользователей
+ операционной системы с различными видами информации, уровни которых различаются.
+ В дистрибутивах Fedora используется в качестве основной системы защиты
+ SELinux.
+ Для возможности назначения мандатных меток для субъектов и объектов, выполняетс
+я дополнительная настройка SELinux в режиме MLS.
 \end_layout
 
 \begin_layout Standard
-В операционной системе Linux традиционно используется дискреционная модель
- контроля прав доступа.
- Он предполагает создание недвусмысленного соответствия субъект-объект.
- При наличии соответствующего разрешения доступ к объекту разрешается субъекту,
- иначе --- в доступе отказывается.
+В системе управления базами данных PostgreSQL традиционно используется дискрецио
+нная модель контроля доступа, основанная на правах к объектам базы данных.
+ Система мандатного разграничения доступа реализована в качестве расширения
+ к PostgreSQL в виде динамической библиотеки sepgsql.
+ Она позволяет назначать контекст безопасности SELinux для объектов базы
+ данных.
+ Однако, в текущей реализации модуля метка безопасности передается по сети
+ с помощью двух возможных утилит: netlabel и IPSec.
+\end_layout
+
+\begin_layout Standard
+Утилита netlabel передает метку безопасности в пакетах в открытом текстовом
+ виде, что может вызвать компрометацию и её перехват.
+ Утилита IPSec устанавливает шифрованное соединение между машинами и передает
+ метку в зашифрованном виде.
+ Но в данном случае необходимо синхронизировать соответствие уровней безопасност
+и машин.
  
 \end_layout
 
 \begin_layout Standard
-Другим способом является мандатная модель контроля прав пользователей.
- При реализации этой модели пользователю и объекту операционной системы
- субъектам и объектам назначаются классификационные метки.
- С использованием этих меток строятся классификационные уровни.
- Посредством этих меток и реализуется механизм разграничения доступа.
+В данной работе предлагается использовать иной механизм передачи метки по
+ сети: использование сертификата X509, в котором будет создано дополнительное
+ поле, содержащее контекст пользователя.
+ Предложенный метод позволит устанавливать зашифрованное соединение между
+ машинами, проблема синхронизации уровня безопасности между машинами будет
+ также решена.
+ 
 \end_layout
 
 \begin_layout Standard
-SELinux --- реализация системы принудительного контроля доступа, которая
- может быть использована вместе с дискреционной.
- Каждый объект операционной системы имеет свой контекст.
- Доступ к объекту основывается за счёт политик --- правил.
+Целью данной работы является разработка механизма передачи метки по сети
+ с использованием сертификатов X509 на базе операционных систем Fedora 20.
+ Таким образом были сформулированы следующие задачи:
+\end_layout
+
+\begin_layout Enumerate
+Изучить базовые возможности SELinux, необходимые для получения метки безопасност
+и пользователя;
+\end_layout
+
+\begin_layout Enumerate
+Исследовать принципы построения сертификата X509, а также утилиты для создания
+ этих сертификатов на предмет доработки;
+\end_layout
+
+\begin_layout Enumerate
+Реализовать утилиту, создающую сертификат с полем, содержащим текущий контекст
+ пользователя, а также разработать механизм автоматической генерации сертификато
+в при переходе пользователя на новый мандатный уровень средствами многоэкземпляр
+ности папок операционной системы Fedora;
+\end_layout
+
+\begin_layout Enumerate
+Доработать программный код СУБД PostgreSQL для возможности применения контекста
+ безопасности, полученного из сертификата.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+SELinux является мощной, гибконастраиваемой системой мандатного разграничения
+ доступа, его поведение легко изменить, не изменяя программный код операционной
+ системы.
+ На протяжении всей работы SELinux будет работать в разрешающем режиме.
+ 
+\end_layout
+
+\begin_layout Standard
+Основную часть работы составляет доработка программного кода библиотек,
+ используемых для создания сертификатов, и СУБД PostgreSQL, а также их настройка.
+ Тестирование реализованных возможностей будет проводиться в запрещающем
+ режиме SELinux.
  
 \end_layout
 
@@ -4018,7 +4077,7 @@ rsa_key = RSA.gen_key(bits, 65537, callback=password)
 \family typewriter
 password()
 \family default
-, чьё описание приведено дальше.
+, описание которой приведено ниже.
 \end_layout
 
 \begin_layout Standard
@@ -4835,7 +4894,7 @@ status open
 
 \begin_layout Plain Layout
 
-$ pgcert --get-subject --field CN
+$ pgcert --subject --field CN
 \end_layout
 
 \end_inset
@@ -4851,7 +4910,7 @@ status open
 
 \begin_layout Plain Layout
 
-$ pgcert --get-issuer
+$ pgcert --issuer
 \end_layout
 
 \end_inset
@@ -6397,7 +6456,7 @@ status open
 \end_layout
 
 \begin_layout Subsection
-Автоматическая генерация сертификатов, содержащие метку пользователя
+Автоматическая генерация сертификатов, содержащих метку пользователя
 \end_layout
 
 \begin_layout Standard
@@ -6438,7 +6497,7 @@ reference "tab:Контексты-пользователей-клиентск"
 \begin_inset Float table
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -6761,11 +6820,7 @@ status open
 \end_layout
 
 \begin_layout Enumerate
-Зайти за пользователя 
-\family typewriter
-user1
-\family default
- в систему на клиентской машине.
+Зайти за пользователя в систему на клиентской машине.
 \end_layout
 
 \begin_layout Enumerate
@@ -6837,7 +6892,7 @@ status open
 
 \begin_layout Plain Layout
 
-$ pgcert --text --cert ~/.postgresql/postgresql.crt
+$ pgcert --subject --field SC --cert ~/.postgresql/postgresql.crt
 \end_layout
 
 \end_inset
@@ -6845,8 +6900,167 @@ $ pgcert --text --cert ~/.postgresql/postgresql.crt
 
 \end_layout
 
+\begin_layout Enumerate
+Выполнить переход на другой мандатный уровень с помощью команды 
+\family typewriter
+newrole
+\family default
+.
+\end_layout
+
+\begin_layout Enumerate
+Повторить шаги 1-4 и удостовериться в соответствии контекста безопасности,
+ указанном в сертификате, и контекста безопасности пользователя, полученного
+ с помощью команды системы.
+\end_layout
+
 \begin_layout --Separator--
 
+\end_layout
+
+\begin_layout Standard
+Данная проверка может проводиться для других пользователей.
+ 
+\end_layout
+
+\begin_layout Standard
+На 
+\emph on
+рисунках
+\emph default
+ 
+\family typewriter
+\emph on
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:user_login"
+
+\end_inset
+
+
+\family default
+ и 
+\family typewriter
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:user_newrole"
+
+\end_inset
+
+
+\family default
+ 
+\emph default
+приведены
+\family typewriter
+ с
+\family default
+криншоты проверки корректности создания сертификатов для
+\family typewriter
+ user2
+\family default
+ с меткой безопасности пользователя.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/user2_pgcert.png
+	width 95text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:user_login"
+
+\end_inset
+
+Проверка корректности создания сертификата с меткой безопасности пользователя
+ 
+\family typewriter
+user2
+\family default
+ после входа в систему
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/user2_new_pgcert.png
+	width 95text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:user_newrole"
+
+\end_inset
+
+Проверка корректности создания сертификата с меткой безопасности пользователя
+ 
+\family typewriter
+user2
+\family default
+ после перехода на новый мандатный уровень
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Полученные результаты говорят о корректности разработанного алгоритма автоматиче
+ского создания пользовательских сертификатов.
 \end_layout
 
 \begin_layout Standard
@@ -6873,6 +7087,59 @@ addcontentsline{toc}{section}{Заключение}
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
+Для обеспечения механизма передачи метки безопасности с использованием сертифика
+тов X509 были доработаны ряд библиотек: OpenSSL, M2Crypto, а также создана
+ утилита для их генерации в операционной системе Fedora 20.
+ Данная операционная система выпускается с исходным кодом, что упрощает
+ её настройку и модификацию отдельных компонентов.
+\end_layout
+
+\begin_layout Standard
+Автоматическое создание сертификатов реализовано при помощи модуля pam_namespace
+, сконфигурированного определённым образом.
+ 
+\end_layout
+
+\begin_layout Standard
+В ходе работы было доработано библиотеки M2Crypto, OpenSSL для обеспечения
+ возможности создания в сертификате поля с контекстом пользователя.
+\end_layout
+
+\begin_layout Standard
+Реализована программа pgcert, реализующая возможности создания приватных
+ ключей, запросов на подписание сертификатов и сертификатов пользователей,
+ а также возможность просмотра информации об сертификате.
+\end_layout
+
+\begin_layout Standard
+Все улучшения библиотек оформлены в виде патчей, которые интегрированы в
+ RPM-пакеты и могут быть установлены на существующую систему.
+\end_layout
+
+\begin_layout Standard
+В процессе работы были исследованы и использованы возможности следующих
+ программ, систем и технологий: Selinux, формат открытых сертификатов X509,
+ OpenSSL, M2Crypto, PostgreSQL.
+\end_layout
+
+\begin_layout Standard
+Следующие этапы разработки будут направлены на улучшение проекта:
+\end_layout
+
+\begin_layout Itemize
+Совершенствование программного кода утилиты pgcert, дополнение её функционала;
+\end_layout
+
+\begin_layout Itemize
+Совершенствование механизма защиты сертификатов с помощью SELinux и средств
+ операционной системы.
+\end_layout
+
+\begin_layout --Separator--
 
 \end_layout
 

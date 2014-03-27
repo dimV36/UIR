@@ -96,7 +96,7 @@ def make_certificate(request_path, ca_private_key_file, ca_certificate_file, out
     certificate.set_not_after(not_after)
     certificate.set_issuer(issuer)
     certificate.set_pubkey(public_key)
-    certificate.add_ext(X509.new_extension("basicConstraints", "CA:FALSE", 1))
+    certificate.add_ext(X509.new_extension("selinuxContext", "test", 1))
     if not output:
         output = path.abspath(path.curdir) + '/%s.crt' % DEFAULT_FIELDS['CN']
     certificate.sign(ca_private_key, 'sha1')
@@ -185,6 +185,7 @@ def make_ca(bits, cakey_file_path, cacert_file_path):
     certificate.set_not_before(not_before)
     certificate.set_not_after(not_after)
     certificate.add_ext(X509.new_extension("basicConstraints", "CA:TRUE", 1))
+    certificate.add_ext(X509.new_extension("testExtension", "user_u:user_r:user_t:s0", 1))
     certificate.sign(private_key, 'sha1')
     certificate.save(cacert_file_path)
     return 'Certificate was saved to %s' % cacert_file_path
