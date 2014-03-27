@@ -26,7 +26,7 @@
       <file leaf-file-name="pgcert.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pgcert.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="98" column="66" selection-start="3250" selection-end="3250" vertical-scroll-proportion="0.6133909" vertical-offset="902" max-vertical-offset="4080">
+            <state line="92" column="35" selection-start="2915" selection-end="2915" vertical-scroll-proportion="0.5161987" vertical-offset="902" max-vertical-offset="4080">
               <folding>
                 <element signature="e#40#81#0" expanded="true" />
               </folding>
@@ -548,7 +548,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pgcert.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="98" column="66" selection-start="3250" selection-end="3250" vertical-scroll-proportion="0.6133909" vertical-offset="902" max-vertical-offset="4080">
+        <state line="92" column="35" selection-start="2915" selection-end="2915" vertical-scroll-proportion="0.5161987" vertical-offset="902" max-vertical-offset="4080">
           <folding>
             <element signature="e#40#81#0" expanded="true" />
           </folding>
