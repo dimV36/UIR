@@ -17,3 +17,5 @@ http://www.postgresql.org/docs/9.3/static/xfunc-c.html
 http://www.postgresql.org/docs/9.3/static/sepgsql.html
 http://www.postgresql.org/download/linux/redhat/
 http://www.postgresql.org/docs/9.3/static/sslinfo.html
+
+http://stackoverflow.com/questions/4581225/accessing-csr-extension-stack-in-m2crypto
