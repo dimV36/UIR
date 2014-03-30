@@ -1,7 +1,7 @@
 #!/bin/sh -p
 # It receives polydir path as $1, the instance path as $2, 
 # a flag whether the instance dir was newly created (0 - no, 1 - yes) in $3,
-# and user name in $4.
+# and user name in $4 and his context in $5.
 #
 # The following section will copy the contents of /etc/skel if this is a
 # newly created home directory.
@@ -9,12 +9,13 @@ if [ "$3" = 1 ]; then
         # This line will fix the labeling on all newly created directories
         [ -x /sbin/restorecon ] && /sbin/restorecon "$1"
         user="$4"
+        context=$5
         passwd=$(getent passwd "$user")
         homedir=$(echo "$passwd" | cut -f6 -d":")
 	pgcertdir="$1/.postgresql"
         ca="192.168.100.4"
         certdir="/root/certs"
-        password="123456"
+        ca_password="123456"
         if [ "$1" = "$homedir" ]; then
                 gid=$(echo "$passwd" | cut -f4 -d":")
                 cp -rT /etc/skel "$homedir"
@@ -25,41 +26,16 @@ if [ "$3" = 1 ]; then
                 [ -x /sbin/restorecon ] && /sbin/restorecon -R "$homedir"
 
                 mkdir $pgcertdir
-                context=`sshpass -p $password ssh -o StrictHostKeyChecking=no $user@127.0.0.1 "id -Z"` >> /dev/null
-		echo "$context"
-                seuser=$(echo "$context" | cut -f1 -d":")
-                setype=$(echo "$context" | cut -f2 -d":")
-                serole=$(echo "$context" | cut -f3 -d":")	
-                selevel=$(echo "$2" | cut -f4 -d":" | cut -f1 -d"_")
-                secategory=$(echo "$2" | cut -f5 -d ":" | cut -f1 -d"_")
-                min_selevel=$(echo "$selevel" | cut -f1 -d"-")
-                max_selevel=$(echo "$selevel" | cut -f2 -d"-")
-                if [ "$min_selevel" = "$max_selevel" ]
-                then
-                        secontext="$seuser:$setype:$serole:$min_selevel"
-                else
-                        secontext="$seuser:$setype:$serole:$selevel"
-                fi
-                if [ ! "$secategory" = "" ]
-                then
-                        min_secategory=$(echo "$secategory" | cut -f1 -d".")
-                        max_secategory=$(echo "$secategory" | cut -f2 -d".")
-                        if [ "$min_secategory" = "$max_secategory" ]
-                        then
-                                secontext="$secontext:$secategory"
-                        else
-                                secontext="$secontext:$min_secategory.$max_secategory"
-                        fi
-                fi
-                pgcert --genrsa --bits 2048 --output $pgcertdir/postgresql.key > /dev/null
+                pgcert --genrsa --bits 2048 --output $pgcertdir/postgresql.key >> /dev/null
                 chmod 0600 $pgcertdir/postgresql.key
-                pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --context $secontext --output $pgcertdir/postgresql.csr >> /dev/null
-                sshpass -p $password scp -o StrictHostKeyChecking=no $pgcertdir/postgresql.csr root@$ca:$certdir
-                sshpass -p $password ssh -o StrictHostKeyChecking=no -T root@$ca "pgcert --gencert --request $certdir/postgresql.csr --output $certdir/postgresql.crt"
-                sshpass -p $password scp -o StrictHostKeyChecking=no root@$ca:$certdir/postgresql.crt $pgcertdir/postgresql.crt
-                sshpass -p $password scp -o StrictHostKeyChecking=no root@$ca:/etc/pki/CA/cacert.pem $pgcertdir/root.crt
-                #rm -f $pgcertdir/postgresql.csr
+                pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --context $context --output $pgcertdir/postgresql.csr >> /dev/null
+                sshpass -p $ca_password scp -o StrictHostKeyChecking=no $pgcertdir/postgresql.csr root@$ca:$certdir
+                sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca "pgcert --gencert --request $certdir/postgresql.csr --output $certdir/postgresql.crt" >> /dev/null
+                sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca:$certdir/postgresql.crt $pgcertdir/postgresql.crt
+                sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca "rm -fr $certdir/*"
+                sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca:/etc/pki/CA/cacert.pem $pgcertdir/root.crt
                 chown -R $user.$user $pgcertdir
+                
         fi
 fi
 
