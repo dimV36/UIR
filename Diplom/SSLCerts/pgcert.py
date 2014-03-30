@@ -64,12 +64,15 @@ def make_request(private_key_path, username, user_context, output):
     if not context:
         print('Command `id -Z` return with error code')
         exit(1)
-    name.SC = context
     request.set_subject_name(name)
+    stack = X509.X509_Extension_Stack()
+    stack.push(X509.new_extension("selinuxContext", context, 0))
+    request.add_extensions(stack)
     request.sign(private_key, 'sha1')
     if not output:
         output = path.abspath(path.curdir) + '/%s.csr' % DEFAULT_FIELDS['CN']
     request.save_pem(output)
+    print(request.as_text())
     return 'Request was saved to %s' % output
 
 
@@ -96,7 +99,9 @@ def make_certificate(request_path, ca_private_key_file, ca_certificate_file, out
     certificate.set_not_after(not_after)
     certificate.set_issuer(issuer)
     certificate.set_pubkey(public_key)
-    certificate.add_ext(X509.new_extension("selinuxContext", "test", 1))
+    extension_stack = X509.X509_Extension_Stack()
+    extension = X509
+    certificate.add_ext(X509.new_extension("selinuxContext", "test", 0))
     if not output:
         output = path.abspath(path.curdir) + '/%s.crt' % DEFAULT_FIELDS['CN']
     certificate.sign(ca_private_key, 'sha1')
@@ -185,9 +190,11 @@ def make_ca(bits, cakey_file_path, cacert_file_path):
     certificate.set_not_before(not_before)
     certificate.set_not_after(not_after)
     certificate.add_ext(X509.new_extension("basicConstraints", "CA:TRUE", 1))
-    certificate.add_ext(X509.new_extension("testExtension", "user_u:user_r:user_t:s0", 1))
+#    certificate.add_ext(X509.new_custom_extension("1.2.3.4.5", "selinuxContext", "X509v3 SELinux Context", "test"))
+    certificate.add_ext(X509.new_custom_extension("1.2.3.4.5", "selinuxContext", "X509v3 SELinux Context", "MyTest", 1))
     certificate.sign(private_key, 'sha1')
     certificate.save(cacert_file_path)
+    print(certificate.as_text())
     return 'Certificate was saved to %s' % cacert_file_path
 
 
@@ -243,7 +250,7 @@ if __name__ == "__main__":
     elif options.genreq and options.pkey:
         print(make_request(options.pkey, options.user, options.context, options.output))
     elif options.gencert and options.request:
-        check_permissions()
+#        check_permissions()
         print(make_certificate(options.request, options.cakey, options.cacert, options.output))
     elif options.verify and options.certificate and options.cacert:
         print(verify_certificate(options.certificate, options.cacert))
@@ -260,7 +267,7 @@ if __name__ == "__main__":
     elif options.print_pem and options.request:
         print(print_request(options.request))
     elif options.makeca:
-        check_permissions()
+#        check_permissions()
         print(make_ca(options.bits, options.cakey, options.cacert))
     else:
         parser.print_help()
