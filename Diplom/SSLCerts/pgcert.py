@@ -55,8 +55,7 @@ def make_request(private_key_path, username, user_context, output, is_printed):
     name.O = DEFAULT_FIELDS['O']
     name.OU = DEFAULT_FIELDS['OU']
     name.CN = DEFAULT_FIELDS['CN']
-    if not username:
-        name.CN = username
+    name.CN = username
     if user_context:
         context = user_context
     else:
