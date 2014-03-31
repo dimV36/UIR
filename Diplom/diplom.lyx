@@ -109,7 +109,7 @@ figs-within-sections
 \bibtex_command default
 \index_command default
 \float_placement H
-\paperfontsize 14
+\paperfontsize 12
 \spacing single
 \use_hyperref true
 \pdf_bookmarks true
@@ -119,7 +119,7 @@ figs-within-sections
 \pdf_breaklinks false
 \pdf_pdfborder true
 \pdf_colorlinks false
-\pdf_backref page
+\pdf_backref false
 \pdf_pdfusetitle true
 \papersize default
 \use_geometry true
@@ -406,7 +406,7 @@ height "1pt"
 \begin_inset Text
 
 \begin_layout Plain Layout
-Реализация механизма управления сертификатами пользователей, 
+Реализация механизма выбора клиентом PostgreSQL 
 \end_layout
 
 \end_inset
@@ -428,7 +428,7 @@ height "1pt"
 \begin_inset Text
 
 \begin_layout Plain Layout
-содержащими метки безопасности
+сертификата пользователя, содержащего метку безопасности
 \end_layout
 
 \end_inset
@@ -1159,30 +1159,6 @@ SELinux является мощной, гибконастраиваемой си
 
 \begin_layout Section
 Теоретические сведения
-\end_layout
-
-\begin_layout Standard
-В работе используется большое количество технологий и
-\begin_inset space ~
-\end_inset
-
-библиотек.
- Понятия, имеющие особую важность, раскрыты подробно в
-\begin_inset space ~
-\end_inset
-
-данном разделе, более полный список терминов см.
- 
-\emph on
-в
-\begin_inset space ~
-\end_inset
-
-приложении
-\begin_inset space ~
-\end_inset
-
-1.
 \end_layout
 
 \begin_layout Subsection
@@ -2015,143 +1991,55 @@ status open
 \end_layout
 
 \begin_layout Subsection
-Многоэкземплярность
+Инфраструктура открытых ключей
 \end_layout
 
 \begin_layout Standard
-Многоэкземплярность
-\begin_inset space ~
-\end_inset
 
-
+\series bold
+Инфраструктура открытых ключей
+\series default
+ 
 \begin_inset CommandInset citation
 LatexCommand cite
-key "Polyinstance"
+key "PKI"
 
 \end_inset
 
- --- это концепция создания для одного экземпляра какого-либо объекта или
- класса нескольких независимых копий.
- Она может быть применена для создание копий по различным признаками: по
- имени пользователя, по уровню или контексту безопасности пользователя.
- Механизм многоэкземплярности применяется для обеспечение большей безопасности
- при работе пользователей на различных уровнях доступа на одной машине.
- 
-\end_layout
-
-\begin_layout Standard
-Создание копий реализуется с помощью модулей PAM.
- Во время входа пользователя в операционную систему модуль PAM создает в
- пределах системной экземплярной директории свою личную, которую 
-\begin_inset Quotes fld
-\end_inset
-
-видит
-\begin_inset Quotes frd
-\end_inset
-
- только пользователь, а также файлы и папки, находящиеся в его личной папке.
- Если же уровень безопасности пользователя будет изменён в процессе его
- работы, пользователь будет 
-\begin_inset Quotes fld
-\end_inset
-
-видеть
-\begin_inset Quotes frd
-\end_inset
-
- другой экземпляр директории, соответствующей новому уровню.
- Более наглядно механизм многоэкземплярности представлен
+ (
 \emph on
- на рисунке 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Многоэкземплярность-директории-/"
-
-\end_inset
-
-
+PKI
 \emph default
-.
+, 
+\emph on
+Public Key Infrastructure
+\emph default
+) --- набор средств (технических, материальных, людских и т.
+ д.), распределенных служб и компонентов, в совокупности используемых для
+ поддержки криптозадач на основе закрытого и открытого ключей.
 \end_layout
 
 \begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename files/polyinstance.png
-	width 95text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Многоэкземплярность-директории-/"
-
-\end_inset
-
-Многоэкземплярность директории 
-\family typewriter
-/tmp
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Настройка многоэкземплярности в дистрибутивах 
-\family typewriter
-Fedora
-\family default
- предусматривает редактирование конфигурационных файлов:
+В основе PKI лежит использование криптографической системы с открытым ключом
+ и несколько основных принципов:
 \end_layout
 
 \begin_layout Itemize
-
-\family typewriter
-/etc/security/namespace.conf
-\family default
- --- файл, в котором указываются многоэкземплярные папки, которые создаст
- PAM при запуске системы;
+закрытый ключ известен только его владельцу; 
 \end_layout
 
 \begin_layout Itemize
-
-\family typewriter
-/etc/security/namespace.init
-\family default
- --- скрипт инициализации многоэкземплярных папок;
+удостоверяющий центр создает сертификат открытого ключа, таким образом удостовер
+яя этот ключ; 
 \end_layout
 
 \begin_layout Itemize
+никто не доверяет друг другу, но все доверяют удостоверяющему центру; 
+\end_layout
 
-\family typewriter
-/etc/pam.d/<deamon> 
-\family default
---- конфигурационные файлы PAM демонов.
+\begin_layout Itemize
+удостоверяющий центр подтверждает или опровергает принадлежность открытого
+ ключа заданному лицу, которое владеет соответствующим закрытым ключом.
 \end_layout
 
 \begin_layout --Separator--
@@ -2159,206 +2047,45 @@ Fedora
 \end_layout
 
 \begin_layout Standard
-Синтаксис конфигурационного файла 
-\family typewriter
-/etc/security/namespace.conf 
-\family default
-следующий:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-polydir instance_prefix method list_of_uids
+PKI реализуется в модели клиент-сервер, то есть проверка какой-либо информации,
+ предоставляемой инфраструктурой может происходить только по инициативе
+ клиента.
 \end_layout
 
-\end_inset
-
-
-\family typewriter
-polydir
-\family default
- --- путь к многоэкземплярной папке;
+\begin_layout Subsubsection
+Основные компоненты PKI
 \end_layout
 
 \begin_layout Standard
-
-\family typewriter
-instance_prefix
-\family default
- --- базовая директория для многоэкземплярной директории;
+Удостоверяющий центр является основной структурой, которая создает цифровые
+ сертификаты подчинённых центров сертификации и конечных пользователей.
+ Он выполняет управляет сертификатами, а также является доверенной стороной.
 \end_layout
 
 \begin_layout Standard
-
-\family typewriter
-method
-\family default
- --- метод, с помощью которого создаются экземпляры, может принимать следующие
- значения: 
-\family typewriter
-user
-\family default
-, 
-\family typewriter
-context
-\family default
-, 
-\family typewriter
-level
-\family default
-;
+Сертификат открытого ключа (или сертификат) --- данные пользователя и его
+ открытый ключ, подписанный цифровой подписью удостоверяющего центра.
+ Подписав сертификат, удостоверяющий центр подтверждает, что лицо, владеющее
+ этим сертификатов, владеет закрытым ключом, соответствующим сертификату.
 \end_layout
 
 \begin_layout Standard
-
-\family typewriter
-list_of_uids
-\family default
- --- список пользователей, для которых PAM не будет создавать многоэкземплярные
- папки.
+Сертификат открытого ключа (чаще всего просто сертификат) — это данные пользоват
+еля и его открытый ключ, скрепленные подписью удостоверяющего центра.
+ Выпуская сертификат открытого ключа, удостоверяющий центр тем самым подтверждае
+т, что лицо, поименованное в сертификате, владеет секретным ключом, который
+ соответствует этому открытому ключу.
 \end_layout
 
 \begin_layout Standard
-Далее приводится пример создания многоэкземплярных директорий 
-\family typewriter
-/tmp
-\family default
- и 
-\family typewriter
-/var/tmp
-\family default
-:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-/tmp		/tmp/tmp-inst/		level	root
-\end_layout
-
-\begin_layout Plain Layout
-
-/var/tmp	/var/tmp/tmp-inst/	level	root
-\end_layout
-
-\end_inset
-
-В данном случае создаются многоэкземплярные папки 
-\family typewriter
-/tmp/
-\family default
- и 
-\family typewriter
-/var/tmp
-\family default
-, принцип создания которых основан на переключении уровней пользователей
- для всех пользователей, за исключением 
-\family typewriter
-root
-\family default
-.
- В данном случае пользователь 
-\family typewriter
-root 
-\family default
-может 
-\begin_inset Quotes fld
-\end_inset
-
-видеть
-\begin_inset Quotes frd
-\end_inset
-
- директории 
-\family typewriter
-/tmp/tmp-inst/
-\family default
- и 
-\family typewriter
-/var/tmp/tmp-inst/ 
-\family default
-и все экземпляры данных папок, находящихся в них.
+Репозиторий --- хранилище, содержащее сертификаты и списки отозванных сертификат
+ов.
+ Он необходим для распространения этих объектов среди пользователей.
 \end_layout
 
 \begin_layout Standard
-Далее требуется создать вручную эти многоэкземплярные папки:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# mkdir /tmp/tmp-inst/ /var/tmp/tmp-inst/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Данным директориям необходимо назначить права 
-\family typewriter
-000
-\family default
- и установить владельца папки 
-\family typewriter
-root
-\family default
-:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# chmod 000 /tmp/tmp-inst/ /var/tmp/tmp-inst/
-\end_layout
-
-\begin_layout Plain Layout
-
-# chown root.root /tmp/tmp-inst/ /var/tmp/tmp-inst/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-В данном примере многоэкземплярные папки 
-\family typewriter
-/var/tmp 
-\family default
-и 
-\family typewriter
-/tmp/ 
-\family default
-создаются для всех пользователей, за исключением пользователя 
-\family typewriter
-root
-\family default
-.
-\end_layout
-
-\begin_layout Standard
-При необходимости работы программ с многоэкземплярными директориями, в конфигура
-ционный файл PAM соответствующей программы добавляется строка:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-session	required	pam_namespace.so
-\end_layout
-
-\end_inset
-
-
+Конечные пользователи --- пользователи и системы, являющиеся владельцами
+ сертификата и использующие инфраструктуру управления открытыми ключами.
 \end_layout
 
 \begin_layout Subsection
@@ -2373,7 +2100,7 @@ X509
  
 \begin_inset CommandInset citation
 LatexCommand cite
-key "X509,PKI"
+key "X509"
 
 \end_inset
 
@@ -2614,8 +2341,239 @@ Basic Constraints
  (основные ограничения), используемое только для удостоверяющих центров.
 \end_layout
 
+\begin_layout Subsubsection
+Структура дополнений
+\end_layout
+
+\begin_layout Standard
+Дополнения сертификатов 
+\series bold
+X509 
+\series default
+определены рекомендациями Х509 версии 3 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "X509v3"
+
+\end_inset
+
+.
+ Дополнения сертификата описываются следующей струткрурой:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Extension ::= SEQUENCE {
+\end_layout
+
+\begin_layout Plain Layout
+
+	extnID OBJECT IDENTIFIER,
+\end_layout
+
+\begin_layout Plain Layout
+
+	critical BOOLEAN DEFAULT FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+	extnValue OCTET STRING 
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Что означает, что расширение сертификата состоит из следующих объектов:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+extnID
+\family default
+ --- идентификатор объекта;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+critical
+\family default
+ --- признак критичности;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+extnValue
+\family default
+ --- строка, определяющая значение расширения.
+\end_layout
+
 \begin_layout --Separator--
 
+\end_layout
+
+\begin_layout Standard
+Идентификатор объекта (
+\emph on
+OID, Object Identifier
+\emph default
+) представляет собой числовой код в стандарте ASN.1, который идентифицирует
+ дополнение в сертификате.
+ 
+\end_layout
+
+\begin_layout Standard
+Признак критичности сообщает приложению, использующему данный сертификат,
+ существенна ли информация о назначении сертификата и может ли приложение
+ игнорировать данный тип дополнения.
+ Если дополнение задано как критичное, а приложение не распознает данный
+ тип дополнения, то сертификат не должен использоваться приложением.
+ Приложение может игнорировать нераспознанное некритичное дополнение и использов
+ать сертификат.
+ 
+\end_layout
+
+\begin_layout Standard
+Дополнения можно разделить на две категории: ограничивающие и информационные.
+\end_layout
+
+\begin_layout Standard
+Первые ограничивают область применения ключа, определенного сертификатом,
+ или самого сертификата.
+ 
+\end_layout
+
+\begin_layout Standard
+Вторые содержат дополнительную информацию, которая может быть использована
+ в прикладном программном обеспечении пользователем сертификата.
+ 
+\end_layout
+
+\begin_layout Standard
+К ограничивающим дополнениям относятся: 
+\end_layout
+
+\begin_layout Itemize
+основные ограничения (
+\family typewriter
+Basic Constraints
+\family default
+); 
+\end_layout
+
+\begin_layout Itemize
+назначение ключа (
+\family typewriter
+Key Usage
+\family default
+);
+\end_layout
+
+\begin_layout Itemize
+расширенное назначение ключа (
+\family typewriter
+Extended Key Usage
+\family default
+);
+\end_layout
+
+\begin_layout Itemize
+политики применения сертификата (
+\family typewriter
+Certificates Policies, Policy Mappings
+\family default
+,
+\family typewriter
+ Policy Constraints
+\family default
+); 
+\end_layout
+
+\begin_layout Itemize
+ограничения на имена (
+\family typewriter
+Name Constraints
+\family default
+).
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+К информационным дополнениям относятся:
+\end_layout
+
+\begin_layout Itemize
+идентификаторы ключей (
+\family typewriter
+Subject Key Identifier
+\family default
+, 
+\family typewriter
+Authority Key Identifier
+\family default
+); 
+\end_layout
+
+\begin_layout Itemize
+альтернативные имена (
+\family typewriter
+Subject Alternative Name
+\family default
+, 
+\family typewriter
+Issuer Alternative Name
+\family default
+); 
+\end_layout
+
+\begin_layout Itemize
+пункт распространения списка аннулированных сертификатов (
+\family typewriter
+CRL Distribution Point
+\family default
+, 
+\family typewriter
+Issuing Distribution Point
+\family default
+);
+\end_layout
+
+\begin_layout Itemize
+способ доступа к информации УЦ (
+\family typewriter
+Authority Access Info
+\family default
+).
+ 
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Также стандарт открытых ключей X509v3 позволяет создавать пользовательские
+ дополнения и использовать их в сертификатах.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -3078,8 +3036,8 @@ Patch
 \family typewriter
 %prep
 \family default
- записывается команда применения патча, опционально меняется версия в поле
- 
+ записывается команда применения патча, опционально меняется версия пакета
+ в поле 
 \family typewriter
 release
 \family default
@@ -3131,9 +3089,7 @@ rpmbuild
 \family default
  позволяет выполнять быструю модификацию программ для ускорения процесса
  их доработки.
- Создание RPM-пакетов позволяет чётко описать дерево зависимостей пакета,
- что позволяет выполнить быструю установку и удаления пакета, а также гарантируе
-т корректность работы программы на системах с одинаковой архитектурой.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -3144,7 +3100,1035 @@ rpmbuild
 \end_layout
 
 \begin_layout Section
-Создание утилиты генерации X509 сертификата
+Разработка механизма выбора сертификата клиентом PostgreSQL
+\end_layout
+
+\begin_layout Subsection
+Алгоритм работы механизма выбора сертификата клиентом PostgreSQL
+\end_layout
+
+\begin_layout Standard
+Разрабатываемый механизм должен выполнять следующий алгоритм:
+\end_layout
+
+\begin_layout Enumerate
+Пользователь входит в операционную систему;
+\end_layout
+
+\begin_layout Enumerate
+Создается директория 
+\family typewriter
+.postgresql
+\family default
+;
+\end_layout
+
+\begin_layout Enumerate
+В созданной директории генерируется приватный ключ 
+\family typewriter
+postgresql.key
+\family default
+;
+\end_layout
+
+\begin_layout Enumerate
+С помощью приватного ключа создается запрос на подпись сертификата пользователя,
+ содержащего текущий контекст безопасности пользователя;
+\end_layout
+
+\begin_layout Enumerate
+Запрос на подпись сертификата пересылается удостоверяющему центру и подписываетс
+я им;
+\end_layout
+
+\begin_layout Enumerate
+Созданный сертификат копируется пользователю в директорию 
+\family typewriter
+.postgresql
+\family default
+;
+\end_layout
+
+\begin_layout Enumerate
+В эту же директорию копируется сертификат удостоверяющего центра;
+\end_layout
+
+\begin_layout Enumerate
+Клиент подключается к PostgreSQL, PostgreSQL должна осуществить аутентификацию
+ пользователя по методу 
+\family typewriter
+cert
+\family default
+;
+\end_layout
+
+\begin_layout Enumerate
+Удостовериться, что в сертификате действительно содержится корректный контекст
+ безопасности пользователя;
+\end_layout
+
+\begin_layout Enumerate
+При переходе пользователя на новый мандатный уровень, выполняются шаги 2-9
+ данного алгоритма.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Этот алгоритм представлен на 
+\emph on
+рисунке 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Алгоритм-работы-разрабатываемого"
+
+\end_inset
+
+
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/algorithm.png
+	width 95text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Алгоритм-работы-разрабатываемого"
+
+\end_inset
+
+Алгоритм работы разрабатываемого механизма
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Для реализации описанного алгоритма предлагается использовать механизм многоэкзе
+мплярности 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Polyinstance"
+
+\end_inset
+
+, а метку безопасности хранить в виде дополнения в сертификате X509 пользователя.
+\end_layout
+
+\begin_layout Subsection
+Многоэкземплярность
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Многоэкземплярность
+\series default
+
+\begin_inset space ~
+\end_inset
+
+ --- это концепция создания для одного экземпляра какого-либо объекта или
+ класса нескольких независимых копий.
+ Она может быть применена для создание копий по различным признаками: по
+ имени пользователя, по уровню или контексту безопасности пользователя.
+ Механизм многоэкземплярности применяется для обеспечение большей безопасности
+ при работе пользователей на различных уровнях доступа на одной машине.
+ 
+\end_layout
+
+\begin_layout Standard
+Создание копий реализуется с помощью модуля 
+\family typewriter
+pam_namespace.so
+\family default
+ PAM
+\begin_inset CommandInset citation
+LatexCommand cite
+key "PAM"
+
+\end_inset
+
+.
+ Во время входа пользователя в операционную систему модуль PAM создает в
+ пределах системной экземплярной директории свою личную, которую 
+\begin_inset Quotes fld
+\end_inset
+
+видит
+\begin_inset Quotes frd
+\end_inset
+
+ только пользователь, а также файлы и папки, находящиеся в его личной папке.
+ Если же уровень безопасности пользователя будет изменён в процессе его
+ работы, пользователь будет 
+\begin_inset Quotes fld
+\end_inset
+
+видеть
+\begin_inset Quotes frd
+\end_inset
+
+ другой экземпляр директории, соответствующей новому уровню.
+ Более наглядно механизм многоэкземплярности представлен
+\emph on
+ на рисунке 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Многоэкземплярность-директории-/"
+
+\end_inset
+
+
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/polyinstance.png
+	width 95text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Многоэкземплярность-директории-/"
+
+\end_inset
+
+Многоэкземплярность директории 
+\family typewriter
+/tmp
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Настройка многоэкземплярности в дистрибутивах 
+\family typewriter
+Fedora
+\family default
+ предусматривает редактирование конфигурационных файлов:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+/etc/security/namespace.conf
+\family default
+ --- файл, в котором указываются многоэкземплярные папки, которые создаст
+ PAM при запуске системы;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+/etc/security/namespace.init
+\family default
+ --- скрипт инициализации многоэкземплярных папок;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+/etc/pam.d/<deamon> 
+\family default
+--- конфигурационные файлы программ и служб, использующие для аутентификации
+ PAM.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Синтаксис конфигурационного файла 
+\family typewriter
+/etc/security/namespace.conf 
+\family default
+следующий:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+polydir instance_prefix method list_of_uids
+\end_layout
+
+\end_inset
+
+
+\family typewriter
+polydir
+\family default
+ --- путь к многоэкземплярной папке;
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+instance_prefix
+\family default
+ --- базовая директория для многоэкземплярной директории;
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+method
+\family default
+ --- метод, с помощью которого создаются экземпляры, может принимать следующие
+ значения: 
+\family typewriter
+user
+\family default
+, 
+\family typewriter
+context
+\family default
+, 
+\family typewriter
+level
+\family default
+;
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+list_of_uids
+\family default
+ --- список пользователей, для которых PAM не будет создавать многоэкземплярные
+ папки.
+\end_layout
+
+\begin_layout Standard
+Далее приводится пример создания многоэкземплярных директорий 
+\family typewriter
+/tmp
+\family default
+ и 
+\family typewriter
+/var/tmp
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+/tmp		/tmp/tmp-inst/		level	root
+\end_layout
+
+\begin_layout Plain Layout
+
+/var/tmp	/var/tmp/tmp-inst/	level	root
+\end_layout
+
+\end_inset
+
+В данном случае создаются многоэкземплярные папки 
+\family typewriter
+/tmp/
+\family default
+ и 
+\family typewriter
+/var/tmp
+\family default
+, принцип создания которых основан на переключении уровней пользователей
+ для всех пользователей, за исключением 
+\family typewriter
+root
+\family default
+.
+ В данном случае пользователь 
+\family typewriter
+root 
+\family default
+может 
+\begin_inset Quotes fld
+\end_inset
+
+видеть
+\begin_inset Quotes frd
+\end_inset
+
+ директории 
+\family typewriter
+/tmp/tmp-inst/
+\family default
+ и 
+\family typewriter
+/var/tmp/tmp-inst/ 
+\family default
+и все экземпляры данных папок, находящихся в них.
+\end_layout
+
+\begin_layout Standard
+Далее требуется создать вручную эти многоэкземплярные папки:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# mkdir /tmp/tmp-inst/ /var/tmp/tmp-inst/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Данным директориям необходимо назначить права 
+\family typewriter
+000
+\family default
+ и установить владельца папки 
+\family typewriter
+root
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# chmod 000 /tmp/tmp-inst/ /var/tmp/tmp-inst/
+\end_layout
+
+\begin_layout Plain Layout
+
+# chown root.root /tmp/tmp-inst/ /var/tmp/tmp-inst/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В данном примере многоэкземплярные папки 
+\family typewriter
+/var/tmp 
+\family default
+и 
+\family typewriter
+/tmp/ 
+\family default
+создаются для всех пользователей, за исключением пользователя 
+\family typewriter
+root
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+При необходимости работы программ с многоэкземплярными директориями, в конфигура
+ционный файл PAM соответствующей программы добавляется строка:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+session	required	pam_namespace.so
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Модуль 
+\family typewriter
+pam_namespace.so
+\family default
+ выполняет все операции по созданию экземпляра папки, подмены в файловой
+ системе.
+ После выполнения данных действий исполняется скрипт 
+\family typewriter
+namespace.init
+\family default
+ интерпретатором 
+\family typewriter
+BASH
+\family default
+, в котором происходит установка контекста папки, прав доступа и копирования
+ шаблона домашнего каталога 
+\family typewriter
+/etc/skel
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+На следующем листинге представлен данный скрипт:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+#!/bin/sh -p
+\end_layout
+
+\begin_layout Plain Layout
+
+if [ "$3" = 1 ]; then
+\end_layout
+
+\begin_layout Plain Layout
+
+        [ -x /sbin/restorecon ] && /sbin/restorecon "$1"
+\end_layout
+
+\begin_layout Plain Layout
+
+        user="$4"
+\end_layout
+
+\begin_layout Plain Layout
+
+        passwd=$(getent passwd "$user")
+\end_layout
+
+\begin_layout Plain Layout
+
+        homedir=$(echo "$passwd" | cut -f6 -d":")
+\end_layout
+
+\begin_layout Plain Layout
+
+        if [ "$1" = "$homedir" ]; then
+\end_layout
+
+\begin_layout Plain Layout
+
+                gid=$(echo "$passwd" | cut -f4 -d":")
+\end_layout
+
+\begin_layout Plain Layout
+
+                cp -rT /etc/skel "$homedir"
+\end_layout
+
+\begin_layout Plain Layout
+
+                chown -R "$user":"$gid" "$homedir"
+\end_layout
+
+\begin_layout Plain Layout
+
+                mask=$(awk '/^UMASK/{gsub("#.*$", "", $2); print $2; exit}'
+ /etc/login.defs)
+\end_layout
+
+\begin_layout Plain Layout
+
+                mode=$(printf "%o" $((0777 & ~$mask)))
+\end_layout
+
+\begin_layout Plain Layout
+
+                chmod ${mode:-700} "$homedir"
+\end_layout
+
+\begin_layout Plain Layout
+
+                [ -x /sbin/restorecon ] && /sbin/restorecon -R "$homedir"
+\end_layout
+
+\begin_layout Plain Layout
+
+        fi
+\end_layout
+
+\begin_layout Plain Layout
+
+fi
+\end_layout
+
+\begin_layout Plain Layout
+
+exit 0
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Данный скрипт принимает четыре параметра:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+$1 
+\family default
+--- путь к многоэкземплярной папке;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+$2
+\family default
+ --- путь экземпляра папки;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+$3
+\family default
+ --- флаг, может принимать значение 
+\family typewriter
+0
+\family default
+ или 
+\family typewriter
+1
+\family default
+.
+ Если значение данного параметра равно 1, то экземпляру требуется последующая
+ инициализация;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+$4 
+\family default
+--- имя пользователя-владельца папки.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Subsubsection
+Модификация pam_namespace.so
+\end_layout
+
+\begin_layout Standard
+Текущий уровень пользователя можно получить из названия папки-экземпляра,
+ однако, невозможно получить полный контекст безопасности пользователя.
+ 
+\end_layout
+
+\begin_layout Standard
+Предлагается выполнить модификацию модуля 
+\family typewriter
+pam_namespace.so 
+\family default
+для получения контекста пользователя в качестве аргумента командной строки.
+\end_layout
+
+\begin_layout Standard
+Исходные тексты модуля находятся в пакете 
+\family typewriter
+pam-1.1.8-1.fc20.src.rpm 
+\family default
+в каталоге 
+\family typewriter
+modules/pam_namespace
+\family default
+.
+ Данные модули написаны на языке программирования C.
+\end_layout
+
+\begin_layout Standard
+В файлах 
+\family typewriter
+argv_parse.h
+\family default
+ и
+\family typewriter
+ argv_parse.c 
+\family default
+определяются и реализуются функции, используемые при парсинге аргументов,
+ в файлах 
+\family typewriter
+md5.h
+\family default
+ и 
+\family typewriter
+md5.c 
+\family default
+--- функции для шифрования.
+ 
+\end_layout
+
+\begin_layout Standard
+В файле 
+\family typewriter
+pam_namespace.h
+\family default
+ определяются константы, используемые в модуле, а также структуры, описывающие
+ многоэкземплярную директорию 
+\family typewriter
+polydir_s
+\family default
+, скрываемую директорию 
+\family typewriter
+protect_dir_s 
+\family default
+и 
+\family typewriter
+instance_data
+\family default
+ --- структура, хранящая сведения об экземпляре многоэкземплярной директории.
+ 
+\end_layout
+
+\begin_layout Standard
+Опытным путём было установлено, что имя экземпляра директории формируется
+ в функции 
+\family typewriter
+poly_name
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static int poly_name(const struct polydir_s *polyptr, char **i_name, security_co
+ntext_t *i_context, security_context_t *origcon, struct instance_data *idata)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В данной функции вызывается функция 
+\family typewriter
+form_context
+\family default
+,
+\family typewriter
+ 
+\family default
+отвечающая за получение текущего контекста пользователя, необходимого для
+ формирования имени директории:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static int form_context(const struct polydir_s *polyptr, security_context_t
+ *i_context, security_context_t *origcon, struct instance_data *idata)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Вызов скрипта, инициализирующего экземпляр, происходит в функции 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static int inst_init(const struct polydir_s *polyptr, const char *ipath,
+\end_layout
+
+\begin_layout Plain Layout
+
+	   struct instance_data *idata, int newdir)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+а именно строкой 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if (execle(init_script, init_script, polyptr -> dir, ipath, newdir?"1":"0",
+ idata -> user, NULL, envp) < 0)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Поэтому предлагается объявить статическую переменную в 
+\family typewriter
+pam_namespace.h
+\family default
+, хранящую контекст пользователя, в функции 
+\family typewriter
+form_context
+\family default
+ будет выполняться получение текущего контекста пользователя, а при вызове
+ скрипта передавать значение этой переменной.
+ 
+\end_layout
+
+\begin_layout Standard
+Исходя из этих рассуждений, был реализован патч, с которым подробно можно
+ ознакомиться в 
+\emph on
+приложении 1
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+Получение контекста пользователя представлено на следующем листинге:
+\begin_inset listings
+lstparams "numbers=left"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+FILE *fp;
+\end_layout
+
+\begin_layout Plain Layout
+
+fp = popen("id -Z", "r");
+\end_layout
+
+\begin_layout Plain Layout
+
+if (fp == NULL) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	pam_syslog(idata -> pamh, LOG_ERR, "Command `id -Z` return error");
+\end_layout
+
+\begin_layout Plain Layout
+
+	return PAM_SESSION_ERR;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+fgets(user_context, sizeof(user_context)-1, fp);
+\end_layout
+
+\begin_layout Plain Layout
+
+user_context[strlen(user_context)-1] = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+pclose(fp);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В 
+\emph on
+1й строке
+\emph default
+ функция 
+\family typewriter
+popen()
+\family default
+ открывает процесс, создавая канал, производя 
+\family typewriter
+fork
+\family default
+ и вызывая командную оболочку.
+ Таким образом в переменной 
+\family typewriter
+fp
+\family default
+ содержится результат системного вызова команды 
+\family typewriter
+id -Z 
+\family default
+во 
+\emph on
+2й
+\emph default
+.
+ Если не удалось получить результат выхова команды, используется обработчик
+ в 
+\emph on
+строках 3-6
+\emph default
+.
+ В этом случае в лог модуля PAM пишется сообщение об ошибке и возвращается
+ код ошибки с помощью оператора 
+\family typewriter
+return
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Иначе функцией 
+\family typewriter
+fgets()
+\family default
+, используемой для чтения строк из файлов, считывается значение системного
+ вызова в переменную 
+\family typewriter
+user_context
+\family default
+, дополнительно объявленную в 
+\family typewriter
+pam_namespace.h
+\family default
+.
+ Данная функция копирует символы из потока до тех пор, пока не встретит
+ символ переноса каретки 
+\family typewriter
+'
+\backslash
+n'
+\family default
+ или нулевой символ.
+ Поэтому в 
+\emph on
+8й строке 
+\emph default
+заменяется последний символ на символ окончания строки 
+\family typewriter
+'
+\backslash
+0'
+\family default
+, в последней строке закрыв процесс.
+\end_layout
+
+\begin_layout Standard
+Дополнительно модифицируется строка с вызовом скрипта: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if (execle(init_script, init_script, polyptr->dir, ipath, newdir?"1":"0",
+ idata->user, user_context, NULL, envp) < 0)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Таким образом, в переменной скрипта 
+\family typewriter
+$5
+\family default
+ будет содержаться текущий контекст безопасности пользователя.
+\end_layout
+
+\begin_layout Subsection
+OpenSSL
 \end_layout
 
 \begin_layout Standard
@@ -6354,11 +7338,8 @@ root
 5432
 \family default
 .
- Для возможности удаленного подключения требуется открыть этот порт 
-\family typewriter
-5432
-\family default
- в межсетевом экране 
+ Для возможности удаленного подключения требуется открыть этот порт в межсетевом
+ экране 
 \family typewriter
 firewall
 \family default
@@ -6369,7 +7350,7 @@ status open
 
 \begin_layout Plain Layout
 
-# firewall-cmd --add-port 5432/tcp
+# firewall-cmd --permanent --add-port 5432/tcp
 \end_layout
 
 \end_inset
@@ -7267,32 +8248,6 @@ bm.com/developerworks/ru/library/l-se_linux_02
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "6"
-key "Polyinstance"
-
-\end_inset
-
- Robb R.
- Romans --- Improve security with polyinstantiation [Электронный ресурс]
- --- http://www.ibm.com/developerworks/linux/library/l-polyinstantiation/index.html
-?S_TACT=105AGX99&S_CMP=CP
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "7"
-key "X509"
-
-\end_inset
-
- Формат сертификатов открытых ключей X.509 [Электронный ресурс] --- http://www.ins
-sl.com/x509-open-key-specifications.html
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-label "8"
 key "PKI"
 
 \end_inset
@@ -7314,7 +8269,30 @@ key "PKI"
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "9"
+label "7"
+key "X509"
+
+\end_inset
+
+ Формат сертификатов открытых ключей X.509 [Электронный ресурс] --- http://www.ins
+sl.com/x509-open-key-specifications.html
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "8"
+key "X509v3"
+
+\end_inset
+
+RFC 5280 [Электронный ресурс] --- http://tools.ietf.org/html/rfc5280
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "10"
 key "RPM"
 
 \end_inset
@@ -7329,7 +8307,7 @@ key "RPM"
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "10"
+label "11"
 key "RH-RPM"
 
 \end_inset
@@ -7344,7 +8322,33 @@ key "RH-RPM"
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "11"
+label "12"
+key "Polyinstance"
+
+\end_inset
+
+ Robb R.
+ Romans --- Improve security with polyinstantiation [Электронный ресурс]
+ --- http://www.ibm.com/developerworks/linux/library/l-polyinstantiation/index.html
+?S_TACT=105AGX99&S_CMP=CP
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "13"
+key "PAM"
+
+\end_inset
+
+ Как работает PAM [Электронный ресурс] --- http://www.opennet.ru/base/net/pam_linu
+x.txt.html
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "14"
 key "OpenSSL"
 
 \end_inset
@@ -7356,7 +8360,7 @@ w.openssl.org
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "12"
+label "15"
 key "M2Crypto"
 
 \end_inset
@@ -7367,7 +8371,7 @@ key "M2Crypto"
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "13"
+label "16"
 key "PostgreSQL-cert"
 
 \end_inset
@@ -7406,11 +8410,7 @@ addcontentsline{toc}{section}{Приложения}
 
 \begin_layout Subsection*
 Приложение 1.
- Список терминов и
-\begin_inset space ~
-\end_inset
-
-сокращений
+ Патч для модуля pam_namespace
 \end_layout
 
 \begin_layout Standard
@@ -7422,7 +8422,9 @@ status open
 
 \backslash
 addcontentsline{toc}{subsection}{Приложение 1.
- Список терминов и сокращений}
+ Патч для модуля pam
+\backslash
+_namespace}
 \end_layout
 
 \end_inset
@@ -7430,64 +8432,325 @@ addcontentsline{toc}{subsection}{Приложение 1.
 
 \end_layout
 
-\begin_layout Enumerate
-PAM
+\begin_layout Standard
+Данный патч позволяет получить текущий контекст пользователя при инициализации
+ многоэкземплярной директории и передать его значение скрипту инициализации
+ 
+\family typewriter
+namespace.init
+\family default
+.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
 \series bold
- 
-\series default
---- (Pluggable Authentication Modules, подключаемые модули аутентификации)
- представляют собой набор разделяемых библиотек, которые позволяют интегрировать
- различные низкоуровневые методы аутентификации в виде единого высокоуровневого
- API.
- 
+pam-1.1.8-selinux-context.patch
 \end_layout
 
-\begin_layout Enumerate
-RFC 3280 Certificate & CRL Profile --- документ, в котором описаны основные
- принципы построения сертификата X509.
+\begin_layout Standard
+\begin_inset listings
+inline false
+status collapsed
+
+\begin_layout Plain Layout
+
+--- Linux-PAM-1.1.8/modules/pam_namespace/pam_namespace.h	2013-06-18 18:11:21.000000
+000 +0400
 \end_layout
 
-\begin_layout Enumerate
-ASN1 --- стандарт, позволяющий выполнить классификацию различных объектов.
+\begin_layout Plain Layout
+
++++ Linux-PAM-1.1.8/modules/pam_namespace/pam_namespace.h	2014-03-10 23:02:15.760535
+540 +0400
 \end_layout
 
-\begin_layout Enumerate
-Патч --- файл, используемый для быстрой модификации исходного кода программы,
- когда невозможно вмешательство в основную ветку разработки.
- 
+\begin_layout Plain Layout
+
+@@ -172,6 +172,8 @@
 \end_layout
 
-\begin_layout Enumerate
-C --- функциональный язык программирования среднего уровня.
- Использован для написания UNIX-подобных операционных систем.
+\begin_layout Plain Layout
+
+     struct polydir_s *next;		/* pointer to the next polydir entry */
 \end_layout
 
-\begin_layout Enumerate
-Python --- динамический скриптовой язык программирования высокого уровня.
+\begin_layout Plain Layout
+
+ };
 \end_layout
 
-\begin_layout Enumerate
-PyOpenSSL --- интерфейс библиотеки OpenSSL, реализованный на языке Python.
-\end_layout
+\begin_layout Plain Layout
 
-\begin_layout Enumerate
-swig --- утилита, позволяющая с помощью специального синтаксиса вызывать
- функции, написанные на языке C.
-\end_layout
-
-\begin_layout Enumerate
-RSA --- криптографический алгоритм с открытым ключом, основывающийся на
- вычислительной сложности задачи факторизации больших целых чисел.
  
 \end_layout
 
-\begin_layout Enumerate
-Парсер --- программа, автоматизирующая получение информации по заданному
- алгоритму.
- 
+\begin_layout Plain Layout
+
++static char user_context[1024];
 \end_layout
 
-\begin_layout --Separator--
+\begin_layout Plain Layout
+
++
+\end_layout
+
+\begin_layout Plain Layout
+
+ struct protect_dir_s {
+\end_layout
+
+\begin_layout Plain Layout
+
+     char *dir;				/* protected directory */
+\end_layout
+
+\begin_layout Plain Layout
+
+     struct protect_dir_s *next;		/* next entry */
+\end_layout
+
+\begin_layout Plain Layout
+
+--- Linux-PAM-1.1.8/modules/pam_namespace/pam_namespace.c	2013-06-18 18:11:21.000000
+000 +0400
+\end_layout
+
+\begin_layout Plain Layout
+
++++ Linux-PAM-1.1.8/modules/pam_namespace/pam_namespace.c	2014-03-10 09:13:26.617679
+957 +0400
+\end_layout
+
+\begin_layout Plain Layout
+
+@@ -733,7 +733,16 @@
+\end_layout
+
+\begin_layout Plain Layout
+
+ 	int rc = PAM_SUCCESS;
+\end_layout
+
+\begin_layout Plain Layout
+
+ 	security_context_t scon = NULL;
+\end_layout
+
+\begin_layout Plain Layout
+
+ 	security_class_t tclass;
+\end_layout
+
+\begin_layout Plain Layout
+
+-
+\end_layout
+
+\begin_layout Plain Layout
+
++	FILE *fp;
+\end_layout
+
+\begin_layout Plain Layout
+
++	
+\end_layout
+
+\begin_layout Plain Layout
+
++	fp = popen("id -Z", "r");
+\end_layout
+
+\begin_layout Plain Layout
+
++	if (fp == NULL) {
+\end_layout
+
+\begin_layout Plain Layout
+
++	    pam_syslog(idata -> pamh, LOG_ERR, "Command `id -Z` return error");
+\end_layout
+
+\begin_layout Plain Layout
+
++	    return PAM_SESSION_ERR;
+\end_layout
+
+\begin_layout Plain Layout
+
++	}
+\end_layout
+
+\begin_layout Plain Layout
+
++	fgets(user_context, sizeof(user_context)-1, fp);
+\end_layout
+
+\begin_layout Plain Layout
+
++	user_context[strlen(user_context)-1] = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
++	pclose(fp);
+\end_layout
+
+\begin_layout Plain Layout
+
+ 	/*
+\end_layout
+
+\begin_layout Plain Layout
+
+ 	 * Get the security context of the directory to polyinstantiate.
+\end_layout
+
+\begin_layout Plain Layout
+
+ 	 */
+\end_layout
+
+\begin_layout Plain Layout
+
+@@ -818,7 +827,6 @@
+\end_layout
+
+\begin_layout Plain Layout
+
+ 			pam_syslog(idata->pamh, LOG_ERR, "out of memory");
+\end_layout
+
+\begin_layout Plain Layout
+
+ 			goto fail;
+\end_layout
+
+\begin_layout Plain Layout
+
+ 		}
+\end_layout
+
+\begin_layout Plain Layout
+
+-
+\end_layout
+
+\begin_layout Plain Layout
+
+ 		rc = PAM_SUCCESS;
+\end_layout
+
+\begin_layout Plain Layout
+
+  fail:
+\end_layout
+
+\begin_layout Plain Layout
+
+ 		context_free(scontext);
+\end_layout
+
+\begin_layout Plain Layout
+
+@@ -1177,7 +1185,6 @@
+\end_layout
+
+\begin_layout Plain Layout
+
+ 	struct sigaction newsa, oldsa;
+\end_layout
+
+\begin_layout Plain Layout
+
+ 	int status;
+\end_layout
+
+\begin_layout Plain Layout
+
+ 	const char *init_script = NAMESPACE_INIT_SCRIPT;
+\end_layout
+
+\begin_layout Plain Layout
+
+-
+\end_layout
+
+\begin_layout Plain Layout
+
+ 	memset(&newsa, '
+\backslash
+0', sizeof(newsa));
+\end_layout
+
+\begin_layout Plain Layout
+
+         newsa.sa_handler = SIG_DFL;
+\end_layout
+
+\begin_layout Plain Layout
+
+ 	if (sigaction(SIGCHLD, &newsa, &oldsa) == -1) {
+\end_layout
+
+\begin_layout Plain Layout
+
+@@ -1206,7 +1213,7 @@
+\end_layout
+
+\begin_layout Plain Layout
+
+ 				}
+\end_layout
+
+\begin_layout Plain Layout
+
+ #endif
+\end_layout
+
+\begin_layout Plain Layout
+
+ 				if (execle(init_script, init_script,
+\end_layout
+
+\begin_layout Plain Layout
+
+-					polyptr->dir, ipath, newdir?"1":"0", idata->user, NULL, envp) < 0)
+\end_layout
+
+\begin_layout Plain Layout
+
++					 polyptr->dir, ipath, newdir?"1":"0", idata->user, user_context, NULL,
+ envp) < 0)
+\end_layout
+
+\begin_layout Plain Layout
+
+ 					_exit(1);
+\end_layout
+
+\begin_layout Plain Layout
+
+ 			} else if (pid > 0) {
+\end_layout
+
+\begin_layout Plain Layout
+
+ 				while (((rc = waitpid(pid, &status, 0)) == (pid_t)-1) &&
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
 
 \end_layout
 

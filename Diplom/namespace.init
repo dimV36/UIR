@@ -28,7 +28,7 @@ if [ "$3" = 1 ]; then
                 mkdir $pgcertdir
                 pgcert --genrsa --bits 2048 --output $pgcertdir/postgresql.key >> /dev/null
                 chmod 0600 $pgcertdir/postgresql.key
-                pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --context $context --output $pgcertdir/postgresql.csr >> /dev/null
+                pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --context $secontext --output $pgcertdir/postgresql.csr >> /dev/null
                 sshpass -p $ca_password scp -o StrictHostKeyChecking=no $pgcertdir/postgresql.csr root@$ca:$certdir
                 sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca "pgcert --gencert --request $certdir/postgresql.csr --output $certdir/postgresql.crt" >> /dev/null
                 sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca:$certdir/postgresql.crt $pgcertdir/postgresql.crt
