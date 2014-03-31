@@ -37,3 +37,5 @@
 *.cert
 *.crt
 *.csr
+*.o
+*.so
