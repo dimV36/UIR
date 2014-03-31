@@ -7,6 +7,8 @@
       <w>elinux</w>
       <w>gencacert</w>
       <w>gencert</w>
+      <w>genkey</w>
+      <w>genpkey</w>
       <w>genreq</w>
       <w>genrsa</w>
       <w>makeca</w>
@@ -17,7 +19,10 @@
       <w>pgcert</w>
       <w>pgcertcore</w>
       <w>pkey</w>
+      <w>printcert</w>
+      <w>printreq</w>
       <w>prog</w>
+      <w>secontext</w>
       <w>selinux</w>
       <w>whoami</w>
     </words>

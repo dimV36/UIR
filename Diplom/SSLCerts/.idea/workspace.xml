@@ -26,7 +26,7 @@
       <file leaf-file-name="pgcert.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pgcert.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="102" column="20" selection-start="3400" selection-end="3400" vertical-scroll-proportion="0.65536106" vertical-offset="931" max-vertical-offset="4185">
+            <state line="120" column="50" selection-start="4156" selection-end="4156" vertical-scroll-proportion="-1.6094092" vertical-offset="3271" max-vertical-offset="4185">
               <folding>
                 <element signature="e#40#81#0" expanded="true" />
               </folding>
@@ -114,6 +114,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -134,7 +135,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -440,6 +440,42 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/pgcert.py">
       <provider selected="true" editor-type-id="text-editor">
+        <state line="103" column="41" selection-start="3503" selection-end="3503" vertical-scroll-proportion="0.0" vertical-offset="1216" max-vertical-offset="4215">
+          <folding>
+            <element signature="e#40#81#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pgcert.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="102" column="0" selection-start="3389" selection-end="3389" vertical-scroll-proportion="0.0" vertical-offset="1141" max-vertical-offset="4185">
+          <folding>
+            <element signature="e#40#81#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pgcert.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="103" column="15" selection-start="3446" selection-end="3446" vertical-scroll-proportion="0.0" vertical-offset="811" max-vertical-offset="4275">
+          <folding>
+            <element signature="e#40#81#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pgcert.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="102" column="20" selection-start="3400" selection-end="3400" vertical-scroll-proportion="0.0" vertical-offset="1006" max-vertical-offset="4185">
+          <folding>
+            <element signature="e#40#81#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pgcert.py">
+      <provider selected="true" editor-type-id="text-editor">
         <state line="98" column="70" selection-start="3254" selection-end="3254" vertical-scroll-proportion="0.0" vertical-offset="1096" max-vertical-offset="4110">
           <folding>
             <element signature="e#40#81#0" expanded="true" />
@@ -584,7 +620,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pgcert.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="102" column="20" selection-start="3400" selection-end="3400" vertical-scroll-proportion="0.65536106" vertical-offset="931" max-vertical-offset="4185">
+        <state line="120" column="50" selection-start="4156" selection-end="4156" vertical-scroll-proportion="-1.6094092" vertical-offset="3271" max-vertical-offset="4185">
           <folding>
             <element signature="e#40#81#0" expanded="true" />
           </folding>
