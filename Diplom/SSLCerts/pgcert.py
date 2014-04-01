@@ -216,8 +216,7 @@ if __name__ == "__main__":
                          help="add username to request, default: %default")
     req_group.add_option("--secontext", dest="secontext", help="add selinux context of user")
     req_group.add_option("--critical", dest="critical", action="store_true", default=False,
-                         help="set critical of selinuxContext extension, "
-                              "default=%default, possible values are True or False")
+                         help="set critical of selinuxContext extension, default=%default")
     parser.add_option_group(req_group)
 
     input_options = OptionGroup(parser, "Input options")
