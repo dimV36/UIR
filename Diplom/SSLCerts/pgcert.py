@@ -232,7 +232,7 @@ if __name__ == "__main__":
     output_options = OptionGroup(parser, "Output options")
     output_options.add_option("--output", dest="output", help="save to file")
     output_options.add_option("--text", dest="text", action="store_true", default=False,
-                              help="request or certificate after generation")
+                              help="print request or certificate")
     parser.add_option_group(output_options)
 
     info_options = OptionGroup(parser, "Info options")
@@ -241,8 +241,6 @@ if __name__ == "__main__":
     info_options.add_option("--subject", dest="subject", action="store_true", default=False,
                             help="get subject of certificate")
     info_options.add_option("--extension", dest="extension", help="get extension of certificate")
-    info_options.add_option("--print", dest="print_pem", action="store_true", default=False,
-                            help="print certificate or request")
     info_options.add_option("--verify", dest="verify", action="store_true", default=False, help="verify certificate")
     parser.add_option_group(info_options)
 
@@ -260,11 +258,11 @@ if __name__ == "__main__":
         get_issuer(options.certificate)
     elif options.subject and options.certificate:
         get_subject(options.certificate)
-    elif options.print_pem and options.certificate:
+    elif options.text and options.certificate:
         print_certificate(options.certificate)
     elif options.certificate and options.extension:
         get_extension(options.certificate, options.extension)
-    elif options.print_pem and options.request:
+    elif options.text and options.request:
         print_request(options.request)
     elif options.makeca:
         check_permissions()

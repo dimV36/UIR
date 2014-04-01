@@ -26,7 +26,7 @@
       <file leaf-file-name="pgcert.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pgcert.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="115" column="0" selection-start="3948" selection-end="3948" vertical-scroll-proportion="-1.2582057" vertical-offset="2875" max-vertical-offset="4170">
+            <state line="254" column="29" selection-start="10584" selection-end="10584" vertical-scroll-proportion="0.64362854" vertical-offset="3214" max-vertical-offset="4140">
               <folding>
                 <element signature="e#40#81#0" expanded="true" />
               </folding>
@@ -64,7 +64,7 @@
     <option name="x" value="-5" />
     <option name="y" value="-12" />
     <option name="width" value="1930" />
-    <option name="height" value="1062" />
+    <option name="height" value="1063" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -399,14 +399,14 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-5" y="-12" width="1930" height="1062" extended-state="6" />
+    <frame x="-5" y="-12" width="1930" height="1063" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14060031" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14010416" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.336" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -438,6 +438,15 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/pgcert.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="115" column="0" selection-start="3860" selection-end="3860" vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="4080">
+          <folding>
+            <element signature="e#40#81#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pgcert.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="120" column="50" selection-start="4156" selection-end="4156" vertical-scroll-proportion="0.0" vertical-offset="3271" max-vertical-offset="4185">
@@ -629,7 +638,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pgcert.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="115" column="0" selection-start="3948" selection-end="3948" vertical-scroll-proportion="-1.2582057" vertical-offset="2875" max-vertical-offset="4170">
+        <state line="254" column="29" selection-start="10584" selection-end="10584" vertical-scroll-proportion="0.64362854" vertical-offset="3214" max-vertical-offset="4140">
           <folding>
             <element signature="e#40#81#0" expanded="true" />
           </folding>
