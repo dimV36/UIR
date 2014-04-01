@@ -42,7 +42,7 @@ def make_private_key(bits, output):
     print('Key was saved to %s' % output)
 
 
-def make_request(private_key_path, username, user_context, output, is_printed):
+def make_request(private_key_path, username, user_context, critical, output, is_printed):
     check_path(private_key_path)
     private_key = EVP.load_key(private_key_path, callback=password)
     request = X509.Request()
@@ -64,7 +64,7 @@ def make_request(private_key_path, username, user_context, output, is_printed):
         exit(1)
     request.set_subject_name(name)
     stack = X509.X509_Extension_Stack()
-    stack.push(X509.new_extension("selinuxContext", context, 0))
+    stack.push(X509.new_extension("selinuxContext", context, int(critical)))
     request.add_extensions(stack)
     request.sign(private_key, 'sha1')
     if not output:
@@ -215,6 +215,9 @@ if __name__ == "__main__":
     req_group.add_option("--user", dest="user", default=DEFAULT_FIELDS['CN'],
                          help="add username to request, default: %default")
     req_group.add_option("--secontext", dest="secontext", help="add selinux context of user")
+    req_group.add_option("--critical", dest="critical", action="store_true", default=False,
+                         help="set critical of selinuxContext extension, "
+                              "default=%default, possible values are True or False")
     parser.add_option_group(req_group)
 
     input_options = OptionGroup(parser, "Input options")
@@ -246,7 +249,7 @@ if __name__ == "__main__":
     if options.genkey and options.bits:
         make_private_key(options.bits, options.output)
     elif options.genreq and options.pkey:
-        make_request(options.pkey, options.user, options.secontext, options.output, options.text)
+        make_request(options.pkey, options.user, options.secontext, options.critical, options.output, options.text)
     elif options.gencert and options.request:
         check_permissions()
         make_certificate(options.request, options.cakey, options.cacert, options.output, options.text)
