@@ -1,5 +1,6 @@
 #include "postgres.h"
 #include "libpq/libpq-be.h"
+#include "fmgr.h"
 #include "miscadmin.h"
 #include "utils/builtins.h"
 
@@ -9,6 +10,9 @@ PG_MODULE_MAGIC;
 
 Datum ssl_get_extension_by_name(PG_FUNCTION_ARGS);
 Datum ssl_is_critical_extension(PG_FUNCTION_ARGS);
+Datum ssl_get_extensions_count(PG_FUNCTION_ARGS);
+//Datum ssl_get_extensions_names(PG_FUNCTION_ARGS);
+
 
 X509_EXTENSION *get_extension(X509* certificate, char *name) {
 	int extension_nid = OBJ_sn2nid(name);
@@ -21,6 +25,7 @@ X509_EXTENSION *get_extension(X509* certificate, char *name) {
 	return X509_get_ext(certificate, locate);
 }
 
+
 PG_FUNCTION_INFO_V1(ssl_get_extension_by_name);
 Datum
 ssl_get_extension_by_name(PG_FUNCTION_ARGS)
@@ -32,7 +37,7 @@ ssl_get_extension_by_name(PG_FUNCTION_ARGS)
 	char *value = NULL;
 	text *result = NULL;
 	
-	if (!certificate)
+	if (NULL == certificate)
 	    PG_RETURN_NULL();
 	
 	extension = get_extension(certificate, extension_name);
@@ -51,6 +56,7 @@ ssl_get_extension_by_name(PG_FUNCTION_ARGS)
 	PG_RETURN_TEXT_P(result);
 }
 
+
 PG_FUNCTION_INFO_V1(ssl_is_critical_extension);
 Datum
 ssl_is_critical_extension(PG_FUNCTION_ARGS) {
@@ -58,7 +64,7 @@ ssl_is_critical_extension(PG_FUNCTION_ARGS) {
 	char *extension_name = text_to_cstring(PG_GETARG_TEXT_P(0));
 	X509_EXTENSION *extension = NULL;
 	
-	if (!certificate)
+	if (NULL == certificate)
 	  PG_RETURN_NULL();
 	
 	extension = get_extension(certificate, extension_name);
@@ -69,3 +75,27 @@ ssl_is_critical_extension(PG_FUNCTION_ARGS) {
 	PG_RETURN_BOOL(critical > 0);
 }
 
+
+PG_FUNCTION_INFO_V1(ssl_get_extensions_count);
+Datum
+ssl_get_extensions_count(PG_FUNCTION_ARGS) {
+	X509 *certificate = MyProcPort -> peer;
+	
+	if (NULL == certificate)
+	  PG_RETURN_NULL();
+	
+	int extension_count = X509_get_ext_count(certificate);
+	PG_RETURN_INT32(extension_count);	
+}
+
+
+//PG_FUNCTION_INFO_V1(ssl_get_extensions_names);
+//Datum
+//ssl_get_extensions_names(PG_FUNCTION_ARGS) {
+//	X509 *certificate = MyProcPort -> peer;
+//	
+//	if (NULL == certificate)
+//	  PG_RETURN_NULL();
+//	
+//	PG_RETURN_INT32();
+//}
