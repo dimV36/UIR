@@ -4,7 +4,7 @@ HDRLIBS=
 HDRS=$(wildcard *.h)
 SRCS=$(wildcard *.c)
 OBJS=$(patsubst %.c,%.o,$(SRCS))
-TARGET=sslextensions.so
+TARGET=sslextentions.so
 INCLUDES=-I /usr/pgsql-9.3/include/server
 CFLAGS += $(INCLUDES) -fpic -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic
 all: $(TARGET)

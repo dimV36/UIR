@@ -7,7 +7,7 @@
 
 PG_MODULE_MAGIC;
 
-Datum ssl_get_extension_by_name(PG_FUNCTION_ARGS);
+Datum ssl_get_extention_by_name(PG_FUNCTION_ARGS);
 Datum ssl_is_critical_extension(PG_FUNCTION_ARGS);
 
 X509_EXTENSION *get_extension(X509* certificate, char *name) {
@@ -23,7 +23,7 @@ X509_EXTENSION *get_extension(X509* certificate, char *name) {
 
 PG_FUNCTION_INFO_V1(ssl_get_extension_by_name);
 Datum
-ssl_get_extension_by_name(PG_FUNCTION_ARGS)
+ssl_get_extention_by_name(PG_FUNCTION_ARGS)
 {	
 	X509 *certificate = MyProcPort -> peer;
 	char *extension_name = text_to_cstring(PG_GETARG_TEXT_P(0));
@@ -37,7 +37,7 @@ ssl_get_extension_by_name(PG_FUNCTION_ARGS)
 	
 	extension = get_extension(certificate, extension_name);
 	if (NULL == extension) 
-	    elog(ERROR, "Extension by name \"%s\" is not found in certificate", extension_name);
+	    elog(ERROR, "Extention by name \"%s\" is not found in certificate", extension_name);
 	
 	char nullterm = '\0';
 	X509V3_EXT_print(bio, extension, -1, -1);
@@ -53,7 +53,7 @@ ssl_get_extension_by_name(PG_FUNCTION_ARGS)
 
 PG_FUNCTION_INFO_V1(ssl_is_critical_extension);
 Datum
-ssl_is_critical_extension(PG_FUNCTION_ARGS) {
+ssl_is_critical_extention(PG_FUNCTION_ARGS) {
 	X509 *certificate = MyProcPort -> peer;
 	char *extension_name = text_to_cstring(PG_GETARG_TEXT_P(0));
 	X509_EXTENSION *extension = NULL;
@@ -63,7 +63,7 @@ ssl_is_critical_extension(PG_FUNCTION_ARGS) {
 	
 	extension = get_extension(certificate, extension_name);
 	if (NULL == extension) 
-	    elog(ERROR, "Extension by name \"%s\" is not found in certificate", extension_name);
+	    elog(ERROR, "Extention by name \"%s\" is not found in certificate", extension_name);
 	int critical = extension -> critical;
 	
 	PG_RETURN_BOOL(critical > 0);
