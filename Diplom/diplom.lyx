@@ -2577,6 +2577,12 @@ Authority Access Info
 \end_layout
 
 \begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Менеджер-пакетов-RPM"
+
+\end_inset
+
 Менеджер пакетов RPM
 \end_layout
 
@@ -3248,6 +3254,12 @@ key "Polyinstance"
 \end_layout
 
 \begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Многоэкземплярность"
+
+\end_inset
+
 Многоэкземплярность
 \end_layout
 
@@ -3915,11 +3927,7 @@ status open
 \begin_layout Plain Layout
 
 static int inst_init(const struct polydir_s *polyptr, const char *ipath,
-\end_layout
-
-\begin_layout Plain Layout
-
-	   struct instance_data *idata, int newdir)
+ struct instance_data *idata, int newdir)
 \end_layout
 
 \end_inset
@@ -4145,19 +4153,334 @@ key "OpenSSL"
 
  --- криптографический пакет с открытым исходным кодом для работы с протоколами
  SSL/TLS.
- Предоставляет широкие возможности по генерации ключей и сертификатов X509.
- Позволяет создавать запросы на подпись (
-\emph on
-Certificate Signing Request
-\emph default
-, CSR) и подписывать их.
+ Предоставляет широкие возможности для создания ключей и сертификатов X509
+ и их манипулирования.
  
 \end_layout
 
 \begin_layout Standard
-В состав OpenSSL входит одноимённая библиотека, написанная на языке C, позволяющ
-ая генерировать приватные ключи, запросы на подпись сертификатов, а также
- их подписывать.
+В состав OpenSSL входит одноимённая библиотека, написанная на языке программиров
+ания C, позволяющая генерировать приватные ключи, запросы на подпись сертификато
+в, а также их подписывать.
+\end_layout
+
+\begin_layout Standard
+Контекст безопасности пользователя предлагается хранить в качестве дополнения
+ к сертификату и сделать это дополнение некритическим.
+ 
+\end_layout
+
+\begin_layout Standard
+В OpenSSL не существует подходящего дополнения для хранения контекста безопаснос
+ти, но существуют две возможности создать данное дополнение программно:
+\end_layout
+
+\begin_layout Itemize
+С помощью создания alias (псевдонима) на уже существующее дополнение;
+\end_layout
+
+\begin_layout Itemize
+Программно реализовать дополнение.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Первый предложенный вариант позволяет создать объект дополнения с помощью
+ реализованных дополнений:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+int nid;
+\end_layout
+
+\begin_layout Plain Layout
+
+nid = OBJ_create("1.2.3.4", "MyAlias", "My Test Alias Extension");
+\end_layout
+
+\begin_layout Plain Layout
+
+X509V3_EXT_add_alias(nid, NID_netscape_comment);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В данном листинге объявляется переменная 
+\family typewriter
+nid
+\family default
+, являющая числовым идентификатором создаваемого дополнения.
+ С помощью функции 
+\family typewriter
+OBJ_create()
+\family default
+ создается объект расширения.
+ Первым параметром передается 
+\family typewriter
+OID
+\family default
+, во втором --- короткое имя, в последнем --- длинное.
+ В последней строке выполняется создание псевдонима на объект 
+\family typewriter
+Netscape Comment
+\family default
+.
+ Структура нового дополнения является полной копией структуры 
+\family typewriter
+Netscape Comment
+\family default
+.
+ И все функции инициализации, изменения или удаления нового удаления лежат
+ на функциях 
+\family typewriter
+Netscape Comment
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Достоинства данного подхода --- простота программной реализации.
+ Недостатки --- требуется изменять особым образом конфигурационный файл
+ OpenSSL, а также требуется вызывать функции для установления соответствия
+ между 
+\family typewriter
+OID
+\family default
+ созданного объекта с его именем с помощью специальных функций.
+ 
+\end_layout
+
+\begin_layout Standard
+При использовании второго варианта создания дополнения, требуется модифицировать
+ файл 
+\family typewriter
+objects.txt
+\family default
+, добавив туда информацию о дополнении, а также требуется реализовать функции
+ по конвертации из 
+\family typewriter
+ASN1
+\family default
+ в текстовое представления и обратно.
+ Недостатками данного подхода является сложность реализации.
+ В качестве достоинств данного подхода выделяются: отсутствие необходимости
+ поставки идентификатора объекта и его текстового представления в конфигурационн
+ых файлах, поэтому не требуется вызывать специальные функции библиотеки
+ OpenSSL при различных манипуляциях с расширением.
+ В этом случае идентификация объекта в сертификате выполняется внутри библиотеки
+ без использования конфигурационных файлов.
+\end_layout
+
+\begin_layout Subsubsection
+Создание дополнения в OpenSSL
+\end_layout
+
+\begin_layout Standard
+В рамках дипломной работы предлагается рассмотреть механизм программного
+ создания дополнения в библиотеке OpenSSL и реализовать дополнение, в котором
+ будет храниться контекст безопасности пользователя.
+\end_layout
+
+\begin_layout Standard
+Соответствие между числовым кодом объекта в аннотации ASN1 и текстового
+ представления описывается в файле 
+\family typewriter
+objects.txt
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Синтаксис этого файла следующий:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+1 2 3 4		: shortName	: Long Name
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+1 2 3 4
+\family default
+ обозначает числовой код объекта в спецификации ASN1, 
+\family typewriter
+shortName
+\family default
+
+\begin_inset space ~
+\end_inset
+
+ --- короткое имя объекта (например 
+\family typewriter
+SN
+\family default
+, 
+\family typewriter
+C
+\family default
+, 
+\family typewriter
+ST
+\family default
+), 
+\family typewriter
+Long Name
+\family default
+ --- полное имя (например, 
+\family typewriter
+surname
+\family default
+, 
+\family typewriter
+countryName
+\family default
+, 
+\family typewriter
+stateOrProvinceName
+\family default
+).
+\end_layout
+
+\begin_layout Standard
+Важно отметить, что для числового кода можно использовать наименование объекта
+ на верхнем уровне уже объявленного ранее.
+\end_layout
+
+\begin_layout Standard
+На следующем листинге представлено описание текстовых полей сертфиката X509:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+X509 3			: CN			: commonName
+\end_layout
+
+\begin_layout Plain Layout
+
+X509 4			: SN			: surname
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+X509 72			: role			: role
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В данном случае наименование объекта 
+\family typewriter
+CN 
+\family default
+использует код объекта 
+\family typewriter
+X509
+\family default
+, который должен быть объявлен ранее.
+\end_layout
+
+\begin_layout Standard
+Аналогично объявляются все дополнения сертификата.
+ 
+\end_layout
+
+\begin_layout Standard
+С помощью скрипта 
+\family typewriter
+objects.pl
+\family default
+ каждому объекту, описанному в данном файле, ставится в соответствие порядковый
+ номер (
+\emph on
+NID
+\emph default
+, 
+\emph on
+numeric identificator
+\emph default
+) с помощью директивы 
+\family typewriter
+define
+\family default
+ в файле 
+\family typewriter
+objects.h
+\family default
+.
+ На листинге представлен результат добавления абстрактного объекта 
+\family typewriter
+objectName
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+#define SN_objectName                   "objectName"
+\end_layout
+
+\begin_layout Plain Layout
+
+#define LN_objectName                   "Long Object Name"
+\end_layout
+
+\begin_layout Plain Layout
+
+#define NID_objectName                  920
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Для описания дополнений используются функции и структуры из файла 
+\family typewriter
+ext_dat.h
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Данный механизм позволяет выполнить однозначную идентификацию поля в сертификате.
  
 \end_layout
 
@@ -4351,230 +4674,6 @@ nid
  Таким образом, незнакомые поля в сертификате не будут переведены в текстовый
  вид.
  
-\end_layout
-
-\begin_layout Subsection
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:Модификация-библиотеки-OpenSSL"
-
-\end_inset
-
-Модификация библиотеки OpenSSL
-\end_layout
-
-\begin_layout Standard
-При чтении сертификата с помощью OpenSSL выполняется перевод нотации ASN.1
- в текстовый вид.
- Соответствие ASN.1 и текстового представления описывается в файле 
-\family typewriter
-objects.txt
-\family default
- с помощью особого синтаксиса.
- 
-\end_layout
-
-\begin_layout Standard
-Синтаксис этого файла следующий:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-1 2 3 4		: shortName	: Long Name
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-
-\family typewriter
-1 2 3 4
-\family default
- обозначает числовой код объекта в спецификации ASN1, 
-\family typewriter
-shortName
-\family default
-
-\begin_inset space ~
-\end_inset
-
- --- короткое имя объекта (например 
-\family typewriter
-SN
-\family default
-, 
-\family typewriter
-C
-\family default
-, 
-\family typewriter
-ST
-\family default
-), 
-\family typewriter
-Long Name
-\family default
- --- полное имя (например, 
-\family typewriter
-surname
-\family default
-, 
-\family typewriter
-countryName
-\family default
-, 
-\family typewriter
-stateOrProvinceName
-\family default
-).
-\end_layout
-
-\begin_layout Standard
-Важно отметить, что для числового кода можно использовать наименование объекта
- на верхнем уровне уже объявленного ранее.
-\end_layout
-
-\begin_layout Standard
-На следующем листинге представлено описание текстовых полей сертфиката X509:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-X509 3			: CN			: commonName
-\end_layout
-
-\begin_layout Plain Layout
-
-X509 4			: SN			: surname
-\end_layout
-
-\begin_layout Plain Layout
-
-...
-\end_layout
-
-\begin_layout Plain Layout
-
-X509 72			: role			: role
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-В данном случае наименование объекта 
-\family typewriter
-CN 
-\family default
-использует код объекта 
-\family typewriter
-X509
-\family default
-, который должен быть объявлен ранее.
-\end_layout
-
-\begin_layout Standard
-Данный механизм позволяет выполнить однозначную идентификацию поля в сертификате.
- 
-\end_layout
-
-\begin_layout Standard
-В файле 
-\family typewriter
-objects.h
-\family default
- определяется 
-\family typewriter
-nid
-\family default
- --- числовой идентификатор объекта.
- Если при чтении сертификата встретится незнакомое ранее поле, OpenSSL присвоит
- числовой идентифкатор объекту 
-\family typewriter
-NID_undef
-\family default
-, что не позволит перевести поле в текстовый вид.
-\end_layout
-
-\begin_layout Standard
-Формат записи в файле 
-\family typewriter
-objects.h
-\family default
- следующий: 
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-#define SN_commonName                   "CN"
-\end_layout
-
-\begin_layout Plain Layout
-
-#define LN_commonName                   "commonName"
-\end_layout
-
-\begin_layout Plain Layout
-
-#define NID_commonName                  13
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-В первой строке определяется короткое имя, во второй --- полное имя, в третей
- --- его числовой код.
-\end_layout
-
-\begin_layout Standard
-В рамках дипломной работы был написан патч, добавляющий возможность идентификаци
-и поля 
-\family typewriter
-SC
-\family default
- (хранящий контекст пользователя) в библиотеке OpenSSL.
- Текст этого патча приведён в 
-\emph on
-приложении 2
-\emph default
-.
-\end_layout
-
-\begin_layout Standard
-Для того, чтобы собрать библиотеку OpenSSL с разработанным патчем, необходимо
- воспользоваться инструкциями 
-\emph on
-раздела
-\emph default
- 
-\emph on
-
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sub:Модификация-исходных-текстов"
-
-\end_inset
-
-
-\emph default
-.
 \end_layout
 
 \begin_layout Subsection

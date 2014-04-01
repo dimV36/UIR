@@ -54,7 +54,6 @@ def make_request(private_key_path, username, user_context, output, is_printed):
     name.L = DEFAULT_FIELDS['L']
     name.O = DEFAULT_FIELDS['O']
     name.OU = DEFAULT_FIELDS['OU']
-    name.CN = DEFAULT_FIELDS['CN']
     name.CN = username
     if user_context:
         context = user_context
@@ -215,8 +214,7 @@ if __name__ == "__main__":
     req_group = OptionGroup(parser, "Request options")
     req_group.add_option("--user", dest="user", default=DEFAULT_FIELDS['CN'],
                          help="add username to request, default: %default")
-    req_group.add_option("--secontext", dest="secontext", default=None,
-                         help="add selinux context of user, default: %default")
+    req_group.add_option("--secontext", dest="secontext", help="add selinux context of user")
     parser.add_option_group(req_group)
 
     input_options = OptionGroup(parser, "Input options")
