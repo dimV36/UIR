@@ -34,12 +34,12 @@
 
 \setlength{\cftbeforesecskip}{0pt}
 
-\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
-\renewcommand{\cftsecaftersnum}{.}
-\renewcommand{\cftsubsecaftersnum}{.}
-\renewcommand{\cftsubsubsecaftersnum}{.}
-\renewcommand{\cftsecfont}{\normalsize}
-\renewcommand{\cftsecpagefont}{\normalsize}
+%\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+%\renewcommand{\cftsecaftersnum}{.}
+%\renewcommand{\cftsubsecaftersnum}{.}
+%\renewcommand{\cftsubsubsecaftersnum}{.}
+%\renewcommand{\cftsecfont}{\normalsize}
+%\renewcommand{\cftsecpagefont}{\normalsize}
 
 %XeTeX-овский дзен
 \ifxetex
@@ -4188,8 +4188,10 @@ key "OpenSSL"
 \end_layout
 
 \begin_layout Standard
-Первый предложенный вариант позволяет создать объект дополнения с помощью
- реализованных дополнений:
+С помощью первого варианта можно реализовать дополнение следующим образом:
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
@@ -4219,7 +4221,7 @@ X509V3_EXT_add_alias(nid, NID_netscape_comment);
 \family typewriter
 nid
 \family default
-, являющая числовым идентификатором создаваемого дополнения.
+, являющая порядковым идентификатором создаваемого дополнения.
  С помощью функции 
 \family typewriter
 OBJ_create()
@@ -4240,23 +4242,21 @@ Netscape Comment
 Netscape Comment
 \family default
 .
- И все функции инициализации, изменения или удаления нового удаления лежат
- на функциях 
+ Для инициализации, изменения или удаления нового дополнения используются
+ соответствующие функции 
 \family typewriter
 Netscape Comment
 \family default
 .
+ 
 \end_layout
 
 \begin_layout Standard
 Достоинства данного подхода --- простота программной реализации.
- Недостатки --- требуется изменять особым образом конфигурационный файл
- OpenSSL, а также требуется вызывать функции для установления соответствия
- между 
-\family typewriter
-OID
-\family default
- созданного объекта с его именем с помощью специальных функций.
+ Недостатки --- для успешной идентификации созданного дополнения в конфигурацион
+ном файле OpenSSL требуется добавить строчки, определяющее OID объекта и
+ его имя, а также требуется вызывать специальные функции для получения значения
+ дополнения.
  
 \end_layout
 
@@ -4282,6 +4282,12 @@ ASN1
 \end_layout
 
 \begin_layout Subsubsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Создание-дополнения-в"
+
+\end_inset
+
 Создание дополнения в OpenSSL
 \end_layout
 
@@ -4292,12 +4298,13 @@ ASN1
 \end_layout
 
 \begin_layout Standard
-Соответствие между числовым кодом объекта в аннотации ASN1 и текстового
- представления описывается в файле 
+Соответствие между кодом объекта в аннотации ASN1 и его текстового представления
+ описывается в файле 
 \family typewriter
 objects.txt
 \family default
 .
+ 
 \end_layout
 
 \begin_layout Standard
@@ -4361,87 +4368,9 @@ stateOrProvinceName
 \end_layout
 
 \begin_layout Standard
-Важно отметить, что для числового кода можно использовать наименование объекта
- на верхнем уровне уже объявленного ранее.
-\end_layout
-
-\begin_layout Standard
-На следующем листинге представлено описание текстовых полей сертфиката X509:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-X509 3			: CN			: commonName
-\end_layout
-
-\begin_layout Plain Layout
-
-X509 4			: SN			: surname
-\end_layout
-
-\begin_layout Plain Layout
-
-...
-\end_layout
-
-\begin_layout Plain Layout
-
-X509 72			: role			: role
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-В данном случае наименование объекта 
+Например, ниже приведено определение объекта 
 \family typewriter
-CN 
-\family default
-использует код объекта 
-\family typewriter
-X509
-\family default
-, который должен быть объявлен ранее.
-\end_layout
-
-\begin_layout Standard
-Аналогично объявляются все дополнения сертификата.
- 
-\end_layout
-
-\begin_layout Standard
-С помощью скрипта 
-\family typewriter
-objects.pl
-\family default
- каждому объекту, описанному в данном файле, ставится в соответствие порядковый
- номер (
-\emph on
-NID
-\emph default
-, 
-\emph on
-numeric identificator
-\emph default
-) с помощью директивы 
-\family typewriter
-define
-\family default
- в файле 
-\family typewriter
-objects.h
-\family default
-.
- На листинге представлен результат добавления абстрактного объекта 
-\family typewriter
-objectName
+Netscape Comment
 \family default
 :
 \end_layout
@@ -4453,17 +4382,42 @@ status open
 
 \begin_layout Plain Layout
 
-#define SN_objectName                   "objectName"
+!Cname netscape
 \end_layout
 
 \begin_layout Plain Layout
 
-#define LN_objectName                   "Long Object Name"
+2 16 840 1 113730	: Netscape		: Netscape Communications Corp.
 \end_layout
 
 \begin_layout Plain Layout
 
-#define NID_objectName                  920
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+!Cname netscape-cert-extension
+\end_layout
+
+\begin_layout Plain Layout
+
+netscape 1		: nsCertExt		: Netscape Certificate Extension
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+netscape-cert-extension 13 : nsComment		: Netscape Comment
+\end_layout
+
+\begin_layout Plain Layout
+
+!Cname netscape-cert-sequence
 \end_layout
 
 \end_inset
@@ -4472,15 +4426,790 @@ status open
 \end_layout
 
 \begin_layout Standard
-Для описания дополнений используются функции и структуры из файла 
+Таким образом, 
+\family typewriter
+OID
+\family default
+ объекта 
+\family typewriter
+Netscape Comment
+\family default
+ будет следующим: 
+\family typewriter
+2 16 840 113730 1 13
+\family default
+.
+ С помощью директивы 
+\family typewriter
+!Cname 
+\family default
+явно определяется имя объекта в библиотеке OpenSSL.
+ 
+\end_layout
+
+\begin_layout Standard
+Чтобы можно было использовать данную информацию о дополнениях непосредственно
+ в OpenSSL, используется скрипт 
+\family typewriter
+objects.pl
+\family default
+.
+ Он принимает на вход файл 
+\family typewriter
+objects.txt
+\family default
+ и создает с помощью директив 
+\family typewriter
+#define
+\family default
+ определение числового кода в ASN1 объекта и его имени, а также его порядковый
+ идентификатор или 
+\family typewriter
+NID
+\family default
+.
+ Эти объявления можно найти в файле 
+\family typewriter
+objects.h
+\family default
+.
+ На следующем листинге показан результат работы данного скрипта для объекта
+ 
+\family typewriter
+Netscape Comment
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+#define SN_netscape_comment		"nsComment"
+\end_layout
+
+\begin_layout Plain Layout
+
+#define LN_netscape_comment		"Netscape Comment"
+\end_layout
+
+\begin_layout Plain Layout
+
+#define NID_netscape_comment		78
+\end_layout
+
+\begin_layout Plain Layout
+
+#define OBJ_netscape_comment		OBJ_netscape_cert_extension,13L
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Такие определения создаются для всех объектов.
+\end_layout
+
+\begin_layout Standard
+Для обеспечения информации, хранимой в дополнении, требуется реализовать
+ структуру 
+\family typewriter
+X509V3_EXT_METHOD
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+typedef struct v3_ext_method X509V3_EXT_METHOD;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+struct v3_ext_method {
+\end_layout
+
+\begin_layout Plain Layout
+
+int ext_nid;
+\end_layout
+
+\begin_layout Plain Layout
+
+int ext_flags;
+\end_layout
+
+\begin_layout Plain Layout
+
+ASN1_ITEM_EXP *it;
+\end_layout
+
+\begin_layout Plain Layout
+
+X509V3_EXT_NEW ext_new;
+\end_layout
+
+\begin_layout Plain Layout
+
+X509V3_EXT_FREE ext_free;
+\end_layout
+
+\begin_layout Plain Layout
+
+X509V3_EXT_D2I d2i;
+\end_layout
+
+\begin_layout Plain Layout
+
+X509V3_EXT_I2D i2d;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+X509V3_EXT_I2S i2s;
+\end_layout
+
+\begin_layout Plain Layout
+
+X509V3_EXT_S2I s2i;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+X509V3_EXT_I2V i2v;
+\end_layout
+
+\begin_layout Plain Layout
+
+X509V3_EXT_V2I v2i;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+X509V3_EXT_I2R i2r;
+\end_layout
+
+\begin_layout Plain Layout
+
+X509V3_EXT_R2I r2i;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+void *usr_data;
+\end_layout
+
+\begin_layout Plain Layout
+
+};
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Данная структура объявлена в заголовочном файле 
+\family typewriter
+x509v3.h
+\family default
+.
+ В структуре объявляется поле типа 
+\family typewriter
+int ext_nid
+\family default
+, которое хранит порядковый идентификатор дополнения, в поле 
+\family typewriter
+ext_flags 
+\family default
+указывается тип дополнения (
+\family typewriter
+0
+\family default
+ --- однострочный, 
+\family typewriter
+1
+\family default
+ --- многострочный).
+ В поле 
+\family typewriter
+it
+\family default
+ определяется функция создания и удаления дополнения.
+ Если она определена, то поля 
+\family typewriter
+ext_new
+\family default
+, 
+\family typewriter
+ext_free
+\family default
+, 
+\family typewriter
+d2i
+\family default
+, 
+\family typewriter
+i2d
+\family default
+ не требуют определения.
+ Они используются для инициализации и корректного удаления объекта дополнения
+ в старом стиле.
+ 
+\end_layout
+
+\begin_layout Standard
+Далее определяются функции, выполняющие кодирование и декодирование объекта
+ из ASN1 в текстовый и обратно.
+ Поля 
+\family typewriter
+i2s
+\family default
+, 
+\family typewriter
+s2i
+\family default
+ определяют функции преобразования из ASN1 в строку и обратно; 
+\family typewriter
+v2i
+\family default
+, 
+\family typewriter
+i2v 
+\family default
+определяют функции преобразования дополнений, в которых содержится несколько
+ полей; 
+\family typewriter
+i2r
+\family default
+,
+\family typewriter
+ r2i 
+\family default
+--- функции преобразования многострочных дополнений.
+\end_layout
+
+\begin_layout Standard
+В последнем поле может быть объявлена дополнительная функция, которая может
+ потребоваться для реализации дополнения.
+ 
+\end_layout
+
+\begin_layout Standard
+Поиск дополнений выполняется в таблице 
+\family typewriter
+standart_ext
+\family default
+, объявленной в заголовочном файле 
 \family typewriter
 ext_dat.h
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static const X509V3_EXT_METHOD *standard_exts[]
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+При этом все структуры дополнений предварительно загружаются с помощью ключевого
+ слова 
+\family typewriter
+extern
+\family default
+ языка C.
+ Данная таблица содержит адреса структур всех доступных в конкретной версии
+ OpenSSL дополнений.
+\end_layout
+
+\begin_layout Subsubsection
+Реализация дополнения v3_secon
+\end_layout
+
+\begin_layout Standard
+С помощью описанной в 
+\emph on
+пункте 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Создание-дополнения-в"
+
+\end_inset
+
+ 
+\emph default
+было реализовано однострочное дополнение X509v3 на языке программирования
+ C, которое позволяет хранить контекст пользователя.
+ Полный текст дополнения приводится в 
+\emph on
+приложении 2
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+С помощью директив 
+\family typewriter
+#include
+\family default
+ подключаются заголовочные файлы, необходимые для реализации дополнения.
+ Далее объявляются функции, необходимые для кодирования и декодирования
+ объекта ASN1 в текстовый и обратно:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static char *i2s_ASN1_IA5STRING(X509V3_EXT_METHOD *method, ASN1_IA5STRING
+ *asn1_string);
+\end_layout
+
+\begin_layout Plain Layout
+
+static ASN1_IA5STRING *s2i_ASN1_IA5STRING(X509V3_EXT_METHOD *method, X509V3_CTX
+ *ctx, char *string);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Данные функции определены с ключевым словом 
+\family typewriter
+static
+\family default
+, что гарантирует их видимость в данном файле.
+ Это необходимо для предотвращения конфликта имён при вызове функций.
+ Первая функция возвращает текстовое значение поля дополнения.
+ Её параметры --- указатель на структуру дополнения 
+\family typewriter
+method 
+\family default
+и указатель на строку в формате ASN1 
+\family typewriter
+asn1_string
+\family default
+, декодирование которой необходимо выполнить.
+ Вторая функция возвращает кодированную в ASN1 строку.
+ Ей передаются: указатель на структуру дополнения 
+\family typewriter
+method
+\family default
+, указатель на структуру контекста 
+\family typewriter
+ctx
+\family default
+, а также указатель на текстовую строку 
+\family typewriter
+string
 \family default
 .
 \end_layout
 
 \begin_layout Standard
-Данный механизм позволяет выполнить однозначную идентификацию поля в сертификате.
+Далее описывается определение структуры 
+\family typewriter
+v3_secon
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+const X509V3_EXT_METHOD v3_secon = EXT_IA5STRING(NID_selinux_context);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+EXT_IA5STRING
+\family default
+ --- это макрос, объявленный в заголовочном файле 
+\family typewriter
+x509v3.h 
+\family default
+следующим образом:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+{ nid, 0, ASN1_ITEM_ref(ASN1_IA5STRING), 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+0,0,0,0, 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+(X509V3_EXT_I2S)i2s_ASN1_IA5STRING, 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+(X509V3_EXT_S2I)s2i_ASN1_IA5STRING, 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+0,0,0,0, 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+NULL}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Таким образом он реализует структуру 
+\family typewriter
+X509V3_EXT_METHOD 
+\family default
+для однострочных дополнений x509v3.
+ Необходимо реализовать функции конверации 
+\family typewriter
+i2s_ASN1_IA5STRING
+\family default
+ (преобразование в ASN1-строки в текстовую) и 
+\family typewriter
+s2i_ASN1_IA5STRING
+\family default
+ (преобразование из текстовой строки в ASN1-строку.
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+ASN1_IA5STRING
+\family default
+ --- это 
+\family typewriter
+typedef
+\family default
+ структуры 
+\family typewriter
+asn1_string_st
+\family default
+.
+ Её объявление находится в заголовочном файле 
+\family typewriter
+asn1.h
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+В функции 
+\family typewriter
+i2s_ASN1_IA5STRING() 
+\family default
+объявляется переменная 
+\family typewriter
+string
+\family default
+, в которой будет храниться результат конвертирования ASN1 строки в текстовую.
+ При этом проверяются условия на корректность переданного значения ASN1-строки
+ в функцию:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if ((NULL == asn1_string) || (NULL == asn1_string -> length))
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Если передан нулевой указатель на ASN1-строку или её длина равна нулю, функцией
+ возвращается 
+\family typewriter
+NULL
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Далее предпринимается попытка выделить память для текстовой строки:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if (NULL == (string = OPENSSL_malloc(asn1_string -> length + 1)))
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+При этом следует отметить, что длина текстовой строки должна быть на 1 больше,
+ чем ASN1.
+ Это объясняется тем, что в С-строке последний символ должен быть обязательно
+ завершающим ('
+\family typewriter
+
+\backslash
+0
+\family default
+').
+ Если память выделить для текстовой строки не удалось, также возвращается
+ 
+\family typewriter
+NULL
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Далее копируется данные из ASN1-строки в текстовую, последний символ устанавлива
+ется '
+\family typewriter
+
+\backslash
+0
+\family default
+':
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+memcpy(string, asn1_string -> data, asn1_string -> length);
+\end_layout
+
+\begin_layout Plain Layout
+
+string[asn1_string -> length] = 0;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+После выполнения данных операций, функцией 
+\family typewriter
+i2s_ASN1_IA5STRING()
+\family default
+ возвращается значение переменной 
+\family typewriter
+string
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+При реализации обратной конвертации текстовой строки в ASN1-строку выполняются
+ аналогичная последовательность действий, но уже применительно к текстовой
+ строке.
+\end_layout
+
+\begin_layout Standard
+Для обеспечения возможности создания дополнения 
+\family typewriter
+v3_secon
+\family default
+ был написан патч, позволяющий это сделать.
+ В нём была расширена таблица дополнений 
+\family typewriter
+standart_exts
+\family default
+ и добавлена правила сборки для 
+\family typewriter
+v3_secon
+\family default
+ в 
+\family typewriter
+Makefile
+\family default
+, а также объявлен объект 
+\family typewriter
+selinuxContext
+\family default
+ в 
+\family typewriter
+objects.txt
+\family default
+.
+ С ним ознакомиться можно также в 
+\emph on
+приложении 2
+\emph default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Для того, чтобы применить разработанные дополнения, необходимо скопировать
+ патч и файл в каталог 
+\family typewriter
+SOURCES
+\family default
+ папки 
+\family typewriter
+rpmbuild
+\family default
+, добавить строки
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Source14: v3_secon.c
+\end_layout
+
+\begin_layout Plain Layout
+
+Patch89: openssl-1.0.1e-selinux-extension.patch 
+\end_layout
+
+\begin_layout Plain Layout
+
+%patch89 -p1 -b .crypto 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+в соответствующие секции 
+\family typewriter
+SPEC
+\family default
+-файла OpenSSL и пересобрать пакет с помощью команды
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+rpmbuild -ba openssl.spec
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Выбор языка программирования для разработки утилиты создания сертификатов
+\end_layout
+
+\begin_layout Standard
+Для создания приватных ключей, запросов на подпись сертификатов и сертификатов,
+ может использоваться утилиты 
+\family typewriter
+openssl
+\family default
+, входящая в состав одноимённого пакета.
+ Данная утилита позволяет создавать сертификаты с дополнениями, которые
+ описаны в секциях конфигурационных файле 
+\family typewriter
+openssl.conf
+\family default
+.
+ Однако, в виду того, что контекст пользователя может измениться, необходимо
+ изменять значение данного дополнения в нём.
+ Поэтому в работе предлагается разработать утилиту, позволяющая создавать
+ сертификаты пользователей с указанным дополнением, не требуя изменений
+ в конфигурационных файлах.
  
 \end_layout
 
@@ -4511,298 +5240,15 @@ Python
  Отладка программ на языке программирования на Python проста: достаточно
  модифицировать исходный текст программы и исполнить её, в то время как
  отладка программ, написанных на языке программирования C, требует перекомпиляци
-и в исполняемый файл.
+и.
  Благодаря наличию сборщика мусора в языке Python, память корректно освобождаетс
-я после отработки программы, в то время как на языке C требуется правильно
- выделять память для объектов и её освобождать.
- 
-\end_layout
-
-\begin_layout Standard
-На языке программирования Python написаны несколько библиотек, позволяющие
- создавать сертификаты X509, такие как:
-\end_layout
-
-\begin_layout Itemize
-PyOpenSSL;
-\end_layout
-
-\begin_layout Itemize
-M2Crypto.
-\end_layout
-
-\begin_layout --Separator--
-
-\end_layout
-
-\begin_layout Standard
-
-\series bold
-PyOpenSSL
-\series default
- --- это интерфейс к библиотеке OpenSSL.
- Текущая версия --- 0.14.
- Недостатками данной библиотеки являются неполная реализация функций OpenSSL,
- неполная документация и сложность модификации.
- Достоинством данной библиотеки является малый размер библиотеки.
- 
-\end_layout
-
-\begin_layout Standard
-
-\series bold
-M2Crypto 
-\series default
-
-\begin_inset CommandInset citation
-LatexCommand cite
-key "M2Crypto"
-
-\end_inset
-
- также является интерфейсом к библиотеки OpenSSL, текущая версия --- 0.21.
- В качестве недостатков данной библиотеки можно выделить больший размер
- библиотеки по сравнению с PyOpenSSL.
- Достоинствами являются хорошая документация всех функций библиотеки, наиболее
- полная реализация функций OpenSSL, а также возможность расширения с помощью
- низкоуровневого API.
- 
-\end_layout
-
-\begin_layout Standard
-Поэтому для разработки утилиты создания X509 сертификата будем использовать
- библиотеку M2Crypto.
-\end_layout
-
-\begin_layout Subsection
-Обзор структуры библиотеки M2Crypto
-\end_layout
-
-\begin_layout Standard
-Библиотека M2Crypto представляет собой единый модуль, который состоит из
- подмодулей.
- Описание модулей, используемых при разработки утилиты, будет приведено
- в данном разделе.
- 
-\end_layout
-
-\begin_layout Standard
-Далее представлено описание некоторых модулей библиотеки M2Crypto.
-\end_layout
-
-\begin_layout Standard
-Модуль 
-\family typewriter
-M2Crypto.m2 
-\family default
-представляет собой низкоуровневый интерфейс, который генерируется автоматически
- с помощью утилиты 
-\family typewriter
-swig
-\family default
-.
- Данная утилита создает динамическую библиотеку с реализациями методов библиотек
-и OpenSSL, позволяющая использовать эти функции для создания высокоуровневого
- API библиотеки.
- С помощью особых файлов спецификаций, используемых утилитой 
-\family typewriter
-swig
-\family default
- можно расширить библиотеку для собственных нужд.
-\end_layout
-
-\begin_layout Standard
-Модуль 
-\family typewriter
-M2Crypto.RSA
-\family default
- содержит набор методов, необходимых для различных манипуляций с RSA-ключами:
- генерирование и сохранение в различных форматах.
-\end_layout
-
-\begin_layout Standard
-Модуль 
-\family typewriter
-M2Crypto.EVP
-\family default
- используется уже сохранённого на жесткий диск ключа.
- 
-\end_layout
-
-\begin_layout Standard
-Модуль 
-\family typewriter
-M2Crypto.ASN1
-\family default
- необходим для создания ASN.1 объектов сертификата и для их идентификации
- в сертификате.
-\end_layout
-
-\begin_layout Standard
-Модуль 
-\family typewriter
-M2Crypto.X509
-\family default
- содержит в себе ряд функций для загрузки запроса на создания сертификата,
- сертификата, а также подмодули, отвечающие за манипуляции с объектами сертифика
-та: расширения (
-\family typewriter
-M2Crypto.X509.X509_Extension
-\family default
-), имени, необходимого для подписи или идентификации сертификата (
-\family typewriter
-M2Crypto.X509.X509_Name
-\family default
-).
- 
-\end_layout
-
-\begin_layout Standard
-Дополнительного рассмотрения требует модуль 
-\family typewriter
-M2Crypto.X509.X509_Name
-\family default
-: в этом модуле происходит идентификация объектов в имени сертификата с
- помощью переменной класса 
-\family typewriter
-nid
-\family default
-.
- Эта переменная является словарём.
- В ней описывается соответствие поля сертификата (C, ST, SN и других) с
- идентификатором объекта из библиотеки OpenSSL.
- Таким образом, незнакомые поля в сертификате не будут переведены в текстовый
- вид.
+я после отработки программы, в то время как на языке C требуется следить
+ за её выделением и её освобождением.
  
 \end_layout
 
 \begin_layout Subsection
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:Модификация-библиотеки-M2Crypto"
-
-\end_inset
-
-Модификация библиотеки M2Crypto
-\end_layout
-
-\begin_layout Standard
-Получение текстового значения в библиотеке M2Crypto реализуется с помощью
- метода 
-\family typewriter
-__getattr__(self, attr)
-\family default
- класса 
-\family typewriter
-X509_Name
-\family default
-:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Python,showstringspaces=false"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-def __getattr__(self, attr):
-\end_layout
-
-\begin_layout Plain Layout
-
-	if attr in self.nid:
-\end_layout
-
-\begin_layout Plain Layout
-
-		assert m2.x509_name_type_check(self.x509_name), "'x509_name' type error"
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-        return m2.x509_name_by_nid(self.x509_name, self.nid[attr])
-\end_layout
-
-\begin_layout Plain Layout
-
-	if attr in self.__dict__:
-\end_layout
-
-\begin_layout Plain Layout
-
-    	return self.__dict__[attr]
-\end_layout
-
-\begin_layout Plain Layout
-
-        raise AttributeError, (self, attr)
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Данный метод возвращает имя объекта по переданному числовому идентификатору.
- В случае, если передан идентификатор из словаря, то выполняется функция
- OpenSSL 
-\family typewriter
-x509_name_by_nid()
-\family default
-
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-Данная функция импортирована в библиотеку с помощью утилиты 
-\family typewriter
-swig
-\end_layout
-
-\end_inset
-
-.
- Таким образом, требуется дополнить словарь антидетонаторами поля 
-\family typewriter
-SC
-\family default
-, которые были описаны в патче для библиотеки OpenSSL.
- 
-\end_layout
-
-\begin_layout Standard
-Для этого был написан следующий патч, реализующий указанные действия.
- Ознакомиться с ним можно в 
-\emph on
-приложении 3.
-\end_layout
-
-\begin_layout Standard
-Для того, чтобы собрать библиотеку M2Crypto с разработанным патчем, необходимо
- воспользоваться инструкциями 
-\emph on
-раздела
-\emph default
- 
-\emph on
-
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sub:Модификация-исходных-текстов"
-
-\end_inset
-
-
-\emph default
-.
-\end_layout
-
-\begin_layout Subsection
-Разработка утилиты pgcert
+Реализация утилиты создания сертификатов
 \end_layout
 
 \begin_layout Standard
@@ -4817,8 +5263,11 @@ reference "sub:Модификация-исходных-текстов"
 
 \begin_layout Enumerate
 Создавать запросы на подпись сертификатов, удовлетворяющий принципам построения
- сертификата X509, в котором будет содержаться контекст безопасности пользовател
-я;
+ сертификата X509 с разработанном ранее дополнением 
+\family typewriter
+selinuxContext
+\family default
+;
 \end_layout
 
 \begin_layout Enumerate
@@ -4853,24 +5302,182 @@ reference "sub:Модификация-исходных-текстов"
 
 \begin_layout Standard
 Выполнение перечисленных выше требований определяют минимальный функционал,
- который позволит выполнять стандартные для сертификата действия (создание
- приватного ключа, создание запроса на подпись сертификата, подпись сертификата,
- его проверку).
+ реализация которого позволит выполнять пользователю стандартные основные
+ действия с сертификатом (создание приватного ключа, создание запроса на
+ подпись сертификата, подпись сертификата, его проверку).
  Выполнение дополнительных требований при создании утилиты необязательны,
  но их реализация повышает удобство при пользовании утилитой.
  
 \end_layout
 
 \begin_layout Standard
-Утилита 
+На языке программирования Python написаны несколько библиотек, позволяющие
+ создавать сертификаты X509, такие как:
+\end_layout
+
+\begin_layout Itemize
+PyOpenSSL;
+\end_layout
+
+\begin_layout Itemize
+M2Crypto.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+PyOpenSSL
+\series default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "PyOpenSSL"
+
+\end_inset
+
+--- это интерфейс к библиотеке OpenSSL.
+ Текущая версия --- 0.14.
+ Недостатками данной библиотеки являются неполная реализация функций OpenSSL,
+ неполная документация и сложность модификации.
+ Достоинством данной библиотеки является малый размер библиотеки.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+M2Crypto 
+\series default
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "M2Crypto"
+
+\end_inset
+
+ также является интерфейсом к библиотеки OpenSSL, текущая версия --- 0.21.
+ В качестве недостатков данной библиотеки можно выделить больший размер
+ библиотеки по сравнению с PyOpenSSL.
+ Достоинствами являются хорошая документация всех функций библиотеки, наиболее
+ полная реализация функций OpenSSL, а также возможность расширения с помощью
+ низкоуровневого API.
+ 
+\end_layout
+
+\begin_layout Standard
+Поэтому для разработки утилиты создания X509 сертификатов предлагается использов
+ать библиотеку M2Crypto.
+\end_layout
+
+\begin_layout Subsubsection
+Обзор структуры библиотеки M2Crypto
+\end_layout
+
+\begin_layout Standard
+Библиотека M2Crypto представляет собой единый модуль, который состоит из
+ подмодулей.
+ 
+\end_layout
+
+\begin_layout Standard
+Подмодуль 
 \family typewriter
-pgcert
+M2Crypto.m2 
 \family default
- представляет собой программу, написанной на языке программирования Python
- 2.7 в функциональном стиле.
+представляет собой низкоуровневый интерфейс, который генерируется автоматически
+ с помощью утилиты 
+\family typewriter
+SWIG
+\family default
+.
+ Данная утилита создает динамическую подключаемую библиотеку с вызовами
+ функций библиотеки OpenSSL, которые можно использовать при создании высокоуровн
+его API.
+ С помощью особых файлов спецификаций, используемых утилитой 
+\family typewriter
+SWIG
+\family default
+ можно расширить библиотеку для собственных нужд.
+\end_layout
+
+\begin_layout Standard
+Подмодуль 
+\family typewriter
+M2Crypto.RSA
+\family default
+ содержит класс RSA-ключей.
+ Методы данного класса реализуют создание ключей и сохранение в различных
+ форматах.
+\end_layout
+
+\begin_layout Standard
+Подмодуль 
+\family typewriter
+M2Crypto.EVP
+\family default
+ используется уже сохранённого на жесткий диск ключа.
+ 
+\end_layout
+
+\begin_layout Standard
+Подмодуль 
+\family typewriter
+M2Crypto.ASN1
+\family default
+ необходим для создания ASN1 объектов сертификата и для их идентификации.
+\end_layout
+
+\begin_layout Standard
+Подмодуль 
+\family typewriter
+M2Crypto.X509
+\family default
+ содержит в классы, предоставляющие возможность работы с объектами сертификата:
+ созданием сертификата, дополнениями, стека дополнений и т.д.
+\end_layout
+
+\begin_layout Subsubsection
+Реализация утилиты создания сертификатов
+\end_layout
+
+\begin_layout Standard
+Утилита представляет собой программу, запускаемую из командной строки с
+ помощью команды:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ pgcert
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Она исполняется интерпретатором Python версии 2.7.
  Ознакомиться с исходным текстом можно в 
 \emph on
-приложении 4
+приложении 
+\emph default
+3.
+ Скриншот запуска приведён 
+\emph on
+на рисунке 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:pgcert"
+
+\end_inset
+
+
 \emph default
 .
 \end_layout
@@ -4892,152 +5499,53 @@ if __name__ == "__main__"
 \end_layout
 
 \begin_layout Standard
-В данном блоке когда создается объект класса 
+Для удобной передачи опций командной строке утилиты, используется класс
+ 
 \family typewriter
 OptionParser
 \family default
-, который позволяет парсить опции командой строки и автоматически создавать
- справочные сообщения.
+.
+ Он позволяет быстро создать парсер опций коммандной строки и передавать
+ функциям на исполнение.
+ Создание объекта 
+\family typewriter
+OptionParser
+\family default
+ реализовано с помощью:
 \end_layout
 
 \begin_layout Standard
-Объект парсера создается вызовом конструктора класса 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+parser = OptionParser(usage="usage: %prog [Main Options] options", add_help_opti
+on=True, description="This program use M2Crypto library and can generate
+ X509 certificate with X509v3 extension SELinux Context")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В качестве параметров передается значения: 
 \family typewriter
-OptionParse
+add_help_options=True 
 \family default
-r, в который передаются необязательные опции:
-\family typewriter
- usage
-\family default
- --- строка, в которой определяются правила использования опций, 
-\family typewriter
-add_help_options
-\family default
- --- передается 
-\family typewriter
-True
-\family default
-, если необходимо создавать справочную страницу с доступными ключами, 
+--- создать страницу помощи, а в поле 
 \family typewriter
 description
 \family default
- --- подробное описание утилиты.
- 
-\end_layout
-
-\begin_layout Standard
-Чтобы разделить опции на логические группы, используется класс 
+ указывается описание утилиты.
+ В поле 
 \family typewriter
-OptionGroup
+usage
 \family default
-.
- При его создании нужно передать объект парсера, а также заголовок группы.
- При желании указывается описание данной группы опций.
- Чтобы отобразить группу в справочной странице, необходимо вызвать метод
- 
-\family typewriter
-add_group_option()
-\family default
-: 
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-parser.add_group_option(group_object)
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Если не требуется добавлять опцию в какую-либо из групп, то можно воспользоватьс
-я методом 
-\family typewriter
-add_option()
-\family default
-:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-parser.add_option("option", dest="my_option", description="my_description",
- ...)
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-В качестве параметров данного метода указывается 
-\family typewriter
-dest
-\family default
- ---
-\family typewriter
- 
-\family default
-поле, в котором будет храниться значение переменной после парсинга аргументов
- командной строки.
- Задать значение опции по умолчанию с помощью параметра 
-\family typewriter
-default
-\family default
-, тип ожидаемого значения с помощью параметра 
-\family typewriter
-type
-\family default
-.
- 
-\end_layout
-
-\begin_layout Standard
-С помощью метода 
-\family typewriter
-parse_args()
-\family default
- выполняется парсинг аргументов командной строки, переданные скрипту значения,
- которые хранятся в полях переменной 
-\family typewriter
-options
-\family default
-.
-\end_layout
-
-\begin_layout Standard
-После чего выполняется проверка на корректность переданных параметров командной
- строки и их параметров.
- Если данный набор не удовлетворяет ни одному условию, выводится страница
- помощи.
-\end_layout
-
-\begin_layout Standard
-На 
-\emph on
-рисунке
-\emph default
- 
-\emph on
-
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Опции-утилиты-pgcert"
-
-\end_inset
-
- 
-\emph default
-приведён скриншот запуска разработанной утилиты.
+ описывается правила использования утилиты.
 \end_layout
 
 \begin_layout Standard
@@ -5063,11 +5571,11 @@ status collapsed
 \begin_layout Plain Layout
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:Опции-утилиты-pgcert"
+name "fig:pgcert"
 
 \end_inset
 
-Справочная страница утилиты 
+Запуск утилиты 
 \family typewriter
 pgcert
 \end_layout
@@ -5077,8 +5585,30 @@ pgcert
 
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Чтобы разделить опции на логические группы, используется класс 
+\family typewriter
+OptionGroup
+\family default
+.
+ При его создании нужно передать объект парсера, а также заголовок группы.
+ Например, с помощью следующей строки создается группа 
+\family typewriter
+Main Options
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
 \begin_layout Plain Layout
 
+main_options = OptionGroup(parser, "Main Options")
 \end_layout
 
 \end_inset
@@ -5086,7 +5616,127 @@ pgcert
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Standard
+При желании указывается описание данной группы опций.
+ Чтобы отобразить группу в справочной странице, необходимо вызвать метод
+ 
+\family typewriter
+add_group_option()
+\family default
+: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+parser.add_group_option(main_options)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Чтобы добавить опцию в группу, используется метод 
+\family typewriter
+add_option()
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+main_options.add_option("--genkey", dest="genkey", action="store_true", default=F
+alse, help="generate private RSA key")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Первым параметром указывается имя опции, аргумент которого будет сохраняться
+ в поле, указанной в переменной 
+\family typewriter
+dest
+\family default
+.
+ В поле 
+\family typewriter
+actions 
+\family default
+указывается действие при парсинге опций.
+ В данном случае при наборе данной опции в поле 
+\family typewriter
+dest 
+\family default
+будет храниться значение 
+\family typewriter
+True
+\family default
+.
+ Кроме того, можно добавить значение опции по умолчанию с помощью поля 
+\family typewriter
+default
+\family default
+.
+ В поле 
+\family typewriter
+help
+\family default
+ описывается, что делает данная опция.
+ Дополнительно может быть указан параметр 
+\family typewriter
+type
+\family default
+.
+ В нём указывается ожидаемый тип значения аргумента.
+\end_layout
+
+\begin_layout Standard
+С помощью метода 
+\family typewriter
+parse_args()
+\family default
+ выполняется парсинг аргументов командной строки, переданные скрипту значения,
+ которые хранятся в полях переменной 
+\family typewriter
+options
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+options, args = parser.parse_args()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+После чего выполняется проверка на корректность переданных параметров командной
+ строки и их параметров.
+ Если данный набор не удовлетворяет ни одному условию, выводится страница
+ помощи.
+\end_layout
+
+\begin_layout Subsubsection*
 Создание приватного RSA ключа
 \end_layout
 
@@ -5205,14 +5855,108 @@ mykey.pem
 .
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsubsection*
+Вспомогательные функции утилиты
+\end_layout
+
+\begin_layout Standard
+В утилите объявлены 2 константных объекта:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+DEFAULT_FIELDS
+\family default
+ 
+\series default
+--- словарь, хранящий значение субъекта по умолчанию;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+DEFAULT_PASSWORD
+\family default
+\series default
+ --- пароль, используемый при создании приватного ключа.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Для реализации основных функций утилиты были созданы дополнительные функции:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+password(*args, **kwargs)
+\family default
+\series default
+ --- необходима, чтобы реализовать автоматическую генерацию RSA-ключа по
+ парольной фразе, ввод которой реализован в этой функции, а также используется
+ при загрузке ключа из файла.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+check_path(file_path)
+\family default
+ 
+\series default
+--- проверяет корректность пути, переданного при генерации запроса на подпись
+ сертификата, сертификата или при развёртывании удостоверяющего центра.
+ Если переданный функции путь не существует, возвращается соответствующее
+ сообщение и выполнение работы утилиты прекращается.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+check_permissions() 
+\family default
+\series default
+--- проверяет, запущена ли утилита от имени суперпользователя 
+\family typewriter
+root
+\family default
+, если нет, то выводит сообщение
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Please, login as `root` and try again
+\end_layout
+
+\end_inset
+
+и завершает свою работу.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Subsubsection*
 Создание запроса на подпись сертификата
 \end_layout
 
 \begin_layout Standard
 Создание запроса на подпись сертификата реализовано в функции 
 \family typewriter
-make_request(private_key_path, username, user_context, output)
+make_request(private_key_path, username, user_context, critical, output,
+ is_printed)
 \family default
 .
 \end_layout
@@ -5256,11 +6000,54 @@ user_context
 
 \family typewriter
 \series bold
+critical
+\family default
+\series default
+ --- флаг, определяющий критичность дополнения 
+\family typewriter
+selinuxContext
+\family default
+.
+ Равен 
+\family typewriter
+False
+\family default
+, если дополнение не является критичным и 
+\family typewriter
+True
+\family default
+, если является;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
 output
 \family default
  
 \series default
---- путь к файлу, в который будет сохранён запрос
+--- путь к файлу, в который будет сохранён запрос;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+is_printed
+\family default
+ 
+\series default
+--- флаг, определяющий, необходимо ли распечатать запрос после его создания.
+ Принимает два значения --- 
+\family typewriter
+True
+\family default
+ (будет произведена печать запроса) или 
+\family typewriter
+False 
+\family default
+(если не будет).
 \end_layout
 
 \begin_layout --Separator--
@@ -5301,17 +6088,12 @@ status open
 
 \begin_layout Plain Layout
 
-name.CN = DEFAULT_FIELDS['CN']
-\end_layout
-
-\begin_layout Plain Layout
-
 if username:
 \end_layout
 
 \begin_layout Plain Layout
 
-	name.CN = username
+  name.CN = username
 \end_layout
 
 \end_inset
@@ -5320,14 +6102,29 @@ if username:
 \end_layout
 
 \begin_layout Standard
-Аналогично и с полем 
+Если в переменной 
 \family typewriter
-SC
+user_context 
 \family default
-, но в данном случае контекст пользователя берётся из системы посредством
- вызова команды 
+не был передан в переменной 
+\family typewriter
+user_context
+\family default
+,
+\family typewriter
+ 
+\family default
+то выполняется системный вызов утилиты 
 \family typewriter
 id -Z
+\family default
+,
+\family typewriter
+ 
+\family default
+её результат сохраняется в переменной 
+\family typewriter
+context
 \family default
 :
 \begin_inset listings
@@ -5341,39 +6138,34 @@ if user_context:
 
 \begin_layout Plain Layout
 
-        context = user_context
+  context = user_context
 \end_layout
 
 \begin_layout Plain Layout
 
-    else:
+else:
 \end_layout
 
 \begin_layout Plain Layout
 
-        context = check_output("id -Z", shell=True).split('
+  context = check_output("id -Z", shell=True).split('
 \backslash
 n')[0]
 \end_layout
 
 \begin_layout Plain Layout
 
-    if not context:
+if not context:
 \end_layout
 
 \begin_layout Plain Layout
 
-        print('Command `id -Z` return with error code')
+  print('Command `id -Z` return with error code')
 \end_layout
 
 \begin_layout Plain Layout
 
-        exit(1)
-\end_layout
-
-\begin_layout Plain Layout
-
-name.SC = context
+  exit(1)
 \end_layout
 
 \end_inset
@@ -5387,8 +6179,54 @@ name.SC = context
 \end_layout
 
 \begin_layout Standard
-Объект запроса, созданный ранее в функции, подписывается приватным ключом
- пользователя и сохраняется по пути 
+Создание дополнений реализуется посредством создания объекта 
+\family typewriter
+X509_Extension_Stack
+\family default
+ и добавления дополнения в него:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+stack = X509.X509_Extension_Stack()
+\end_layout
+
+\begin_layout Plain Layout
+
+stack.push(X509.new_extension("selinuxContext", context, int(critical)))
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+При создании объекта дополнения передается его имя, значение и критичность.
+ 
+\end_layout
+
+\begin_layout Standard
+Чтобы добавить дополнения в запрос, используется следующая строка:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+request.add_extensions(stack)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Объект запроса подписывается приватным ключом пользователя и сохраняется
+ по пути 
 \family typewriter
 output
 \family default
@@ -5401,15 +6239,23 @@ make_private_key()
 \begin_inset Quotes fld
 \end_inset
 
-альтернативное 
+альтернативное
 \begin_inset Quotes frd
 \end_inset
 
-сохранение запроса на подпись сертификата.
- 
+ сохранение запроса на подпись сертификата.
+ Если функции был передан флаг 
+\family typewriter
+is_printed
+\family default
+ со значением 
+\family typewriter
+True
+\family default
+, выполняется печать запроса.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsubsection*
 Создание сертификата пользователя
 \end_layout
 
@@ -5417,7 +6263,7 @@ make_private_key()
 Создание сертификата пользователя реализовано в функции 
 \family typewriter
 make_certificate(request_path, ca_private_key_path, ca_certificate_path,
- output)
+ output, is_printed)
 \family default
 .
  Подписать сертификат может только пользователь 
@@ -5470,6 +6316,26 @@ output
 \family default
 \series default
  --- путь к файлу, в который будет сохранён сертификат.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+is_printed
+\family default
+ 
+\series default
+--- флаг, определяющий, необходимо ли распечатать запрос после его создания.
+ Принимает два значения --- 
+\family typewriter
+True
+\family default
+ (будет произведена печать запроса) или 
+\family typewriter
+False 
+\family default
+(если не будет).
 \end_layout
 
 \begin_layout --Separator--
@@ -5593,6 +6459,189 @@ certificate.set_issuer(issuer)
 \end_layout
 
 \begin_layout Standard
+В ходе разработки утилиты было установлено, что существующая реализация
+ класса 
+\family typewriter
+X509_Request
+\family default
+ не позволяет получать объекты 
+\family typewriter
+X509_Extension
+\family default
+.
+ Для реализации возможности получения дополнений непосредственно из запроса
+ с помощью библиотеки, была написана функция 
+\family typewriter
+get_extension_by_name(self, name)
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+def get_extension_by_name(self, name):
+\end_layout
+
+\begin_layout Plain Layout
+
+  request_stack = m2.x509_req_get_ext(self.req)
+\end_layout
+
+\begin_layout Plain Layout
+
+  extension_count = m2.sk_x509_extension_num(request_stack)
+\end_layout
+
+\begin_layout Plain Layout
+
+  for i in range(0, extension_count):
+\end_layout
+
+\begin_layout Plain Layout
+
+    ext_ptr = m2.sk_x509_extension_value(request_stack, i)
+\end_layout
+
+\begin_layout Plain Layout
+
+    extension = X509_Extension(ext_ptr)
+\end_layout
+
+\begin_layout Plain Layout
+
+    if extension.get_name() == name:
+\end_layout
+
+\begin_layout Plain Layout
+
+      return extension
+\end_layout
+
+\begin_layout Plain Layout
+
+   return None
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+При этом с использованием утилиты 
+\family typewriter
+SWIG
+\family default
+ был произведено добавление функции в библиотеку.
+ Для этого в файле 
+\family typewriter
+_X509.i
+\family default
+, в котором содержатся все функции модуля 
+\family typewriter
+M2Crypto.X509
+\family default
+ была импортирована функция OpenSSL 
+\family typewriter
+X509_REQ_get_extensions()
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+%inline {
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+STACK_OF(X509_EXTENSION) *x509_req_get_ext(X509_REQ *request) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return X509_REQ_get_extensions(request);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+%}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Реализованный метод 
+\family typewriter
+get_extension_by_name() 
+\family default
+принимает два аргумента: указатель на объект запроса 
+\family typewriter
+self
+\family default
+ и 
+\family typewriter
+name 
+\family default
+--- имя дополнения.
+ С помощью добавленной функции реализуется получение стека дополнений в
+ переменной 
+\family typewriter
+request_stack
+\family default
+, далее подсчитывается число дополнений в стеке.
+ В цикле последовательно перебираются все элементы дополнений 
+\family typewriter
+X509_Extension
+\family default
+, имя дополнения на каждой итерации сравнивается с именем 
+\family typewriter
+extension
+\family default
+.
+ Если было найдено совпадение, возвращается объект 
+\family typewriter
+X509_Extension
+\family default
+, если нет --- возвращается 
+\family typewriter
+None
+\family default
+.
+
+\family typewriter
+ 
+\end_layout
+
+\begin_layout Standard
 Сертификат X509 версии 3 позволяет иметь расширения сертификата.
  Для их добавления используется функция 
 \family typewriter
@@ -5637,7 +6686,7 @@ output
  пути.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsubsection*
 Описание дополнительных функций
 \end_layout
 
@@ -5779,70 +6828,6 @@ cacert_file_path
 \family default
 .
  
-\end_layout
-
-\begin_layout --Separator--
-
-\end_layout
-
-\begin_layout Subsubsection
-Вспомогательные функции утилиты
-\end_layout
-
-\begin_layout Standard
-Для реализации основных функций утилиты были созданы дополнительные функции:
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-password(*args, **kwargs)
-\family default
-\series default
- --- необходима, чтобы реализовать автоматическую генерацию RSA-ключа по
- парольной фразе, ввод которой реализован в этой функции, а также используется
- при загрузке ключа из файла.
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-check_path(file_path)
-\family default
- 
-\series default
---- проверяет корректность пути, переданного при генерации запроса на подпись
- сертификата, сертификата или при развёртывании удостоверяющего центра.
- Если переданный функции путь не существует, возвращается соответствующее
- сообщение и выполнение работы утилиты прекращается.
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-check_permissions() 
-\family default
-\series default
---- проверяет, запущена ли утилита от имени суперпользователя 
-\family typewriter
-root
-\family default
-, если нет, то выводит сообщение
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-Please, login as `roor` and try again
-\end_layout
-
-\end_inset
-
-и завершает свою работу.
 \end_layout
 
 \begin_layout --Separator--
@@ -6424,7 +7409,7 @@ Fedora 20
 \end_layout
 
 \begin_layout Section
-Использование созданных сертификатов в PostgreSQL
+Реализация механизма выбора сертификата клиентом PostgreSQL
 \end_layout
 
 \begin_layout Standard
@@ -7519,14 +8504,7 @@ status open
 
 \end_layout
 
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
+\begin_layout Subsection
 Тестирование стенда
 \end_layout
 
@@ -7535,7 +8513,7 @@ status open
 ьских сертификатов и их использование в СУБД PostgreSQL.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Автоматическая генерация сертификатов, содержащих метку пользователя
 \end_layout
 
@@ -8460,6 +9438,17 @@ w.openssl.org
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "15"
+key "PyOpenSSL"
+
+\end_inset
+
+PyOpenSSL [Электронный ресурс] --- http://pythonhosted.org/pyOpenSSL/
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "16"
 key "M2Crypto"
 
 \end_inset
@@ -8470,7 +9459,7 @@ key "M2Crypto"
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "16"
+label "17"
 key "PostgreSQL-cert"
 
 \end_inset
@@ -8500,6 +9489,22 @@ status open
 
 \backslash
 addcontentsline{toc}{section}{Приложения}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+NormalStretch
 \end_layout
 
 \end_inset
@@ -8862,7 +9867,7 @@ status collapsed
 
 \begin_layout Subsection*
 Приложение 2.
- Патч для библиотеки OpenSSL
+ Дополнение v3_secon для OpenSSL
 \end_layout
 
 \begin_layout Standard
@@ -8874,7 +9879,9 @@ status open
 
 \backslash
 addcontentsline{toc}{subsection}{Приложение 2.
- Патч для библиотеки OpenSSL}
+ Дополнение v3
+\backslash
+_secon для OpenSSL}
 \end_layout
 
 \end_inset
@@ -8883,7 +9890,8 @@ addcontentsline{toc}{subsection}{Приложение 2.
 \end_layout
 
 \begin_layout Standard
-Данный патч добавляет идентификацию поля SC в сертификате.
+Приведенный в данном разделе программный код позволяет добавить в сертификат
+ X509 дополнение, в котором будет храниться контекст безопасности пользователя.
  
 \begin_inset Newline newline
 \end_inset
@@ -8895,7 +9903,237 @@ addcontentsline{toc}{subsection}{Приложение 2.
 
 \family typewriter
 \series bold
-openssl-1.0.1e-selinux_objects.patch
+v3_secon.c
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=C,numbers=left"
+inline false
+status collapsed
+
+\begin_layout Plain Layout
+
+#include <stdio.h>
+\end_layout
+
+\begin_layout Plain Layout
+
+#include "cryptlib.h"
+\end_layout
+
+\begin_layout Plain Layout
+
+#include <openssl/asn1.h>
+\end_layout
+
+\begin_layout Plain Layout
+
+#include <openssl/conf.h>
+\end_layout
+
+\begin_layout Plain Layout
+
+#include <openssl/x509v3.h>
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+static char *i2s_ASN1_IA5STRING(X509V3_EXT_METHOD *method, ASN1_IA5STRING
+ *asn1_string);
+\end_layout
+
+\begin_layout Plain Layout
+
+static ASN1_IA5STRING *s2i_ASN1_IA5STRING(X509V3_EXT_METHOD *method, X509V3_CTX
+ *ctx, char *string);
+\end_layout
+
+\begin_layout Plain Layout
+
+const X509V3_EXT_METHOD v3_secon = EXT_IA5STRING(NID_selinux_context);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+static char *i2s_ASN1_IA5STRING(X509V3_EXT_METHOD *method, ASN1_IA5STRING
+ *asn1_string)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+	char *string;
+\end_layout
+
+\begin_layout Plain Layout
+
+	if ((NULL == asn1_string) || (NULL == asn1_string -> length))
+\end_layout
+
+\begin_layout Plain Layout
+
+		return NULL;
+\end_layout
+
+\begin_layout Plain Layout
+
+	if (NULL == (string = OPENSSL_malloc(asn1_string -> length + 1))) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		X509V3err(X509V3_F_I2S_ASN1_IA5STRING, ERR_R_MALLOC_FAILURE);
+\end_layout
+
+\begin_layout Plain Layout
+
+		return NULL;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	memcpy(string, asn1_string -> data, asn1_string -> length);
+\end_layout
+
+\begin_layout Plain Layout
+
+	string[asn1_string -> length] = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+	return string;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+static ASN1_IA5STRING *s2i_ASN1_IA5STRING(X509V3_EXT_METHOD *method, X509V3_CTX
+ *ctx, char *string)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+	ASN1_IA5STRING *asn1_string;
+\end_layout
+
+\begin_layout Plain Layout
+
+	if (NULL == string) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		X509V3err(X509V3_F_S2I_ASN1_IA5STRING, X509V3_R_INVALID_NULL_ARGUMENT);
+\end_layout
+
+\begin_layout Plain Layout
+
+		return NULL;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	if (NULL == (asn1_string = M_ASN1_IA5STRING_new())) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		X509V3err(X509V3_F_S2I_ASN1_IA5STRING, ERR_R_MALLOC_FAILURE);
+\end_layout
+
+\begin_layout Plain Layout
+
+		return NULL;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	if (NULL == ASN1_STRING_set((ASN1_STRING *)asn1_string, (unsigned char*)string,
+ strlen(string))) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		M_ASN1_IA5STRING_free(asn1_string);
+\end_layout
+
+\begin_layout Plain Layout
+
+		X509V3err(X509V3_F_S2I_ASN1_IA5STRING, ERR_R_MALLOC_FAILURE);
+\end_layout
+
+\begin_layout Plain Layout
+
+		return NULL;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	return asn1_string;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\family typewriter
+\series bold
+
+\begin_inset Newline newline
+\end_inset
+
+openssl-1.0.1e-selinux-extension.patch
 \end_layout
 
 \begin_layout Standard
@@ -8905,39 +10143,59 @@ status collapsed
 
 \begin_layout Plain Layout
 
---- openssl-1.0.1e/crypto/objects/objects.txt	2014-03-15 19:20:55.274107959
+--- openssl-1.0.1e/crypto/objects/objects.txt	2014-03-30 11:23:07.502735506
  +0400
 \end_layout
 
 \begin_layout Plain Layout
 
-+++ openssl-1.0.1e/crypto/objects/objects.txt	2014-03-15 19:21:28.382458877
++++ openssl-1.0.1e/crypto/objects/objects.txt	2014-03-30 11:22:45.069485059
  +0400
 \end_layout
 
 \begin_layout Plain Layout
 
-@@ -717,6 +717,7 @@
+@@ -774,7 +774,8 @@
 \end_layout
 
 \begin_layout Plain Layout
 
- X509 54			: dmdName		:
+ id-ce 55		: targetInformation	: X509v3 AC Targeting
 \end_layout
 
 \begin_layout Plain Layout
 
- X509 65			:			: pseudonym
+ !Cname no-rev-avail
 \end_layout
 
 \begin_layout Plain Layout
 
- X509 72			: role			: role
+ id-ce 56		: noRevAvail		: X509v3 No Revocation Available
 \end_layout
 
 \begin_layout Plain Layout
 
-+X509 920		: SC			: selinuxContext
+-
+\end_layout
+
+\begin_layout Plain Layout
+
++!Cname selinux-context
+\end_layout
+
+\begin_layout Plain Layout
+
++id-ce 57		: selinuxContext	: Selinux Context
+\end_layout
+
+\begin_layout Plain Layout
+
+ # From RFC5280
+\end_layout
+
+\begin_layout Plain Layout
+
+ ext-key-usage 0		: anyExtendedKeyUsage	: Any Extended Key Usage
 \end_layout
 
 \begin_layout Plain Layout
@@ -8947,42 +10205,93 @@ status collapsed
 
 \begin_layout Plain Layout
 
- X500 8			: X500algorithms	: directory services - algorithms
+--- openssl-1.0.1e/crypto/x509v3/Makefile	2014-03-30 11:25:06.234055425 +0400
 \end_layout
 
 \begin_layout Plain Layout
 
- X500algorithms 1 1	: RSA			: rsa
++++ openssl-1.0.1e/crypto/x509v3/Makefile	2014-03-30 10:53:03.000000000 +0400
 \end_layout
 
 \begin_layout Plain Layout
 
+@@ -22,13 +22,13 @@
 \end_layout
 
 \begin_layout Plain Layout
 
---- openssl-1.0.1e/crypto/objects/objects.h	2014-03-15 19:24:41.559507131 +0400
+ v3_int.c v3_enum.c v3_sxnet.c v3_cpols.c v3_crld.c v3_purp.c v3_info.c 
+\backslash
+
 \end_layout
 
 \begin_layout Plain Layout
 
-+++ openssl-1.0.1e/crypto/objects/objects_new.h	2014-03-15 19:26:56.812941708
- +0400
+ v3_ocsp.c v3_akeya.c v3_pmaps.c v3_pcons.c v3_ncons.c v3_pcia.c v3_pci.c 
+\backslash
+
 \end_layout
 
 \begin_layout Plain Layout
 
-@@ -144,6 +144,10 @@
+ pcy_cache.c pcy_node.c pcy_data.c pcy_map.c pcy_tree.c pcy_lib.c 
+\backslash
+
 \end_layout
 
 \begin_layout Plain Layout
 
- #define NID_localityName		15
+-v3_asid.c v3_addr.c
 \end_layout
 
 \begin_layout Plain Layout
 
- #define OBJ_localityName		OBJ_X509,7L
++v3_asid.c v3_addr.c v3_secon.c
+\end_layout
+
+\begin_layout Plain Layout
+
+ LIBOBJ= v3_bcons.o v3_bitst.o v3_conf.o v3_extku.o v3_ia5.o v3_lib.o 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ v3_prn.o v3_utl.o v3err.o v3_genn.o v3_alt.o v3_skey.o v3_akey.o v3_pku.o 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ v3_int.o v3_enum.o v3_sxnet.o v3_cpols.o v3_crld.o v3_purp.o v3_info.o 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ v3_ocsp.o v3_akeya.o v3_pmaps.o v3_pcons.o v3_ncons.o v3_pcia.o v3_pci.o 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ pcy_cache.o pcy_node.o pcy_data.o pcy_map.o pcy_tree.o pcy_lib.o 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+-v3_asid.o v3_addr.o
+\end_layout
+
+\begin_layout Plain Layout
+
++v3_asid.o v3_addr.o v3_secon.o
 \end_layout
 
 \begin_layout Plain Layout
@@ -8992,27 +10301,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-+#define SN_selinuxContext		"SC"
-\end_layout
-
-\begin_layout Plain Layout
-
-+#define LN_selinuxContext		"selinuxContext"
-\end_layout
-
-\begin_layout Plain Layout
-
-+#define NID_selinuxContext		920
-\end_layout
-
-\begin_layout Plain Layout
-
-+#define OBJ_selinuxContext		OBJ_X509,13L
-\end_layout
-
-\begin_layout Plain Layout
-
- /* Postal Address? PA */
+ SRC= $(LIBSRC)
 \end_layout
 
 \begin_layout Plain Layout
@@ -9022,7 +10311,202 @@ status collapsed
 
 \begin_layout Plain Layout
 
- /* should be "ST" (rfc1327) but MS uses 'S' */
+@@ -367,6 +367,21 @@
+\end_layout
+
+\begin_layout Plain Layout
+
+ v3_ia5.o: ../../include/openssl/stack.h ../../include/openssl/symhacks.h
+\end_layout
+
+\begin_layout Plain Layout
+
+ v3_ia5.o: ../../include/openssl/x509.h ../../include/openssl/x509_vfy.h
+\end_layout
+
+\begin_layout Plain Layout
+
+ v3_ia5.o: ../../include/openssl/x509v3.h ../cryptlib.h v3_ia5.c
+\end_layout
+
+\begin_layout Plain Layout
+
++
+\end_layout
+
+\begin_layout Plain Layout
+
++v3_secon.o: ../../e_os.h ../../include/openssl/asn1.h ../../include/openssl/bio.h
+\end_layout
+
+\begin_layout Plain Layout
+
++v3_secon.o: ../../include/openssl/buffer.h ../../include/openssl/conf.h
+\end_layout
+
+\begin_layout Plain Layout
+
++v3_secon.o: ../../include/openssl/crypto.h ../../include/openssl/e_os2.h
+\end_layout
+
+\begin_layout Plain Layout
+
++v3_secon.o: ../../include/openssl/ec.h ../../include/openssl/ecdh.h
+\end_layout
+
+\begin_layout Plain Layout
+
++v3_secon.o: ../../include/openssl/ecdsa.h ../../include/openssl/err.h
+\end_layout
+
+\begin_layout Plain Layout
+
++v3_secon.o: ../../include/openssl/evp.h ../../include/openssl/lhash.h
+\end_layout
+
+\begin_layout Plain Layout
+
++v3_secon.o: ../../include/openssl/obj_mac.h ../../include/openssl/objects.h
+\end_layout
+
+\begin_layout Plain Layout
+
++v3_secon.o: ../../include/openssl/opensslconf.h ../../include/openssl/opensslv.h
+\end_layout
+
+\begin_layout Plain Layout
+
++v3_secon.o: ../../include/openssl/ossl_typ.h ../../include/openssl/pkcs7.h
+\end_layout
+
+\begin_layout Plain Layout
+
++v3_secon.o: ../../include/openssl/safestack.h ../../include/openssl/sha.h
+\end_layout
+
+\begin_layout Plain Layout
+
++v3_secon.o: ../../include/openssl/stack.h ../../include/openssl/symhacks.h
+\end_layout
+
+\begin_layout Plain Layout
+
++v3_secon.o: ../../include/openssl/x509.h ../../include/openssl/x509_vfy.h
+\end_layout
+
+\begin_layout Plain Layout
+
++v3_secon.o: ../../include/openssl/x509v3.h ../cryptlib.h v3_secon.c
+\end_layout
+
+\begin_layout Plain Layout
+
++
+\end_layout
+
+\begin_layout Plain Layout
+
+ v3_info.o: ../../e_os.h ../../include/openssl/asn1.h
+\end_layout
+
+\begin_layout Plain Layout
+
+ v3_info.o: ../../include/openssl/asn1t.h ../../include/openssl/bio.h
+\end_layout
+
+\begin_layout Plain Layout
+
+ v3_info.o: ../../include/openssl/buffer.h ../../include/openssl/conf.h
+\end_layout
+
+\begin_layout Plain Layout
+
+--- openssl-1.0.1e/crypto/x509v3/ext_dat.h	2014-03-30 11:23:47.124176855 +0400
+\end_layout
+
+\begin_layout Plain Layout
+
++++ openssl-1.0.1e/crypto/x509v3/ext_dat.h	2014-03-30 11:24:18.092521126 +0400
+\end_layout
+
+\begin_layout Plain Layout
+
+@@ -68,6 +68,7 @@
+\end_layout
+
+\begin_layout Plain Layout
+
+ extern X509V3_EXT_METHOD v3_policy_mappings, v3_policy_constraints;
+\end_layout
+
+\begin_layout Plain Layout
+
+ extern X509V3_EXT_METHOD v3_name_constraints, v3_inhibit_anyp, v3_idp;
+\end_layout
+
+\begin_layout Plain Layout
+
+ extern X509V3_EXT_METHOD v3_addr, v3_asid;
+\end_layout
+
+\begin_layout Plain Layout
+
++extern X509V3_EXT_METHOD v3_secon;
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ /* This table will be searched using OBJ_bsearch so it *must* kept in
+\end_layout
+
+\begin_layout Plain Layout
+
+  * order of the ext_nid values.
+\end_layout
+
+\begin_layout Plain Layout
+
+@@ -124,6 +125,7 @@
+\end_layout
+
+\begin_layout Plain Layout
+
+ &v3_idp,
+\end_layout
+
+\begin_layout Plain Layout
+
+ &v3_alt[2],
+\end_layout
+
+\begin_layout Plain Layout
+
+ &v3_freshest_crl,
+\end_layout
+
+\begin_layout Plain Layout
+
++&v3_secon,
+\end_layout
+
+\begin_layout Plain Layout
+
+ };
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ /* Number of standard extensions */
 \end_layout
 
 \end_inset
@@ -9039,6 +10523,1433 @@ status collapsed
 
 \begin_layout Subsection*
 Приложение 3.
+ Программный код утилиты 
+\family typewriter
+pgcert
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+addcontentsline{toc}{subsection}{Приложение 4.
+ Программный код утилиты pgcert}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Утилита 
+\family typewriter
+pgcert 
+\family default
+--- это программа, написанная на языке программирования Python, позволяющая
+ создавать сертификаты X.509, создавать приватные ключи, запросы на подпись
+ сертификатов с полем 
+\family typewriter
+SC
+\family default
+, в котором хранится контекст пользователя, выполнять их подпись, а также
+ проверить подлинность.
+ Кроме того, в функционал программы включена функция создания удостоверяющего
+ центра, а также функции просмотра в текстовом виде запроса на создания
+ сертификата и самого сертификата.
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+\series bold
+pgcert
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Python,numbers=left,showstringspaces=false"
+inline false
+status collapsed
+
+\begin_layout Plain Layout
+
+#!/usr/bin/python
+\end_layout
+
+\begin_layout Plain Layout
+
+__author__ = 'dimv36'
+\end_layout
+
+\begin_layout Plain Layout
+
+from M2Crypto import RSA, X509, EVP, ASN1
+\end_layout
+
+\begin_layout Plain Layout
+
+from subprocess import check_output
+\end_layout
+
+\begin_layout Plain Layout
+
+from datetime import datetime
+\end_layout
+
+\begin_layout Plain Layout
+
+from optparse import OptionParser, OptionGroup
+\end_layout
+
+\begin_layout Plain Layout
+
+from os import path, getuid
+\end_layout
+
+\begin_layout Plain Layout
+
+from time import time
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+DEFAULT_FIELDS = {'C': 'ru',
+\end_layout
+
+\begin_layout Plain Layout
+
+                  'ST': 'msk',
+\end_layout
+
+\begin_layout Plain Layout
+
+                  'L': 'msk',
+\end_layout
+
+\begin_layout Plain Layout
+
+                  'O': 'mephi',
+\end_layout
+
+\begin_layout Plain Layout
+
+                  'OU': 'kaf36',
+\end_layout
+
+\begin_layout Plain Layout
+
+                  'CN': check_output("whoami", shell=True).split('
+\backslash
+n')[0],
+\end_layout
+
+\begin_layout Plain Layout
+
+                  'SC': ''}
+\end_layout
+
+\begin_layout Plain Layout
+
+DEFAULT_PASSWORD = '123456'
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def password(*args, **kwargs):
+\end_layout
+
+\begin_layout Plain Layout
+
+    return DEFAULT_PASSWORD
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def check_path(file_path):
+\end_layout
+
+\begin_layout Plain Layout
+
+    if not path.exists(file_path):
+\end_layout
+
+\begin_layout Plain Layout
+
+        print("ERROR: File path %s not exist" % file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+        exit(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def check_permissions():
+\end_layout
+
+\begin_layout Plain Layout
+
+    if getuid() != 0:
+\end_layout
+
+\begin_layout Plain Layout
+
+        print("Please, login as `root` and try again")
+\end_layout
+
+\begin_layout Plain Layout
+
+        exit(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def make_private_key(bits, output):
+\end_layout
+
+\begin_layout Plain Layout
+
+    rsa_key = RSA.gen_key(bits, 65537, callback=password)
+\end_layout
+
+\begin_layout Plain Layout
+
+    if not output:
+\end_layout
+
+\begin_layout Plain Layout
+
+        output = path.abspath(path.curdir) + "/mykey.pem"
+\end_layout
+
+\begin_layout Plain Layout
+
+    rsa_key.save_key(output, None)
+\end_layout
+
+\begin_layout Plain Layout
+
+    print('Key was saved to %s' % output)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def make_request(private_key_path, username, user_context, critical, output,
+ is_printed):
+\end_layout
+
+\begin_layout Plain Layout
+
+    check_path(private_key_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    private_key = EVP.load_key(private_key_path, callback=password)
+\end_layout
+
+\begin_layout Plain Layout
+
+    request = X509.Request()
+\end_layout
+
+\begin_layout Plain Layout
+
+    request.set_pubkey(private_key)
+\end_layout
+
+\begin_layout Plain Layout
+
+    request.set_version(2)
+\end_layout
+
+\begin_layout Plain Layout
+
+    name = X509.X509_Name()
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.C = DEFAULT_FIELDS['C']
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.ST = DEFAULT_FIELDS['ST']
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.L = DEFAULT_FIELDS['L']
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.O = DEFAULT_FIELDS['O']
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.OU = DEFAULT_FIELDS['OU']
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.CN = username
+\end_layout
+
+\begin_layout Plain Layout
+
+    if user_context:
+\end_layout
+
+\begin_layout Plain Layout
+
+        context = user_context
+\end_layout
+
+\begin_layout Plain Layout
+
+    else:
+\end_layout
+
+\begin_layout Plain Layout
+
+        context = check_output("id -Z", shell=True).split('
+\backslash
+n')[0]
+\end_layout
+
+\begin_layout Plain Layout
+
+    if not context:
+\end_layout
+
+\begin_layout Plain Layout
+
+        print('Command `id -Z` return with error code')
+\end_layout
+
+\begin_layout Plain Layout
+
+        exit(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+    request.set_subject_name(name)
+\end_layout
+
+\begin_layout Plain Layout
+
+    stack = X509.X509_Extension_Stack()
+\end_layout
+
+\begin_layout Plain Layout
+
+    stack.push(X509.new_extension("selinuxContext", context, int(critical)))
+\end_layout
+
+\begin_layout Plain Layout
+
+    request.add_extensions(stack)
+\end_layout
+
+\begin_layout Plain Layout
+
+    request.sign(private_key, 'sha1')
+\end_layout
+
+\begin_layout Plain Layout
+
+    if not output:
+\end_layout
+
+\begin_layout Plain Layout
+
+        output = path.abspath(path.curdir) + '/%s.csr' % DEFAULT_FIELDS['CN']
+\end_layout
+
+\begin_layout Plain Layout
+
+    request.save_pem(output)
+\end_layout
+
+\begin_layout Plain Layout
+
+    if is_printed:
+\end_layout
+
+\begin_layout Plain Layout
+
+        print(request.as_text())
+\end_layout
+
+\begin_layout Plain Layout
+
+    print('Request was saved to %s' % output)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def make_certificate(request_path, ca_private_key_file, ca_certificate_file,
+ output, is_printed):
+\end_layout
+
+\begin_layout Plain Layout
+
+    check_path(request_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    request = X509.load_request(request_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    public_key = request.get_pubkey()
+\end_layout
+
+\begin_layout Plain Layout
+
+    if not request.verify(public_key):
+\end_layout
+
+\begin_layout Plain Layout
+
+        print('Error verifying request')
+\end_layout
+
+\begin_layout Plain Layout
+
+        exit(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+    subject = request.get_subject()
+\end_layout
+
+\begin_layout Plain Layout
+
+    ca_certificate = X509.load_cert(ca_certificate_file)
+\end_layout
+
+\begin_layout Plain Layout
+
+    ca_private_key = EVP.load_key(ca_private_key_file, callback=password)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate = X509.X509()
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_serial_number(time().as_integer_ratio()[0])
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_version(2)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_subject(subject)
+\end_layout
+
+\begin_layout Plain Layout
+
+    issuer = ca_certificate.get_issuer()
+\end_layout
+
+\begin_layout Plain Layout
+
+    not_before = ASN1.ASN1_UTCTIME()
+\end_layout
+
+\begin_layout Plain Layout
+
+    not_before.set_datetime(datetime.today())
+\end_layout
+
+\begin_layout Plain Layout
+
+    not_after = ASN1.ASN1_UTCTIME()
+\end_layout
+
+\begin_layout Plain Layout
+
+    not_after.set_datetime(datetime(datetime.today().year + 1, datetime.today().month
+, datetime.today().day))
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_not_before(not_before)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_not_after(not_after)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_issuer(issuer)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_pubkey(public_key)
+\end_layout
+
+\begin_layout Plain Layout
+
+    selinux_extension = request.get_extension_by_name("selinuxContext")
+\end_layout
+
+\begin_layout Plain Layout
+
+    if not selinux_extension:
+\end_layout
+
+\begin_layout Plain Layout
+
+        print("No extension selinuxContext in request %s" % request_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+        exit(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.add_ext(selinux_extension)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.add_ext(X509.new_extension("basicConstraints", "CA:FALSE",
+ 1))
+\end_layout
+
+\begin_layout Plain Layout
+
+    if not output:
+\end_layout
+
+\begin_layout Plain Layout
+
+        output = path.abspath(path.curdir) + '/%s.crt' % DEFAULT_FIELDS['CN']
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.sign(ca_private_key, 'sha1')
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.save(output)
+\end_layout
+
+\begin_layout Plain Layout
+
+    if is_printed:
+\end_layout
+
+\begin_layout Plain Layout
+
+        print(certificate.as_text())
+\end_layout
+
+\begin_layout Plain Layout
+
+    print('Certificate was saved to %s' % output)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def verify_certificate(certificate_path, ca_certificate_path):
+\end_layout
+
+\begin_layout Plain Layout
+
+    check_path(certificate_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    check_path(ca_certificate_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate = X509.load_cert(certificate_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    ca_certificate = X509.load_cert(ca_certificate_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    ca_public_key = ca_certificate.get_pubkey()
+\end_layout
+
+\begin_layout Plain Layout
+
+    if certificate.verify(ca_public_key):
+\end_layout
+
+\begin_layout Plain Layout
+
+        print('Status verification: OK')
+\end_layout
+
+\begin_layout Plain Layout
+
+    else:
+\end_layout
+
+\begin_layout Plain Layout
+
+        print('Status: verification: FAIL')
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def print_certificate(certificate_file_path):
+\end_layout
+
+\begin_layout Plain Layout
+
+    check_path(certificate_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate = X509.load_cert(certificate_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    print(certificate.as_text())
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def print_request(request_file_path):
+\end_layout
+
+\begin_layout Plain Layout
+
+    check_path(request_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    request = X509.load_request(request_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    print(request.as_text())
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def get_subject(certificate_file_path):
+\end_layout
+
+\begin_layout Plain Layout
+
+    check_path(certificate_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate = X509.load_cert(certificate_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    print(certificate.get_subject().as_text())
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def get_issuer(certificate_file_path):
+\end_layout
+
+\begin_layout Plain Layout
+
+    check_path(certificate_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate = X509.load_cert(certificate_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    print(certificate.get_issuer().as_text())
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def get_extension(certificate_file_path, name):
+\end_layout
+
+\begin_layout Plain Layout
+
+    check_path(certificate_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate = X509.load_cert(certificate_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    try:
+\end_layout
+
+\begin_layout Plain Layout
+
+        extension = certificate.get_ext(name)
+\end_layout
+
+\begin_layout Plain Layout
+
+    except LookupError:
+\end_layout
+
+\begin_layout Plain Layout
+
+        print("Certificate %s does not has extension %s" % (certificate_file_pat
+h, name))
+\end_layout
+
+\begin_layout Plain Layout
+
+    else:
+\end_layout
+
+\begin_layout Plain Layout
+
+        print(extension.get_value())
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def make_ca(bits, cakey_file_path, cacert_file_path, is_printed):
+\end_layout
+
+\begin_layout Plain Layout
+
+    make_private_key(bits, cakey_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    check_path(cakey_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    private_key = EVP.load_key(cakey_file_path, callback=password)
+\end_layout
+
+\begin_layout Plain Layout
+
+    name = X509.X509_Name()
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.C = DEFAULT_FIELDS['C']
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.ST = DEFAULT_FIELDS['ST']
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.L = DEFAULT_FIELDS['L']
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.O = DEFAULT_FIELDS['O']
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.OU = DEFAULT_FIELDS['OU']
+\end_layout
+
+\begin_layout Plain Layout
+
+    name.CN = DEFAULT_FIELDS['O'] + '
+\backslash
+'s CA'
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate = X509.X509()
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_serial_number(time().as_integer_ratio()[0])
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_version(2)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_subject(name)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_issuer(name)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_pubkey(private_key)
+\end_layout
+
+\begin_layout Plain Layout
+
+    not_before = ASN1.ASN1_UTCTIME()
+\end_layout
+
+\begin_layout Plain Layout
+
+    not_before.set_datetime(datetime.today())
+\end_layout
+
+\begin_layout Plain Layout
+
+    not_after = ASN1.ASN1_UTCTIME()
+\end_layout
+
+\begin_layout Plain Layout
+
+    not_after.set_datetime(datetime(datetime.today().year + 2, datetime.today().month
+, datetime.today().day))
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_not_before(not_before)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.set_not_after(not_after)
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.add_ext(X509.new_extension("basicConstraints", "CA:TRUE",
+ 1))
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.sign(private_key, 'sha1')
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate.save(cacert_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    print('Certificate was saved to %s' % cacert_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    if is_printed:
+\end_layout
+
+\begin_layout Plain Layout
+
+        print(certificate.as_text())
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+if __name__ == "__main__":
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser = OptionParser(usage="usage: %prog [Main Options] options",
+\end_layout
+
+\begin_layout Plain Layout
+
+                          add_help_option=True,
+\end_layout
+
+\begin_layout Plain Layout
+
+                          description="This program use M2Crypto library
+ and can generate X509 certificate "
+\end_layout
+
+\begin_layout Plain Layout
+
+                                      "with X509v3 extension SELinux Context")
+\end_layout
+
+\begin_layout Plain Layout
+
+    main_options = OptionGroup(parser, "Main Options")
+\end_layout
+
+\begin_layout Plain Layout
+
+    main_options.add_option("--genkey", dest="genkey", action="store_true",
+ default=False,
+\end_layout
+
+\begin_layout Plain Layout
+
+                            help="generate private RSA key")
+\end_layout
+
+\begin_layout Plain Layout
+
+    main_options.add_option("--genreq", dest="genreq", action="store_true",
+ default=False,
+\end_layout
+
+\begin_layout Plain Layout
+
+                            help="generate certificate request")
+\end_layout
+
+\begin_layout Plain Layout
+
+    main_options.add_option("--gencert", dest="gencert", action="store_true",
+ default=False,
+\end_layout
+
+\begin_layout Plain Layout
+
+                            help="generate certificate for user")
+\end_layout
+
+\begin_layout Plain Layout
+
+    main_options.add_option("--makeca", dest="makeca", action="store_true",
+ default=False,
+\end_layout
+
+\begin_layout Plain Layout
+
+                            help="generate ca certificate and private key")
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser.add_option_group(main_options)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    pkey_group = OptionGroup(parser, "Private key options")
+\end_layout
+
+\begin_layout Plain Layout
+
+    pkey_group.add_option("--bits", dest="bits", type="int", default=2048,
+ help="set length of key, default: %default")
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser.add_option_group(pkey_group)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    req_group = OptionGroup(parser, "Request options")
+\end_layout
+
+\begin_layout Plain Layout
+
+    req_group.add_option("--user", dest="user", default=DEFAULT_FIELDS['CN'],
+\end_layout
+
+\begin_layout Plain Layout
+
+                         help="add username to request, default: %default")
+\end_layout
+
+\begin_layout Plain Layout
+
+    req_group.add_option("--secontext", dest="secontext", help="add selinux
+ context of user")
+\end_layout
+
+\begin_layout Plain Layout
+
+    req_group.add_option("--critical", dest="critical", action="store_true",
+ default=False,
+\end_layout
+
+\begin_layout Plain Layout
+
+                         help="set critical of selinuxContext extension,
+ default=%default")
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser.add_option_group(req_group)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    input_options = OptionGroup(parser, "Input options")
+\end_layout
+
+\begin_layout Plain Layout
+
+    input_options.add_option("--pkey", dest="pkey", help="add location of
+ private key")
+\end_layout
+
+\begin_layout Plain Layout
+
+    input_options.add_option("--request", dest="request", help="add location
+ of certificate request")
+\end_layout
+
+\begin_layout Plain Layout
+
+    input_options.add_option("--certificate", dest="certificate", help="add
+ location of certificate")
+\end_layout
+
+\begin_layout Plain Layout
+
+    input_options.add_option("--cacert", dest="cacert", default="/etc/pki/CA/cace
+rt.pem",
+\end_layout
+
+\begin_layout Plain Layout
+
+                             help="add location of ca certificate, default:
+ %default")
+\end_layout
+
+\begin_layout Plain Layout
+
+    input_options.add_option("--cakey", dest="cakey", default="/etc/pki/CA/privat
+e/cakey.pem",
+\end_layout
+
+\begin_layout Plain Layout
+
+                             help="add location of ca private key, default:
+ %default")
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser.add_option_group(input_options)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    output_options = OptionGroup(parser, "Output options")
+\end_layout
+
+\begin_layout Plain Layout
+
+    output_options.add_option("--output", dest="output", help="save to file")
+\end_layout
+
+\begin_layout Plain Layout
+
+    output_options.add_option("--text", dest="text", action="store_true",
+ default=False,
+\end_layout
+
+\begin_layout Plain Layout
+
+                              help="print request or certificate")
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser.add_option_group(output_options)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    info_options = OptionGroup(parser, "Info options")
+\end_layout
+
+\begin_layout Plain Layout
+
+    info_options.add_option("--issuer", dest="issuer", action="store_true",
+ default=False,
+\end_layout
+
+\begin_layout Plain Layout
+
+                            help="get issuer of certificate")
+\end_layout
+
+\begin_layout Plain Layout
+
+    info_options.add_option("--subject", dest="subject", action="store_true",
+ default=False,
+\end_layout
+
+\begin_layout Plain Layout
+
+                            help="get subject of certificate")
+\end_layout
+
+\begin_layout Plain Layout
+
+    info_options.add_option("--extension", dest="extension", help="get extension
+ of certificate")
+\end_layout
+
+\begin_layout Plain Layout
+
+    info_options.add_option("--verify", dest="verify", action="store_true",
+ default=False, help="verify certificate")
+\end_layout
+
+\begin_layout Plain Layout
+
+    parser.add_option_group(info_options)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    options, args = parser.parse_args()
+\end_layout
+
+\begin_layout Plain Layout
+
+    if options.genkey and options.bits:
+\end_layout
+
+\begin_layout Plain Layout
+
+        make_private_key(options.bits, options.output)
+\end_layout
+
+\begin_layout Plain Layout
+
+    elif options.genreq and options.pkey:
+\end_layout
+
+\begin_layout Plain Layout
+
+        make_request(options.pkey, options.user, options.secontext, options.critical
+, options.output, options.text)
+\end_layout
+
+\begin_layout Plain Layout
+
+    elif options.gencert and options.request:
+\end_layout
+
+\begin_layout Plain Layout
+
+        check_permissions()
+\end_layout
+
+\begin_layout Plain Layout
+
+        make_certificate(options.request, options.cakey, options.cacert, options.out
+put, options.text)
+\end_layout
+
+\begin_layout Plain Layout
+
+    elif options.verify and options.certificate and options.cacert:
+\end_layout
+
+\begin_layout Plain Layout
+
+        verify_certificate(options.certificate, options.cacert)
+\end_layout
+
+\begin_layout Plain Layout
+
+    elif options.issuer and options.certificate:
+\end_layout
+
+\begin_layout Plain Layout
+
+        get_issuer(options.certificate)
+\end_layout
+
+\begin_layout Plain Layout
+
+    elif options.subject and options.certificate:
+\end_layout
+
+\begin_layout Plain Layout
+
+        get_subject(options.certificate)
+\end_layout
+
+\begin_layout Plain Layout
+
+    elif options.text and options.certificate:
+\end_layout
+
+\begin_layout Plain Layout
+
+        print_certificate(options.certificate)
+\end_layout
+
+\begin_layout Plain Layout
+
+    elif options.certificate and options.extension:
+\end_layout
+
+\begin_layout Plain Layout
+
+        get_extension(options.certificate, options.extension)
+\end_layout
+
+\begin_layout Plain Layout
+
+    elif options.text and options.request:
+\end_layout
+
+\begin_layout Plain Layout
+
+        print_request(options.request)
+\end_layout
+
+\begin_layout Plain Layout
+
+    elif options.makeca:
+\end_layout
+
+\begin_layout Plain Layout
+
+        check_permissions()
+\end_layout
+
+\begin_layout Plain Layout
+
+        make_ca(options.bits, options.cakey, options.cacert, options.text)
+\end_layout
+
+\begin_layout Plain Layout
+
+    else:
+\end_layout
+
+\begin_layout Plain Layout
+
+        parser.print_help()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Приложение 4.
  Патч для библиотеки M2Crypto
 \end_layout
 
@@ -9194,1135 +12105,6 @@ status collapsed
 \begin_layout Plain Layout
 
      m2_x509_name_free = m2.x509_name_free
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection*
-Приложение 4.
- Программный код утилиты 
-\family typewriter
-pgcert
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-addcontentsline{toc}{subsection}{Приложение 4.
- Программный код утилиты pgcert}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Утилита 
-\family typewriter
-pgcert 
-\family default
---- это программа, написанная на языке программирования Python, позволяющая
- создавать сертификаты X.509, создавать приватные ключи, запросы на подпись
- сертификатов с полем 
-\family typewriter
-SC
-\family default
-, в котором хранится контекст пользователя, выполнять их подпись, а также
- проверить подлинность.
- Кроме того, в функционал программы включена функция создания удостоверяющего
- центра, а также функции просмотра в текстовом виде запроса на создания
- сертификата и самого сертификата.
- 
-\begin_inset Newline newline
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-
-\family typewriter
-\series bold
-pgcert
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Python,numbers=left,showstringspaces=false"
-inline false
-status collapsed
-
-\begin_layout Plain Layout
-
-#!/usr/bin/python
-\end_layout
-
-\begin_layout Plain Layout
-
-__author__ = 'dimv36'
-\end_layout
-
-\begin_layout Plain Layout
-
-from M2Crypto import RSA, X509, EVP, ASN1
-\end_layout
-
-\begin_layout Plain Layout
-
-from subprocess import check_output
-\end_layout
-
-\begin_layout Plain Layout
-
-from datetime import datetime
-\end_layout
-
-\begin_layout Plain Layout
-
-from optparse import OptionParser
-\end_layout
-
-\begin_layout Plain Layout
-
-from os import path, getuid
-\end_layout
-
-\begin_layout Plain Layout
-
-from time import time
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-DEFAULT_FIELDS = {'C': 'ru',
-\end_layout
-
-\begin_layout Plain Layout
-
-                  'ST': 'msk',
-\end_layout
-
-\begin_layout Plain Layout
-
-                  'L': 'msk',
-\end_layout
-
-\begin_layout Plain Layout
-
-                  'O': 'mephi',
-\end_layout
-
-\begin_layout Plain Layout
-
-                  'OU': 'kaf36',
-\end_layout
-
-\begin_layout Plain Layout
-
-                  'CN': check_output("whoami", shell=True).split('
-\backslash
-n')[0]}
-\end_layout
-
-\begin_layout Plain Layout
-
-DEFAULT_PASSWORD = '123456'
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-def password(*args, **kwargs):
-\end_layout
-
-\begin_layout Plain Layout
-
-    return DEFAULT_PASSWORD
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-def check_permissions():
-\end_layout
-
-\begin_layout Plain Layout
-
-    if getuid() != 0:
-\end_layout
-
-\begin_layout Plain Layout
-
-        print("Please, login as `root` and try again")
-\end_layout
-
-\begin_layout Plain Layout
-
-        exit(1)
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-def make_private_key(bits, output):
-\end_layout
-
-\begin_layout Plain Layout
-
-    rsa_key = RSA.gen_key(bits, 65537, callback=password)
-\end_layout
-
-\begin_layout Plain Layout
-
-    if not output:
-\end_layout
-
-\begin_layout Plain Layout
-
-        output = path.abspath(path.curdir) + "/mykey.pem"
-\end_layout
-
-\begin_layout Plain Layout
-
-    rsa_key.save_key(output, None)
-\end_layout
-
-\begin_layout Plain Layout
-
-    return 'Key was saved to %s' % output
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-def make_request(private_key_file, username, context_string, output):
-\end_layout
-
-\begin_layout Plain Layout
-
-    private_key = EVP.load_key(private_key_file, callback=password)
-\end_layout
-
-\begin_layout Plain Layout
-
-    if not private_key:
-\end_layout
-
-\begin_layout Plain Layout
-
-        raise ValueError, 'Not correct key path'
-\end_layout
-
-\begin_layout Plain Layout
-
-    request = X509.Request()
-\end_layout
-
-\begin_layout Plain Layout
-
-    request.set_pubkey(private_key)
-\end_layout
-
-\begin_layout Plain Layout
-
-    request.set_version(3)
-\end_layout
-
-\begin_layout Plain Layout
-
-    name = X509.X509_Name()
-\end_layout
-
-\begin_layout Plain Layout
-
-    name.C = DEFAULT_FIELDS['C']
-\end_layout
-
-\begin_layout Plain Layout
-
-    name.ST = DEFAULT_FIELDS['ST']
-\end_layout
-
-\begin_layout Plain Layout
-
-    name.L = DEFAULT_FIELDS['L']
-\end_layout
-
-\begin_layout Plain Layout
-
-    name.O = DEFAULT_FIELDS['O']
-\end_layout
-
-\begin_layout Plain Layout
-
-    name.OU = DEFAULT_FIELDS['OU']
-\end_layout
-
-\begin_layout Plain Layout
-
-    name.CN = username
-\end_layout
-
-\begin_layout Plain Layout
-
-    if context_string:
-\end_layout
-
-\begin_layout Plain Layout
-
-        context = context_string
-\end_layout
-
-\begin_layout Plain Layout
-
-    else:
-\end_layout
-
-\begin_layout Plain Layout
-
-        context = check_output("id -Z", shell=True).split('
-\backslash
-n')[0]
-\end_layout
-
-\begin_layout Plain Layout
-
-    if not context:
-\end_layout
-
-\begin_layout Plain Layout
-
-        raise ValueError, 'Command `id -Z` return with error code'
-\end_layout
-
-\begin_layout Plain Layout
-
-    name.SC = context
-\end_layout
-
-\begin_layout Plain Layout
-
-    request.set_subject_name(name)
-\end_layout
-
-\begin_layout Plain Layout
-
-    request.sign(private_key, 'sha1')
-\end_layout
-
-\begin_layout Plain Layout
-
-    if not output:
-\end_layout
-
-\begin_layout Plain Layout
-
-        output = path.abspath(path.curdir) + '/%s.csr' % DEFAULT_FIELDS['CN']
-\end_layout
-
-\begin_layout Plain Layout
-
-    request.save_pem(output)
-\end_layout
-
-\begin_layout Plain Layout
-
-    return 'Request was saved to %s' % output
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-def make_certificate(request_file, ca_private_key_file, ca_certificate_file,
- output):
-\end_layout
-
-\begin_layout Plain Layout
-
-    request = X509.load_request(request_file)
-\end_layout
-
-\begin_layout Plain Layout
-
-    public_key = request.get_pubkey()
-\end_layout
-
-\begin_layout Plain Layout
-
-    if not request.verify(public_key):
-\end_layout
-
-\begin_layout Plain Layout
-
-        raise ValueError, 'Error verifying request'
-\end_layout
-
-\begin_layout Plain Layout
-
-    subject = request.get_subject()
-\end_layout
-
-\begin_layout Plain Layout
-
-    ca_certificate = X509.load_cert(ca_certificate_file)
-\end_layout
-
-\begin_layout Plain Layout
-
-    ca_private_key = EVP.load_key(ca_private_key_file, callback=password)
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate = X509.X509()
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate.set_serial_number(time().as_integer_ratio()[0])
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate.set_version(3)
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate.set_subject(subject)
-\end_layout
-
-\begin_layout Plain Layout
-
-    issuer = ca_certificate.get_issuer()
-\end_layout
-
-\begin_layout Plain Layout
-
-    not_before = ASN1.ASN1_UTCTIME()
-\end_layout
-
-\begin_layout Plain Layout
-
-    not_before.set_datetime(datetime.today())
-\end_layout
-
-\begin_layout Plain Layout
-
-    not_after = ASN1.ASN1_UTCTIME()
-\end_layout
-
-\begin_layout Plain Layout
-
-    not_after.set_datetime(datetime(datetime.today().year + 1, datetime.today().month
-, datetime.today().day))
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate.set_not_before(not_before)
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate.set_not_after(not_after)
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate.set_issuer(issuer)
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate.set_pubkey(public_key)
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate.add_ext(X509.new_extension("basicConstraints", "CA:FALSE",
- 1))
-\end_layout
-
-\begin_layout Plain Layout
-
-    if not output:
-\end_layout
-
-\begin_layout Plain Layout
-
-        output = path.abspath(path.curdir) + '/%s.cert' % DEFAULT_FIELDS['CN']
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate.sign(ca_private_key, 'sha1')
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate.save(output)
-\end_layout
-
-\begin_layout Plain Layout
-
-    return 'Certificate was saved to %s' % output
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-def verify_certificate(certificate_file, ca_certificate):
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate = X509.load_cert(certificate_file)
-\end_layout
-
-\begin_layout Plain Layout
-
-    if not certificate:
-\end_layout
-
-\begin_layout Plain Layout
-
-        raise ValueError, 'Error loading certificate file'
-\end_layout
-
-\begin_layout Plain Layout
-
-    ca_certificate = X509.load_cert(ca_certificate)
-\end_layout
-
-\begin_layout Plain Layout
-
-    ca_public_key = ca_certificate.get_pubkey()
-\end_layout
-
-\begin_layout Plain Layout
-
-    if not ca_certificate:
-\end_layout
-
-\begin_layout Plain Layout
-
-        raise ValueError, 'Error loading certificate key file'
-\end_layout
-
-\begin_layout Plain Layout
-
-    if certificate.verify(ca_public_key):
-\end_layout
-
-\begin_layout Plain Layout
-
-        return 'status verification ok'
-\end_layout
-
-\begin_layout Plain Layout
-
-    else:
-\end_layout
-
-\begin_layout Plain Layout
-
-        return 'status: verification failed'
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-def print_certificate(certificate_file_path):
-\end_layout
-
-\begin_layout Plain Layout
-
-    if not path.exists(certificate_file_path):
-\end_layout
-
-\begin_layout Plain Layout
-
-        raise ValueError, 'Certificate path %s not exist' % certificate_file_pat
-h
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate = X509.load_cert(certificate_file_path)
-\end_layout
-
-\begin_layout Plain Layout
-
-    return certificate.as_text()
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-def print_request(request_file_path):
-\end_layout
-
-\begin_layout Plain Layout
-
-    if not path.exists(request_file_path):
-\end_layout
-
-\begin_layout Plain Layout
-
-        raise ValueError, 'Request path %s not exist' % request_file_path
-\end_layout
-
-\begin_layout Plain Layout
-
-    request = X509.load_request(request_file_path)
-\end_layout
-
-\begin_layout Plain Layout
-
-    return request.as_text()
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-def make_ca(bits, cakey_file_path, cacert_file_path):
-\end_layout
-
-\begin_layout Plain Layout
-
-    make_private_key(bits, cakey_file_path)
-\end_layout
-
-\begin_layout Plain Layout
-
-    private_key = EVP.load_key(cakey_file_path, callback=password)
-\end_layout
-
-\begin_layout Plain Layout
-
-    if not private_key:
-\end_layout
-
-\begin_layout Plain Layout
-
-        raise ValueError, 'Error loading CA private key'
-\end_layout
-
-\begin_layout Plain Layout
-
-    name = X509.X509_Name()
-\end_layout
-
-\begin_layout Plain Layout
-
-    name.C = DEFAULT_FIELDS['C']
-\end_layout
-
-\begin_layout Plain Layout
-
-    name.ST = DEFAULT_FIELDS['ST']
-\end_layout
-
-\begin_layout Plain Layout
-
-    name.L = DEFAULT_FIELDS['L']
-\end_layout
-
-\begin_layout Plain Layout
-
-    name.O = DEFAULT_FIELDS['O']
-\end_layout
-
-\begin_layout Plain Layout
-
-    name.OU = DEFAULT_FIELDS['OU']
-\end_layout
-
-\begin_layout Plain Layout
-
-    name.CN = DEFAULT_FIELDS['O'] + '
-\backslash
-'s CA'
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate = X509.X509()
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate.set_serial_number(time().as_integer_ratio()[0])
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate.set_version(3)
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate.set_subject(name)
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate.set_issuer(name)
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate.set_pubkey(private_key)
-\end_layout
-
-\begin_layout Plain Layout
-
-    not_before = ASN1.ASN1_UTCTIME()
-\end_layout
-
-\begin_layout Plain Layout
-
-    not_before.set_datetime(datetime.today())
-\end_layout
-
-\begin_layout Plain Layout
-
-    not_after = ASN1.ASN1_UTCTIME()
-\end_layout
-
-\begin_layout Plain Layout
-
-    not_after.set_datetime(datetime(datetime.today().year + 2, datetime.today().month
-, datetime.today().day))
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate.set_not_before(not_before)
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate.set_not_after(not_after)
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate.add_ext(X509.new_extension("basicConstraints", "CA:TRUE",
- 1))
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate.sign(private_key, 'sha1')
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate.save(cacert_file_path)
-\end_layout
-
-\begin_layout Plain Layout
-
-    return 'Certificate was saved to %s' % cacert_file_path
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-if __name__ == "__main__":
-\end_layout
-
-\begin_layout Plain Layout
-
-    parser = OptionParser(usage="usage: %prog [--genrsa | --genreq | --gencert
- | --gencacert | --text] options",
-\end_layout
-
-\begin_layout Plain Layout
-
-                          add_help_option=True,
-\end_layout
-
-\begin_layout Plain Layout
-
-                          description="This program use M2Crypto library
- and can generate X509 certificate "
-\end_layout
-
-\begin_layout Plain Layout
-
-                                      "with extension field SELinux Context")
-\end_layout
-
-\begin_layout Plain Layout
-
-    parser.add_option("--genrsa", dest="genrsa", action="store_true", default=Fal
-se,
-\end_layout
-
-\begin_layout Plain Layout
-
-                      help="generate private key with bits length")
-\end_layout
-
-\begin_layout Plain Layout
-
-    parser.add_option("--genreq", dest="genreq", action="store_true", default=Fal
-se,
-\end_layout
-
-\begin_layout Plain Layout
-
-                      help="generate request for private key")
-\end_layout
-
-\begin_layout Plain Layout
-
-    parser.add_option("--gencert", dest="gencert", action="store_true", default=F
-alse,
-\end_layout
-
-\begin_layout Plain Layout
-
-                      help="generate certificate for user")
-\end_layout
-
-\begin_layout Plain Layout
-
-    parser.add_option("--makeca", dest="makeca", action="store_true", default=Fal
-se,
-\end_layout
-
-\begin_layout Plain Layout
-
-                      help="generate ca certificate and private key")
-\end_layout
-
-\begin_layout Plain Layout
-
-    parser.add_option("--text", dest="print_pem", action="store_true", default=Fa
-lse,
-\end_layout
-
-\begin_layout Plain Layout
-
-                      help="print request or certificate")
-\end_layout
-
-\begin_layout Plain Layout
-
-    parser.add_option("--verify", dest="verify", action="store_true", default=Fal
-se, help="verify certificate")
-\end_layout
-
-\begin_layout Plain Layout
-
-    parser.add_option("--user", dest="user", default=DEFAULT_FIELDS['CN'],
-\end_layout
-
-\begin_layout Plain Layout
-
-                      help="add username to certificate CN, default=%s"
- % DEFAULT_FIELDS['CN'])
-\end_layout
-
-\begin_layout Plain Layout
-
-    parser.add_option("--context", dest="context", default=None, help="add
- user context to certificate")
-\end_layout
-
-\begin_layout Plain Layout
-
-    parser.add_option("--bits", dest="bits", type="int", default="2048",
-\end_layout
-
-\begin_layout Plain Layout
-
-                      help="bits for generate RSA-key, default=%default")
-\end_layout
-
-\begin_layout Plain Layout
-
-    parser.add_option("--request", dest="request", help="add path to request
- file")
-\end_layout
-
-\begin_layout Plain Layout
-
-    parser.add_option("--cakey", dest="cakey", default="/etc/pki/CA/private/cakey.
-pem", type="string",
-\end_layout
-
-\begin_layout Plain Layout
-
-                      help="add CA key path to generate user's certificate,
- default=%default")
-\end_layout
-
-\begin_layout Plain Layout
-
-    parser.add_option("--cacert", dest="cacert", default="/etc/pki/CA/cacert.pem",
- type="string",
-\end_layout
-
-\begin_layout Plain Layout
-
-                      help="add CA certificate path to generate user's certifica
-te, default=%default")
-\end_layout
-
-\begin_layout Plain Layout
-
-    parser.add_option("--pkey", dest="pkey", help="add path of private key")
-\end_layout
-
-\begin_layout Plain Layout
-
-    parser.add_option("--cert", dest="certificate", help="add path of certificate
-")
-\end_layout
-
-\begin_layout Plain Layout
-
-    parser.add_option("--output", type="string", dest="output", help="save
- to file output")
-\end_layout
-
-\begin_layout Plain Layout
-
-    options, args = parser.parse_args()
-\end_layout
-
-\begin_layout Plain Layout
-
-    user = options.user
-\end_layout
-
-\begin_layout Plain Layout
-
-    context = options.context
-\end_layout
-
-\begin_layout Plain Layout
-
-    bits = options.bits
-\end_layout
-
-\begin_layout Plain Layout
-
-    request = options.request
-\end_layout
-
-\begin_layout Plain Layout
-
-    cakey = options.cakey
-\end_layout
-
-\begin_layout Plain Layout
-
-    cacert = options.cacert
-\end_layout
-
-\begin_layout Plain Layout
-
-    pkey = options.pkey
-\end_layout
-
-\begin_layout Plain Layout
-
-    certificate = options.certificate
-\end_layout
-
-\begin_layout Plain Layout
-
-    output = options.output
-\end_layout
-
-\begin_layout Plain Layout
-
-    if options.genrsa and options.bits:
-\end_layout
-
-\begin_layout Plain Layout
-
-        print(make_private_key(bits, output))
-\end_layout
-
-\begin_layout Plain Layout
-
-    elif options.genreq and options.pkey:
-\end_layout
-
-\begin_layout Plain Layout
-
-        print(make_request(pkey, user, context, output))
-\end_layout
-
-\begin_layout Plain Layout
-
-    elif options.gencert and options.request:
-\end_layout
-
-\begin_layout Plain Layout
-
-        check_permissions()
-\end_layout
-
-\begin_layout Plain Layout
-
-        print(make_certificate(request, cakey, cacert, output))
-\end_layout
-
-\begin_layout Plain Layout
-
-    elif options.verify and options.certificate and options.cacert:
-\end_layout
-
-\begin_layout Plain Layout
-
-        print(verify_certificate(certificate, cacert))
-\end_layout
-
-\begin_layout Plain Layout
-
-    elif options.print_pem and options.certificate:
-\end_layout
-
-\begin_layout Plain Layout
-
-        print(print_certificate(certificate))
-\end_layout
-
-\begin_layout Plain Layout
-
-    elif options.print_pem and options.request:
-\end_layout
-
-\begin_layout Plain Layout
-
-        print(print_request(request))
-\end_layout
-
-\begin_layout Plain Layout
-
-    elif options.makeca:
-\end_layout
-
-\begin_layout Plain Layout
-
-        check_permissions()
-\end_layout
-
-\begin_layout Plain Layout
-
-        print(make_ca(bits, cakey, cacert))
-\end_layout
-
-\begin_layout Plain Layout
-
-    else:
-\end_layout
-
-\begin_layout Plain Layout
-
-        parser.print_help()
 \end_layout
 
 \end_inset
