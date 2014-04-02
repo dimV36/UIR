@@ -3787,6 +3787,12 @@ $4
 \end_layout
 
 \begin_layout Subsubsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Модификация-pam_namespace.so"
+
+\end_inset
+
 Модификация pam_namespace.so
 \end_layout
 
@@ -4762,6 +4768,12 @@ extern
 \end_layout
 
 \begin_layout Subsubsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Реализация-дополнения-v3_secon"
+
+\end_inset
+
 Реализация дополнения v3_secon
 \end_layout
 
@@ -5452,8 +5464,12 @@ M2Crypto.X509
 \end_layout
 
 \begin_layout Standard
-Утилита представляет собой программу, запускаемую из командной строки с
- помощью команды:
+Утилита 
+\family typewriter
+pgcert
+\family default
+ представляет собой программу, запускаемую из командной строки с помощью
+ команды:
 \begin_inset listings
 inline false
 status open
@@ -6466,6 +6482,39 @@ certificate.set_issuer(issuer)
 \end_layout
 
 \begin_layout Standard
+Публичный ключ берётся из объекта 
+\family typewriter
+request 
+\family default
+и устанавливается в сертификат:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public_key = request.get_pubkey()
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+certificate.set_pubkey(public_key)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 В ходе разработки утилиты было установлено, что существующая реализация
  класса 
 \family typewriter
@@ -6643,20 +6692,106 @@ X509_Extension
 None
 \family default
 .
-
-\family typewriter
  
 \end_layout
 
 \begin_layout Standard
-Сертификат X509 версии 3 позволяет иметь расширения сертификата.
- Для их добавления используется функция 
+Данные модификации библиотеки оформлены в виде патча.
+ Он приведён в 
+\emph on
+приложении 4
+\emph default
+.
+ Кроме реализации указанного метода были реализованы методы, позволяющие
+ получить стек дополнений 
+\family typewriter
+get_extebsions()
+\family default
+ (объект класса 
+\family typewriter
+X509_Extension_Stack
+\family default
+), а также количество дополнений в сертификате 
+\family typewriter
+get_extensions_count()
+\family default
+.
+ Реализованные методы могут быть использованы при разработке иных приложений
+ с использованием библиотеки M2Crypto.
+\end_layout
+
+\begin_layout Standard
+Разработанная функция позволяет получить объект дополнения непосредственно
+ из запроса на подпись сертификата:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+selinux_extension = request.get_extension_by_name("selinuxContext")
+\end_layout
+
+\begin_layout Plain Layout
+
+if not selinux_extension:
+\end_layout
+
+\begin_layout Plain Layout
+
+  print("No extension selinuxContext in request %s" % request_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+  exit(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+certificate.add_ext(selinux_extension)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Если после выполнения функции в переменной 
+\family typewriter
+selinux_extension
+\family default
+ равна 
+\family typewriter
+None
+\family default
+ выводится сообщение о том, что дополнения 
+\family typewriter
+selinuxContext
+\family default
+ не содержится в запросе и происходит аварийное завершение работы программы.
+\end_layout
+
+\begin_layout Standard
+В случае, если объект дополнения был получен после выполнения функции, дополнени
+е добавляется в сертификат методом 
 \family typewriter
 add_ext()
 \family default
 .
- Следующейс строкой добавляется расширение, которое не позволяет использовать
- данный сертификат и приватный ключ в качестве удостоверяющего центра:
+\end_layout
+
+\begin_layout Standard
+Дополнительно в сертификат добавляется дополнение 
+\family typewriter
+basicConstraints
+\family default
+, значение которого запрещает использовать данный сертификат в качестве
+ сертификата удостоверяющего центра:
 \end_layout
 
 \begin_layout Standard
@@ -6691,6 +6826,15 @@ output
 \end_inset
 
  пути.
+ Если в переменной 
+\family typewriter
+is_printed
+\family default
+ содержалось значение 
+\family typewriter
+True
+\family default
+, сертификат распечатывается сразу после создания.
 \end_layout
 
 \begin_layout Subsubsection*
@@ -6741,42 +6885,6 @@ print_request(request_file_path)
 
 \family typewriter
 \series bold
-get_subject_field(certificate_file_path, field)
-\family default
- 
-\series default
---- получить поле субъекта сертификата, указанное аргументом функции 
-\family typewriter
-field
-\family default
-;
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-get_issuer_field(certificate_file_path)
-\family default
- 
-\series default
----
-\family typewriter
-\series bold
- 
-\family default
-\series default
-получить поле подписывающего сертификат, указанное аргументом функции 
-\family typewriter
-field
-\series bold
-;
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
 get_subject(certificate_file_path) 
 \family default
 \series default
@@ -6796,6 +6904,26 @@ get_issuer(certificate_file_path) ---
 получить имя подписывающего сертификата
 \family typewriter
 \series bold
+;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+get_extension(certificate_file_path, name)
+\family default
+ 
+\series default
+--- получить имя дополнения из сертификата, путь к которому содержится в
+ переменной 
+\family typewriter
+certificate_file_path
+\family default
+, а имя дополнения --- 
+\family typewriter
+name
+\family default
 ;
 \end_layout
 
@@ -6843,6 +6971,11 @@ cacert_file_path
 
 \begin_layout Subsubsection
 Примеры команд, реализуемых утилитой pgcert
+\end_layout
+
+\begin_layout Standard
+В данном разделе собраны некоторые варианты команд, с помощью которых пользовате
+ль может выполнить различные действия с сертификатами.
 \end_layout
 
 \begin_layout Enumerate
@@ -6894,14 +7027,15 @@ user_u:user_r:user_t:s0
 \family typewriter
 ~/pkey.pem
 \family default
-:
+, сделать дополнение критическим:
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-$ pgcert --genreq --pkey ~/pkey.pem --user user --context user_u:user_r:user_t:s0
+$ pgcert --genreq --pkey ~/pkey.pem --user user --secontext user_u:user_r:user_t:
+s0 --critical
 \end_layout
 
 \end_inset
@@ -6910,14 +7044,14 @@ $ pgcert --genreq --pkey ~/pkey.pem --user user --context user_u:user_r:user_t:s
 \end_layout
 
 \begin_layout Enumerate
-Подписать запрос: 
+Подписать запрос и распечатать созданный сертификат: 
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-# pgcert --gencert --request user.csr
+# pgcert --gencert --request user.csr --text
 \end_layout
 
 \end_inset
@@ -6933,7 +7067,7 @@ status open
 
 \begin_layout Plain Layout
 
-$ pgcert --text --cert user.crt
+$ pgcert --text --certificate user.crt
 \end_layout
 
 \end_inset
@@ -6958,18 +7092,14 @@ status open
 \end_layout
 
 \begin_layout Enumerate
-Получить поле 
-\family typewriter
-CN
-\family default
- имени субъекта:
+Получить полное имя субъекта:
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-$ pgcert --subject --field CN
+$ pgcert --subject --certificate mycert.pem
 \end_layout
 
 \end_inset
@@ -6985,7 +7115,7 @@ status open
 
 \begin_layout Plain Layout
 
-$ pgcert --issuer
+$ pgcert --issuer --certificate mycert.pem
 \end_layout
 
 \end_inset
@@ -7001,7 +7131,27 @@ status open
 
 \begin_layout Plain Layout
 
-$ pgcert --verify --cert mycert.pem
+$ pgcert --verify --certificate mycert.pem
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Получить значение дополнения 
+\family typewriter
+basicConstraints
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ pgcert --certificate mycert.pem --extension basicConstraints
 \end_layout
 
 \end_inset
@@ -7013,7 +7163,7 @@ $ pgcert --verify --cert mycert.pem
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Создание RPM-пакета утилиты pgcert
 \end_layout
 
@@ -7137,8 +7287,8 @@ Summary: %description
 
 \begin_layout Plain Layout
 
-pgcert - утилита, котоваря позволяет создавать сертификаты X509 с полем
- SC (selinux context)
+pgcert - утилита, котоваря позволяет создавать сертификаты X509 c дополнением
+ selinuxContext
 \end_layout
 
 \begin_layout Plain Layout
@@ -7226,19 +7376,15 @@ BuildArch
 Для сборки пакета необходима модифицированная версия (
 \emph on
 раздел 
+\emph default
+
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "sub:Модификация-библиотеки-M2Crypto"
+reference "sub:Модификация-исходных-текстов"
 
 \end_inset
 
-
-\emph default
-) библиотеки 
-\family typewriter
-m2crypto
-\family default
-.
+) библиотеки M2Crypto.
  С помощью директивы 
 \family typewriter
 BuildRequires
@@ -7268,14 +7414,14 @@ openssl
  (
 \emph on
 раздел 
+\emph default
+
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "sub:Модификация-библиотеки-OpenSSL"
+reference "sub:Создание-дополнения-в"
 
 \end_inset
 
-
-\emph default
 ).
  Удовлетворение данных зависимостей гарантируют стабильность работы утилиты.
  Директивой 
@@ -7408,6 +7554,47 @@ Fedora 20
 , но также может быть пересобран под другие системы.
 \end_layout
 
+\begin_layout Subsection*
+Выводы:
+\end_layout
+
+\begin_layout Standard
+Доработанный таким образом функционал программных продуктов позволяет реализоват
+ь следующую последовательность действий:
+\end_layout
+
+\begin_layout Enumerate
+Использовать модуль 
+\family typewriter
+pam_namespace
+\family default
+ для передачи контекста безопасности пользователя при инициализации экземпляра
+ папки пользователя в скрипте 
+\family typewriter
+namespace.init
+\family default
+;
+\end_layout
+
+\begin_layout Enumerate
+В скрипте 
+\family typewriter
+namespace.init
+\family default
+, описать последовательность действий по созданию приватного ключа и сертификата
+ пользователя, содержащий метку пользователя;
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Распространение программных продуктов и утилиты pgcert в виде RPM-пакетов
+ упрощает их установку и обновление.
+ Настройка указанных компонентов будет описана в следующем разделе.
+\end_layout
+
 \begin_layout Standard
 \begin_inset Newpage newpage
 \end_inset
@@ -7420,23 +7607,8 @@ Fedora 20
 \end_layout
 
 \begin_layout Standard
-Предлагается использовать сертификаты, созданные утилитой 
-\family typewriter
-pgcert
-\family default
-, для идентификации пользователей в СУБД Postgres и использовать значение
- поля 
-\family typewriter
-SC
-\family default
- сертификата для установки контекста SELinux пользователя базы данных.
- Это позволит каждому подключённому пользователю к базе данных, выполнять
- чтение, запись и модификацию таблиц согласно его мандатному уровню.
- 
-\end_layout
-
-\begin_layout Standard
-Для реализации данной возможности предлагается развернуть стенд из 3х машин.
+Для реализации данной механизма выбора сертификата клиентом PostgreSQL предлагае
+тся развернуть стенд из 3х машин.
  Схема разворачиваемого стенда приведена на 
 \emph on
 рисунке 
@@ -7527,13 +7699,7 @@ user3
 cert
 \family default
 .
- Предлагается настроить автоматическую генерацию сертификатов данных пользовател
-ей для аутентификации по методу 
-\family typewriter
-cert
-\family default
- в PostgreSQL с применением текущего уровня безопасности, указанном в сертификат
-е.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -7541,7 +7707,7 @@ cert
 \family typewriter
 Fedora 20
 \family default
-, версия PostgreSQL --- 9.3.4.
+ и версия СУБД PostgreSQL --- 9.3.4.
 \end_layout
 
 \begin_layout Subsection
@@ -7704,18 +7870,6 @@ rpm -y
 
 \end_layout
 
-\begin_layout Enumerate
-Для пользователя 
-\family typewriter
-root
-\family default
- устанавливается пароль 
-\family typewriter
-123456
-\family default
-.
-\end_layout
-
 \begin_layout --Separator--
 
 \end_layout
@@ -7794,8 +7948,12 @@ status open
 
 \begin_layout Standard
 Настройка клиентской машины состоит в создании пользователей операционной
- системы, назначение им контекста безопасности, а также в реализации функции
- автоматической генерации сертификатов и установке клиентской части СУБД.
+ системы, назначение им контекста безопасности, а также в настройке скрипта
+ инициализации многоэкземплярных папок 
+\family typewriter
+namespace.init
+\family default
+ и дополнительной установке пакетов.
 \end_layout
 
 \begin_layout Enumerate
@@ -7816,12 +7974,70 @@ status open
 \end_layout
 
 \begin_layout Enumerate
-Настроить механизм многоэкземплярности папок:
+Устанавливается модифицированный модуль 
+\family typewriter
+pam
+\family default
+ (его модификация проводилось 
+\emph on
+в разделе 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Модификация-pam_namespace.so"
+
+\end_inset
+
+
+\emph default
+),
+\family typewriter
+ 
+\family default
+с помощью которого становится возможным получить контекст пользователя в
+ скрипте инициализации:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# yum localinstall -y pam-1.1.8-1.fc20.x86_64.rpm
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Устанавливается пакет 
+\family typewriter
+sshpass
+\family default
+, необходимый при автоматическом вводе пароля при подключении по протоколу
+ SSH:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# yum install -y sshpass
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Настроить механизм многоэкземплярности папок.
+ 
 \end_layout
 
 \begin_deeper
 \begin_layout Enumerate
-В конфигурационном файле 
+Для этого в конфигурационном файле 
 \family typewriter
 /etc/security/namespace.conf
 \family default
@@ -7864,27 +8080,27 @@ root
 \end_layout
 
 \begin_layout Enumerate
-Для обеспечения работы демона 
-\family typewriter
-SSH
-\family default
- с многоэкземплярными директориями в файл 
+В конфигурационный файл PAM 
 \family typewriter
 /etc/pam.d/sshd
 \family default
- дописывается следующая строка:
+ дописать следующую строку:
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-session required pam_namespace.so
+session	required	pam_namespace.so
 \end_layout
 
 \end_inset
 
-
+Данная строка позволяет работать с многоэкземплярными папками демону 
+\family typewriter
+SSHD
+\family default
+.
 \end_layout
 
 \end_deeper
@@ -7909,32 +8125,11 @@ status open
 \end_layout
 
 \begin_layout Enumerate
-Устанавливается утилита 
-\family typewriter
-sshpass
-\family default
- --- утилита, позволяющая вставлять в командую строку демона SSH строку
- пароля:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# yum install -y sshpass
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
 Модифицируется скрипт инициализации многоэкземплярных директорий 
 \family typewriter
 /etc/security/namespace.init
 \family default
-.
+:
 \end_layout
 
 \begin_layout --Separator--
@@ -7956,7 +8151,7 @@ BASH
 приложении 5
 \emph default
 .
- Скрипт принимает четыре параметра:
+ Скрипт принимает пять параметра:
 \end_layout
 
 \begin_layout Itemize
@@ -7981,7 +8176,7 @@ $2
 $3 
 \family default
 --- флаг, равен 0, если не требуется создание экземпляра папки и 1, если
- требуется.
+ требуется;
 \end_layout
 
 \begin_layout Itemize
@@ -7989,7 +8184,125 @@ $3
 \family typewriter
 $4
 \family default
- --- имя пользователя.
+ --- имя пользователя;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+$5
+\family default
+ --- текущий контекст безопасности пользователя.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Если экземпляр многоэкземплярной папки требует создания, выполняются команды
+ по инициализации папки.
+ Контекст безопасности многоэкземплярной папки устанавливается по умолчанию:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+[ -x /sbin/restorecon ] && /sbin/restorecon "$1"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Для упрощения читаемости скрипта объявляются переменные: 
+\family typewriter
+user
+\family default
+, в которой определяется имя пользователя, 
+\family typewriter
+context
+\family default
+, в которой хранится контекст безопасности пользователя, переданного модулем
+ 
+\family typewriter
+pam_namespace.so
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Вычисление имени пользователя реализуются в следующих строках:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+passwd=$(getent passwd "$user")
+\end_layout
+
+\begin_layout Plain Layout
+
+homedir=$(echo "$passwd" | cut -f6 -d":")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Далее объявляются константные переменные: 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+pgcertdir
+\family default
+ --- путь к папке, в которой будут храниться сертификаты (
+\family typewriter
+~/.postgresql
+\family default
+);
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+ca 
+\family default
+--- IP-адрес удостоверяющего центра;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+certdir 
+\family default
+--- путь к директории, в которую будут присылаться запросы на подпись сертификат
+ов и в которую удостоверяющий центр будет сохранять сертификаты;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+ca_password 
+\family default
+--- пароль пользователя 
+\family typewriter
+root
+\family default
+, от имени которого удостоверяющий центр будет выпускать сертификаты.
+ 
 \end_layout
 
 \begin_layout --Separator--
@@ -7999,56 +8312,34 @@ $4
 \begin_layout Standard
 В 
 \emph on
-строках 1-13
+строках 13-19
 \emph default
- выполняются стандартные операции по созданию домашней папки пользователя.
- А именно: копируется шаблон домашнего каталога и копируется в созданную
- папку.
-\end_layout
-
-\begin_layout Standard
-Далее определяются переменные 
-\family typewriter
-pgcertdir
-\family default
- --- директория 
-\family typewriter
-~/.postgresql
-\family default
-, в которой PostgreSQL ищет сертификаты, IP-адрес удостоверяющего центра
- 
-\family typewriter
-ca
-\family default
-, каталог удостоверяющего центра, в который копируются запросы на подпись
- сертификатов 
-\family typewriter
-certdir
-\family default
-, пароль пользователей, используемый для беcпарольного соединения по SSH
- между машинами.
+ описываются все необходимые действия по созданию экземпляра папки.
  
 \end_layout
 
 \begin_layout Standard
-В 
+Начиная 
 \emph on
-строках 21-45
+со строки 21 
 \emph default
- определяется контекст пользователя на основе переданного пути многоэкземплярной
- папки.
- 
+определяется перечень операций по созданию приватного ключа, создания запроса
+ на подпись сертификата и его выпуск.
 \end_layout
 
 \begin_layout Standard
-Создание приватного ключа реализуется с помощью команды 
+Первым делом создается директория для хранения сертификатов 
+\family typewriter
+$pgcertdir
+\family default
+:
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-pgcert --genrsa --bits 2048 --output $pgcertdir/postgresql.key >> /dev/null
+mkdir $pgcertdir
 \end_layout
 
 \end_inset
@@ -8057,12 +8348,125 @@ pgcert --genrsa --bits 2048 --output $pgcertdir/postgresql.key >> /dev/null
 \end_layout
 
 \begin_layout Standard
-после чего, назначаются права на ключ 0600 (доступ на чтение, запись, выполнение
- только владельцу ключа).
- Генерируется запрос на подпись ключа с использованием ранее вычисленного
- контекста пользователя и его имени.
- Данный запрос отсылается на удостоверяющий центр.
- Подпись сертификата удостоверяющим центром реализована командой
+С помощью утилиты 
+\family typewriter
+pgcert 
+\family default
+выполняется создание приватного ключа и назначение ему прав 
+\family typewriter
+0600 
+\family default
+(права на чтение, запись, исполнение только для владельца ключа):
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+pgcert --genkey --bits 2048 --output $pgcertdir/postgresql.key >> /dev/null
+\end_layout
+
+\begin_layout Plain Layout
+
+chmod 0600 $pgcertdir/postgresql.key
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Чтобы скрыть результат выполнения команд, выполняется перенаправление вывода
+ команды в 
+\family typewriter
+/dev/null
+\family default
+.
+ При отладке скрипта рекомендуется убрать это перенаправление.
+\end_layout
+
+\begin_layout Standard
+Для создания запроса на подпись сертификата используется следующая команда:
+ 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --secontext
+ $secontext --output $pgcertdir/postgresql.csr >> /dev/null
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Созданный таким образом пересылается на удостоверяющий центр с помощью следующей
+ команды:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+sshpass -p $ca_password scp -o StrictHostKeyChecking=no $pgcertdir/postgresql.csr
+ root@$ca:$certdir >> /dev/null
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Данная команда создает 
+\family typewriter
+SSH
+\family default
+ соединение без проверки ключей (
+\family typewriter
+StrictHostKeyChecking=no
+\family default
+), при просьбе ввести пароль от удалённой машины, утилита 
+\family typewriter
+sshpass
+\family default
+ вводит пароль, хранящийся в переменной 
+\family typewriter
+$ca_password
+\family default
+.
+ После этого файл запроса копируется в директорию 
+\family typewriter
+$certdir 
+\family default
+удостоверяющего центра.
+
+\family typewriter
+ 
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+На
+\family default
+ удостоверяющем центре выполняется подписание сертификата и сохранение сертифика
+та в директорию 
+\family typewriter
+$certdir
+\family default
+:
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
@@ -8079,9 +8483,86 @@ sshpass -p $password ssh -o StrictHostKeyChecking=no -T root@$ca "pgcert
 \end_layout
 
 \begin_layout Standard
-Созданный сертификат копируется в папку пользователя.
- В неё же копируется сертификат удостоверяющего центра.
- 
+Далее сертификат пользователя копируется пользователю в директорию 
+\family typewriter
+$pgcertdir
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca:$certdir/postgr
+esql.crt $pgcertdir/postgresql.crt >> /dev/null
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Сертификат и запрос на его подпись удаляются из директории удостоверяющего
+ центра:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca "rm
+ -fr $certdir/*"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В каталог 
+\family typewriter
+$pgcertdir
+\family default
+ с удостоверяющего центра копируется сертификат удостоверяющего центра:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca:/etc/pki/CA/cac
+ert.pem $pgcertdir/root.crt
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Всем файлам в каталоге устанавливается владелец 
+\family typewriter
+$user.$user
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+chown -R $user.$user $pgcertdir
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -8098,8 +8579,8 @@ cert
 \end_layout
 
 \begin_layout Standard
-Для установки пакетов PostgreSQL требуется подключить репозиторий и выполнить
- следующую команду:
+Для установки пакетов PostgreSQL требуется подключить репозиторий PostgreSQL
+ 9.3.4 и выполнить следующую команду:
 \begin_inset listings
 inline false
 status open
@@ -8172,10 +8653,11 @@ ssl_ca_file = 'root.crt'
 
 \begin_layout Standard
 В первой строке указывается диапазон прослушиваемых адресов.
+ В данном случае PostgreSQL будет прослушивать весь диапазон адресов.
 \end_layout
 
 \begin_layout Standard
-Во второй указана активность соединения.
+Во второй указана активность шифрования соединения.
  В третьей, четвертой и пятой строках указывается имена файлов, хранящие
  сертификат, приватный ключ сервера и удостоверяющего центра.
 \end_layout
@@ -8308,7 +8790,7 @@ status open
 
 \begin_layout Plain Layout
 
-$ pgcert --genrsa --output server.key
+$ pgcert --genkey --output server.key
 \end_layout
 
 \begin_layout Plain Layout
@@ -8518,16 +9000,6 @@ status open
 \begin_layout Standard
 В данном разделе будет описан процесс проверки корректности создания пользовател
 ьских сертификатов и их использование в СУБД PostgreSQL.
-\end_layout
-
-\begin_layout Subsubsection
-Автоматическая генерация сертификатов, содержащих метку пользователя
-\end_layout
-
-\begin_layout Standard
-Для тестирования автоматической генерации сертификатов, содержащих метку
- пользователя, требует постоянно работающего удостоверяющего центра, а также
- клиентской машины.
 \end_layout
 
 \begin_layout Standard
@@ -8809,9 +9281,9 @@ status open
 \end_layout
 
 \begin_layout Enumerate
-Назначается пароль 
+Назначается произвольный пароль с помощью утилиты 
 \family typewriter
-123456
+passwd
 \family default
 :
 \begin_inset listings
@@ -10570,15 +11042,14 @@ pgcert
 \family default
 --- это программа, написанная на языке программирования Python, позволяющая
  создавать сертификаты X.509, создавать приватные ключи, запросы на подпись
- сертификатов с полем 
+ сертификатов с дополнением X509v3 
 \family typewriter
-SC
+selinuxContext
 \family default
 , в котором хранится контекст пользователя, выполнять их подпись, а также
  проверить подлинность.
- Кроме того, в функционал программы включена функция создания удостоверяющего
- центра, а также функции просмотра в текстовом виде запроса на создания
- сертификата и самого сертификата.
+ В утилите реализован дополнительный набор функций, упрощающий просмотр
+ информации о сертификатах.
  
 \begin_inset Newline newline
 \end_inset
@@ -11989,7 +12460,8 @@ addcontentsline{toc}{subsection}{Приложение 3.
 \end_layout
 
 \begin_layout Standard
-Данный патч добавляет идентификацию поля SC в библиотеке M2Crypto.
+Данный патч добавляет возможность получения стека дополнений, количества
+ дополнений и дополнение по имени из запроса в M2Crypto.
  
 \begin_inset Newline newline
 \end_inset
@@ -12001,7 +12473,7 @@ addcontentsline{toc}{subsection}{Приложение 3.
 
 \family typewriter
 \series bold
-m2crypto-0.21.1-selinux.patch
+m2crypto-0.21.1-req-functions.patch
 \end_layout
 
 \begin_layout Standard
@@ -12011,37 +12483,27 @@ status collapsed
 
 \begin_layout Plain Layout
 
---- M2Crypto-0.21.1/SWIG/_x509.i	2014-03-15 21:29:07.846053013 +0400
+--- M2Crypto-0.21.2/SWIG/_x509.i	2011-01-15 22:10:06.000000000 +0300
 \end_layout
 
 \begin_layout Plain Layout
 
-+++ M2Crypto-0.21.1/SWIG/_x509.i	2014-03-15 21:30:24.412867730 +0400
++++ M2Crypto-0.21.2/SWIG/_x509.i	2014-03-30 21:05:01.000000000 +0400
 \end_layout
 
 \begin_layout Plain Layout
 
-@@ -258,6 +258,7 @@
+@@ -507,6 +507,10 @@
 \end_layout
 
 \begin_layout Plain Layout
 
- %constant int NID_surname                     = 100;
+     return X509_REQ_add_extensions(req, exts);
 \end_layout
 
 \begin_layout Plain Layout
 
- %constant int NID_givenName                   = 99;
-\end_layout
-
-\begin_layout Plain Layout
-
- %constant int NID_pkcs9_emailAddress          = 48;
-\end_layout
-
-\begin_layout Plain Layout
-
-+%constant int NID_selinuxContext              = 920;
+ }
 \end_layout
 
 \begin_layout Plain Layout
@@ -12051,68 +12513,74 @@ status collapsed
 
 \begin_layout Plain Layout
 
- /* Cribbed from x509_vfy.h.
- */
++STACK_OF(X509_EXTENSION) *x509_req_get_ext(X509_REQ *request) {
 \end_layout
 
 \begin_layout Plain Layout
 
- %constant int        X509_V_OK                                      = 0;
++    return X509_REQ_get_extensions(request);
 \end_layout
 
 \begin_layout Plain Layout
 
---- M2Crypto-0.21.1/M2Crypto/X509.py	2011-01-15 22:10:05.000000000 +0300
++}
 \end_layout
 
 \begin_layout Plain Layout
 
-+++ M2Crypto-0.21.1/M2Crypto/X509_new.py	2014-03-15 21:34:07.658266987 +0400
++
 \end_layout
 
 \begin_layout Plain Layout
 
-@@ -221,7 +221,9 @@
+ X509_NAME_ENTRY *x509_name_entry_create_by_txt(X509_NAME_ENTRY **ne, char
+ *field, int type, char *bytes, int len) {
 \end_layout
 
 \begin_layout Plain Layout
 
-            'SN'                     : m2.NID_surname,
+     return X509_NAME_ENTRY_create_by_txt( ne, field, type, (unsigned char
+ *)bytes, len);
 \end_layout
 
 \begin_layout Plain Layout
 
-            'surname'                : m2.NID_surname,
+ }
 \end_layout
 
 \begin_layout Plain Layout
 
-            'GN'                     : m2.NID_givenName,
+--- M2Crypto-0.21.2/M2Crypto/X509.py	2011-01-15 22:10:05.000000000 +0300
 \end_layout
 
 \begin_layout Plain Layout
 
--           'givenName'              : m2.NID_givenName
++++ M2Crypto-0.21.2/M2Crypto/X509.py	2014-03-30 23:59:07.712541164 +0400
 \end_layout
 
 \begin_layout Plain Layout
 
-+           'givenName'              : m2.NID_givenName,
+@@ -497,6 +497,7 @@
 \end_layout
 
 \begin_layout Plain Layout
 
-+           'SC'                     : m2.NID_selinuxContext,
+         """
 \end_layout
 
 \begin_layout Plain Layout
 
-+           'selinuxContext'         : m2.NID_selinuxContext
+         assert m2.x509_type_check(self.x509), "'x509' type error"
 \end_layout
 
 \begin_layout Plain Layout
 
-            }
+         return m2.x509_add_ext(self.x509, ext.x509_ext, -1)
+\end_layout
+
+\begin_layout Plain Layout
+
++        
 \end_layout
 
 \begin_layout Plain Layout
@@ -12122,7 +12590,247 @@ status collapsed
 
 \begin_layout Plain Layout
 
-     m2_x509_name_free = m2.x509_name_free
+     def get_ext(self, name):
+\end_layout
+
+\begin_layout Plain Layout
+
+         """
+\end_layout
+
+\begin_layout Plain Layout
+
+@@ -967,6 +968,46 @@
+\end_layout
+
+\begin_layout Plain Layout
+
+         @param ext_stack: Stack of extensions to add.
+\end_layout
+
+\begin_layout Plain Layout
+
+         """
+\end_layout
+
+\begin_layout Plain Layout
+
+         return m2.x509_req_add_extensions(self.req, ext_stack._ptr())
+\end_layout
+
+\begin_layout Plain Layout
+
++    
+\end_layout
+
+\begin_layout Plain Layout
+
++    def get_extensions(self):
+\end_layout
+
+\begin_layout Plain Layout
+
++        """
+\end_layout
+
+\begin_layout Plain Layout
+
++        Get all extensions of request
+\end_layout
+
+\begin_layout Plain Layout
+
++        
+\end_layout
+
+\begin_layout Plain Layout
+
++        """
+\end_layout
+
+\begin_layout Plain Layout
+
++        request_stack = m2.x509_req_get_ext(self.req)
+\end_layout
+
+\begin_layout Plain Layout
+
++        extension_count = m2.sk_x509_extension_num(request_stack)
+\end_layout
+
+\begin_layout Plain Layout
+
++        stack = X509_Extension_Stack()
+\end_layout
+
+\begin_layout Plain Layout
+
++        for i in range(0, extension_count):
+\end_layout
+
+\begin_layout Plain Layout
+
++            ext_ptr = m2.sk_x509_extension_value(request_stack, i)
+\end_layout
+
+\begin_layout Plain Layout
+
++            extension = X509_Extension(ext_ptr)
+\end_layout
+
+\begin_layout Plain Layout
+
++            stack.push(extension)
+\end_layout
+
+\begin_layout Plain Layout
+
++        return stack
+\end_layout
+
+\begin_layout Plain Layout
+
++    
+\end_layout
+
+\begin_layout Plain Layout
+
++    def get_extension_by_name(self, name):
+\end_layout
+
+\begin_layout Plain Layout
+
++        """
+\end_layout
+
+\begin_layout Plain Layout
+
++        Get an Extension by short name
+\end_layout
+
+\begin_layout Plain Layout
+
++        
+\end_layout
+
+\begin_layout Plain Layout
+
++        @type name:      str
+\end_layout
+
+\begin_layout Plain Layout
+
++        @param name:     short name of extension
+\end_layout
+
+\begin_layout Plain Layout
+
++        @rtype: M2Crypto.X509.X509_Extension
+\end_layout
+
+\begin_layout Plain Layout
+
++        @return: M2Crypto.X509.X509_Extension object
+\end_layout
+
+\begin_layout Plain Layout
+
++        
+\end_layout
+
+\begin_layout Plain Layout
+
++        """
+\end_layout
+
+\begin_layout Plain Layout
+
++        request_stack = m2.x509_req_get_ext(self.req)
+\end_layout
+
+\begin_layout Plain Layout
+
++        extension_count = m2.sk_x509_extension_num(request_stack)
+\end_layout
+
+\begin_layout Plain Layout
+
++        for i in range(0, extension_count):
+\end_layout
+
+\begin_layout Plain Layout
+
++            ext_ptr = m2.sk_x509_extension_value(request_stack, i)
+\end_layout
+
+\begin_layout Plain Layout
+
++            extension = X509_Extension(ext_ptr)
+\end_layout
+
+\begin_layout Plain Layout
+
++            if extension.get_name() == name:
+\end_layout
+
+\begin_layout Plain Layout
+
++                return extension
+\end_layout
+
+\begin_layout Plain Layout
+
++        return None
+\end_layout
+
+\begin_layout Plain Layout
+
++      
+\end_layout
+
+\begin_layout Plain Layout
+
++    def get_extension_count(self):
+\end_layout
+
+\begin_layout Plain Layout
+
++        """
+\end_layout
+
+\begin_layout Plain Layout
+
++        Get count of request extensions
+\end_layout
+
+\begin_layout Plain Layout
+
++        """
+\end_layout
+
+\begin_layout Plain Layout
+
++        request_stack = m2.x509_req_get_ext(self.req)
+\end_layout
+
+\begin_layout Plain Layout
+
++        return m2.sk_x509_extension_num(request_stack)
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+     def verify(self, pkey):
+\end_layout
+
+\begin_layout Plain Layout
+
+         return m2.x509_req_verify(self.req, pkey.pkey)
 \end_layout
 
 \end_inset
@@ -12198,7 +12906,17 @@ if [ "$3" = 1 ]; then
 
 \begin_layout Plain Layout
 
-	[ -x /sbin/restorecon ] && /sbin/restorecon "$1"
+    [ -x /sbin/restorecon ] && /sbin/restorecon "$1"
+\end_layout
+
+\begin_layout Plain Layout
+
+    user="$4"
+\end_layout
+
+\begin_layout Plain Layout
+
+    context=$5
 \end_layout
 
 \begin_layout Plain Layout
@@ -12213,12 +12931,32 @@ if [ "$3" = 1 ]; then
 
 \begin_layout Plain Layout
 
+    pgcertdir="$1/.postgresql"
+\end_layout
+
+\begin_layout Plain Layout
+
+    ca="192.168.100.4"
+\end_layout
+
+\begin_layout Plain Layout
+
+    certdir="/root/certs"
+\end_layout
+
+\begin_layout Plain Layout
+
+    ca_password="123456"
+\end_layout
+
+\begin_layout Plain Layout
+
     if [ "$1" = "$homedir" ]; then
 \end_layout
 
 \begin_layout Plain Layout
 
-    	gid=$(echo "$passwd" | cut -f4 -d":")
+        gid=$(echo "$passwd" | cut -f4 -d":")
 \end_layout
 
 \begin_layout Plain Layout
@@ -12258,158 +12996,7 @@ s)
 
 \begin_layout Plain Layout
 
-        user="$4"
-\end_layout
-
-\begin_layout Plain Layout
-
-        pgcertdir="$1/.postgresql"
-\end_layout
-
-\begin_layout Plain Layout
-
-    	ca="192.168.100.4"
-\end_layout
-
-\begin_layout Plain Layout
-
-    	certdir="/root/certs"
-\end_layout
-
-\begin_layout Plain Layout
-
-    	password="123456"
-\end_layout
-
-\begin_layout Plain Layout
-
         mkdir $pgcertdir
-\end_layout
-
-\begin_layout Plain Layout
-
-        context=`sshpass -p $password ssh -o StrictHostKeyChecking=no $user@127.0.
-0.1 "id -Z"` >> /dev/null
-\end_layout
-
-\begin_layout Plain Layout
-
-        seuser=$(echo "$context" | cut -f1 -d":")
-\end_layout
-
-\begin_layout Plain Layout
-
-        setype=$(echo "$context" | cut -f2 -d":")
-\end_layout
-
-\begin_layout Plain Layout
-
-		serole=$(echo "$context" | cut -f3 -d":")	
-\end_layout
-
-\begin_layout Plain Layout
-
-        selevel=$(echo "$2" | cut -f4 -d":" | cut -f1 -d"_")
-\end_layout
-
-\begin_layout Plain Layout
-
-        secategory=$(echo "$2" | cut -f5 -d ":" | cut -f1 -d"_")
-\end_layout
-
-\begin_layout Plain Layout
-
-        min_selevel=$(echo "$selevel" | cut -f1 -d"-")
-\end_layout
-
-\begin_layout Plain Layout
-
-        max_selevel=$(echo "$selevel" | cut -f2 -d"-")
-\end_layout
-
-\begin_layout Plain Layout
-
-        if [ "$min_selevel" = "$max_selevel" ]
-\end_layout
-
-\begin_layout Plain Layout
-
-        then
-\end_layout
-
-\begin_layout Plain Layout
-
-            secontext="$seuser:$setype:$serole:$min_selevel"
-\end_layout
-
-\begin_layout Plain Layout
-
-        else
-\end_layout
-
-\begin_layout Plain Layout
-
-            secontext="$seuser:$setype:$serole:$selevel"
-\end_layout
-
-\begin_layout Plain Layout
-
-        fi
-\end_layout
-
-\begin_layout Plain Layout
-
-        if [ ! "$secategory" = "" ]
-\end_layout
-
-\begin_layout Plain Layout
-
-        then
-\end_layout
-
-\begin_layout Plain Layout
-
-        	min_secategory=$(echo "$secategory" | cut -f1 -d".")
-\end_layout
-
-\begin_layout Plain Layout
-
-            max_secategory=$(echo "$secategory" | cut -f2 -d".")
-\end_layout
-
-\begin_layout Plain Layout
-
-            if [ "$min_secategory" = "$max_secategory" ]
-\end_layout
-
-\begin_layout Plain Layout
-
-            then
-\end_layout
-
-\begin_layout Plain Layout
-
-            	secontext="$secontext:$secategory"
-\end_layout
-
-\begin_layout Plain Layout
-
-            else
-\end_layout
-
-\begin_layout Plain Layout
-
-            	secontext="$secontext:$min_secategory.$max_secategory"
-\end_layout
-
-\begin_layout Plain Layout
-
-            fi
-\end_layout
-
-\begin_layout Plain Layout
-
-        fi
 \end_layout
 
 \begin_layout Plain Layout
@@ -12431,31 +13018,33 @@ s)
 
 \begin_layout Plain Layout
 
-        sshpass -p $password scp -o StrictHostKeyChecking=no $pgcertdir/postgres
-ql.csr root@$ca:$certdir
+        sshpass -p $ca_password scp -o StrictHostKeyChecking=no $pgcertdir/postg
+resql.csr root@$ca:$certdir >> /dev/null
 \end_layout
 
 \begin_layout Plain Layout
 
-    	sshpass -p $password ssh -o StrictHostKeyChecking=no -T root@$ca "pgcert
- --gencert --request $certdir/postgresql.csr --output $certdir/postgresql.crt"
+        sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca
+ "pgcert --gencert --request $certdir/postgresql.csr --output $certdir/postgresql.
+crt" >> /dev/null
 \end_layout
 
 \begin_layout Plain Layout
 
-        sshpass -p $password scp -o StrictHostKeyChecking=no root@$ca:$certdir/p
-ostgresql.crt $pgcertdir/postgresql.crt
+        sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca:$certdi
+r/postgresql.crt $pgcertdir/postgresql.crt >> /dev/null
 \end_layout
 
 \begin_layout Plain Layout
 
-        sshpass -p $password scp -o StrictHostKeyChecking=no root@$ca:/etc/pki/C
-A/cacert.pem $pgcertdir/root.crt
+        sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca
+ "rm -fr $certdir/*"
 \end_layout
 
 \begin_layout Plain Layout
 
-        rm -f $pgcertdir/postgresql.csr
+        sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca:/etc/pk
+i/CA/cacert.pem $pgcertdir/root.crt
 \end_layout
 
 \begin_layout Plain Layout
@@ -12465,12 +13054,16 @@ A/cacert.pem $pgcertdir/root.crt
 
 \begin_layout Plain Layout
 
-	fi
+    fi
 \end_layout
 
 \begin_layout Plain Layout
 
 fi
+\end_layout
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \begin_layout Plain Layout
