@@ -1061,73 +1061,160 @@ LargeStretch
 \end_layout
 
 \begin_layout Standard
-Система мандатного разграничения доступа обладает возможностью назначения
- мандатных меток для объектов и субъектов.
- Многоуровневая система доступа необходима для обеспечения работы пользователей
- операционной системы с различными видами информации, уровни которых различаются.
- В дистрибутивах Fedora используется в качестве основной системы защиты
- SELinux.
- Для возможности назначения мандатных меток для субъектов и объектов, выполняетс
-я дополнительная настройка SELinux в режиме MLS.
+В современном мире существует проблема разграничения прав доступа к различным
+ видам информации.
 \end_layout
 
 \begin_layout Standard
-В системе управления базами данных PostgreSQL традиционно используется дискрецио
-нная модель контроля доступа, основанная на правах к объектам базы данных.
- Система мандатного разграничения доступа реализована в качестве расширения
- к PostgreSQL в виде динамической библиотеки sepgsql.
- Она позволяет назначать контекст безопасности SELinux для объектов базы
- данных.
- Однако, в текущей реализации модуля метка безопасности передается по сети
- с помощью двух возможных утилит: netlabel и IPSec.
-\end_layout
+Обычно эта проблема решается с помощью дискреционной системы контроля доступа
+ (англ.
+ 
+\emph on
+DAC
+\emph default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "DAC"
 
-\begin_layout Standard
-Утилита netlabel передает метку безопасности в пакетах в открытом текстовом
- виде, что может вызвать компрометацию и её перехват.
- Утилита IPSec устанавливает шифрованное соединение между машинами и передает
- метку в зашифрованном виде.
- Но в данном случае необходимо синхронизировать соответствие уровней безопасност
-и машин.
+\end_inset
+
+), которая предполагает, что пользователь сам назначает права на свои файлы,
+ а выполняющиеся программы имеют те же самые права, что и запустивший их
+ пользователь.
+ Однако, данная система не предполагает возможность контроля доступа к информаци
+и на основании уровня конфиденциальности.
  
 \end_layout
 
 \begin_layout Standard
-В данной работе предлагается использовать иной механизм передачи метки по
- сети: использование сертификата X509, в котором будет создано дополнительное
- поле, содержащее контекст пользователя.
- Предложенный метод позволит устанавливать зашифрованное соединение между
- машинами, проблема синхронизации уровня безопасности между машинами будет
- также решена.
+Для реализации такой возможности в информационных системах используется
+ мандатный механизм контроля доступа (англ.
+ 
+\emph on
+MAC
+\emph default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "MAC"
+
+\end_inset
+
+).
+ Данный механизм основан на запрете пользователю или процессу, обладающему
+ определённым уровнем доверия, получать доступ к информации, процессам или
+ устройствам более защищённого уровня.
+ MAC является дополнением к дискреционному механизму контролю доступа и
+ работает, если DAC разрешил доступ к какому-либо объекту файловой системы.
+\end_layout
+
+\begin_layout Standard
+В дистрибутивах Fedora Linux наряду с дискреционной системой контроля доступа,
+ используется SELinux 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "SELinux"
+
+\end_inset
+
+ --- реализация системы мандатного контроля доступа.
+ Каждому пользователю и файлу дистрибутивах Linux Fedora назначается метка
+ безопасности.
+ С помощью определённых правил, называемых политиками, осуществляется контроль
+ доступа к информации.
+ SELinux поддерживает также и многоуровневую систему контроля доступа (англ.
+ 
+\emph on
+MLS
+\emph default
+), основанную на том принципе, что пользователь может иметь доступ к информации,
+ уровень конфиденциальности которой соответствует уровню пользователя.
  
 \end_layout
 
 \begin_layout Standard
-Целью данной работы является разработка механизма передачи метки по сети
- с использованием сертификатов X509 на базе операционных систем Fedora 20.
- Таким образом были сформулированы следующие задачи:
+В связи с тем, что объём информации сильно возрастает, стало неэффективно
+ хранить и обрабатывать её в операционных системах.
+ Поэтому для хранения и обработки информации используются системы управления
+ базами данных.
+ Дискреционный механизм, используемый в базах данных не позволяет осуществлять
+ контроль информации с разными уровнями конфиденциальности.
+ 
+\end_layout
+
+\begin_layout Standard
+Одной из наиболее развитых систем управления базами данных является PostgreSQL.
+ PostgreSQL --- это свободно распространяемая объектно-реляционная система
+ управления базами данных (ORDBMS) и альтернатива современным коммерческим
+ системам управления базами данных.
+ Мандатный механизм контроля доступа в этой базе данных реализуется с помощью
+ модуля sepgsql, добавляющий поддержку SELinux к объектам базы данных.
+ 
+\end_layout
+
+\begin_layout Standard
+Мандатная метка пользователя может передана в PostgreSQL с помощью механизмов
+ netlabel и IPSec.
+ 
+\end_layout
+
+\begin_layout Standard
+Механизм netlabel позволяет передавать мандатную метку в открытом виде в
+ пакете, что может вызвать компрометацию информации, хранящейся в базе данных.
+ 
+\end_layout
+
+\begin_layout Standard
+Иным способом передачи метки является IPSec --- технология, при которой
+ клиент и сервер договариваются об уровне конфиденциальности обмена информации.
+ При смене уровне требуется перенастройка клиента и сервера.
+ 
+\end_layout
+
+\begin_layout Standard
+Поэтому актуальна проблема разработки такого механизма передачи мандатной
+ метки, при котором будет установлено зашифрованное соединение между клиентом
+ и сервером, а также не будет требоваться перенастройка соединения при смене
+ уровня конфиденциальности клиента.
+\end_layout
+
+\begin_layout Standard
+В данной дипломной работе предлагается иной метод передачи мандатной метки
+ пользователя в базу данных.
+ Предлагается использовать сертификат X509 версии 3, стандарт которого позволяет
+ включать пользовательские дополнения.
+ В дополнение сертификата будет включаться мандатная метка пользователя,
+ при установлении зашифрованного соединения метка клиента будет получаться
+ сервером базы данных.
+\end_layout
+
+\begin_layout Standard
+Таким образом, 
+\series bold
+целью
+\series default
+ данной дипломной работы является разработка механизма выбора сертификата
+ клиентом PostgreSQL.
+ При достижении поставленной цели были сформулированы следующие 
+\series bold
+задачи
+\series default
+:
 \end_layout
 
 \begin_layout Enumerate
-Изучить базовые возможности SELinux, необходимые для получения метки безопасност
-и пользователя;
+Исследовать основные принципы построения системы SELinux;
 \end_layout
 
 \begin_layout Enumerate
-Исследовать принципы построения сертификата X509, а также утилиты для создания
- этих сертификатов на предмет доработки;
+Разработать способ создания сертификатов с мандатной меткой пользователя
+ с учётом возможности перехода пользователя на другой мандатный уровень;
 \end_layout
 
 \begin_layout Enumerate
-Реализовать утилиту, создающую сертификат с полем, содержащим текущий контекст
- пользователя, а также разработать механизм автоматической генерации сертификато
-в при переходе пользователя на новый мандатный уровень средствами многоэкземпляр
-ности папок операционной системы Fedora;
-\end_layout
-
-\begin_layout Enumerate
-Доработать программный код СУБД PostgreSQL для возможности применения контекста
- безопасности, полученного из сертификата.
+Разработать средства получения метки пользователя из сертификата X509 в
+ СУБД PostgreSQL.
 \end_layout
 
 \begin_layout --Separator--
@@ -1135,19 +1222,8 @@ LargeStretch
 \end_layout
 
 \begin_layout Standard
-SELinux является мощной, гибконастраиваемой системой мандатного разграничения
- доступа, его поведение легко изменить, не изменяя программный код операционной
- системы.
- На протяжении всей работы SELinux будет работать в разрешающем режиме.
- 
-\end_layout
-
-\begin_layout Standard
-Основную часть работы составляет доработка программного кода библиотек,
- используемых для создания сертификатов, и СУБД PostgreSQL, а также их настройка.
- Тестирование реализованных возможностей будет проводиться в запрещающем
- режиме SELinux.
- 
+В работе используется операционная система Linux Fedora 20 и СУБД PostgreSQL
+ 9.3.4.
 \end_layout
 
 \begin_layout Standard
@@ -1274,12 +1350,13 @@ Mandatory access control
 При санкционированном занесении в список пользователей нового субъекта должно
  осуществляться сопоставление ему классификационных меток.
  Внешние классификационные метки (субъектов, объектов) должны точно соответствов
-ать внутренним меткам (внутри КСЗ).
+ать внутренним меткам (внутри комплекса средств защиты).
 \end_layout
 
 \begin_layout Standard
-КСЗ должен реализовывать мандатный принцип контроля доступа применительно
- ко всем объектам при явном и скрытом доступе со стороны любого из субъектов:
+Комплекс средств защиты должен реализовывать мандатный принцип контроля
+ доступа применительно ко всем объектам при явном и скрытом доступе со стороны
+ любого из субъектов:
 \end_layout
 
 \begin_layout Itemize
@@ -7554,6 +7631,818 @@ Fedora 20
 , но также может быть пересобран под другие системы.
 \end_layout
 
+\begin_layout Subsection
+Разработка хранимой процедуры, позволяющей получить значение дополнения
+ сертификата
+\end_layout
+
+\begin_layout Standard
+Для дополнительной проверки того, что сервер PostgreSQL действительно использует
+ клиентский сертификат, в котором содержится метка пользователя и она правильная
+, необходима соответствующая процедура.
+ При рассмотрении всех доступных процедур, которые могут быть загружены
+ в PostgreSQL, было обнаружено, что не существует ни одной из процедур,
+ позволяющие сделать это.
+\end_layout
+
+\begin_layout Standard
+В PostgreSQL существует возможность создания хранимых процедур не только
+ на языке SQL, а также и на других языках программирования.
+ Для написания процедуры, позволяющая получить значение дополнения, предлагается
+ использовать язык программирования C.
+ Для написания хранимых процедур на языке C, используется библиотека 
+\family typewriter
+libpq
+\family default
+, предоставляющая интерфейс к базе данных.
+ При написании функций используются специальные типы данных, объявленные
+ в данной библиотеке.
+\end_layout
+
+\begin_layout Standard
+Для того, чтобы разработать процедуру на языке программирования C, требуется
+ установить пакет с заголовочными файлами PostgreSQL:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# yum install postgresql93-devel -y
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+После чего в файле процедуры подключаются заголовочные файлы СУБД 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "psql-C"
+
+\end_inset
+
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+#include "postgres.h"
+\end_layout
+
+\begin_layout Plain Layout
+
+#include "libpq/libpq-be.h"
+\end_layout
+
+\begin_layout Plain Layout
+
+#include "fmgr.h"
+\end_layout
+
+\begin_layout Plain Layout
+
+#include "miscadmin.h"
+\end_layout
+
+\begin_layout Plain Layout
+
+#include "utils/builtins.h"
+\end_layout
+
+\begin_layout Plain Layout
+
+#include "funcapi.h" 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Далее подключается заголовочный файл OpenSSL 
+\family typewriter
+v3x509.h
+\family default
+, в котором содержатся функции для работы с дополнениями X509v3:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+#include <openssl/x509v3.h>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Чтобы PostgreSQL опознала создаваемую процедуру требуется написать макрос
+ 
+\family typewriter
+PG_MODULE_MAGIC;
+\family default
+ 
+\end_layout
+
+\begin_layout Standard
+В PostgreSQL существует возможность создания функций в 
+\begin_inset Quotes fld
+\end_inset
+
+старом
+\begin_inset Quotes frd
+\end_inset
+
+ и 
+\begin_inset Quotes fld
+\end_inset
+
+новом
+\begin_inset Quotes frd
+\end_inset
+
+ стиле.
+ Для объявления функции в 
+\begin_inset Quotes fld
+\end_inset
+
+новом
+\begin_inset Quotes frd
+\end_inset
+
+ стиле перед реализацией функции используется макрос 
+\family typewriter
+PG_FUNCTION_INFO_V1()
+\family default
+, в качестве аргумента которого передается имя хранимой процедуры.
+
+\family typewriter
+ 
+\end_layout
+
+\begin_layout Standard
+После этого реализуется функция, предназначенная для получения контекста
+ пользователя:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Datum ssl_get_extension_by_name(PG_FUNCTION_ARGS);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+При этом тип возвращаемого значения 
+\family typewriter
+Datum
+\family default
+ --- это унифицированный тип возвращаемого значения процедуры, в качестве
+ аргумента функции передаётся 
+\family typewriter
+PG_FUNCTION_INFO
+\family default
+ --- массив значений, передаваемые функции.
+ В коде процедуры эти значения могут быть получены с помощью семейства функций
+ PG_GETARG.
+ В функции объявляются следующие переменные:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+X509 *certificate = MyProcPort -> peer;
+\end_layout
+
+\begin_layout Plain Layout
+
+char *extension_name = text_to_cstring(PG_GETARG_TEXT_P(0));
+\end_layout
+
+\begin_layout Plain Layout
+
+X509_EXTENSION *extension = NULL;
+\end_layout
+
+\begin_layout Plain Layout
+
+BIO *bio = BIO_new(BIO_s_mem());
+\end_layout
+
+\begin_layout Plain Layout
+
+char *value = NULL;
+\end_layout
+
+\begin_layout Plain Layout
+
+text *result = NULL;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+certificate
+\family default
+ --- указатель на сертификат пользователя, 
+\family typewriter
+extension_name
+\family default
+ --- указатель на строку типа 
+\family typewriter
+char*
+\family default
+, в котором будет храниться значение переданного процедуре имени дополнения;
+ 
+\family typewriter
+extension
+\family default
+ --- указатель на объект дополнения; 
+\family typewriter
+bio
+\family default
+ --- указатель на структуру 
+\family typewriter
+BIO
+\family default
+, используемую для вывода значения дополнения, 
+\family typewriter
+value
+\family default
+ --- указатель на строку, в которой будет храниться значение расширения
+ и 
+\family typewriter
+result
+\family default
+ --- указатель на строку, выведенную после выполнения процедуры в консоль
+ PostgreSQL.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if (NULL == certificate)
+\end_layout
+
+\begin_layout Plain Layout
+
+    PG_RETURN_NULL();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Если не было передано сертификата серверу СУБД (не используется SSL для
+ шифрования соединения), то возвращается 
+\family typewriter
+NULL
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Иначе получаем объект дополнения по имени с помощью вспомогательной функции
+ 
+\family typewriter
+get_extension(X509 *certificate, char *extension_name)
+\family default
+.
+ В данной функции выполняется преобразование имени дополнения в порядковый
+ числовой идентификатор 
+\family typewriter
+NID
+\family default
+, с помощью которого возвращается дополнение 
+\family typewriter
+X509_Extension
+\family default
+.
+ Если было передано некорректное имя дополнения, возвращается 
+\family typewriter
+NULL
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Если после вызова функции 
+\family typewriter
+get_extension()
+\family default
+ в переменной 
+\family typewriter
+extension
+\family default
+ не содержится дополнения, то выводится соответствующее сообщение и выполнение
+ процедуры прекращается:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if (NULL == extension) 
+\end_layout
+
+\begin_layout Plain Layout
+
+    elog(ERROR, "Extension with name 
+\backslash
+"%s
+\backslash
+" is not found in certificate", extension_name);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Далее в следующем блоке кода значение дополнения считывается в переменную
+ 
+\family typewriter
+value
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+char nullterm = '
+\backslash
+0';
+\end_layout
+
+\begin_layout Plain Layout
+
+X509V3_EXT_print(bio, extension, -1, -1);
+\end_layout
+
+\begin_layout Plain Layout
+
+BIO_write(bio, &nullterm, 1);
+\end_layout
+
+\begin_layout Plain Layout
+
+BIO_get_mem_data(bio, &value);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Функцией 
+\family typewriter
+X509V3_EXT_print()
+\family default
+ значение объекта записывается в буфер 
+\family typewriter
+bio
+\family default
+, записывается знак конца строки 
+\family typewriter
+nullterm
+\family default
+, а с помощью функции 
+\family typewriter
+BIO_get_mem_data()
+\family default
+ значение расширения записывается в переменную 
+\family typewriter
+value
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+С помощью функции 
+\family typewriter
+cstring_to_text()
+\family default
+ выполняется преобразование строки 
+\family typewriter
+char*
+\family default
+ в тип строки
+\family typewriter
+ text*
+\family default
+ базы данных:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+result = cstring_to_text(value);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Для избежания утечек памяти очищаются переменные, объявленные в начале процедуры
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+BIO_free(bio);
+\end_layout
+
+\begin_layout Plain Layout
+
+pfree(extension_name);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+И возвращается результат с помощью макроса 
+\family typewriter
+PG_RETURN_TEXT_P()
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Дополнительно были разработаны хранимые процедуры:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+ssl_is_critical_extension(text)
+\family default
+ --- определяет по имени дополнения, является ли дополнение критическим.
+ Возвращаемые значения: 
+\family typewriter
+t
+\family default
+ (истина), если дополнение критическое и 
+\family typewriter
+f
+\family default
+ (ложь), если некритическое;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+ssl_get_extensions_count()
+\family default
+ --- возвращает количество дополнений в сертификате.
+ Не принимает параметров, возвращает целое число.
+ 
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Исходные тексты данных процедур доступны в 
+\emph on
+приложении 6
+\emph default
+.
+ Для возможности использовать их в базе данных требуется собрать динамически
+ подключаемую библиотеку 
+\family typewriter
+sslextensions.so
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ cc -I /usr/pgsql-9.3/include/server -fpic -c sslextensions.c 
+\end_layout
+
+\begin_layout Plain Layout
+
+$ cc -shared -o sslextensions.so sslextensions.o
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+После указанных необходимых команд будет создана динамически подключаемая
+ библиотека 
+\family typewriter
+sslextensions.so
+\family default
+ с реализованными хранимыми процедурами.
+\end_layout
+
+\begin_layout Standard
+В PostgreSQL существует возможность объединения разработанных процедур в
+ модули с помощью конструкции 
+\family typewriter
+CREATE EXTENSION
+\family default
+.
+ Загруженные таким образом процедуры не могут быть добавлены или удалены
+ по отдельности, более того, обновление или откат к предыдущей версии процедур
+ становится проще.
+ 
+\end_layout
+
+\begin_layout Standard
+Сначала создается файл 
+\family typewriter
+sslextensions.control
+\family default
+, в котором описывается справочная информация о модуле:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+comment = 'SSL extension suppot in PostgreSQL'
+\end_layout
+
+\begin_layout Plain Layout
+
+default_version = '1.0'
+\end_layout
+
+\begin_layout Plain Layout
+
+module_pathname = '$libdir/sslextensions'
+\end_layout
+
+\begin_layout Plain Layout
+
+relocatable = true
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В поле 
+\family typewriter
+comment
+\family default
+ приводится описание модуля, в 
+\family typewriter
+default_version
+\family default
+ --- версия модуля, в 
+\family typewriter
+module_pathname
+\family default
+ содержится путь к библиотеке с процедурами
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+
+\family typewriter
+$libdir
+\family default
+ --- переменная окружения PostgreSQL, указывает на 
+\family typewriter
+/usr/pgsql-9.3/lib
+\end_layout
+
+\end_inset
+
+, он подставляется в переменную 
+\family typewriter
+MODULE_PATHNAME
+\family default
+ при загрузке модуля в базу данных, в 
+\family typewriter
+relocatable
+\family default
+ --- если 
+\family typewriter
+true
+\family default
+, то модуль не привязывается к конкретной схеме и объекты, после создания,
+ могут быть перемещены в другую схему (по умолчанию 
+\family typewriter
+false
+\family default
+)
+\end_layout
+
+\begin_layout Standard
+Для обеспечения загрузки процедур с помощью указанной конструкции создается
+ SQL-файл 
+\family typewriter
+sslextensions--1.0.sql
+\family default
+, в котором описывается создание процедур или их загрузку:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+CREATE OR REPLACE FUNCTION ssl_get_extension_by_name(text)
+\end_layout
+
+\begin_layout Plain Layout
+
+RETURNS text AS
+\end_layout
+
+\begin_layout Plain Layout
+
+'MODULE_PATHNAME', 'ssl_get_extension_by_name'
+\end_layout
+
+\begin_layout Plain Layout
+
+LANGUAGE C STRICT;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+CREATE OR REPLACE FUNCTION ssl_is_critical_extension(text)
+\end_layout
+
+\begin_layout Plain Layout
+
+RETURNS text AS
+\end_layout
+
+\begin_layout Plain Layout
+
+'MODULE_PATHNAME', 'ssl_is_critical_extension'
+\end_layout
+
+\begin_layout Plain Layout
+
+LANGUAGE C STRICT;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+CREATE OR REPLACE FUNCTION ssl_get_extensions_count()
+\end_layout
+
+\begin_layout Plain Layout
+
+RETURNS text AS
+\end_layout
+
+\begin_layout Plain Layout
+
+'MODULE_PATHNAME', 'ssl_get_extensions_count'
+\end_layout
+
+\begin_layout Plain Layout
+
+LANGUAGE C STRICT;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В данном листинге описывается создание функций с их сигнатурами вызова,
+ ключевым словом 
+\family typewriter
+RETURNS
+\family default
+ определяется тип возвращаемого значения, с помощью ключевого слова 
+\family typewriter
+AS
+\family default
+ определяется путь к хранимой процедуре.
+ В данном случае в переменную 
+\family typewriter
+MODULE_PATHNAME 
+\family default
+подставляется путь из файла 
+\family typewriter
+sslextensions.control
+\family default
+, через запятую указывается имя функции, объявленной в библиотеке.
+ Далее указывается, на каком языке была написана процедура.
+\end_layout
+
+\begin_layout Standard
+Для обеспечения загрузки разработанного модуля в базу данных, требуется
+ скопировать библиотеку в папку 
+\family typewriter
+/usr/psql-9.3/lib
+\family default
+, а 
+\family typewriter
+sslextensions.control
+\family default
+ и 
+\family typewriter
+sslextensions--1.0.sql
+\family default
+ в каталог 
+\family typewriter
+/usr/pgsql-9.3/share/extension/
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# cp sslextensions.so /usr/pgsql-9.3/lib/
+\end_layout
+
+\begin_layout Plain Layout
+
+# cp sslextensions.control /usr/pgsql-9.3/share/extension/
+\end_layout
+
+\begin_layout Plain Layout
+
+# cp sslextensions--1.0.sql /usr/pgsql-9.3/share/extension/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection*
 Выводы:
 \end_layout
@@ -7583,6 +8472,15 @@ namespace.init
 \family default
 , описать последовательность действий по созданию приватного ключа и сертификата
  пользователя, содержащий метку пользователя;
+\end_layout
+
+\begin_layout Enumerate
+С помощью разработанного модуля 
+\family typewriter
+sslextensions
+\family default
+ стало возможным получить количество дополнений в сертификате, значение
+ дополнения по имени, а также его критичность.
 \end_layout
 
 \begin_layout --Separator--
@@ -8612,6 +9510,30 @@ status open
 \end_layout
 
 \begin_layout Standard
+Администратору базы данных, созданному при установке пакетов, назначается
+ произвольный пароль утилитой 
+\family typewriter
+passwd
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# passwd postgres
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Редактируются конфигурационный файл 
 \family typewriter
 /var/lib/pgsql/9.3/data/postgresql.conf
@@ -8820,7 +9742,21 @@ $ pgcert --genreq --pkey server.key
 \end_layout
 
 \begin_layout Enumerate
-Запрос на подпись сертификата копируется на удостоверяющий центр:
+Запрос на подпись сертификата копируется
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+При выполнении шагов 3-6 требуется ввести пароль суперпользователя 
+\family typewriter
+root 
+\family default
+удостоверяющего центра
+\end_layout
+
+\end_inset
+
+ на удостоверяющий центр:
 \begin_inset listings
 inline false
 status open
@@ -8843,7 +9779,8 @@ status open
 
 \begin_layout Plain Layout
 
-# pgcert --gencert --request server.csr --output server.crt
+$ ssh -T "root@192.168.100.4 "pgcert --gencert --request server.csr --output
+ server.crt"
 \end_layout
 
 \end_inset
@@ -8864,12 +9801,29 @@ status open
 
 \begin_layout Plain Layout
 
-# scp /root/certs/server.crt postgres@192.168.100.2:/var/lib/pgsql/9.3/data/
+$ scp root@192.168.100.4:/root/certs/server.crt /var/lib/pgsql/9.3/data/
 \end_layout
 
 \begin_layout Plain Layout
 
-# scp /etc/pki/cacert.pem postgres@192.168.100.2:/var/lib/pgsql/9.3/data/
+$ scp root@192.168.100.4:/etc/pki/cacert.pem /var/lib/pgsql/9.3/data/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Запрос на подпись сертификата сервера и его сертификат удаляются с удостоверяюще
+го центра:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ ssh -T root@192.168.100.4 "rm -f /root/certs/*"
 \end_layout
 
 \end_inset
@@ -8948,33 +9902,6 @@ status open
 \end_layout
 
 \begin_layout Standard
-Для подключения клиентов базы данных требуется создать пользователей PostgreSQL:
- 
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-$ psql -c "CREATE ROLE user1 login;"
-\end_layout
-
-\begin_layout Plain Layout
-
-$ psql -c "CREATE ROLE user2 login;"
-\end_layout
-
-\begin_layout Plain Layout
-
-$ psql -c "CREATE ROLE user3 login;"
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 Сервис базы данных добавляется в список автозагрузки:
 \end_layout
 
@@ -9002,6 +9929,10 @@ status open
 ьских сертификатов и их использование в СУБД PostgreSQL.
 \end_layout
 
+\begin_layout Subsubsection
+Подготовка к тестированию
+\end_layout
+
 \begin_layout Standard
 На клиентской машине создаются пользователи 
 \family typewriter
@@ -9016,7 +9947,7 @@ user2
 user3
 \family default
 .
- Их пользовательские контексты представлены в 
+ Их контексты безопасности представлены в 
 \emph on
 таблице 
 \begin_inset CommandInset ref
@@ -9027,6 +9958,19 @@ reference "tab:Контексты-пользователей-клиентск"
 
 
 \emph default
+.
+ На сервере СУБД им соответствуют пользователи 
+\family typewriter
+user1
+\family default
+, 
+\family typewriter
+user2
+\family default
+, 
+\family typewriter
+user3
+\family default
 .
 \end_layout
 
@@ -9247,7 +10191,7 @@ name "tab:Контексты-пользователей-клиентск"
 
 \begin_layout Standard
 Далее будет приведена последовательность команд, необходимых для создания
- пользователей и для назначения требуемого контекста безопасности.
+ пользователей на и для назначения требуемого контекста безопасности.
  Данная последовательность действий должна быть выполнена аналогично для
  пользователей 
 \family typewriter
@@ -9352,8 +10296,126 @@ status open
 \end_layout
 
 \begin_layout Standard
-Для проверки корректности создания пользовательских сертификатов выполняются
- следующие действия:
+На сервере СУБД выполняются следующие действия:
+\end_layout
+
+\begin_layout Enumerate
+Создаётся тестовая база данных 
+\family typewriter
+testdb
+\family default
+ от имени пользователя 
+\family typewriter
+postgres
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ createdb testdb
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Создаются пользователи базы данных 
+\family typewriter
+user1
+\family default
+, 
+\family typewriter
+user2
+\family default
+, 
+\family typewriter
+user3
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ psql -c "CREATE USER user1 login;"
+\end_layout
+
+\begin_layout Plain Layout
+
+$ psql -c "CREATE USER user1 login;"
+\end_layout
+
+\begin_layout Plain Layout
+
+$ psql -c "CREATE USER user1 login;"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Загружается созданный модуль 
+\family typewriter
+sslextensions
+\family default
+ в базу данных 
+\family typewriter
+testdb
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ psql testdb -c "CREATE EXTENSION sslextensions;"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Дополнительно загружается модуль 
+\family typewriter
+sslinfo
+\family default
+, в котором определяются функции просмотра информации о сертификате:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ psql testdb -c "CREATE EXTENSION sslinfo;"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Subsubsection
+Алгоритм тестирования механизма выбора сертификатов клиентом PostgreSQL
+\end_layout
+
+\begin_layout Standard
+Для проверки корректности работы механизма выбора сертификатов пользователей
+ клиентом PostgreSQL выполняются следующие действия:
 \end_layout
 
 \begin_layout Enumerate
@@ -9397,15 +10459,14 @@ postgresql.crt
 \family typewriter
  root.crt
 \family default
- и удостовериться, что файлы промаркированы в соответствии с уровнем пользовател
-я:
+:
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-$ ls -alZ ~/.postgresql
+$ ls -l ~/.postgresql
 \end_layout
 
 \end_inset
@@ -9414,22 +10475,38 @@ $ ls -alZ ~/.postgresql
 \end_layout
 
 \begin_layout Enumerate
-Удостовериться, что контекст безопасности, указанный в поле 
+Удостовериться, что существует дополнение 
 \family typewriter
-SC
+selinuxContext
 \family default
- сертификата пользователя 
+ в сертификате пользователя 
 \family typewriter
 ~/.postgresql/postgresql.crt
 \family default
- соответствует текущему контексту безопасности пользователя:
+ и его значение соответствует текущему контексту безопасности пользователя:
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-$ pgcert --subject --field SC --cert ~/.postgresql/postgresql.crt
+$ pgcert --text --certificate ~/.postgresql/postgresql.crt
+\end_layout
+
+\end_inset
+
+Проверка по данному пункту может быть реализована с помощью утилиты 
+\family typewriter
+openssl
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ openssl x509 -in ~/.postgresql/postgresql.crt -text
 \end_layout
 
 \end_inset
@@ -9438,7 +10515,93 @@ $ pgcert --subject --field SC --cert ~/.postgresql/postgresql.crt
 \end_layout
 
 \begin_layout Enumerate
-Выполнить переход на другой мандатный уровень с помощью команды 
+Подключиться к PostgreSQL с помощью команды:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ psql -h 192.168.100.2 testdb
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Убедиться в том, что функции из модуля 
+\family typewriter
+sslextensions
+\family default
+ загружены в базу данных
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+df
+\end_layout
+
+\end_inset
+
+Команда выдаст таблицу всех доступных в данной базе данных функций.
+\end_layout
+
+\begin_layout Enumerate
+Вызвать хранимую процедуру 
+\family typewriter
+ssl_get_extension_by_name()
+\family default
+, передав ей в качестве аргумента имя дополнения 
+\family typewriter
+selinuxContext
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+SELECT ssl_get_extension_by_name('selinuxContext');
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Сравнить результат выполнения данной функции с контекстом безопасности пользоват
+еля;
+\end_layout
+
+\begin_layout Enumerate
+Отключиться от базы данных с помощью команды
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+q
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Выполнить переход на другой доступный мандатный уровень с помощью команды
+ 
 \family typewriter
 newrole
 \family default
@@ -9446,13 +10609,21 @@ newrole
 \end_layout
 
 \begin_layout Enumerate
-Повторить шаги 1-4 и удостовериться в соответствии контекста безопасности,
- указанном в сертификате, и контекста безопасности пользователя, полученного
- с помощью команды системы.
+Повторить шаги 1-10 и удостовериться в соответствии контекста безопасности
+ контексту безопасности, полученному с помощью функции 
+\family typewriter
+ssl_get_extension_by_name('selinuxContext')
+\family default
+.
 \end_layout
 
 \begin_layout --Separator--
 
+\end_layout
+
+\begin_layout Subsubsection
+Пример проверки механизма выбора сертификатов клиентом PostgreSQL для пользовате
+ля user2
 \end_layout
 
 \begin_layout Standard
@@ -9471,18 +10642,18 @@ newrole
 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "fig:user_login"
+reference "fig:Результат-s0"
 
 \end_inset
 
 
 \family default
- и 
+-
 \family typewriter
 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "fig:user_newrole"
+reference "fig:Вызов-процедуры-s1"
 
 \end_inset
 
@@ -9494,9 +10665,9 @@ reference "fig:user_newrole"
 \family typewriter
  с
 \family default
-криншоты проверки корректности создания сертификатов для
+криншоты проверки корректности создания сертификата для пользователя 
 \family typewriter
- user2
+user2
 \family default
  с меткой безопасности пользователя.
 \end_layout
@@ -9510,7 +10681,7 @@ status collapsed
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename files/user2_pgcert.png
+	filename files/user2_1_1-3.png
 	width 95text%
 
 \end_inset
@@ -9524,16 +10695,17 @@ status collapsed
 \begin_layout Plain Layout
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:user_login"
+name "fig:Результат-s0"
 
 \end_inset
 
-Проверка корректности создания сертификата с меткой безопасности пользователя
- 
+Контекст пользователя 
 \family typewriter
 user2
 \family default
- после входа в систему
+ на мандатном уровне 
+\family typewriter
+s0-s2
 \end_layout
 
 \end_inset
@@ -9555,7 +10727,7 @@ status collapsed
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename files/user2_new_pgcert.png
+	filename files/user2_1_4.png
 	width 95text%
 
 \end_inset
@@ -9569,16 +10741,17 @@ status collapsed
 \begin_layout Plain Layout
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:user_newrole"
+name "fig:сертификат-пользователя-s0"
 
 \end_inset
 
-Проверка корректности создания сертификата с меткой безопасности пользователя
- 
+Сертификат пользователя 
 \family typewriter
 user2
 \family default
- после перехода на новый мандатный уровень
+ на мандатном уровне 
+\family typewriter
+s0-s2
 \end_layout
 
 \end_inset
@@ -9596,8 +10769,208 @@ user2
 \end_layout
 
 \begin_layout Standard
-Полученные результаты говорят о корректности разработанного алгоритма автоматиче
-ского создания пользовательских сертификатов.
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/user2_1_7.png
+	width 95text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Вызов-процедуры-s0"
+
+\end_inset
+
+Вызов процедуры 
+\family typewriter
+ssl_get_extension_by_name()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/user2_2_0-3.png
+	width 95text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Переход-на-s1"
+
+\end_inset
+
+Переход на новый мандатный уровень 
+\family typewriter
+s1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/user2_2_4.png
+	width 95text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Сертификат-пользователя-s1"
+
+\end_inset
+
+Сертификат пользователя 
+\family typewriter
+user2
+\family default
+ на мандатном уровне 
+\family typewriter
+s1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/user2_2_7.png
+	width 95text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Вызов-процедуры-s1"
+
+\end_inset
+
+Вызов процедуры 
+\family typewriter
+ssl_get_extension_by_name()
+\family default
+ на мандатном уровне 
+\family typewriter
+s1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Подобные проверки могут быть проведены для других пользователей с иными
+ контекстами безопасности.
+ Разработанный таким образом механизм выбора сертификатов пользователей
+ может быть применён для установки контекста безопасности пользователя с
+ помощью функций модуля 
+\family typewriter
+sepgsql
+\family default
+ --- модуля, используемого для мандатного контроля доступа на основе SELinux.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -9628,39 +11001,30 @@ addcontentsline{toc}{section}{Заключение}
 \end_layout
 
 \begin_layout Standard
-Для обеспечения механизма передачи метки безопасности с использованием сертифика
-тов X509 были доработаны ряд библиотек: OpenSSL, M2Crypto, а также создана
- утилита для их генерации в операционной системе Fedora 20.
- Данная операционная система выпускается с исходным кодом, что упрощает
- её настройку и модификацию отдельных компонентов.
+Для реализации механизма выбора сертификата клиентом PostgreSQL были доработаны
+ следующие библиотеки: OpenSSL, M2Crypto, а также модифицирован программный
+ код модуля PAM pam_namesapce.
 \end_layout
 
 \begin_layout Standard
-Автоматическое создание сертификатов реализовано при помощи модуля pam_namespace
-, сконфигурированного определённым образом.
+В работе для обеспечения возможности подмены сертификатов используется механизм
+ многоэкземплярности директорий.
+ С помощью модифицированного модуля pam_namespace стало возможным передавать
+ текущий контекст пользователя в скрипт инициализации многоэкземплярных
+ директорий namespace.init.
+ Доработанный функционал библиотек OpenSSL и M2Crypto позволил создать утилиту,
+ создающую сертификаты пользователей, в расширении которых содержится мандатная
+ метка пользователя.
+\end_layout
+
+\begin_layout Standard
+Был реализован модуль sslextensions, с помощью которого стало возможно получить
+ значение контекста пользователя из сертификата в СУБД PostgreSQL.
+\end_layout
+
+\begin_layout Standard
+Все изменения были оформлены в виде патчей к уже имеющимся RPM-пакетам.
  
-\end_layout
-
-\begin_layout Standard
-В ходе работы было доработано библиотеки M2Crypto, OpenSSL для обеспечения
- возможности создания в сертификате поля с контекстом пользователя.
-\end_layout
-
-\begin_layout Standard
-Реализована программа pgcert, реализующая возможности создания приватных
- ключей, запросов на подписание сертификатов и сертификатов пользователей,
- а также возможность просмотра информации об сертификате.
-\end_layout
-
-\begin_layout Standard
-Все улучшения библиотек оформлены в виде патчей, которые интегрированы в
- RPM-пакеты и могут быть установлены на существующую систему.
-\end_layout
-
-\begin_layout Standard
-В процессе работы были исследованы и использованы возможности следующих
- программ, систем и технологий: Selinux, формат открытых сертификатов X509,
- OpenSSL, M2Crypto, PostgreSQL.
 \end_layout
 
 \begin_layout Standard
@@ -9672,8 +11036,7 @@ addcontentsline{toc}{section}{Заключение}
 \end_layout
 
 \begin_layout Itemize
-Совершенствование механизма защиты сертификатов с помощью SELinux и средств
- операционной системы.
+Написание политики безопасности SELinux для реализованного механизма;
 \end_layout
 
 \begin_layout --Separator--
@@ -9943,7 +11306,19 @@ key "SWIG"
 
 \end_inset
 
-SWIG Basics [Электронный ресурс] --- http://www.swig.org/Doc1.3/SWIG.html 
+ SWIG Basics [Электронный ресурс] --- http://www.swig.org/Doc1.3/SWIG.html 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "18"
+key "psql-C"
+
+\end_inset
+
+ PostgreSQL: Documentation 9.3: C-Language Functions [Электронный ресурс]
+ --- http://www.postgresql.org/docs/9.3/static/xfunc-c.html
 \end_layout
 
 \begin_layout Bibliography
@@ -12460,8 +13835,7 @@ addcontentsline{toc}{subsection}{Приложение 3.
 \end_layout
 
 \begin_layout Standard
-Данный патч добавляет возможность получения стека дополнений, количества
- дополнений и дополнение по имени из запроса в M2Crypto.
+Данный патч добавляет функции для работы с объектами дополнений в M2Crypto.
  
 \begin_inset Newline newline
 \end_inset
@@ -13069,6 +14443,511 @@ fi
 \begin_layout Plain Layout
 
 exit 0
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Приложение 6.
+ Программный код модуля sslextensions
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+addcontentsline{toc}{subsection}{Приложение 6.
+ Программный код модуля sslextensions}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Данный программный код реализует хранимые процедуры СУБД PostgreSQL, позволяющие
+ получить значение дополнения из сертификата.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\family typewriter
+\series bold
+sslextensions.c
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=C,numbers=left,showstringspaces=false"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+#include "postgres.h"
+\end_layout
+
+\begin_layout Plain Layout
+
+#include "libpq/libpq-be.h"
+\end_layout
+
+\begin_layout Plain Layout
+
+#include "fmgr.h"
+\end_layout
+
+\begin_layout Plain Layout
+
+#include "miscadmin.h"
+\end_layout
+
+\begin_layout Plain Layout
+
+#include "utils/builtins.h"
+\end_layout
+
+\begin_layout Plain Layout
+
+#include "funcapi.h"
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+#include <openssl/x509v3.h>
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+PG_MODULE_MAGIC;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Datum retcomposite(PG_FUNCTION_ARGS);
+\end_layout
+
+\begin_layout Plain Layout
+
+Datum ssl_get_extension_by_name(PG_FUNCTION_ARGS);
+\end_layout
+
+\begin_layout Plain Layout
+
+Datum ssl_is_critical_extension(PG_FUNCTION_ARGS);
+\end_layout
+
+\begin_layout Plain Layout
+
+Datum ssl_get_extensions_count(PG_FUNCTION_ARGS);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+X509_EXTENSION *get_extension(X509* certificate, char *name) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	int extension_nid = OBJ_sn2nid(name);
+\end_layout
+
+\begin_layout Plain Layout
+
+	if (0 == extension_nid) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	    extension_nid = OBJ_ln2nid(name);
+\end_layout
+
+\begin_layout Plain Layout
+
+	    if (0 == extension_nid) 
+\end_layout
+
+\begin_layout Plain Layout
+
+		return NULL;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	int locate = X509_get_ext_by_NID(certificate, extension_nid,  -1);
+\end_layout
+
+\begin_layout Plain Layout
+
+	return X509_get_ext(certificate, locate);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+PG_FUNCTION_INFO_V1(ssl_get_extension_by_name);
+\end_layout
+
+\begin_layout Plain Layout
+
+Datum
+\end_layout
+
+\begin_layout Plain Layout
+
+ssl_get_extension_by_name(PG_FUNCTION_ARGS)
+\end_layout
+
+\begin_layout Plain Layout
+
+{	
+\end_layout
+
+\begin_layout Plain Layout
+
+	X509 *certificate = MyProcPort -> peer;
+\end_layout
+
+\begin_layout Plain Layout
+
+	char *extension_name = text_to_cstring(PG_GETARG_TEXT_P(0));
+\end_layout
+
+\begin_layout Plain Layout
+
+	X509_EXTENSION *extension = NULL;
+\end_layout
+
+\begin_layout Plain Layout
+
+	BIO *bio = BIO_new(BIO_s_mem());
+\end_layout
+
+\begin_layout Plain Layout
+
+	char *value = NULL;
+\end_layout
+
+\begin_layout Plain Layout
+
+	text *result = NULL;
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	if (NULL == certificate)
+\end_layout
+
+\begin_layout Plain Layout
+
+	    PG_RETURN_NULL();
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	extension = get_extension(certificate, extension_name);
+\end_layout
+
+\begin_layout Plain Layout
+
+	if (NULL == extension) 
+\end_layout
+
+\begin_layout Plain Layout
+
+	    elog(ERROR, "Extension by name 
+\backslash
+"%s
+\backslash
+" is not found in certificate", extension_name);
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	char nullterm = '
+\backslash
+0';
+\end_layout
+
+\begin_layout Plain Layout
+
+	X509V3_EXT_print(bio, extension, -1, -1);
+\end_layout
+
+\begin_layout Plain Layout
+
+	BIO_write(bio, &nullterm, 1);
+\end_layout
+
+\begin_layout Plain Layout
+
+	BIO_get_mem_data(bio, &value);
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	result = cstring_to_text(value);
+\end_layout
+
+\begin_layout Plain Layout
+
+	BIO_free(bio);
+\end_layout
+
+\begin_layout Plain Layout
+
+	pfree(extension_name);
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	PG_RETURN_TEXT_P(result);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+PG_FUNCTION_INFO_V1(ssl_is_critical_extension);
+\end_layout
+
+\begin_layout Plain Layout
+
+Datum
+\end_layout
+
+\begin_layout Plain Layout
+
+ssl_is_critical_extension(PG_FUNCTION_ARGS) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	X509 *certificate = MyProcPort -> peer;
+\end_layout
+
+\begin_layout Plain Layout
+
+	char *extension_name = text_to_cstring(PG_GETARG_TEXT_P(0));
+\end_layout
+
+\begin_layout Plain Layout
+
+	X509_EXTENSION *extension = NULL;
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	if (NULL == certificate)
+\end_layout
+
+\begin_layout Plain Layout
+
+	  PG_RETURN_NULL();
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	extension = get_extension(certificate, extension_name);
+\end_layout
+
+\begin_layout Plain Layout
+
+	if (NULL == extension) 
+\end_layout
+
+\begin_layout Plain Layout
+
+	    elog(ERROR, "Extension by name 
+\backslash
+"%s
+\backslash
+" is not found in certificate", extension_name);
+\end_layout
+
+\begin_layout Plain Layout
+
+	int critical = extension -> critical;
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	PG_RETURN_BOOL(critical > 0);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+PG_FUNCTION_INFO_V1(ssl_get_extensions_count);
+\end_layout
+
+\begin_layout Plain Layout
+
+Datum
+\end_layout
+
+\begin_layout Plain Layout
+
+ssl_get_extensions_count(PG_FUNCTION_ARGS) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	X509 *certificate = MyProcPort -> peer;
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	if (NULL == certificate)
+\end_layout
+
+\begin_layout Plain Layout
+
+	  PG_RETURN_NULL();
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	int extension_count = X509_get_ext_count(certificate);
+\end_layout
+
+\begin_layout Plain Layout
+
+	PG_RETURN_INT32(extension_count);	
+\end_layout
+
+\begin_layout Plain Layout
+
+}
 \end_layout
 
 \end_inset
