@@ -71,7 +71,7 @@ ssl_is_critical_extension(PG_FUNCTION_ARGS) {
 	
 	extension = get_extension(certificate, extension_name);
 	if (NULL == extension) 
-	    elog(ERROR, "Extension by name \"%s\" is not found in certificate", extension_name);
+	    elog(ERROR, "Extension name \"%s\" is not found in certificate", extension_name);
 	int critical = extension -> critical;
 	
 	PG_RETURN_BOOL(critical > 0);
