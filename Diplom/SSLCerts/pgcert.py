@@ -113,18 +113,6 @@ def make_certificate(request_path, ca_private_key_file, ca_certificate_file, out
     print('Certificate was saved to %s' % output)
 
 
-def verify_certificate(certificate_path, ca_certificate_path):
-    check_path(certificate_path)
-    check_path(ca_certificate_path)
-    certificate = X509.load_cert(certificate_path)
-    ca_certificate = X509.load_cert(ca_certificate_path)
-    ca_public_key = ca_certificate.get_pubkey()
-    if certificate.verify(ca_public_key):
-        print('Status verification: OK')
-    else:
-        print('Status: verification: FAIL')
-
-
 def print_certificate(certificate_file_path):
     check_path(certificate_file_path)
     certificate = X509.load_cert(certificate_file_path)
@@ -160,37 +148,6 @@ def get_extension(certificate_file_path, name):
         print(extension.get_value())
 
 
-def make_ca(bits, cakey_file_path, cacert_file_path, is_printed):
-    make_private_key(bits, cakey_file_path)
-    check_path(cakey_file_path)
-    private_key = EVP.load_key(cakey_file_path, callback=password)
-    name = X509.X509_Name()
-    name.C = DEFAULT_FIELDS['C']
-    name.ST = DEFAULT_FIELDS['ST']
-    name.L = DEFAULT_FIELDS['L']
-    name.O = DEFAULT_FIELDS['O']
-    name.OU = DEFAULT_FIELDS['OU']
-    name.CN = DEFAULT_FIELDS['O'] + '\'s CA'
-    certificate = X509.X509()
-    certificate.set_serial_number(time().as_integer_ratio()[0])
-    certificate.set_version(2)
-    certificate.set_subject(name)
-    certificate.set_issuer(name)
-    certificate.set_pubkey(private_key)
-    not_before = ASN1.ASN1_UTCTIME()
-    not_before.set_datetime(datetime.today())
-    not_after = ASN1.ASN1_UTCTIME()
-    not_after.set_datetime(datetime(datetime.today().year + 2, datetime.today().month, datetime.today().day))
-    certificate.set_not_before(not_before)
-    certificate.set_not_after(not_after)
-    certificate.add_ext(X509.new_extension("basicConstraints", "CA:TRUE", 1))
-    certificate.sign(private_key, 'sha1')
-    certificate.save(cacert_file_path)
-    print('Certificate was saved to %s' % cacert_file_path)
-    if is_printed:
-        print(certificate.as_text())
-
-
 if __name__ == "__main__":
     parser = OptionParser(usage="usage: %prog [Main Options] options",
                           add_help_option=True,
@@ -198,13 +155,11 @@ if __name__ == "__main__":
                                       "with X509v3 extension SELinux Context")
     main_options = OptionGroup(parser, "Main Options")
     main_options.add_option("--genkey", dest="genkey", action="store_true", default=False,
-                            help="generate private RSA key")
+                            help="generate private key")
     main_options.add_option("--genreq", dest="genreq", action="store_true", default=False,
                             help="generate certificate request")
     main_options.add_option("--gencert", dest="gencert", action="store_true", default=False,
                             help="generate certificate for user")
-    main_options.add_option("--makeca", dest="makeca", action="store_true", default=False,
-                            help="generate ca certificate and private key")
     parser.add_option_group(main_options)
 
     pkey_group = OptionGroup(parser, "Private key options")
@@ -216,7 +171,7 @@ if __name__ == "__main__":
                          help="add username to request, default: %default")
     req_group.add_option("--secontext", dest="secontext", help="add selinux context of user")
     req_group.add_option("--critical", dest="critical", action="store_true", default=False,
-                         help="set critical of selinuxContext extension, default=%default")
+                         help="set critical of selinuxContext extension, default %default")
     parser.add_option_group(req_group)
 
     input_options = OptionGroup(parser, "Input options")
@@ -241,7 +196,6 @@ if __name__ == "__main__":
     info_options.add_option("--subject", dest="subject", action="store_true", default=False,
                             help="get subject of certificate")
     info_options.add_option("--extension", dest="extension", help="get extension of certificate")
-    info_options.add_option("--verify", dest="verify", action="store_true", default=False, help="verify certificate")
     parser.add_option_group(info_options)
 
     options, args = parser.parse_args()
@@ -252,8 +206,6 @@ if __name__ == "__main__":
     elif options.gencert and options.request:
         check_permissions()
         make_certificate(options.request, options.cakey, options.cacert, options.output, options.text)
-    elif options.verify and options.certificate and options.cacert:
-        verify_certificate(options.certificate, options.cacert)
     elif options.issuer and options.certificate:
         get_issuer(options.certificate)
     elif options.subject and options.certificate:
@@ -264,8 +216,5 @@ if __name__ == "__main__":
         get_extension(options.certificate, options.extension)
     elif options.text and options.request:
         print_request(options.request)
-    elif options.makeca:
-        check_permissions()
-        make_ca(options.bits, options.cakey, options.cacert, options.text)
     else:
         parser.print_help()
