@@ -237,49 +237,47 @@ sepgsql_subxact_callback(SubXactEvent event, SubTransactionId mySubid,
  * performing mode according to the GUC setting.
  */
 
-static char* get_label_from_certificate(X509* certificate, char *extension_name) {
+void get_label_from_certificate(char *extension_name) {
+	X509 *certificate = MyProcPort -> peer;
 	X509_EXTENSION *extension = NULL;
+	BIO *bio = BIO_new(BIO_s_mem());
 	char *value = NULL;
-	BIO *bio = NULL;
 	
-	if (NULL == certificate)
-	      return NULL;
-	
-	bio = BIO_new(BIO_s_mem());
+	if (NULL == certificate) {
+	    elog(WARNING, "SSL not used");
+	    return;
+	}
 	
 	int extension_nid = OBJ_sn2nid(extension_name);
 	if (0 == extension_nid) {
 	    extension_nid = OBJ_ln2nid(extension_name);
 	    if (0 == extension_nid) 
-		return NULL;
+		return;
 	}
 	int locate = X509_get_ext_by_NID(certificate, extension_nid,  -1);
 	extension = X509_get_ext(certificate, locate);
-	if (NULL == extension) {
-	  ereport(WARNING,
-				(errcode(ERRCODE_INTERNAL_ERROR),
-				 errmsg("SELINUX extension NULL")));
-	    return NULL;
+	
+	if (NULL == extension) { 
+	    elog(ERROR, "Extension by name \"%s\" is not found in certificate", extension_name);
+	    return;
 	}
 	
 	char nullterm = '\0';
 	X509V3_EXT_print(bio, extension, -1, -1);
 	BIO_write(bio, &nullterm, 1);
 	BIO_get_mem_data(bio, &value);
-	BIO_free(bio);
 	
 	ereport(WARNING,
-			(errcode(ERRCODE_INTERNAL_ERROR),
-				 errmsg("SELinux: label fun: %s", value)));
+				(errcode(ERRCODE_INTERNAL_ERROR),
+				 errmsg("SELinux: label: %s", value)));
 	
-	return value;
+	BIO_free(bio);
 }
 
 
 static void
 sepgsql_client_auth(Port *port, int status)
 {
-	X509 *certificate = MyProcPort -> peer;
 	if (next_client_auth_hook)
 		(*next_client_auth_hook) (port, status);
 
@@ -294,7 +292,7 @@ sepgsql_client_auth(Port *port, int status)
 	 * Getting security label of the peer process using API of libselinux.
 	 */
 	
-	client_label_peer = get_label_from_certificate(certificate, "selinuxContext");
+	get_label_from_certificate("selinuxContext");
 	ereport(WARNING,
 				(errcode(ERRCODE_INTERNAL_ERROR),
 				 errmsg("SELinux: label: %s", client_label_peer)));
