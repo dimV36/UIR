@@ -237,41 +237,37 @@ sepgsql_subxact_callback(SubXactEvent event, SubTransactionId mySubid,
  * performing mode according to the GUC setting.
  */
 
-void get_label_from_certificate(char *extension_name) {
+int get_label_from_certificate(char *extension_name, char &label) {
 	X509 *certificate = MyProcPort -> peer;
 	X509_EXTENSION *extension = NULL;
 	BIO *bio = BIO_new(BIO_s_mem());
-	char *value = NULL;
 	
 	if (NULL == certificate) {
 	    elog(WARNING, "SSL not used");
-	    return;
+	    return 1;
 	}
 	
 	int extension_nid = OBJ_sn2nid(extension_name);
 	if (0 == extension_nid) {
 	    extension_nid = OBJ_ln2nid(extension_name);
 	    if (0 == extension_nid) 
-		return;
+		return 1;
 	}
 	int locate = X509_get_ext_by_NID(certificate, extension_nid,  -1);
 	extension = X509_get_ext(certificate, locate);
 	
 	if (NULL == extension) { 
-	    elog(ERROR, "Extension by name \"%s\" is not found in certificate", extension_name);
-	    return;
+	    elog(WARNING, "Extension by name \"%s\" is not found in certificate", extension_name);
+	    return 1;
 	}
 	
 	char nullterm = '\0';
 	X509V3_EXT_print(bio, extension, -1, -1);
 	BIO_write(bio, &nullterm, 1);
-	BIO_get_mem_data(bio, &value);
-	
-	ereport(WARNING,
-				(errcode(ERRCODE_INTERNAL_ERROR),
-				 errmsg("SELinux: label: %s", value)));
-	
+	BIO_get_mem_data(bio, &label);
+		
 	BIO_free(bio);
+	return 0;
 }
 
 
@@ -291,18 +287,17 @@ sepgsql_client_auth(Port *port, int status)
 	/*
 	 * Getting security label of the peer process using API of libselinux.
 	 */
-	
-	get_label_from_certificate("selinuxContext");
-	ereport(WARNING,
-				(errcode(ERRCODE_INTERNAL_ERROR),
-				 errmsg("SELinux: label: %s", client_label_peer)));
-	if (NULL == client_label_peer) {
-		if (getpeercon_raw(port->sock, &client_label_peer) < 0)
-			ereport(FATAL,
+	if (getpeercon_raw(port->sock, &client_label_peer) < 0) {
+		int result = get_label_from_certificate("selinuxContext", client_label_peer);
+		elog(WARNING, "status: %d", result);
+		elog(WARNING, "client_label_peer: %s", client_label_peer);
+		if (NULL == client_label_peer)
+		ereport(FATAL,
 				(errcode(ERRCODE_INTERNAL_ERROR),
 				 errmsg("SELinux: unable to get peer label: %m")));
-	} else 
-		sepgsql_set_client_label(client_label_peer);
+		else
+			elog(WARNING, "Label from certificate: %s", client_label_peer);
+	}
 	/*
 	 * Switch the current performing mode from INTERNAL to either DEFAULT or
 	 * PERMISSIVE.
@@ -312,7 +307,6 @@ sepgsql_client_auth(Port *port, int status)
 	else
 		sepgsql_set_mode(SEPGSQL_MODE_DEFAULT);
 }
-
 /*
  * sepgsql_needs_fmgr_hook
  *
