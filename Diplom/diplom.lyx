@@ -3874,8 +3874,8 @@ name "sub:Модификация-pam_namespace.so"
 \end_layout
 
 \begin_layout Standard
-Текущий уровень пользователя можно получить из названия экземпляра, однако,
- невозможно получить полный контекст безопасности пользователя.
+Текущий уровень пользователя можно получить из названия экземпляра директории,
+ однако, невозможно получить полный контекст безопасности пользователя.
  
 \end_layout
 
@@ -3897,28 +3897,7 @@ pam-1.1.8-1.fc20.src.rpm
 modules/pam_namespace
 \family default
 .
- Данные модули написаны на языке программирования C.
-\end_layout
-
-\begin_layout Standard
-В файлах 
-\family typewriter
-argv_parse.h
-\family default
- и
-\family typewriter
- argv_parse.c 
-\family default
-определяются и реализуются функции, используемые при парсинге аргументов,
- в файлах 
-\family typewriter
-md5.h
-\family default
- и 
-\family typewriter
-md5.c 
-\family default
---- функции для шифрования.
+ Этот модул написан на языке программирования C.
  
 \end_layout
 
@@ -3927,26 +3906,42 @@ md5.c
 \family typewriter
 pam_namespace.h
 \family default
- определяются константы, используемые в модуле, а также структуры, описывающие
- многоэкземплярную директорию 
+ определяются:
+\end_layout
+
+\begin_layout Itemize
+структура 
 \family typewriter
-polydir_s
+polydir_s 
 \family default
-, скрываемую директорию 
+--- хранит информацию об многоэкземплярной директории;
+\end_layout
+
+\begin_layout Itemize
+структура 
 \family typewriter
 protect_dir_s 
 \family default
-и 
+--- содержит информацию об скрываемой директории;
 \family typewriter
-instance_data
-\family default
- --- структура, хранящая сведения об экземпляре многоэкземплярной директории.
  
 \end_layout
 
+\begin_layout Itemize
+структура
+\family typewriter
+ instance_data
+\family default
+ --- хранит сведения об экземпляре многоэкземплярной директории.
+ 
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
 \begin_layout Standard
-Опытным путём было установлено, что имя экземпляра директории формируется
- в функции 
+Имя экземпляра директории формируется в функции 
 \family typewriter
 poly_name
 \family default
@@ -3999,7 +3994,27 @@ static int form_context(const struct polydir_s *polyptr, security_context_t
 \end_layout
 
 \begin_layout Standard
-Вызов скрипта, инициализирующего экземпляр, происходит в функции 
+Очистка памяти, выделенную под структуру 
+\family typewriter
+polyptr
+\family default
+ выполняется в функции 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static void del_polydir(struct polydir_s *poly)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Вызов скрипта, инициализирующего экземпляр, происходит в функции:
 \end_layout
 
 \begin_layout Standard
@@ -4019,7 +4034,7 @@ static int inst_init(const struct polydir_s *polyptr, const char *ipath,
 \end_layout
 
 \begin_layout Standard
-а именно строкой 
+в строке 
 \begin_inset listings
 inline false
 status open
@@ -4036,17 +4051,115 @@ if (execle(init_script, init_script, polyptr -> dir, ipath, newdir?"1":"0",
 \end_layout
 
 \begin_layout Standard
-Поэтому предлагается объявить статическую переменную в 
+Поэтому предлагается объявить расширить структуру 
 \family typewriter
-pam_namespace.h
+polydir_s
 \family default
-, хранящую контекст пользователя, в функции 
+ дополнительным полем 
 \family typewriter
-form_context
+secontext
 \family default
- будет выполняться получение текущего контекста пользователя, а при вызове
- скрипта передавать значение этой переменной.
- 
+, в котором будет храниться текущее значение контекста безопасности пользователя.
+ Значение данного поля будет передаваться в скрипт инициализации 
+\family typewriter
+namespace.init
+\family default
+.
+ Таким образом, расширенная структура 
+\family typewriter
+polydir_s
+\family default
+ будет иметь следующий вид:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+struct polydir_s {
+\end_layout
+
+\begin_layout Plain Layout
+
+    char dir[PATH_MAX];    	       	
+\end_layout
+
+\begin_layout Plain Layout
+
+    char rdir[PATH_MAX];    	       	
+\end_layout
+
+\begin_layout Plain Layout
+
+    char instance_prefix[PATH_MAX];	
+\end_layout
+
+\begin_layout Plain Layout
+
+    enum polymethod method;		
+\end_layout
+
+\begin_layout Plain Layout
+
+    unsigned int num_uids;		
+\end_layout
+
+\begin_layout Plain Layout
+
+    uid_t *uid;				
+\end_layout
+
+\begin_layout Plain Layout
+
+    unsigned int flags;			
+\end_layout
+
+\begin_layout Plain Layout
+
+    char *init_script;			
+\end_layout
+
+\begin_layout Plain Layout
+
+    char *mount_opts;			
+\end_layout
+
+\begin_layout Plain Layout
+
+    uid_t owner;			
+\end_layout
+
+\begin_layout Plain Layout
+
+    gid_t group;			
+\end_layout
+
+\begin_layout Plain Layout
+
+    mode_t mode;
+\end_layout
+
+\begin_layout Plain Layout
+
+    char *secontext; 			
+\end_layout
+
+\begin_layout Plain Layout
+
+    struct polydir_s *next;		
+\end_layout
+
+\begin_layout Plain Layout
+
+};
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4061,7 +4174,7 @@ form_context
 \begin_layout Standard
 Получение контекста пользователя представлено на следующем листинге:
 \begin_inset listings
-lstparams "numbers=left"
+lstparams "language=C,numbers=left"
 inline false
 status open
 
@@ -4072,17 +4185,22 @@ FILE *fp;
 
 \begin_layout Plain Layout
 
+size_t length = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
 fp = popen("id -Z", "r");
 \end_layout
 
 \begin_layout Plain Layout
 
-if (fp == NULL) {
+if (NULL == fp) {
 \end_layout
 
 \begin_layout Plain Layout
 
-	pam_syslog(idata -> pamh, LOG_ERR, "Command `id -Z` return error");
+    pam_syslog(idata -> pamh, LOG_ERR, "Command `id -Z` return error");
 \end_layout
 
 \begin_layout Plain Layout
@@ -4097,12 +4215,34 @@ if (fp == NULL) {
 
 \begin_layout Plain Layout
 
-fgets(user_context, sizeof(user_context)-1, fp);
+int result = getline(&polyptr -> secontext, &length, fp);
 \end_layout
 
 \begin_layout Plain Layout
 
-user_context[strlen(user_context)-1] = 0;
+if (result < 0) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    pam_syslog(idata -> pamh, LOG_ERR, "Can't get selinux context");
+\end_layout
+
+\begin_layout Plain Layout
+
+    return PAM_SESSION_ERR;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+polyptr -> secontext[result - 1] = '
+\backslash
+0';
 \end_layout
 
 \begin_layout Plain Layout
@@ -4116,93 +4256,81 @@ pclose(fp);
 \end_layout
 
 \begin_layout Standard
-В 
-\emph on
-1й строке
-\emph default
- функция 
+Функцией 
 \family typewriter
 popen()
 \family default
- открывает процесс, создавая канал, производя 
+ открывает новый процесс, в котором вызывается системная команда получения
+ контекста пользователя 
 \family typewriter
-fork
+id -Z
 \family default
- и вызывая командную оболочку.
- Таким образом в переменной 
+.
+ Вторым аргументом функции указывается тип создаваемого канала.
+ Так как необходимо получить результат выполнения команды, используется
+ режим чтения 
+\family typewriter
+'r'
+\family default
+.
+ Функция 
+\family typewriter
+popen()
+\family default
+ возвращает объект потока 
+\family typewriter
+FILE*
+\family default
+ в переменной 
 \family typewriter
 fp
-\family default
- содержится результат системного вызова команды 
-\family typewriter
-id -Z 
-\family default
-во 
-\emph on
-2й
-\emph default
-.
- Если не удалось получить результат выхова команды, используется обработчик
- в 
-\emph on
-строках 3-6
-\emph default
-.
- В этом случае в лог модуля PAM пишется сообщение об ошибке и возвращается
- код ошибки с помощью оператора 
-\family typewriter
-return
 \family default
 .
  
 \end_layout
 
 \begin_layout Standard
-Иначе функцией 
+Далее результат вызова проверяется на равенство 
 \family typewriter
-fgets()
-\family default
-, используемой для чтения строк из файлов, считывается значение системного
- вызова в переменную 
-\family typewriter
-user_context
-\family default
-, дополнительно объявленную в 
-\family typewriter
-pam_namespace.h
+NULL
 \family default
 .
- Данная функция копирует символы из потока до тех пор, пока не встретит
- символ переноса каретки 
+ В случае равенства этой переменной значению 
 \family typewriter
-'
-\backslash
-n'
+NULL
 \family default
- или нулевой символ.
- Поэтому в 
-\emph on
-8й строке 
-\emph default
-заменяется последний символ на символ окончания строки 
+ в лог-файл PAM пишется текст ошибки и возвращается код ошибки модуля 
 \family typewriter
-'
-\backslash
-0'
+PAM_SESSION_ERR
 \family default
-, в последней строке закрыв процесс.
+.
+ 
 \end_layout
 
 \begin_layout Standard
-Дополнительно модифицируется строка с вызовом скрипта: 
+Если до данного момента ошибки не было, функцией 
+\family typewriter
+getline()
+\family default
+ выполняется запись из потока в поле 
+\family typewriter
+secontext
+\family default
+ структуры директории 
+\family typewriter
+polyptr
+\family default
+:
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-if (execle(init_script, init_script, polyptr->dir, ipath, newdir?"1":"0",
- idata->user, user_context, NULL, envp) < 0)
+int result = getline(&polyptr -> secontext, &length, fp);
 \end_layout
 
 \end_inset
@@ -4211,11 +4339,154 @@ if (execle(init_script, init_script, polyptr->dir, ipath, newdir?"1":"0",
 \end_layout
 
 \begin_layout Standard
-Таким образом, в переменной скрипта 
+Функция 
+\family typewriter
+getline()
+\family default
+ записывает из потока 
+\family typewriter
+fp
+\family default
+ в строку 
+\family typewriter
+polydir->secontext
+\family default
+, строку длиной 
+\family typewriter
+length
+\family default
+.
+ Возвращаемое значение, хранящееся в переменной 
+\family typewriter
+result
+\family default
+ --- это количество символов, записанных в строку.
+ В случае ошибки возвращается значение 
+\family typewriter
+-1
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Обработка возвращаемого значения осуществляется в блоке 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if (result < 0) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    pam_syslog(idata -> pamh, LOG_ERR, "Can't get selinux context");
+\end_layout
+
+\begin_layout Plain Layout
+
+    return PAM_SESSION_ERR;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Иначе, в строку 
+\family typewriter
+polyptr -> secontext
+\family default
+ предпоследним символом устанавливается знак окончания строки 
+\family typewriter
+'
+\backslash
+0'
+\family default
+, после чего функцией 
+\family typewriter
+pclose()
+\family default
+ закрывается поток.
+\end_layout
+
+\begin_layout Standard
+В функции 
+\family typewriter
+inst_init()
+\family default
+ изменяется строка с вызовом скрипта:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if (execle(init_script, init_script, polyptr->dir, ipath, newdir?"1":"0",
+ idata->user, polyptr->secontext, NULL, envp) < 0)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Так как значение поле 
+\family typewriter
+secontext
+\family default
+ хранится в динамической памяти, то требуется очистка памяти, занимаемой
+ этим полем.
+ Поэтому добавляется строка
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+free(poly->secontext);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+в функцию 
+\family typewriter
+del_polydir()
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+После пересборки RPM пакета 
+\family typewriter
+pam
+\family default
+ и его установки и при настроенном механизме многоэкземплярности директорий,
+ в аргументе 
 \family typewriter
 $5
 \family default
- будет содержаться текущий контекст безопасности пользователя.
+ скрипта 
+\family typewriter
+namespace.init
+\family default
+ будет содержаться значение контекста безопасности пользователя.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -4857,7 +5128,7 @@ name "sub:Реализация-дополнения-v3_secon"
 \begin_layout Standard
 С помощью описанной в 
 \emph on
-пункте 
+разделе 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sub:Создание-дополнения-в"
@@ -6288,7 +6559,7 @@ make_certificate(request_path, ca_private_key_path, ca_certificate_path,
  output, is_printed)
 \family default
 .
- Подписать сертификат может только пользователь 
+ Подписать сертификат может только суперпользователь 
 \family typewriter
 root
 \family default
@@ -6924,44 +7195,6 @@ certificate_file_path
 name
 \family default
 ;
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-make_ca(bits, cakey_file_path, cacert_file_path)
-\family default
- 
-\series default
---- развернуть удостоверяющий центр
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-Возможно только при запуске утилиты от пользователя 
-\family typewriter
-root
-\family default
-.
-\end_layout
-
-\end_inset
-
- с приватным ключом 
-\family typewriter
-cakey_file_path
-\family default
- длины 
-\family typewriter
-bits 
-\family default
-и сертификатом 
-\family typewriter
-cacert_file_path
-\family default
-.
- 
 \end_layout
 
 \begin_layout --Separator--
