@@ -38,6 +38,8 @@
 #include "sepgsql.h"
 #include <selinux/label.h>
 #include <openssl/x509v3.h>
+#define _GNU_SOURCE
+#include <stdio.h>
 
 /*
  * Saved hook entries (if stacked)
@@ -237,37 +239,47 @@ sepgsql_subxact_callback(SubXactEvent event, SubTransactionId mySubid,
  * performing mode according to the GUC setting.
  */
 
-int get_label_from_certificate(char *extension_name, char &label) {
+static char* get_label_from_certificate(char *extension_name) {
 	X509 *certificate = MyProcPort -> peer;
 	X509_EXTENSION *extension = NULL;
 	BIO *bio = BIO_new(BIO_s_mem());
+	char *value = NULL;
 	
 	if (NULL == certificate) {
-	    elog(WARNING, "SSL not used");
-	    return 1;
+	    elog(WARNING, "get_label_from_certificate: SSL not used");
+	    return NULL;
 	}
 	
 	int extension_nid = OBJ_sn2nid(extension_name);
 	if (0 == extension_nid) {
 	    extension_nid = OBJ_ln2nid(extension_name);
 	    if (0 == extension_nid) 
-		return 1;
+		return NULL;
 	}
 	int locate = X509_get_ext_by_NID(certificate, extension_nid,  -1);
 	extension = X509_get_ext(certificate, locate);
 	
 	if (NULL == extension) { 
-	    elog(WARNING, "Extension by name \"%s\" is not found in certificate", extension_name);
-	    return 1;
+	    elog(WARNING, "get_label_from_certificate: extension by name \"%s\" is not found in certificate", extension_name);
+	    return NULL;
 	}
 	
 	char nullterm = '\0';
 	X509V3_EXT_print(bio, extension, -1, -1);
 	BIO_write(bio, &nullterm, 1);
-	BIO_get_mem_data(bio, &label);
-		
+	BIO_get_mem_data(bio, &value);
+
+	char *result = malloc(strlen(value));
+	if (NULL == result) {
+	      elog(FATAL, "get_label_from_certificate: could not malloc memory for result");
+	      return NULL;
+	}
+	strcpy(result, value);
+	
 	BIO_free(bio);
-	return 0;
+	free(extension);
+	
+	return result;
 }
 
 
@@ -288,15 +300,14 @@ sepgsql_client_auth(Port *port, int status)
 	 * Getting security label of the peer process using API of libselinux.
 	 */
 	if (getpeercon_raw(port->sock, &client_label_peer) < 0) {
-		int result = get_label_from_certificate("selinuxContext", client_label_peer);
-		elog(WARNING, "status: %d", result);
-		elog(WARNING, "client_label_peer: %s", client_label_peer);
-		if (NULL == client_label_peer)
-		ereport(FATAL,
+		char *context = get_label_from_certificate("selinuxContext");
+		if (NULL == context)
+			ereport(FATAL,
 				(errcode(ERRCODE_INTERNAL_ERROR),
 				 errmsg("SELinux: unable to get peer label: %m")));
-		else
-			elog(WARNING, "Label from certificate: %s", client_label_peer);
+		else 
+			sepgsql_set_client_label(context);
+		free(context);
 	}
 	/*
 	 * Switch the current performing mode from INTERNAL to either DEFAULT or
