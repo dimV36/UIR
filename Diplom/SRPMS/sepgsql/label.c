@@ -38,8 +38,6 @@
 #include "sepgsql.h"
 #include <selinux/label.h>
 #include <openssl/x509v3.h>
-#define _GNU_SOURCE
-#include <stdio.h>
 
 /*
  * Saved hook entries (if stacked)
@@ -239,47 +237,28 @@ sepgsql_subxact_callback(SubXactEvent event, SubTransactionId mySubid,
  * performing mode according to the GUC setting.
  */
 
-static char* get_label_from_certificate(char *extension_name) {
+int set_label_from_certificate() {
 	X509 *certificate = MyProcPort -> peer;
 	X509_EXTENSION *extension = NULL;
-	BIO *bio = BIO_new(BIO_s_mem());
-	char *value = NULL;
+	BIO *bio = NULL;
 	
-	if (NULL == certificate) {
-	    elog(WARNING, "get_label_from_certificate: SSL not used");
-	    return NULL;
-	}
+	if (NULL == certificate)
+	    return SEPG_SSL_NOT_USED;
 	
-	int extension_nid = OBJ_sn2nid(extension_name);
-	if (0 == extension_nid) {
-	    extension_nid = OBJ_ln2nid(extension_name);
-	    if (0 == extension_nid) 
-		return NULL;
-	}
-	int locate = X509_get_ext_by_NID(certificate, extension_nid,  -1);
+	int locate = X509_get_ext_by_NID(certificate, NID_selinux_context,  -1);
 	extension = X509_get_ext(certificate, locate);
 	
 	if (NULL == extension) { 
-	    elog(WARNING, "get_label_from_certificate: extension by name \"%s\" is not found in certificate", extension_name);
-	    return NULL;
+	    elog(WARNING, "set_label_from_certificate: extension by name \"selinuxContext\" is not found in certificate");
+	    return SEPG_SSL_EXT_ERROR;
 	}
 	
+	bio = BIO_new(BIO_s_mem());
 	char nullterm = '\0';
 	X509V3_EXT_print(bio, extension, -1, -1);
 	BIO_write(bio, &nullterm, 1);
-	BIO_get_mem_data(bio, &value);
-
-	char *result = malloc(strlen(value));
-	if (NULL == result) {
-	      elog(FATAL, "get_label_from_certificate: could not malloc memory for result");
-	      return NULL;
-	}
-	strcpy(result, value);
-	
-	BIO_free(bio);
-	free(extension);
-	
-	return result;
+	BIO_get_mem_data(bio, &client_label_peer);
+	return 0;
 }
 
 
@@ -299,24 +278,23 @@ sepgsql_client_auth(Port *port, int status)
 	/*
 	 * Getting security label of the peer process using API of libselinux.
 	 */
-	if (getpeercon_raw(port->sock, &client_label_peer) < 0) {
-		char *context = get_label_from_certificate("selinuxContext");
-		if (NULL == context)
+	int res = set_label_from_certificate();
+	if (res > 0) {
+		if (getpeercon_raw(port->sock, &client_label_peer) < 0) {
 			ereport(FATAL,
 				(errcode(ERRCODE_INTERNAL_ERROR),
 				 errmsg("SELinux: unable to get peer label: %m")));
-		else 
-			sepgsql_set_client_label(context);
-		free(context);
+		}
+		sepgsql_set_client_label(client_label_peer);
 	}
 	/*
 	 * Switch the current performing mode from INTERNAL to either DEFAULT or
 	 * PERMISSIVE.
 	 */
-	if (sepgsql_get_permissive())
-		sepgsql_set_mode(SEPGSQL_MODE_PERMISSIVE);
-	else
-		sepgsql_set_mode(SEPGSQL_MODE_DEFAULT);
+	//if (sepgsql_get_permissive())
+	//	sepgsql_set_mode(SEPGSQL_MODE_PERMISSIVE);
+	//else
+	sepgsql_set_mode(SEPGSQL_MODE_PERMISSIVE);
 }
 /*
  * sepgsql_needs_fmgr_hook

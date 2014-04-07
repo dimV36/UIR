@@ -53,6 +53,10 @@
 #define SEPG_CLASS_DB_VIEW			17
 #define SEPG_CLASS_MAX				18
 
+#define SEPG_SSL_NOT_USED			100
+#define SEPG_SSL_NID_ERROR			101
+#define SEPG_SSL_EXT_ERROR			102
+
 /*
  * Internally used code of access vectors
  */
