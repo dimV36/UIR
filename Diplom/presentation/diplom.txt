@@ -1,0 +1,100 @@
+<[autotemplate]
+documentclass=[xcolor={dvipsnames,table}]{beamer}
+usetheme={Madrid}
+usepackage=[utf8]{inputenc}
+usepackage=[T2A]{fontenc}
+usepackage=[russian,english]{babel}
+usepackage={tikz}
+usetikzlibrary={shadows}
+usepackage={listings}
+usepackage={color}
+title=[]{Реализация механизма выбора клиентом PostgreSQL сертификата открытого ключа, содержащего метку безопасности}
+date={8 апреля 2014}
+author={Воронин Д.Л., Муравьёв С.К.}
+[autotemplate]>
+
+==== Задачи ====
+
+* Исследовать основные принципы работы системы SELinux
+* Разработать способ создания сертификатов с контекстом безопасности
+* Разработать средства получения метки безопасности из сертификата в СУБД PostgreSQL
+
+==== SELinux ====
+
+SELinux --- мандатная система контроля доступа.
+-- 1em --
+* Режим работы: disabled, permissive, enabled
+* Тип политик: target, mls
+* Вид контекста безопасности:
+<[code][style=basic, xleftmargin=1.5em, xrightmargin=1em, numbers=none]
+user:role:type:sensitivity:category
+[code]>
+-- 1em --
+Пример контекста безопасности:
+<[code][style=basic, xleftmargin=1.5em, xrightmargin=1em, numbers=none]
+user_u:user_r:user_t:s0-s3:c0.c10
+[code]>
+
+==== Многоэкземплярность директорий ====
+<[center]
+<<<files/polyinstance.png, scale=0.20>>>
+[center]>
+
+Реализация: модуль pam\_namespace.so\newline
+Скрипт инициализации namespace.init\newline
+Конфигурационный файл: namespace.conf
+-- 1em --
+Реализована:
+* возможность передачи текущего контекста пользователя в скрипт инициализации
+
+==== OpenSSL ==== 
+OpenSSL --- Криптографичекский пакет для работы с сертификатами.
+-- 1em --
+Дополнения в сертификатах:
+* Модификация конфигурационного файла openssl.conf
+* Программно:
+** alias на существующее дополнение
+** реализация структуры дополнения
+-- 1em --
+Реализовано:
+* Дополнение v3\_secon 
+
+==== Разработка утилиты создания сертификатов ==== 
+Требования:
+*# Возможность создавать закрытый ключ клиента произвольной длины
+*# Создавать запросы на подпись сертификата с дополнением selinuxContext
+*# Подписывать запрос удостоверяющим центром
+--1 em --
+Реализовано:
+* утилита на языке Python pgcert
+
+==== sslinfo ====
+sslinfo --- модуль PostgreSQL, предоставляющий возможности просмотра информации о сертификате клиента.
+--1 em--
+Расширен:
+* хранимыми процедурами ssl\_get\_extension\_by\_name(), ssl\_get\_extensions\_count(), ssl\_is\_critical\_extension()
+
+==== Схема стенда ====
+<[center]
+<<<files/cluster.png, scale=0.20>>>
+[center]>
+
+==== Тестирование работы механизма ====
+<[center]
+<<<files/user2_1_4.png, scale=0.6>>>
+[center]>
+
+==== Тестирование работы механизма ====
+<[center]
+<<<files/user2_1_7-8.png, scale=0.6>>>
+[center]>
+
+==== Заключение ====
+* Реализован механизм выбора сертификата открытого ключа, содержащего метку безопасности
+* Расширены возможности pam\_namespace, OpenSSL, M2Crypto, sslinfo
+* Показано применение разработанного механизма в модуле sepgsql
+
+========
+<[center]
+Спасибо за внимание!
+[center]>
