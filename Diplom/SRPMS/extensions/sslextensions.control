@@ -1,4 +1,0 @@
-comment = 'SSL extension suppot in PostgreSQL'
-default_version = '1.0'
-module_pathname = '$libdir/sslextensions'
-relocatable = true

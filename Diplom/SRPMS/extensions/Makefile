@@ -6,7 +6,7 @@ SRCS=$(wildcard *.c)
 OBJS=$(patsubst %.c,%.o,$(SRCS))
 TARGET=sslextensions.so
 INCLUDES=-I /usr/pgsql-9.3/include/server
-CFLAGS += $(INCLUDES) -fpic -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic
+CFLAGS += $(INCLUDES) -fpic -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -lpq -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic
 all: $(TARGET)
 
 %.o: %.c $(HDRS)

@@ -8,11 +8,13 @@
 #include <openssl/x509v3.h>
 #include <openssl/x509.h>
 
+#ifdef PG_MODULE_MAGIC
 PG_MODULE_MAGIC;
+#endif
 
-Datum ssl_get_extension_by_name(PG_FUNCTION_ARGS);
-Datum ssl_is_critical_extension(PG_FUNCTION_ARGS);
-Datum ssl_get_extensions_count(PG_FUNCTION_ARGS);
+Datum 	ssl_get_extension_by_name(PG_FUNCTION_ARGS);
+Datum	ssl_is_critical_extension(PG_FUNCTION_ARGS);
+Datum 	ssl_get_extensions_count(PG_FUNCTION_ARGS);
 //Datum ssl_get_extensions_names(PG_FUNCTION_ARGS);
 
 
@@ -76,14 +78,14 @@ ssl_is_critical_extension(PG_FUNCTION_ARGS) {
 	if (NULL == certificate)
 	  PG_RETURN_NULL();
 	
-	extension = get_extension(certificate, extension_name);
-/*	int extension_nid = OBJ_sn2nid(extension_name);
+//	extension = get_extension(certificate, extension_name);
+	int extension_nid = OBJ_sn2nid(extension_name);
 	if (0 == extension_nid) {
 	    elog(ERROR, "Could not get OID for \"%s\"", extension_name);
 	    PG_RETURN_NULL();
 	}
 	int locate = X509_get_ext_by_NID(certificate, extension_nid, -1);
-	extension = X509_get_ext(certificate, locate); */
+	extension = X509_get_ext(certificate, locate); 
 	if (NULL == extension) 
 	    elog(ERROR, "Extension name \"%s\" is not found in certificate", extension_name);
 	int critical = extension -> critical;
