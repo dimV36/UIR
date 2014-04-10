@@ -382,14 +382,14 @@ height "1pt"
 
 \series bold
 \size largest
-ПОЯСНИТЕЛЬНАЯ ЗАПИСКА 
+Отзыв о практике
 \end_layout
 
 \begin_layout Standard
 \align center
 
 \size large
-к дипломному проекту на тему: 
+на тему: 
 \end_layout
 
 \begin_layout Standard
@@ -406,7 +406,9 @@ height "1pt"
 \begin_inset Text
 
 \begin_layout Plain Layout
-Реализация механизма выбора клиентом PostgreSQL 
+
+\size large
+Реализация механизма автоматического выбора 
 \end_layout
 
 \end_inset
@@ -428,7 +430,9 @@ height "1pt"
 \begin_inset Text
 
 \begin_layout Plain Layout
-сертификата открытого ключа, содержащего метку безопасности
+
+\size large
+сертификата открытого ключа на основании контекста безопасности 
 \end_layout
 
 \end_inset
@@ -452,7 +456,7 @@ height "1pt"
 
 \size large
 \begin_inset Tabular
-<lyxtabular version="3" rows="10" columns="5">
+<lyxtabular version="3" rows="8" columns="5">
 <features tabularvalignment="middle">
 <column alignment="left" valignment="top" width="5.8cm">
 <column alignment="center" valignment="top" width="4cm">
@@ -564,7 +568,7 @@ height "1pt"
 \begin_layout Plain Layout
 
 \size large
-Студент дипломник 
+Выполнил
 \end_layout
 
 \end_inset
@@ -851,106 +855,6 @@ height "1pt"
 \end_inset
 </cell>
 </row>
-<row>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size large
-Заведующий кафедрой
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" bottomline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-(
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" bottomline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-(подпись)
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-(ФИО)
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
 </lyxtabular>
 
 \end_inset
@@ -1061,12 +965,8 @@ LargeStretch
 \end_layout
 
 \begin_layout Standard
-В современном мире актуальна задача контроля доступа к информации, хранящейся
- в различных информационных системах.
-\end_layout
-
-\begin_layout Standard
-Обычно эта задача решается с помощью дискреционной системы контроля доступа
+В распределённых информационных системах для осуществления контроля доступа
+ к информации традиционно используется система дискреционного контроля доступа
  (англ.
  
 \emph on
@@ -1081,9 +981,8 @@ key "DAC"
 
 ), основанной на управлении доступом субъектов к объектам на основе матрицы
  доступа.
- Однако, данная система не предполагает возможность контроля доступа к информаци
-и на основании её уровня.
- 
+ Однако применение такой системы контроля доступа не позволяет осуществлять
+ контроль доступа к информации разного уровня.
 \end_layout
 
 \begin_layout Standard
@@ -1101,15 +1000,16 @@ key "MAC"
 \end_inset
 
 ).
- Она основана на запрете объекту, обладающему определённым уровнем доверия,
- получать доступ субъектам более защищённого уровня.
- MAC является дополнением к дискреционной системе контроля и работает, если
- DAC разрешил доступ к субъекту.
+ Она основана на назначении метки конфиденциальности для информации, содержащейс
+я в объектах, и выдаче официальных разрешений (допуска) субъектам на обращение
+ к информации такого уровня конфиденциальности.
+ MAC является дополнением к дискреционной системе контроля доступа и работает,
+ если DAC разрешил доступ к объекту.
 \end_layout
 
 \begin_layout Standard
-В некоторых дистрибутивах Linux, например Fedora, наряду с дискреционной
- системой контроля доступа, используется SELinux 
+В некоторых дистрибутивах Linux, например Fedora, наряду с системой дискреционно
+го контроля доступа, используется SELinux 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "SELinux"
@@ -1117,7 +1017,7 @@ key "SELinux"
 \end_inset
 
  --- реализация системы мандатного контроля доступа.
- Каждому пользователю и файлу назначается метка безопасности.
+ Каждому пользователю и файлу назначается контекст безопасности.
  С помощью специально описанных политик осуществляется контроль доступа
  к информации.
  SELinux поддерживает также и многоуровневую систему контроля доступа (англ.
@@ -1131,34 +1031,9 @@ MLS
 \end_layout
 
 \begin_layout Standard
-Для осуществления одновременного доступа нескольких клиентов к информации,
- традиционно используются системы управления базами данных.
- 
-\end_layout
-
-\begin_layout Standard
-Одной из наиболее развитых систем управления базами данных является PostgreSQL
- 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "PostgreSQL"
-
-\end_inset
-
-.
- PostgreSQL --- это свободно распространяемая объектно-реляционная система
- управления базами данных (ORDBMS) и альтернатива современным коммерческим
- системам управления базами данных.
- Помимо дискреционной системы контроля доступа, используется и мандатная.
- Она реализована с помощью модуля sepgsql, который добавляет поддержку SELinux
- в базы данных.
- 
-\end_layout
-
-\begin_layout Standard
-В настоящее время для передачи метки клиента в по сети используются несколько
- механизмов.
- Одними из самых распостранённых являются netlabel 
+В настоящее время для передачи метки безопасности в информационных системах
+ по сети используются несколько механизмов.
+ Одними из самых распространённых являются netlabel 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "netlabel"
@@ -1185,32 +1060,30 @@ key "IPSec"
 \begin_layout Standard
 Иным способом передачи метки является IPSec --- механизм, основанный на
  договоре клиента и сервера об уровне передаваемой информации.
- При этом клиент и сервер должны доверять друг другу.
- Передача информации идёт по шифрованному каналу.
+ Основным достоинством данного подхода является использование шифрованного
+ канала для передачи информации, основным недостатком --- необходимость
+ доверия клиента серверу.
 \end_layout
 
 \begin_layout Standard
-Поэтому актуальна задача разработки такого механизма передачи метки безопасности
-, при котором информация будет передаваться по шифрованному каналу, но при
- этом доверие между клиентом и сервером не будет обязательным.
-\end_layout
-
-\begin_layout Standard
-В данной дипломной работе предлагается иной метод передачи метки клиента
- в базу данных, основанный на инфраструктуре открытых ключей PKI 
+При использовании инфраструктуры открытых ключей PKI 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "PKI"
 
 \end_inset
 
-.
- Стандарт X509 версии 3, в котором описывается структура сертификата открытого
- ключа, допускает включение в сертификат дополнительной информации в виде
- дополнений.
- Поэтому предлагается в дополнительном атрибуте сертификата хранить метку
- безопасности клиента, которая будет извлекаться сервером СУБД при настроенном
- шифрованном соединении.
+, все клиенты системы не доверяют друг другу, но при этом доверяют удостоверяюще
+му центру.
+ Удостоверяющий центр выпускает сертификат открытого ключа, идентифицирующий
+ клиента.
+\end_layout
+
+\begin_layout Standard
+В данной работе предлагается реализация механизма автоматического выбора
+ сертификата пользователя на основании его контекста безопасности.
+ Каждому пользователю будет создаваться сертификат открытого ключа с текущим
+ контекстом безопасности в дополнительном атрибуте сертификата.
  
 \end_layout
 
@@ -1219,7 +1092,7 @@ key "PKI"
 \series bold
 целью
 \series default
- данной дипломной работы является разработка механизма выбора сертификата
+ данной работы является разработка механизма автоматического выбора сертификата
  клиентом PostgreSQL.
  Для достижения поставленной цели были сформулированы следующие 
 \series bold
@@ -1237,8 +1110,7 @@ key "PKI"
 \end_layout
 
 \begin_layout Enumerate
-Разработать средства получения метки безопасности клиента из сертификата
- открытого ключа в СУБД PostgreSQL.
+Разработать средства автоматического выбора сертификатов.
 \end_layout
 
 \begin_layout --Separator--
@@ -1246,8 +1118,7 @@ key "PKI"
 \end_layout
 
 \begin_layout Standard
-В работе используется операционная система Linux Fedora 20 и СУБД PostgreSQL
- 9.3.4.
+Применение разработанного механизма описано на примере СУБД PostgreSQL 9.3.4.
 \end_layout
 
 \begin_layout Standard
@@ -12454,8 +12325,8 @@ addcontentsline{toc}{section}{Заключение}
 \end_layout
 
 \begin_layout Standard
-В данной дипломной работе предложен механизм передачи метки с использованием
- сертификата открытого ключа.
+В данной дипломной работе предложена реализация механизма автоматического
+ выбора сертификата открытого ключа на основании его контекста.
  
 \end_layout
 
@@ -12467,8 +12338,8 @@ addcontentsline{toc}{section}{Заключение}
 pam_namespace
 \family default
 , отвечающий за создание многоэкземплярных директорий, был доработан для
- обеспечения возможности передавать текущий контекст безопасности клиента
- в скрипт инициализациии 
+ обеспечения возможности передавать метку безопасности клиента в скрипт
+ инициализации 
 \family typewriter
 namespace.init
 \family default
@@ -12497,6 +12368,10 @@ M2Crypto
 selinuxContext
 \family default
  которого содержится метка безопасности клиента.
+\end_layout
+
+\begin_layout Standard
+Разработанный механизм нашёл применение в СУБД PostgreSQL.
 \end_layout
 
 \begin_layout Standard
@@ -12529,8 +12404,7 @@ selinuxContext
 \end_layout
 
 \begin_layout Standard
-Таким образом была решена задача реализации механизма передачи метки безопасност
-и клиента с использованием сертификата открытого ключа.
+Таким образом была достигнута цель данной работы.
 \end_layout
 
 \begin_layout --Separator--
@@ -13765,7 +13639,7 @@ _secon для OpenSSL}
 
 \begin_layout Standard
 Приведенный в данном разделе программный код позволяет добавить в сертификат
- X509 дополнение, в котором будет храниться контекст безопасности пользователя.
+ X509 дополнение, в котором будет храниться метка безопасности пользователя.
  
 \begin_inset Newline newline
 \end_inset
@@ -14430,7 +14304,7 @@ pgcert
 \family typewriter
 selinuxContext
 \family default
-, в котором хранится контекст пользователя, выполнять их подпись.
+, в котором хранится метка безопасности клиента, выполнять их подпись.
  В утилите реализован дополнительный набор функций, упрощающий просмотр
  информации о сертификатах.
  
