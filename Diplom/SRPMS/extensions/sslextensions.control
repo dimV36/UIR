@@ -1,0 +1,5 @@
+# sslextensions extension
+comment = 'information about extensions SSL certificates'
+default_version = '1.0'
+module_pathname = '$libdir/sslextensions'
+relocatable = true
