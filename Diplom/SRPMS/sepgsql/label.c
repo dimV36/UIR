@@ -291,10 +291,10 @@ sepgsql_client_auth(Port *port, int status)
 	 * Switch the current performing mode from INTERNAL to either DEFAULT or
 	 * PERMISSIVE.
 	 */
-	//if (sepgsql_get_permissive())
-	//	sepgsql_set_mode(SEPGSQL_MODE_PERMISSIVE);
-	//else
-	sepgsql_set_mode(SEPGSQL_MODE_PERMISSIVE);
+	if (sepgsql_get_permissive())
+		sepgsql_set_mode(SEPGSQL_MODE_PERMISSIVE);
+	else
+		sepgsql_set_mode(SEPGSQL_MODE_DEFAULT);
 }
 /*
  * sepgsql_needs_fmgr_hook
