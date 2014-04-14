@@ -27,7 +27,7 @@
 }
 \usetheme{Madrid}
 \usetikzlibrary{shadows}
-\title[]{Реализация механизма выбора клиентом PostgreSQL сертификата открытого ключа, содержащего метку безопасности}
+\title[]{Реализация механизма автоматического выбора сертификата открытого ключа на основании контекста безопасности}
 \date{8 апреля 2014}
 \author{Воронин Д.Л., Муравьёв С.К.}
 
@@ -57,7 +57,7 @@ user:role:type:sensitivity:category
 \begin{itemize}
   \item Исследовать основные принципы работы системы SELinux
   \item Разработать способ создания сертификатов с контекстом безопасности
-  \item Разработать средства получения метки безопасности из сертификата в СУБД PostgreSQL
+  \item Разработать средства автоматического выбора сертификата
 \end{itemize}
 
   
@@ -157,21 +157,6 @@ OpenSSL --- Криптографичекский пакет для работы 
 Реализовано:
 \begin{itemize}
   \item утилита на языке Python pgcert
-\end{itemize}
-
-  
-\end{frame}
-\begin{frame}
- \frametitle{sslinfo}
-  
-
-sslinfo --- модуль PostgreSQL, предоставляющий возможности просмотра информации о сертификате клиента.
-
-\vspace{1 em}
-
-Расширен:
-\begin{itemize}
-  \item хранимыми процедурами ssl\_get\_extension\_by\_name(), ssl\_get\_extensions\_count(), ssl\_is\_critical\_extension()
 \end{itemize}
 
   

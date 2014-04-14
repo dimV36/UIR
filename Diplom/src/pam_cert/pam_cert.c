@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <selinux/selinux.h>
+#include <selinux/context.h>
 #include <selinux/get_context_list.h>
 //#include <selinux/context.h>
 
