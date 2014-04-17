@@ -12,7 +12,7 @@
 #include <selinux/context.h>
 
 int make_context_list(context_t context) {
-    char *range = context_range_get(context);
+    const char *range = context_range_get(context);
 //     char *level_range = NULL;
 //     char *category_range = NULL;
     
@@ -35,7 +35,7 @@ int make_context_list(context_t context) {
 
 PAM_EXTERN int pam_sm_open_session(pam_handle_t *pamh, int flags, int argc, const char **argv) {
     security_context_t context = NULL;
-    security_context_t **list = NULL;
+    security_context_t *list = NULL;
     char *user = NULL;
     char *level = NULL;
     char *seuser = NULL;
@@ -59,14 +59,10 @@ PAM_EXTERN int pam_sm_open_session(pam_handle_t *pamh, int flags, int argc, cons
     printf("Context: %s\n", context);
     printf("Level is %s\n", level);
     
-    int res = get_ordered_context_list(seuser, context, list); 
-    printf("res: %d\n", res);
-    make_context_list(context_new(context));
+    result = get_ordered_context_list("user_u", "user_u:user_r:user_t:s0", &list);
+    printf("Status: %d\n", result);
     
-//     result = get_ordered_context_list_with_level("user_u", level, NULL, &list);
-//     printf("Status: %d\n", result);
-//     int count = sizeof(list) / sizeof(list[0]);
-//     printf("Sizeof: %d\n", count);
+    make_context_list(context_new(context));
     
     free(seuser);
     free(level);

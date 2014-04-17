@@ -25,10 +25,10 @@ X509_EXTENSION *get_extension(X509* certificate, char *name) {
 	int 			locate = 0;
 	
 	extension_nid = OBJ_sn2nid(name);
-	if (0 == extension_nid) {
-	    extension_nid = OBJ_ln2nid(name);
-	    if (0 == extension_nid) 
-		return NULL;
+	if (extension_nid == NID_undef) {
+		extension_nid = OBJ_ln2nid(name);
+		if (extension_nid == NID_undef) 
+			return NULL;
 	}
 	locate = X509_get_ext_by_NID(certificate, extension_nid,  -1);
 	return X509_get_ext(certificate, locate);
@@ -43,17 +43,17 @@ ssl_get_extension_value(PG_FUNCTION_ARGS) {
 	char 			*extension_name = text_to_cstring(PG_GETARG_TEXT_P(0));
 	BIO 			*bio = NULL;
 	char 			*value = NULL;
+	char 			nullterm = '\0';
 	text 			*result = NULL;
 
-	if (NULL == certificate)
-	    PG_RETURN_NULL();
+	if (certificate == NULL)
+		PG_RETURN_NULL();
 
 	extension = get_extension(certificate, extension_name);
-	if (NULL == extension)
-	    elog(ERROR, "Extension by name \"%s\" is not found in certificate", extension_name);
+	if (extension == NULL)
+		elog(ERROR, "Extension by name \"%s\" is not found in certificate", extension_name);
 
 	bio = BIO_new(BIO_s_mem());
-	char nullterm = '\0';
 	X509V3_EXT_print(bio, extension, -1, -1);
 	BIO_write(bio, &nullterm, 1);
 	BIO_get_mem_data(bio, &value);
@@ -73,12 +73,12 @@ ssl_is_critical_extension(PG_FUNCTION_ARGS) {
 	char 			*extension_name = text_to_cstring(PG_GETARG_TEXT_P(0));
 	int 			critical = 0;
 	
-	if (NULL == certificate)
-	    PG_RETURN_NULL();
+	if (certificate == NULL)
+		PG_RETURN_NULL();
 	
 	extension = get_extension(certificate, extension_name);
-	if (NULL == extension) 
-	    elog(ERROR, "Extension name \"%s\" is not found in certificate", extension_name);
+	if (extension == NULL) 
+		elog(ERROR, "Extension name \"%s\" is not found in certificate", extension_name);
 	
 	critical = X509_EXTENSION_get_critical(extension);
 	PG_RETURN_BOOL(critical);
@@ -90,8 +90,8 @@ Datum
 ssl_get_count_of_extensions(PG_FUNCTION_ARGS) {
 	X509 			*certificate = MyProcPort -> peer;
 	
-	if (NULL == certificate)
-	    PG_RETURN_NULL();
+	if (certificate == NULL)
+		PG_RETURN_NULL();
 	
 	PG_RETURN_INT32(X509_get_ext_count(certificate));
 }
@@ -111,18 +111,18 @@ ssl_get_extension_names(PG_FUNCTION_ARGS) {
 	int 				extension_nid = 0;
 	text*				result = NULL;
 	
-	if (NULL == certificate)
-	    PG_RETURN_NULL();
+	if (certificate == NULL)
+		PG_RETURN_NULL();
 	
 	extension_stack = certificate -> cert_info -> extensions;
-	if (NULL == extension_stack) 
-	    PG_RETURN_NULL();
+	if (extension_stack == NULL) 
+		PG_RETURN_NULL();
 	
 	if (SRF_IS_FIRSTCALL()) {
-	    funcctx = SRF_FIRSTCALL_INIT();
-	    oldcontext = MemoryContextSwitchTo(funcctx -> multi_call_memory_ctx);
-	    funcctx -> max_calls = X509_get_ext_count(certificate);
-	    MemoryContextSwitchTo(oldcontext);
+		funcctx = SRF_FIRSTCALL_INIT();
+		oldcontext = MemoryContextSwitchTo(funcctx -> multi_call_memory_ctx);
+		funcctx -> max_calls = X509_get_ext_count(certificate);
+		MemoryContextSwitchTo(oldcontext);
 	}
 	funcctx = SRF_PERCALL_SETUP();
 	
@@ -130,16 +130,16 @@ ssl_get_extension_names(PG_FUNCTION_ARGS) {
 	max_calls = funcctx -> max_calls;
 	
 	if (call < max_calls) {
-	    extension = sk_X509_EXTENSION_value(extension_stack, call);
-	    object = X509_EXTENSION_get_object(extension);
-	    extension_nid = OBJ_obj2nid(object);
+		extension = sk_X509_EXTENSION_value(extension_stack, call);
+		object = X509_EXTENSION_get_object(extension);
+		extension_nid = OBJ_obj2nid(object);
 	    
-	    if (0 == extension_nid)
-		elog(ERROR, "Unknown extension in certificate");
+		if (extension_nid == NID_undef)
+			elog(ERROR, "Unknown extension in certificate");
 	    
-	    result = cstring_to_text(OBJ_nid2sn(extension_nid));
+		result = cstring_to_text(OBJ_nid2sn(extension_nid));
 	    
- 	    SRF_RETURN_NEXT(funcctx, (Datum) result);
+ 		SRF_RETURN_NEXT(funcctx, (Datum) result);
 	}
 	SRF_RETURN_DONE(funcctx);
 }
