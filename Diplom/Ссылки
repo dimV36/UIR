@@ -30,3 +30,7 @@ http://doxygen.postgresql.org/
 
 https://zakird.com/2013/10/13/certificate-parsing-with-openssl/
 http://openssl.6102.n7.nabble.com/Adding-a-custom-extension-to-a-CSR-td47446.html
+
+http://stackoverflow.com/questions/10407523/how-to-add-digital-signature-rsa-certificate-etc-to-any-of-file-using-php
+http://stackoverflow.com/questions/10782826/digital-signature-for-a-file-using-openssl
+http://www.arccomm.ru/OpenSource/Linux_server/keyscerts.html
