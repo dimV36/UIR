@@ -1,11 +1,12 @@
 #!/usr/bin/python
 __author__ = 'dimv36'
-from M2Crypto import RSA, X509, EVP, ASN1
+from M2Crypto import RSA, X509, EVP, ASN1, BIO
 from subprocess import check_output
 from datetime import datetime
 from optparse import OptionParser, OptionGroup
 from os import path, getuid
 from time import time
+from md5 import md5
 
 
 DEFAULT_FIELDS = {'C': 'ru',
@@ -35,10 +36,10 @@ def check_permissions():
 
 
 def make_private_key(bits, output):
-    rsa_key = RSA.gen_key(bits, 65537, callback=password)
+    pair = RSA.gen_key(bits, 65537, callback=password)
     if not output:
         output = path.abspath(path.curdir) + "/mykey.pem"
-    rsa_key.save_key(output, None)
+    pair.save_key(output, None)
     print('Key was saved to %s' % output)
 
 
@@ -100,7 +101,7 @@ def make_certificate(request_path, ca_private_key_file, ca_certificate_file, out
     certificate.set_pubkey(public_key)
     selinux_extension = request.get_extension_by_name("selinuxContext")
     if not selinux_extension:
-        print("No extension selinuxContext in request %s" % request_path)
+        print("ERROR: No extension selinuxContext in request %s" % request_path)
         exit(1)
     certificate.add_ext(selinux_extension)
     certificate.add_ext(X509.new_extension("basicConstraints", "CA:FALSE", 1))
@@ -111,6 +112,18 @@ def make_certificate(request_path, ca_private_key_file, ca_certificate_file, out
     if is_printed:
         print(certificate.as_text())
     print('Certificate was saved to %s' % output)
+
+
+def make_pair_of_keys(bits, output):
+    pair = RSA.gen_key(bits, 65537, password)
+    if not output:
+        output = path.abspath(path.curdir)
+    elif not path.isdir(output):
+        print("ERROR: Not correct path for saving pair of keys")
+        exit(1)
+    print(output)
+    pair.save_key(output + "/%s_private.key" % DEFAULT_FIELDS['CN'], None)
+    pair.save_pub_key(output + "/%s_public.key" % DEFAULT_FIELDS['CN'])
 
 
 def print_certificate(certificate_file_path):
@@ -156,6 +169,8 @@ if __name__ == "__main__":
     main_options = OptionGroup(parser, "Main Options")
     main_options.add_option("--genkey", dest="genkey", action="store_true", default=False,
                             help="generate private key")
+    main_options.add_option("--genpair", dest="genpair", action="store_true", default=False,
+                            help="generate pair of keys for user")
     main_options.add_option("--genreq", dest="genreq", action="store_true", default=False,
                             help="generate certificate request")
     main_options.add_option("--gencert", dest="gencert", action="store_true", default=False,
@@ -201,6 +216,8 @@ if __name__ == "__main__":
     options, args = parser.parse_args()
     if options.genkey and options.bits:
         make_private_key(options.bits, options.output)
+    elif options.genpair and options.bits:
+        make_pair_of_keys(options.bits, options.output)
     elif options.genreq and options.pkey:
         make_request(options.pkey, options.user, options.secontext, options.critical, options.output, options.text)
     elif options.gencert and options.request:

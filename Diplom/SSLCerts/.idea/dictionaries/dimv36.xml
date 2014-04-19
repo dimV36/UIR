@@ -8,6 +8,7 @@
       <w>gencacert</w>
       <w>gencert</w>
       <w>genkey</w>
+      <w>genpair</w>
       <w>genpkey</w>
       <w>genreq</w>
       <w>genrsa</w>
