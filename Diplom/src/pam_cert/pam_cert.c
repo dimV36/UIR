@@ -1,10 +1,11 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #include <stdarg.h>
 #include <security/pam_modutil.h>
 #include <security/pam_ext.h>
 #include <security/pam_modules.h>
 #include <syslog.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
@@ -19,6 +20,7 @@ PAM_EXTERN int pam_sm_open_session(pam_handle_t *pamh, int flags, int argc, cons
     char *user = NULL;
     char *level = NULL;
     char *seuser = NULL;
+    char *command = NULL;
 
     int result = 0;
   
@@ -36,22 +38,22 @@ PAM_EXTERN int pam_sm_open_session(pam_handle_t *pamh, int flags, int argc, cons
 	result = get_default_context_with_level(seuser, level, NULL, &context);
     }
     
-    pid_t pid = fork();
-    int res = -1;
-    if (pid == 0) {
-	const char * pgcert = "/usr/bin/pgcert";
-	res = execl(pgcert, "pgcert", "--genpair", "--output", "/home/user1", NULL);
+    asprintf(&command, "/usr/bin/pgcert --genpair --user %s --output /home/%s/home.inst", user, user);
+    printf("Command: %s\n", command);
+    
+    if (system(command) < 0) {
+	pam_syslog(pamh, LOG_ERR, "Could not generate SSL key pair for %s", user);
+	return PAM_SESSION_ERR;
     }
     printf("Status: %d\n", result);
     printf("User: %s\n", user);
     printf("Context: %s\n", context);
     printf("Level is %s\n", level);
-    printf("Res: %d\n", res);
     
     free(seuser);
     free(level);
     //free(user);
-    return PAM_SUCCESS;      
+    return PAM_SUCCESS;
 }
 
 

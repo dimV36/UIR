@@ -114,16 +114,19 @@ def make_certificate(request_path, ca_private_key_file, ca_certificate_file, out
     print('Certificate was saved to %s' % output)
 
 
-def make_pair_of_keys(bits, output):
-    pair = RSA.gen_key(bits, 65537, password)
+def make_pair_of_keys(bits, user, output):
+    if not user:
+        user = DEFAULT_FIELDS['CN']
     if not output:
         output = path.abspath(path.curdir)
     elif not path.isdir(output):
         print("ERROR: Not correct path for saving pair of keys")
         exit(1)
-    print(output)
-    pair.save_key(output + "/%s_private.key" % DEFAULT_FIELDS['CN'], None)
-    pair.save_pub_key(output + "/%s_public.key" % DEFAULT_FIELDS['CN'])
+    if path.exists(output + "/%s_private.key" % user) and path.exists(output + "/%s_public.key" % user):
+        return
+    pair = RSA.gen_key(bits, 65537, password)
+    pair.save_key(output + "/%s_private.key" % user, None)
+    pair.save_pub_key(output + "/%s_public.key" % user)
 
 
 def print_certificate(certificate_file_path):
@@ -217,7 +220,7 @@ if __name__ == "__main__":
     if options.genkey and options.bits:
         make_private_key(options.bits, options.output)
     elif options.genpair and options.bits:
-        make_pair_of_keys(options.bits, options.output)
+        make_pair_of_keys(options.bits, options.user, options.output)
     elif options.genreq and options.pkey:
         make_request(options.pkey, options.user, options.secontext, options.critical, options.output, options.text)
     elif options.gencert and options.request:

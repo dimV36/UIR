@@ -5,7 +5,7 @@ HDRS=$(wildcard *.h)
 SRCS=$(wildcard *.c)
 OBJS=$(patsubst %.c,%.o,$(SRCS))
 TARGET=pam_cert.so
-CFLAGS += $(INCLUDES) -lpam -lc -z defs -fpic -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic
+CFLAGS += $(INCLUDES) -lpam -lc -z defs -fpic -O2 -Wall -g -pipe -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic
 all: $(TARGET)
 
 %.o: %.c $(HDRS)
