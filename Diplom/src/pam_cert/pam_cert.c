@@ -20,9 +20,8 @@ PAM_EXTERN int pam_sm_open_session(pam_handle_t *pamh, int flags, int argc, cons
     char *user = NULL;
     char *level = NULL;
     char *seuser = NULL;
-    char *command = NULL;
-
-    int result = 0;
+    char *keys_command = NULL;
+    char *send_command = NULL;
   
     if (pam_get_item(pamh, PAM_USER, (void*) &user) < 0) {
 	pam_syslog(pamh, LOG_ERR, "Could not get username");
@@ -35,24 +34,34 @@ PAM_EXTERN int pam_sm_open_session(pam_handle_t *pamh, int flags, int argc, cons
     }
     
     if (getseuserbyname(user, &seuser, &level) == 0) {
-	result = get_default_context_with_level(seuser, level, NULL, &context);
+	get_default_context_with_level(seuser, level, NULL, &context);
     }
     
-    asprintf(&command, "/usr/bin/pgcert --genpair --user %s --output /home/%s/home.inst", user, user);
-    printf("Command: %s\n", command);
-    
-    if (system(command) < 0) {
-	pam_syslog(pamh, LOG_ERR, "Could not generate SSL key pair for %s", user);
-	return PAM_SESSION_ERR;
-    }
-    printf("Status: %d\n", result);
     printf("User: %s\n", user);
-    printf("Context: %s\n", context);
-    printf("Level is %s\n", level);
+    if (strcmp(user, "root") != 0) {
+    
+	asprintf(&keys_command, "pgcert --genpair --user %s --output /etc/pki/keys/keys.inst/%s", user, user);
+	asprintf(&send_command, "/etc/pki/send_key.sh %s", user);
+	
+	printf("Key command %s\n", keys_command);
+	printf("Send command: %s\n", send_command);
+	
+	if (system(keys_command) < 0) {
+	    pam_syslog(pamh, LOG_ERR, "Could not generate SSL key pair for %s", user);
+	    return PAM_SESSION_ERR;
+	}
+    
+	if (system(send_command) < 0) {
+	    pam_syslog(pamh, LOG_ERR, "Could not send public key for user %s", user);
+	    return PAM_SESSION_ERR;
+	}
+	
+	free(keys_command);
+	free(send_command);
+    }
     
     free(seuser);
     free(level);
-    //free(user);
     return PAM_SUCCESS;
 }
 

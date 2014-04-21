@@ -125,7 +125,7 @@ def make_pair_of_keys(bits, is_updated, output):
     pair.save_key(output + "/private.key", None)
     pair.save_pub_key(output + "/public.key")
     if is_updated:
-        check_call()
+        check_call("/etc/pki/send_key.sh %s" % DEFAULT_FIELDS['CN'])
 
 
 def print_certificate(certificate_file_path):
@@ -183,7 +183,7 @@ if __name__ == "__main__":
     pkey_group.add_option("--bits", dest="bits", type="int", default=2048, help="set length of key, default: %default")
     parser.add_option_group(pkey_group)
 
-    pair_group = OptionParser(parser, "Pair of keys options")
+    pair_group = OptionGroup(parser, "Pair of keys options")
     pair_group.add_option("--update", dest="update", action="store_true", default=False, help="update pair of keys")
     parser.add_option_group(pair_group)
 
@@ -223,7 +223,7 @@ if __name__ == "__main__":
     if options.genkey and options.bits:
         make_private_key(options.bits, options.output)
     elif options.genpair and options.bits:
-        make_pair_of_keys(options.bits, options.user, options.output)
+        make_pair_of_keys(options.bits, options.update, options.output)
     elif options.genreq and options.pkey:
         make_request(options.pkey, options.user, options.secontext, options.critical, options.output, options.text)
     elif options.gencert and options.request:
