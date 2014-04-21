@@ -1,12 +1,11 @@
 #!/usr/bin/python
 __author__ = 'dimv36'
-from M2Crypto import RSA, X509, EVP, ASN1, BIO
-from subprocess import check_output
+from M2Crypto import RSA, X509, EVP, ASN1
+from subprocess import check_output, check_call
 from datetime import datetime
 from optparse import OptionParser, OptionGroup
 from os import path, getuid
 from time import time
-from md5 import md5
 
 
 DEFAULT_FIELDS = {'C': 'ru',
@@ -114,19 +113,19 @@ def make_certificate(request_path, ca_private_key_file, ca_certificate_file, out
     print('Certificate was saved to %s' % output)
 
 
-def make_pair_of_keys(bits, user, output):
-    if not user:
-        user = DEFAULT_FIELDS['CN']
+def make_pair_of_keys(bits, is_updated, output):
     if not output:
         output = path.abspath(path.curdir)
     elif not path.isdir(output):
         print("ERROR: Not correct path for saving pair of keys")
         exit(1)
-    if path.exists(output + "/%s_private.key" % user) and path.exists(output + "/%s_public.key" % user):
+    if path.exists(output + "/private.key") and path.exists(output + "/public.key") and not is_updated:
         return
     pair = RSA.gen_key(bits, 65537, password)
-    pair.save_key(output + "/%s_private.key" % user, None)
-    pair.save_pub_key(output + "/%s_public.key" % user)
+    pair.save_key(output + "/private.key", None)
+    pair.save_pub_key(output + "/public.key")
+    if is_updated:
+        check_call()
 
 
 def print_certificate(certificate_file_path):
@@ -183,6 +182,10 @@ if __name__ == "__main__":
     pkey_group = OptionGroup(parser, "Private key options")
     pkey_group.add_option("--bits", dest="bits", type="int", default=2048, help="set length of key, default: %default")
     parser.add_option_group(pkey_group)
+
+    pair_group = OptionParser(parser, "Pair of keys options")
+    pair_group.add_option("--update", dest="update", action="store_true", default=False, help="update pair of keys")
+    parser.add_option_group(pair_group)
 
     req_group = OptionGroup(parser, "Request options")
     req_group.add_option("--user", dest="user", default=DEFAULT_FIELDS['CN'],
