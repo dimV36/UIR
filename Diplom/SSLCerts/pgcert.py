@@ -35,18 +35,18 @@ def check_permissions():
 
 
 def make_private_key(bits, output):
-    pair = RSA.gen_key(bits, 65537, callback=password)
+    key_pair = RSA.gen_key(bits, 65537, callback=password)
     if not output:
         output = path.abspath(path.curdir) + "/mykey.pem"
-    pair.save_key(output, None)
+    key_pair.save_key(output, None)
     print('Key was saved to %s' % output)
 
 
 def make_request(private_key_path, username, user_context, critical, output, is_printed):
     check_path(private_key_path)
-    private_key = EVP.load_key(private_key_path, callback=password)
+    key_pair = EVP.load_key(private_key_path, callback=password)
     request = X509.Request()
-    request.set_pubkey(private_key)
+    request.set_pubkey(key_pair)
     request.set_version(2)
     name = X509.X509_Name()
     name.C = DEFAULT_FIELDS['C']
@@ -66,7 +66,7 @@ def make_request(private_key_path, username, user_context, critical, output, is_
     stack = X509.X509_Extension_Stack()
     stack.push(X509.new_extension("selinuxContext", context, int(critical)))
     request.add_extensions(stack)
-    request.sign(private_key, 'sha1')
+    request.sign(key_pair, 'sha1')
     if not output:
         output = path.abspath(path.curdir) + '/%s.csr' % DEFAULT_FIELDS['CN']
     request.save_pem(output)
@@ -113,19 +113,49 @@ def make_certificate(request_path, ca_private_key_file, ca_certificate_file, out
     print('Certificate was saved to %s' % output)
 
 
-def make_pair_of_keys(bits, is_updated, output):
+def make_digital_pair(bits, username, is_updated, output):
     if not output:
         output = path.abspath(path.curdir)
     elif not path.isdir(output):
         print("ERROR: Not correct path for saving pair of keys")
         exit(1)
-    if path.exists(output + "/private.key") and path.exists(output + "/public.key") and not is_updated:
+    private_key_path = output + "/private.key"
+    certificate_path = output + "/%s.cert" % username
+    if not is_updated or path.exists(private_key_path) and path.exists(certificate_path):
         return
-    pair = RSA.gen_key(bits, 65537, password)
-    pair.save_key(output + "/private.key", None)
-    pair.save_pub_key(output + "/public.key")
-    if is_updated:
-        check_call("/etc/pki/send_key.sh %s" % DEFAULT_FIELDS['CN'])
+    key_pair = RSA.gen_key(bits, 65537, password)
+    key_pair.save_key(private_key_path, None)
+    key_pair = EVP.load_key(private_key_path)
+    request = X509.Request()
+    request.set_pubkey(key_pair)
+    request.set_version(2)
+    name = X509.X509_Name()
+    name.C = DEFAULT_FIELDS['C']
+    name.ST = DEFAULT_FIELDS['ST']
+    name.L = DEFAULT_FIELDS['L']
+    name.O = DEFAULT_FIELDS['O']
+    name.OU = DEFAULT_FIELDS['OU']
+    name.CN = username
+    request.set_subject(name)
+    request.sign(key_pair, 'sha1')
+    certificate = X509.X509()
+    certificate.set_serial_number(time().as_integer_ratio()[0])
+    certificate.set_version(2)
+    certificate.set_subject(request.get_subject())
+    certificate.add_ext(X509.new_extension("basicConstraints", "CA:FALSE", 1))
+    certificate.add_ext(X509.new_extension("keyUsage", "digitalSignature", 1))
+    not_before = ASN1.ASN1_UTCTIME()
+    not_before.set_datetime(datetime.today())
+    not_after = ASN1.ASN1_UTCTIME()
+    not_after.set_datetime(datetime(datetime.today().year + 1, datetime.today().month, datetime.today().day))
+    certificate.set_not_before(not_before)
+    certificate.set_not_after(not_after)
+    certificate.set_issuer(name)
+    certificate.set_pubkey(request.get_pubkey())
+    certificate.sign(key_pair, 'sha1')
+    certificate.save(certificate_path)
+    # if is_updated:
+    #     check_call("/etc/pki/send_key.sh %s" % DEFAULT_FIELDS['CN'])
 
 
 def print_certificate(certificate_file_path):
@@ -223,7 +253,7 @@ if __name__ == "__main__":
     if options.genkey and options.bits:
         make_private_key(options.bits, options.output)
     elif options.genpair and options.bits:
-        make_pair_of_keys(options.bits, options.update, options.output)
+        make_digital_pair(options.bits, options.user, options.update, options.output)
     elif options.genreq and options.pkey:
         make_request(options.pkey, options.user, options.secontext, options.critical, options.output, options.text)
     elif options.gencert and options.request:

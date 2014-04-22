@@ -1,0 +1,20 @@
+To: ngps@post1.com
+From: ngps@post1.com
+Subject: testing
+MIME-Version: 1.0
+Content-Type: multipart/signed; protocol="application/x-pkcs7-signature"; micalg="sha1"; boundary="----AE9F0E0980435BFA3676165405EC3055"
+
+This is an S/MIME signed message
+
+------AE9F0E0980435BFA3676165405EC3055
+
+S/MIME - Secure Multipurpose Internet Mail Extensions [RFC 2311, RFC 2312] - 
+provides a consistent way to send and receive secure MIME data. Based on the
+popular Internet MIME standard, S/MIME provides the following cryptographic
+security services for electronic messaging applications - authentication,
+message integrity and non-repudiation of origin (using digital signatures)
+and privacy and data security (using encryption).
+
+S/MIME is built on the PKCS #7 standard. [PKCS7]
+
+S/MIME is implemented in Netscape Messenger and Microsoft Outlook.
