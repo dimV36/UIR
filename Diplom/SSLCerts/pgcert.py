@@ -51,7 +51,7 @@ def sign(private_key_path, certificate_path, request_path):
     print('Signing request was saved to %s' % request_path + '.sign')
 
 
-def verify_request_and_make_cert(certificate_path, ca_certificate_path, sign_request_path, output):
+def verify(certificate_path, ca_certificate_path, sign_request_path, output):
     smime = SMIME.SMIME()
     certificate = X509.load_cert(certificate_path)
     if not certificate:
@@ -266,7 +266,7 @@ if __name__ == '__main__':
     elif options.sign and options.pkey and options.certificate and options.request:
         sign(options.pkey, options.certificate, options.request)
     elif options.verify and options.cacert and options.certificate and options.request:
-        verify_request_and_make_cert(options.certificate, options.cacert, options.request, options.output)
+        verify(options.certificate, options.cacert, options.request, options.output)
     elif options.issuer and options.certificate:
         get_issuer(options.certificate)
     elif options.subject and options.certificate:

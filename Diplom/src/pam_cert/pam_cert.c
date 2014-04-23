@@ -20,43 +20,32 @@ PAM_EXTERN int pam_sm_open_session(pam_handle_t *pamh, int flags, int argc, cons
     char *user = NULL;
     char *level = NULL;
     char *seuser = NULL;
-    char *keys_command = NULL;
     char *send_command = NULL;
   
     if (pam_get_item(pamh, PAM_USER, (void*) &user) < 0) {
-	pam_syslog(pamh, LOG_ERR, "Could not get username");
-	return PAM_SESSION_ERR;
+		pam_syslog(pamh, LOG_ERR, "Could not get username");
+		return PAM_SESSION_ERR;
     }
     
     if (0 == is_selinux_mls_enabled()) {
-	pam_syslog(pamh, LOG_ERR, "SELinux MLS is not enabled");
-	return PAM_SESSION_ERR;
+		pam_syslog(pamh, LOG_ERR, "SELinux MLS is not enabled");
+		return PAM_SESSION_ERR;
     }
     
     if (getseuserbyname(user, &seuser, &level) == 0) {
-	get_default_context_with_level(seuser, level, NULL, &context);
+		get_default_context_with_level(seuser, level, NULL, &context);
     }
     
-    printf("User: %s\n", user);
     if (strcmp(user, "root") != 0) {
     
-	asprintf(&send_command, "/etc/pki/send_key.sh %s %s", user, context);
-	
-	printf("Key command %s\n", keys_command);
-	printf("Send command: %s\n", send_command);
-	
-	if (system(keys_command) < 0) {
-	    pam_syslog(pamh, LOG_ERR, "Could not generate SSL key pair for %s", user);
-	    return PAM_SESSION_ERR;
-	}
+		asprintf(&send_command, "/etc/pki/send_key.sh %s %s", user, context);
     
-	if (system(send_command) < 0) {
-	    pam_syslog(pamh, LOG_ERR, "Could not send public key for user %s", user);
-	    return PAM_SESSION_ERR;
-	}
+		if (system(send_command) < 0) {
+			pam_syslog(pamh, LOG_ERR, "Could not send public key for user %s", user);
+			return PAM_SESSION_ERR;
+		}
 	
-	free(keys_command);
-	free(send_command);
+		free(send_command);
     }
     
     free(seuser);
