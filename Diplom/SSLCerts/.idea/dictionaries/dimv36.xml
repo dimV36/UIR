@@ -25,6 +25,7 @@
       <w>prog</w>
       <w>secontext</w>
       <w>selinux</w>
+      <w>smime</w>
       <w>whoami</w>
     </words>
   </dictionary>

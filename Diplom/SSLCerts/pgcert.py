@@ -1,20 +1,16 @@
 #!/usr/bin/python
 __author__ = 'dimv36'
-from M2Crypto import RSA, X509, EVP, ASN1
-from subprocess import check_output, check_call
+from M2Crypto import RSA, X509, EVP, ASN1, BIO, SMIME
+from selinux import security_check_context_raw, getcon_raw
 from datetime import datetime
 from optparse import OptionParser, OptionGroup
-from os import path, getuid
+from os import path, getuid, getlogin
 from time import time
 
 
-DEFAULT_FIELDS = {'C': 'ru',
-                  'ST': 'msk',
-                  'L': 'msk',
-                  'O': 'mephi',
-                  'OU': 'kaf36',
-                  'CN': check_output("whoami", shell=True).split('\n')[0],
-                  'SC': ''}
+DEFAULT_FIELDS = dict(C='ru', ST='msk', L='msk', O='mephi', OU='kaf36', CN=getlogin())
+CAKEY = '/etc/pki/CA/private/cakey.pem'
+CACERT = '/etc/pki/CA/cacert.pem'
 DEFAULT_PASSWORD = '123456'
 
 
@@ -24,20 +20,66 @@ def password(*args, **kwargs):
 
 def check_path(file_path):
     if not path.exists(file_path):
-        print("ERROR: File path %s not exist" % file_path)
+        print('ERROR: File path %s not exist' % file_path)
         exit(1)
+
+
+def check_selinux_context(context):
+    if context:
+        try:
+            security_check_context_raw(options.secontext)
+        except OSError:
+            print('ERROR: Invalid SELinux context in argument')
+            exit(1)
 
 
 def check_permissions():
     if getuid() != 0:
-        print("Please, login as `root` and try again")
+        print('Please, login as `root` and try again')
         exit(1)
+
+
+def sign(private_key_path, certificate_path, request_path):
+    request = X509.load_request(request_path)
+    text = BIO.MemoryBuffer(request.as_pem())
+    smime = SMIME.SMIME()
+    smime.load_key(private_key_path, certificate_path)
+    sign_request = smime.sign(text)
+    sign_request_file = BIO.openfile(request_path + '.sign', 'w')
+    smime.write(sign_request_file, sign_request)
+    sign_request_file.close()
+    print('Signing request was saved to %s' % request_path + '.sign')
+
+
+def verify_request_and_make_cert(certificate_path, ca_certificate_path, sign_request_path, output):
+    smime = SMIME.SMIME()
+    certificate = X509.load_cert(certificate_path)
+    if not certificate:
+        print('ERROR: Unable to load certificate %s' % certificate_path)
+        exit(1)
+    stack = X509.X509_Stack()
+    stack.push(certificate)
+    smime.set_x509_stack(stack)
+    store = X509.X509_Store()
+    store.load_info(ca_certificate_path)
+    smime.set_x509_store(store)
+    pks7, data = SMIME.smime_load_pkcs7(sign_request_path)
+    clear_text = smime.verify(pks7, data)
+    if not output:
+        output = path.abspath(path.curdir) + '/%s.csr' % DEFAULT_FIELDS['CN']
+    if clear_text:
+        request = X509.load_request_string(clear_text)
+        request.save(output)
+        print('Verification OK')
+        print('Request file was saved to %s' % output)
+    else:
+        print('Verification failed')
 
 
 def make_private_key(bits, output):
     key_pair = RSA.gen_key(bits, 65537, callback=password)
     if not output:
-        output = path.abspath(path.curdir) + "/mykey.pem"
+        output = path.abspath(path.curdir) + '/mykey.pem'
     key_pair.save_key(output, None)
     print('Key was saved to %s' % output)
 
@@ -58,13 +100,13 @@ def make_request(private_key_path, username, user_context, critical, output, is_
     if user_context:
         context = user_context
     else:
-        context = check_output("id -Z", shell=True).split('\n')[0]
+        context = getcon_raw()[1]
     if not context:
-        print('Command `id -Z` return with error code')
+        print('Can not get SELinux context for user %s' % username)
         exit(1)
     request.set_subject_name(name)
     stack = X509.X509_Extension_Stack()
-    stack.push(X509.new_extension("selinuxContext", context, int(critical)))
+    stack.push(X509.new_extension('selinuxContext', context, int(critical)))
     request.add_extensions(stack)
     request.sign(key_pair, 'sha1')
     if not output:
@@ -75,7 +117,7 @@ def make_request(private_key_path, username, user_context, critical, output, is_
     print('Request was saved to %s' % output)
 
 
-def make_certificate(request_path, ca_private_key_file, ca_certificate_file, output, is_printed):
+def make_certificate(request_path, ca_private_key_file, ca_certificate_file, output, is_digital, is_printed):
     check_path(request_path)
     request = X509.load_request(request_path)
     public_key = request.get_pubkey()
@@ -98,12 +140,14 @@ def make_certificate(request_path, ca_private_key_file, ca_certificate_file, out
     certificate.set_not_after(not_after)
     certificate.set_issuer(issuer)
     certificate.set_pubkey(public_key)
-    selinux_extension = request.get_extension_by_name("selinuxContext")
+    selinux_extension = request.get_extension_by_name('selinuxContext')
     if not selinux_extension:
-        print("ERROR: No extension selinuxContext in request %s" % request_path)
+        print('ERROR: No extension selinuxContext in request %s' % request_path)
         exit(1)
     certificate.add_ext(selinux_extension)
-    certificate.add_ext(X509.new_extension("basicConstraints", "CA:FALSE", 1))
+    certificate.add_ext(X509.new_extension('basicConstraints', 'CA:FALSE', 1))
+    if is_digital:
+        certificate.add_ext(X509.new_extension('keyUsage', 'Digital Signature', 1))
     if not output:
         output = path.abspath(path.curdir) + '/%s.crt' % DEFAULT_FIELDS['CN']
     certificate.sign(ca_private_key, 'sha1')
@@ -111,51 +155,6 @@ def make_certificate(request_path, ca_private_key_file, ca_certificate_file, out
     if is_printed:
         print(certificate.as_text())
     print('Certificate was saved to %s' % output)
-
-
-def make_digital_pair(bits, username, is_updated, output):
-    if not output:
-        output = path.abspath(path.curdir)
-    elif not path.isdir(output):
-        print("ERROR: Not correct path for saving pair of keys")
-        exit(1)
-    private_key_path = output + "/private.key"
-    certificate_path = output + "/%s.cert" % username
-    if not is_updated or path.exists(private_key_path) and path.exists(certificate_path):
-        return
-    key_pair = RSA.gen_key(bits, 65537, password)
-    key_pair.save_key(private_key_path, None)
-    key_pair = EVP.load_key(private_key_path)
-    request = X509.Request()
-    request.set_pubkey(key_pair)
-    request.set_version(2)
-    name = X509.X509_Name()
-    name.C = DEFAULT_FIELDS['C']
-    name.ST = DEFAULT_FIELDS['ST']
-    name.L = DEFAULT_FIELDS['L']
-    name.O = DEFAULT_FIELDS['O']
-    name.OU = DEFAULT_FIELDS['OU']
-    name.CN = username
-    request.set_subject(name)
-    request.sign(key_pair, 'sha1')
-    certificate = X509.X509()
-    certificate.set_serial_number(time().as_integer_ratio()[0])
-    certificate.set_version(2)
-    certificate.set_subject(request.get_subject())
-    certificate.add_ext(X509.new_extension("basicConstraints", "CA:FALSE", 1))
-    certificate.add_ext(X509.new_extension("keyUsage", "digitalSignature", 1))
-    not_before = ASN1.ASN1_UTCTIME()
-    not_before.set_datetime(datetime.today())
-    not_after = ASN1.ASN1_UTCTIME()
-    not_after.set_datetime(datetime(datetime.today().year + 1, datetime.today().month, datetime.today().day))
-    certificate.set_not_before(not_before)
-    certificate.set_not_after(not_after)
-    certificate.set_issuer(name)
-    certificate.set_pubkey(request.get_pubkey())
-    certificate.sign(key_pair, 'sha1')
-    certificate.save(certificate_path)
-    # if is_updated:
-    #     check_call("/etc/pki/send_key.sh %s" % DEFAULT_FIELDS['CN'])
 
 
 def print_certificate(certificate_file_path):
@@ -188,77 +187,86 @@ def get_extension(certificate_file_path, name):
     try:
         extension = certificate.get_ext(name)
     except LookupError:
-        print("Certificate %s does not has extension %s" % (certificate_file_path, name))
+        print('Certificate %s does not has extension %s' % (certificate_file_path, name))
     else:
         print(extension.get_value())
 
 
-if __name__ == "__main__":
-    parser = OptionParser(usage="usage: %prog [Main Options] options",
+if __name__ == '__main__':
+    parser = OptionParser(usage='usage: %prog [Main Options] options',
                           add_help_option=True,
-                          description="This program use M2Crypto library and can generate X509 certificate "
-                                      "with X509v3 extension SELinux Context")
-    main_options = OptionGroup(parser, "Main Options")
-    main_options.add_option("--genkey", dest="genkey", action="store_true", default=False,
-                            help="generate private key")
-    main_options.add_option("--genpair", dest="genpair", action="store_true", default=False,
-                            help="generate pair of keys for user")
-    main_options.add_option("--genreq", dest="genreq", action="store_true", default=False,
-                            help="generate certificate request")
-    main_options.add_option("--gencert", dest="gencert", action="store_true", default=False,
-                            help="generate certificate for user")
+                          description='This program use M2Crypto library and can generate X509 certificate '
+                                      'with X509v3 extension SELinux Context')
+    main_options = OptionGroup(parser, 'Main Options')
+    main_options.add_option('--genkey', dest='genkey', action='store_true', default=False,
+                            help='generate private key')
+    main_options.add_option('--genreq', dest='genreq', action='store_true', default=False,
+                            help='generate certificate request')
+    main_options.add_option('--gencert', dest='gencert', action='store_true', default=False,
+                            help='generate certificate for user')
+    main_options.add_option('--sign', dest='sign', action='store_true', default=False,
+                            help='sign request by user\'s digital signature')
+    main_options.add_option('--verify', dest='verify', action='store_true', default=False,
+                            help='verify signature of request by user digital signature')
     parser.add_option_group(main_options)
 
-    pkey_group = OptionGroup(parser, "Private key options")
-    pkey_group.add_option("--bits", dest="bits", type="int", default=2048, help="set length of key, default: %default")
+    pkey_group = OptionGroup(parser, 'Private key options')
+    pkey_group.add_option('--bits', dest='bits', type=int, default=2048,
+                          help='set length of private key, default: %default')
     parser.add_option_group(pkey_group)
 
-    pair_group = OptionGroup(parser, "Pair of keys options")
-    pair_group.add_option("--update", dest="update", action="store_true", default=False, help="update pair of keys")
-    parser.add_option_group(pair_group)
-
-    req_group = OptionGroup(parser, "Request options")
-    req_group.add_option("--user", dest="user", default=DEFAULT_FIELDS['CN'],
-                         help="add username to request, default: %default")
-    req_group.add_option("--secontext", dest="secontext", help="add selinux context of user")
-    req_group.add_option("--critical", dest="critical", action="store_true", default=False,
-                         help="set critical of selinuxContext extension, default %default")
+    req_group = OptionGroup(parser, 'Request options')
+    req_group.add_option('--user', dest='user', default=DEFAULT_FIELDS['CN'],
+                         help='set CN of request, default: %default')
+    req_group.add_option('--secontext', dest='secontext', help='add SELinux context to request')
+    req_group.add_option('--critical', dest='critical', action='store_true', default=False,
+                         help='set critical of selinuxContext extension, default: %default')
     parser.add_option_group(req_group)
 
-    input_options = OptionGroup(parser, "Input options")
-    input_options.add_option("--pkey", dest="pkey", help="add location of private key")
-    input_options.add_option("--request", dest="request", help="add location of certificate request")
-    input_options.add_option("--certificate", dest="certificate", help="add location of certificate")
-    input_options.add_option("--cacert", dest="cacert", default="/etc/pki/CA/cacert.pem",
-                             help="add location of ca certificate, default: %default")
-    input_options.add_option("--cakey", dest="cakey", default="/etc/pki/CA/private/cakey.pem",
-                             help="add location of ca private key, default: %default")
+    certificate_group = OptionGroup(parser, 'Certificate options')
+    certificate_group.add_option('--signature', dest='signature', action='store_true', default=False,
+                                 help='add extension keyUsage with value \'Digital signature\' to certificate, '
+                                      'default: %default')
+    parser.add_option_group(certificate_group)
+
+    input_options = OptionGroup(parser, 'Input options')
+    input_options.add_option('--pkey', dest='pkey', help='set location of private key')
+    input_options.add_option('--request', dest='request', help='set location of certificate request')
+    input_options.add_option('--certificate', dest='certificate', help='set location of certificate')
+    input_options.add_option('--cakey', dest='cakey', default=CAKEY,
+                             help='set location of ca private key, default: %default')
+    input_options.add_option('--cacert', dest='cacert', default=CACERT,
+                             help='set location of ca certificate, default: %default')
     parser.add_option_group(input_options)
 
-    output_options = OptionGroup(parser, "Output options")
-    output_options.add_option("--output", dest="output", help="save to file")
-    output_options.add_option("--text", dest="text", action="store_true", default=False,
-                              help="print request or certificate")
+    output_options = OptionGroup(parser, 'Output options')
+    output_options.add_option('--output', dest='output', help='save to file')
+    output_options.add_option('--text', dest='text', action='store_true', default=False,
+                              help='print request or certificate')
     parser.add_option_group(output_options)
 
-    info_options = OptionGroup(parser, "Info options")
-    info_options.add_option("--issuer", dest="issuer", action="store_true", default=False,
-                            help="get issuer of certificate")
-    info_options.add_option("--subject", dest="subject", action="store_true", default=False,
-                            help="get subject of certificate")
-    info_options.add_option("--extension", dest="extension", help="get extension of certificate")
+    info_options = OptionGroup(parser, 'Info options')
+    info_options.add_option('--issuer', dest='issuer', action='store_true', default=False,
+                            help='get issuer of certificate')
+    info_options.add_option('--subject', dest='subject', action='store_true', default=False,
+                            help='get subject of certificate')
+    info_options.add_option('--extension', dest='extension', help='get extension of certificate')
     parser.add_option_group(info_options)
 
     options, args = parser.parse_args()
     if options.genkey and options.bits:
         make_private_key(options.bits, options.output)
-    elif options.genpair and options.bits:
-        make_digital_pair(options.bits, options.user, options.update, options.output)
     elif options.genreq and options.pkey:
+        check_selinux_context(options.secontext)
         make_request(options.pkey, options.user, options.secontext, options.critical, options.output, options.text)
     elif options.gencert and options.request:
         check_permissions()
-        make_certificate(options.request, options.cakey, options.cacert, options.output, options.text)
+        make_certificate(options.request, options.cakey, options.cacert,
+                         options.output, options.signature, options.text)
+    elif options.sign and options.pkey and options.certificate and options.request:
+        sign(options.pkey, options.certificate, options.request)
+    elif options.verify and options.cacert and options.certificate and options.request:
+        verify_request_and_make_cert(options.certificate, options.cacert, options.request, options.output)
     elif options.issuer and options.certificate:
         get_issuer(options.certificate)
     elif options.subject and options.certificate:

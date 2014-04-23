@@ -40,8 +40,7 @@ PAM_EXTERN int pam_sm_open_session(pam_handle_t *pamh, int flags, int argc, cons
     printf("User: %s\n", user);
     if (strcmp(user, "root") != 0) {
     
-	asprintf(&keys_command, "pgcert --genpair --user %s --output /etc/pki/keys/keys.inst/%s", user, user);
-	asprintf(&send_command, "/etc/pki/send_key.sh %s", user);
+	asprintf(&send_command, "/etc/pki/send_key.sh %s %s", user, context);
 	
 	printf("Key command %s\n", keys_command);
 	printf("Send command: %s\n", send_command);
