@@ -6,11 +6,13 @@ from datetime import datetime
 from optparse import OptionParser, OptionGroup
 from os import path, getuid, getlogin
 from time import time
+from re import findall
 
 
 DEFAULT_FIELDS = dict(C='ru', ST='msk', L='msk', O='mephi', OU='kaf36', CN=getlogin())
 CAKEY = '/etc/pki/CA/private/cakey.pem'
 CACERT = '/etc/pki/CA/cacert.pem'
+DIGITAL_SIGNATURE_PATH = '/etc/pki/certs'
 DEFAULT_PASSWORD = '123456'
 
 
@@ -37,6 +39,46 @@ def check_permissions():
     if getuid() != 0:
         print('Please, login as `root` and try again')
         exit(1)
+
+
+def make_level_and_category_sets(context):
+    level_range = findall(r's(\d+)', context.split(':')[3])
+    level_range = [int(element) for element in level_range]
+    level_set = set()
+    if len(level_range) == 1:
+        level_set.add(level_range[0])
+    else:
+        level_set = {element for element in range(level_range[0], level_range[1] + 1)}
+
+    category = str()
+    try:
+        category = context.split(':')[4]
+    except IndexError:
+        pass
+    category_set = set()
+    if category:
+        category_range = findall(r'c(\d+)\.c(\d+)', category)
+        for subrange in category_range:
+            replace = str()
+            for index in range(int(subrange[0]), int(subrange[1]) + 1):
+                replace += 'c%s,' % index
+            replace = replace[:-1]
+            category = category.replace(str(r'c%s.c%s' % (subrange[0], subrange[1])), replace)
+    category_set = set(findall(r'c(\d+)', category))
+    category_set = {int(element) for element in category_set}
+    return level_set, category_set
+
+
+def verify_user_context(user, current_context):
+    main_user_context = get_extension(DIGITAL_SIGNATURE_PATH + '/%s.crt' % user, 'selinuxContext')
+    if not main_user_context:
+        return False
+    main_level, main_category = make_level_and_category_sets(main_user_context)
+    current_level, current_category = make_level_and_category_sets(current_context)
+    if current_level.issubset(main_level) and current_category.issubset(main_category):
+        return True
+    else:
+        return False
 
 
 def sign(private_key_path, certificate_path, request_path):
@@ -144,6 +186,12 @@ def make_certificate(request_path, ca_private_key_file, ca_certificate_file, out
     if not selinux_extension:
         print('ERROR: No extension selinuxContext in request %s' % request_path)
         exit(1)
+    if not is_digital:
+        if not verify_user_context(subject.CN, selinux_extension.get_value()):
+            print('ERROR: Invalid SELinux context in request file %s' % request_path)
+            exit(1)
+        else:
+            print('INFO: SELinux context is valid')
     certificate.add_ext(selinux_extension)
     certificate.add_ext(X509.new_extension('basicConstraints', 'CA:FALSE', 1))
     if is_digital:
@@ -189,7 +237,7 @@ def get_extension(certificate_file_path, name):
     except LookupError:
         print('Certificate %s does not has extension %s' % (certificate_file_path, name))
     else:
-        print(extension.get_value())
+        return extension.get_value()
 
 
 if __name__ == '__main__':
@@ -274,7 +322,7 @@ if __name__ == '__main__':
     elif options.text and options.certificate:
         print_certificate(options.certificate)
     elif options.certificate and options.extension:
-        get_extension(options.certificate, options.extension)
+        print(get_extension(options.certificate, options.extension))
     elif options.text and options.request:
         print_request(options.request)
     else:
