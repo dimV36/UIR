@@ -23,9 +23,9 @@ then
 		mkdir -p $certdir
 	fi 
 	EOF
-	sshpass -p $ca_password scp $request root@$ca:$certdir/$user.csr
-	sshpass -p $ca_password ssh -T root@$ca "pgcert --gencert --request $certdir/$user.csr --signature --output $certdir/$user.crt" >> $devnull
-	sshpass -p $ca_password ssh -T root@$ca "rm -f $certdir/$user.csr" 
-	sshpass -p $ca_password scp root@$ca:$certdir/$user.crt $certificate
+	sshpass -p $ca_password scp -o StrictHostKeyChecking=no $request root@$ca:$certdir/$user.csr
+	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca "pgcert --gencert --request $certdir/$user.csr --signature --output $certdir/$user.crt" >> $devnull
+	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca "rm -f $certdir/$user.csr" 
+	sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca:$certdir/$user.crt $certificate
 	rm -f $request
 fi
