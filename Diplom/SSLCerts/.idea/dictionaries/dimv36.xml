@@ -26,6 +26,7 @@
       <w>secontext</w>
       <w>selinux</w>
       <w>smime</w>
+      <w>subrange</w>
       <w>whoami</w>
     </words>
   </dictionary>
