@@ -2,7 +2,7 @@
 \lyxformat 413
 \begin_document
 \begin_header
-\textclass espd_cniieisu
+\textclass extarticle
 \begin_preamble
 \renewcommand\theenumii{\asbuk{enumii}}
 \end_preamble
@@ -325,7 +325,7 @@ height "1pt"
 Тема проекта (работы) 
 \bar under
 Реализация механизма автоматического выбора сертификата открытого ключа
- пользователя на основании его контекста безопасности
+ на основании его контекста безопасности
 \begin_inset space \hspace*{\fill}
 \end_inset
 
@@ -535,7 +535,7 @@ height "1pt"
 Консультанты по проекту (с указанием относящихся к ним разделов проекта)
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 \align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="3" columns="4">
@@ -683,12 +683,7 @@ height "1pt"
 \begin_layout Standard
 \align center
 (составляется руководителем с участием студента в течение первой недели
- с начала
-\end_layout
-
-\begin_layout Standard
-\align center
-дипломного проектирования)
+ с начала дипломного проектирования)
 \end_layout
 
 \begin_layout Standard
