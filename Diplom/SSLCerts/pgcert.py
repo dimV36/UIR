@@ -2,10 +2,9 @@
 __author__ = 'dimv36'
 from M2Crypto import RSA, X509, EVP, ASN1, BIO, SMIME
 from selinux import security_check_context_raw, getcon_raw
-from datetime import datetime
 from optparse import OptionParser, OptionGroup
 from os import path, getuid, getlogin
-from time import time
+from time import time, timezone
 from re import findall
 
 
@@ -18,12 +17,6 @@ DEFAULT_PASSWORD = '123456'
 
 def password(*args, **kwargs):
     return DEFAULT_PASSWORD
-
-
-def check_path(file_path):
-    if not path.exists(file_path):
-        print('ERROR: File path %s not exist' % file_path)
-        exit(1)
 
 
 def check_selinux_context(context):
@@ -82,10 +75,19 @@ def verify_user_context(user, current_context):
 
 
 def sign(private_key_path, certificate_path, request_path):
-    request = X509.load_request(request_path)
+    request = None
+    try:
+        request = X509.load_request(request_path)
+    except X509.X509Error:
+        print('ERROR sign: Could not load request from %s' % request_path)
+        exit(1)
     text = BIO.MemoryBuffer(request.as_pem())
     smime = SMIME.SMIME()
-    smime.load_key(private_key_path, certificate_path)
+    try:
+        smime.load_key(private_key_path, certificate_path)
+    except (ValueError, IOError, X509.X509Error):
+        print('ERROR sign: Could not load digital signature')
+        exit(1)
     sign_request = smime.sign(text)
     sign_request_file = BIO.openfile(request_path + '.sign', 'w')
     smime.write(sign_request_file, sign_request)
@@ -95,9 +97,11 @@ def sign(private_key_path, certificate_path, request_path):
 
 def verify(certificate_path, ca_certificate_path, sign_request_path, output):
     smime = SMIME.SMIME()
-    certificate = X509.load_cert(certificate_path)
-    if not certificate:
-        print('ERROR: Unable to load certificate %s' % certificate_path)
+    certificate = None
+    try:
+        certificate = X509.load_cert(certificate_path)
+    except (X509.X509Error, ValueError):
+        print('ERROR verify: Could not load certificate for verifying')
         exit(1)
     stack = X509.X509_Stack()
     stack.push(certificate)
@@ -127,8 +131,12 @@ def make_private_key(bits, output):
 
 
 def make_request(private_key_path, username, user_context, critical, output, is_printed):
-    check_path(private_key_path)
-    key_pair = EVP.load_key(private_key_path, callback=password)
+    key_pair = None
+    try:
+        key_pair = EVP.load_key(private_key_path, callback=password)
+    except EVP.EVPError:
+        print('ERROR request: Could not load key pair from %s' % private_key_path)
+        exit(1)
     request = X509.Request()
     request.set_pubkey(key_pair)
     request.set_version(2)
@@ -144,7 +152,7 @@ def make_request(private_key_path, username, user_context, critical, output, is_
     else:
         context = getcon_raw()[1]
     if not context:
-        print('Can not get SELinux context for user %s' % username)
+        print('ERROR request: Could not get SELinux context for user %s' % username)
         exit(1)
     request.set_subject_name(name)
     stack = X509.X509_Extension_Stack()
@@ -160,11 +168,15 @@ def make_request(private_key_path, username, user_context, critical, output, is_
 
 
 def make_certificate(request_path, ca_private_key_file, ca_certificate_file, output, is_digital, is_printed):
-    check_path(request_path)
-    request = X509.load_request(request_path)
+    request = None
+    try:
+        request = X509.load_request(request_path)
+    except X509.X509Error:
+        print('ERROR certificate: Could not load request from %s' % request_path)
+        exit(1)
     public_key = request.get_pubkey()
     if not request.verify(public_key):
-        print('Error verifying request')
+        print('ERROR certificate: Request is invalid')
         exit(1)
     subject = request.get_subject()
     ca_certificate = X509.load_cert(ca_certificate_file)
@@ -175,23 +187,22 @@ def make_certificate(request_path, ca_private_key_file, ca_certificate_file, out
     certificate.set_subject(subject)
     issuer = ca_certificate.get_issuer()
     not_before = ASN1.ASN1_UTCTIME()
-    not_before.set_datetime(datetime.today())
+    now = int(time() - timezone)
+    not_before.set_time(now)
     not_after = ASN1.ASN1_UTCTIME()
-    not_after.set_datetime(datetime(datetime.today().year + 1, datetime.today().month, datetime.today().day))
+    not_after.set_time(now + 60 * 60 * 24 * 365)
     certificate.set_not_before(not_before)
     certificate.set_not_after(not_after)
     certificate.set_issuer(issuer)
     certificate.set_pubkey(public_key)
     selinux_extension = request.get_extension_by_name('selinuxContext')
     if not selinux_extension:
-        print('ERROR: No extension selinuxContext in request %s' % request_path)
+        print('ERROR certificate: No extension selinuxContext in request %s' % request_path)
         exit(1)
     if not is_digital:
         if not verify_user_context(subject.CN, selinux_extension.get_value()):
-            print('ERROR: Invalid SELinux context in request file %s' % request_path)
+            print('ERROR certificate: Invalid SELinux context in request file %s' % request_path)
             exit(1)
-        else:
-            print('INFO: SELinux context is valid')
     certificate.add_ext(selinux_extension)
     certificate.add_ext(X509.new_extension('basicConstraints', 'CA:FALSE', 1))
     if is_digital:
@@ -206,32 +217,52 @@ def make_certificate(request_path, ca_private_key_file, ca_certificate_file, out
 
 
 def print_certificate(certificate_file_path):
-    check_path(certificate_file_path)
-    certificate = X509.load_cert(certificate_file_path)
+    certificate = None
+    try:
+        certificate = X509.load_cert(certificate_file_path)
+    except (X509.X509Error, ValueError):
+        print('ERROR print: Could not load certificate from %s' % certificate_file_path)
+        exit(1)
     print(certificate.as_text())
 
 
 def print_request(request_file_path):
-    check_path(request_file_path)
-    request = X509.load_request(request_file_path)
+    request = None
+    try:
+        request = X509.load_request(request_file_path)
+    except X509.X509Error:
+        print('ERROR print: Could not load request from %s' % request_file_path)
+        exit(1)
     print(request.as_text())
 
 
 def get_subject(certificate_file_path):
-    check_path(certificate_file_path)
-    certificate = X509.load_cert(certificate_file_path)
+    certificate = None
+    try:
+        certificate = X509.load_cert(certificate_file_path)
+    except (X509.X509Error, ValueError):
+        print('ERROR print: Could not load certificate from %s' % certificate_file_path)
+        exit(1)
     print(certificate.get_subject().as_text())
 
 
 def get_issuer(certificate_file_path):
-    check_path(certificate_file_path)
-    certificate = X509.load_cert(certificate_file_path)
+    certificate = None
+    try:
+        certificate = X509.load_cert(certificate_file_path)
+    except (X509.X509Error, ValueError):
+        print('ERROR print: Could not load certificate from %s' % certificate_file_path)
+        exit(1)
     print(certificate.get_issuer().as_text())
 
 
 def get_extension(certificate_file_path, name):
-    check_path(certificate_file_path)
-    certificate = X509.load_cert(certificate_file_path)
+    certificate = None
+    try:
+        certificate = X509.load_cert(certificate_file_path)
+    except (X509.X509Error, ValueError):
+        print('ERROR print: Could not load certificate from %s' % certificate_file_path)
+        exit(1)
     try:
         extension = certificate.get_ext(name)
     except LookupError:

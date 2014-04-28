@@ -16,10 +16,6 @@ devnull="/dev/null"
 
 pgcertdir="$polydir_path/.postgresql"
 signerdir="/etc/pki/keys"
-if [ `whoami` = "root" ]
-then
-	signerdir="/etc/pki/keys/keys.inst/$user"
-fi
 
 ca_ip="192.168.100.4"
 ca_password="123456"
@@ -31,7 +27,7 @@ create_certificate() {
 	mkdir $pgcertdir
 	pgcert --genkey  --output $pgcertdir/postgresql.key >> $devnull
 	chmod 0600 $pgcertdir/postgresql.key
-	pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --secontext $context --output $pgcertdir/postgresql.csr >> $devnull
+	pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --secontext $secontext --output $pgcertdir/postgresql.csr >> $devnull
 	pgcert --sign --pkey $signerdir/private.key --certificate $signerdir/$user.crt --request $pgcertdir/postgresql.csr >> $devnull
 	sshpass -p $ca_password scp -o StrictHostKeyChecking=no $pgcertdir/postgresql.csr.sign root@$ca_ip:$ca_certdir/postgresql.csr.sign >> $devnull
 	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert --verify --certificate /etc/pki/certs/$user.crt --request $ca_certdir/postgresql.csr.sign --output $ca_certdir/postgresql.csr" >> $devnull
@@ -51,7 +47,7 @@ create_signature() {
 	private_key=$signerdir/private.key
 	request=$signerdir/$user.csr
 	certificate=$signerdir/$user.crt
-	
+
 	pgcert --genkey --output $private_key >> $devnull
 	pgcert --genreq --pkey $private_key --user $user --secontext $secontext --output $request >> $devnull
 	sshpass -p $ca_password ssh -T root@$ca_ip bash -s <<-EOF
@@ -83,7 +79,7 @@ if [ "$need_to_create" = 1 ]; then
         chmod ${mode:-700} "$homedir"
         [ -x /sbin/restorecon ] && /sbin/restorecon -R "$homedir"
 		
-		if ! [ -f "$ca_signaturedir/private.key" ]
+		if ! [ -f "$signerdir/private.key" ]
 		then
 			create_signature
 		fi

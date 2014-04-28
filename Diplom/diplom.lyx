@@ -1,5 +1,5 @@
-#LyX 2.0 created this file. For more info see http://www.lyx.org/
-\lyxformat 413
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass extarticle
@@ -64,14 +64,16 @@
 
 %пока отменил, с ХеТеХ работает криво
 %Это то что нужно для того, чтобы листинги выводились с моноширинным шрифтом
-\lstset{
-breaklines=true,                % sets automatic line breaking
-basicstyle=\ttfamily,
-%отступ примерно 4 пробела
-breakindent={-1.2cm},
-xleftmargin=0.5cm
-}
-\fi
+\usepackage{listings}
+\lstloadlanguages{C,[ANSI]C++,Clean,make,Fortran}%Загружаемые языки
+
+\lstset{extendedchars=true, %Чтобы русские буквы в комментариях были
+        commentstyle=\it,
+        stringstyle=\bf,
+        language=bash, %Язык по умолчанию
+        belowcaptionskip=5pt}
+
+\renewcommand{\lstlistingname}{Распечатка \No}
 
 %русские буквы в нумерации
 \renewcommand\theenumii{\asbuk{enumii}}
@@ -96,13 +98,13 @@ figs-within-sections
 \font_roman default
 \font_sans default
 \font_typewriter cmtt
+\font_math auto
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 90
-
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -123,15 +125,24 @@ figs-within-sections
 \pdf_pdfusetitle true
 \papersize default
 \use_geometry true
-\use_amsmath 1
-\use_esint 1
-\use_mhchem 1
-\use_mathdots 1
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
 \suppress_date false
+\justification true
 \use_refstyle 1
 \index Index
 \shortcut idx
@@ -215,8 +226,8 @@ height "1pt"
 \size large
 \begin_inset Tabular
 <lyxtabular version="3" rows="5" columns="2">
-<features tabularvalignment="middle">
-<column alignment="center" valignment="top" width="0">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
 <column alignment="center" valignment="top" width="14cm">
 <row>
 <cell multirow="3" alignment="left" valignment="middle" usebox="none">
@@ -399,7 +410,7 @@ height "1pt"
 \color black
 \begin_inset Tabular
 <lyxtabular version="3" rows="3" columns="1">
-<features tabularvalignment="middle">
+<features rotate="0" tabularvalignment="middle">
 <column alignment="center" valignment="top" width="100text%">
 <row>
 <cell alignment="center" valignment="top" bottomline="true" usebox="none">
@@ -457,12 +468,12 @@ height "1pt"
 \size large
 \begin_inset Tabular
 <lyxtabular version="3" rows="8" columns="5">
-<features tabularvalignment="middle">
+<features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="5.8cm">
 <column alignment="center" valignment="top" width="4cm">
-<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top">
 <column alignment="center" valignment="top" width="4cm">
-<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top">
 <row>
 <cell alignment="left" valignment="top" usebox="none">
 \begin_inset Text
@@ -1920,7 +1931,7 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -2409,7 +2420,7 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -2757,6 +2768,89 @@ Authority Access Info
  
 \end_layout
 
+\begin_layout Subsection
+Электронно-цифровая подпись
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Электронная цифровая подпись
+\series default
+ (
+\emph on
+ЭЦП
+\emph default
+) — реквизит электронного документа, позволяющий установить отсутствие искажения
+ информации в электронном документе с момента формирования ЭЦП и проверить
+ принадлежность подписи владельцу сертификата ключа ЭЦП.
+ Значение реквизита получается в результате криптографического преобразования
+ информации с использованием закрытого ключа ЭЦП.
+ 
+\end_layout
+
+\begin_layout Standard
+ЭЦП обычно используется для идентификации лица, подписавшего электронный
+ документ.
+ 
+\end_layout
+
+\begin_layout Standard
+Использование электронной подписи позволяет осуществить:
+\end_layout
+
+\begin_layout Itemize
+Контроль целостности передаваемого документа: при любом случайном или преднамере
+нном изменении документа подпись станет недействительной, потому что вычислена
+ она на основании исходного состояния документа и соответствует лишь ему;
+\end_layout
+
+\begin_layout Itemize
+Защиту от изменений (подделки) документа: гарантия выявления подделки при
+ контроле целостности делает подделывание нецелесообразным в большинстве
+ случаев;
+\end_layout
+
+\begin_layout Itemize
+Невозможность отказа от авторства.
+ Так как создать корректную подпись можно, лишь зная закрытый ключ, а он
+ известен только владельцу, он не может отказаться от своей подписи под
+ документом;
+\end_layout
+
+\begin_layout Itemize
+Доказательное подтверждение авторства документа: Так как создать корректную
+ подпись можно, лишь зная закрытый ключ, а он известен только владельцу,
+ он может доказать своё авторство подписи под документом.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Существует несколько схем построения цифровой подписи:
+\end_layout
+
+\begin_layout Itemize
+На основе алгоритмов симметричного шифрования.
+ Данная схема предусматривает наличие в системе третьего лица --- арбитра,
+ пользующегося доверием обеих сторон.
+ Авторизацией документа является сам факт зашифрования его секретным ключом
+ и передача его арбитру;
+\end_layout
+
+\begin_layout Itemize
+На основе алгоритмов асимметричного шифрования.
+ На данный момент такие схемы ЭП наиболее распространены и находят широкое
+ применение.
+ 
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
 \begin_layout Subsection*
 Выводы по главе
 \end_layout
@@ -2793,11 +2887,11 @@ Authority Access Info
 \end_layout
 
 \begin_layout Section
-Разработка механизма передачи метки безопасности серверу PostgreSQL
+Разработка механизма автоматического выбора сертификата открытого ключа
 \end_layout
 
 \begin_layout Subsection
-Алгоритм работы механизма передачи метки безопасности серверу PostgreSQL
+Алгоритм работы механизма автоматического выбора сертификата открытого ключа
 \end_layout
 
 \begin_layout Standard
@@ -2809,19 +2903,17 @@ Authority Access Info
 \end_layout
 
 \begin_layout Enumerate
-Создается директория 
-\family typewriter
-.postgresql
-\family default
-;
+Проверяется наличие цифровой подписи клиента.
+ Если она была создана, выполняется переход к п.
+ 4.
 \end_layout
 
 \begin_layout Enumerate
-В созданной директории генерируется закрытый ключ 
-\family typewriter
-postgresql.key
-\family default
-;
+Создается цифровая подпись клиента;
+\end_layout
+
+\begin_layout Enumerate
+Создается приватный ключ клиента;
 \end_layout
 
 \begin_layout Enumerate
@@ -2830,43 +2922,22 @@ postgresql.key
 \end_layout
 
 \begin_layout Enumerate
-Запрос на подпись сертификата пересылается удостоверяющему центру и подписываетс
-я им;
+Запрос подписывается цифровой подписью клиента и отправляется на удостоверяющий
+ центр;
 \end_layout
 
 \begin_layout Enumerate
-Созданный сертификат копируется пользователю в директорию 
-\family typewriter
-.postgresql
-\family default
-;
+Удостоверяющий центр выполняет проверку цифровой подписи;
 \end_layout
 
 \begin_layout Enumerate
-В эту же директорию копируется сертификат удостоверяющего центра;
+Выпуск сертификата открытого ключа и пересылка сертификата клиенту;
 \end_layout
 
 \begin_layout Enumerate
-Клиент подключается к PostgreSQL, PostgreSQL должна осуществить аутентификацию
- пользователя по методу 
-\family typewriter
-cert
-\family default
-;
-\end_layout
-
-\begin_layout Enumerate
-Удостовериться, что в сертификате действительно содержится корректный контекст
- безопасности пользователя;
-\end_layout
-
-\begin_layout Enumerate
-Клиент должен иметь тот контекст пользователя, который указан в его сертификате;
-\end_layout
-
-\begin_layout Enumerate
-При переходе пользователя на новый мандатный уровень, выполняются шаги 2-10
- данного алгоритма.
+При переходе пользователя на новый уровень безопасности, выполняются шаги
+ 4-9 данного алгоритма.
+ 
 \end_layout
 
 \begin_layout --Separator--
@@ -2897,8 +2968,10 @@ status collapsed
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename files/algorithm.png
+	filename /home/dimv36/vbox/algorithm.png
 	width 95text%
+	height 75pheight%
+	keepAspectRatio
 
 \end_inset
 
@@ -2906,7 +2979,7 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -4834,10 +4907,10 @@ status collapsed
 \align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="13" columns="3">
-<features tabularvalignment="middle">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
 <row>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
@@ -5247,7 +5320,7 @@ text
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -5439,10 +5512,10 @@ status collapsed
 \align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="7" columns="3">
-<features tabularvalignment="middle">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
 <row>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
@@ -5666,7 +5739,7 @@ boolean
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -5826,7 +5899,8 @@ sslinfo
 \end_layout
 
 \begin_layout Section
-Реализация механизма выбора сертификата клиентом PostgreSQL
+Реализация механизма выбора автоматического выбора сертификата открытого
+ ключа
 \end_layout
 
 \begin_layout Subsection
@@ -6821,7 +6895,7 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -9138,7 +9212,7 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -9756,6 +9830,78 @@ $5
 \end_layout
 
 \begin_layout Standard
+Для улучшения читаемости скрипта были объявлены следующие глобальные переменные
+ скрипта:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+polydir_path="$1"
+\end_layout
+
+\begin_layout Plain Layout
+
+instance_path="$2"
+\end_layout
+
+\begin_layout Plain Layout
+
+need_to_create="$3"
+\end_layout
+
+\begin_layout Plain Layout
+
+user="$4"
+\end_layout
+
+\begin_layout Plain Layout
+
+secontext="$5"
+\end_layout
+
+\begin_layout Plain Layout
+
+devnull="/dev/null"                    # sasdasd
+\end_layout
+
+\begin_layout Plain Layout
+
+pgcertdir="$polydir_path/.postgresql"
+\end_layout
+
+\begin_layout Plain Layout
+
+signerdir="/etc/pki/keys"
+\end_layout
+
+\begin_layout Plain Layout
+
+ca_ip="192.168.100.4"
+\end_layout
+
+\begin_layout Plain Layout
+
+ca_password="123456"
+\end_layout
+
+\begin_layout Plain Layout
+
+ca_certdir="/root/certs"
+\end_layout
+
+\begin_layout Plain Layout
+
+ca_signaturedir="/etc/pki/certs"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Если экземпляр многоэкземплярной директории требует создания, выполняются
  команды по инициализации директории.
  Контекст безопасности устанавливается по умолчанию:
@@ -9807,7 +9953,7 @@ passwd=$(getent passwd "$user")
 
 \begin_layout Plain Layout
 
-homedir=$(echo "$passwd" | cut -f6 -d":")
+homedir=$(echo "$passwd" | cut -f6 -d":") 
 \end_layout
 
 \end_inset
@@ -10678,9 +10824,9 @@ status open
 \align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="8" columns="2">
-<features tabularvalignment="middle">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
 <row>
 <cell multirow="3" alignment="left" valignment="middle" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
@@ -10861,7 +11007,7 @@ user_u:user_r:user_t:s1-s3:c0.c10
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -11399,7 +11545,7 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -11445,7 +11591,7 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -11495,7 +11641,7 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -11545,7 +11691,7 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -11591,7 +11737,7 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -11641,7 +11787,7 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 \begin_inset CommandInset label
@@ -13801,17 +13947,12 @@ __author__ = 'dimv36'
 
 \begin_layout Plain Layout
 
-from M2Crypto import RSA, X509, EVP, ASN1
+from M2Crypto import RSA, X509, EVP, ASN1, BIO, SMIME
 \end_layout
 
 \begin_layout Plain Layout
 
-from subprocess import check_output
-\end_layout
-
-\begin_layout Plain Layout
-
-from datetime import datetime
+from selinux import security_check_context_raw, getcon_raw
 \end_layout
 
 \begin_layout Plain Layout
@@ -13821,12 +13962,17 @@ from optparse import OptionParser, OptionGroup
 
 \begin_layout Plain Layout
 
-from os import path, getuid
+from os import path, getuid, getlogin
 \end_layout
 
 \begin_layout Plain Layout
 
-from time import time
+from time import time, timezone
+\end_layout
+
+\begin_layout Plain Layout
+
+from re import findall
 \end_layout
 
 \begin_layout Plain Layout
@@ -13839,39 +13985,23 @@ from time import time
 
 \begin_layout Plain Layout
 
-DEFAULT_FIELDS = {'C': 'ru',
+DEFAULT_FIELDS = dict(C='ru', ST='msk', L='msk', O='mephi', OU='kaf36',
+ CN=getlogin())
 \end_layout
 
 \begin_layout Plain Layout
 
-                  'ST': 'msk',
+CAKEY = '/etc/pki/CA/private/cakey.pem'
 \end_layout
 
 \begin_layout Plain Layout
 
-                  'L': 'msk',
+CACERT = '/etc/pki/CA/cacert.pem'
 \end_layout
 
 \begin_layout Plain Layout
 
-                  'O': 'mephi',
-\end_layout
-
-\begin_layout Plain Layout
-
-                  'OU': 'kaf36',
-\end_layout
-
-\begin_layout Plain Layout
-
-                  'CN': check_output("whoami", shell=True).split('
-\backslash
-n')[0],
-\end_layout
-
-\begin_layout Plain Layout
-
-                  'SC': ''}
+DIGITAL_SIGNATURE_PATH = '/etc/pki/certs'
 \end_layout
 
 \begin_layout Plain Layout
@@ -13907,22 +14037,37 @@ def password(*args, **kwargs):
 
 \begin_layout Plain Layout
 
-def check_path(file_path):
+def check_selinux_context(context):
 \end_layout
 
 \begin_layout Plain Layout
 
-    if not path.exists(file_path):
+    if context:
 \end_layout
 
 \begin_layout Plain Layout
 
-        print("ERROR: File path %s not exist" % file_path)
+        try:
 \end_layout
 
 \begin_layout Plain Layout
 
-        exit(1)
+            security_check_context_raw(options.secontext)
+\end_layout
+
+\begin_layout Plain Layout
+
+        except OSError:
+\end_layout
+
+\begin_layout Plain Layout
+
+            print('ERROR: Invalid SELinux context in argument')
+\end_layout
+
+\begin_layout Plain Layout
+
+            exit(1)
 \end_layout
 
 \begin_layout Plain Layout
@@ -13945,7 +14090,7 @@ def check_permissions():
 
 \begin_layout Plain Layout
 
-        print("Please, login as `root` and try again")
+        print('Please, login as `root` and try again')
 \end_layout
 
 \begin_layout Plain Layout
@@ -13963,12 +14108,395 @@ def check_permissions():
 
 \begin_layout Plain Layout
 
-def make_private_key(bits, output):
+def make_level_and_category_sets(context):
 \end_layout
 
 \begin_layout Plain Layout
 
-    rsa_key = RSA.gen_key(bits, 65537, callback=password)
+    level_range = findall(r's(
+\backslash
+d+)', context.split(':')[3])
+\end_layout
+
+\begin_layout Plain Layout
+
+    level_range = [int(element) for element in level_range]
+\end_layout
+
+\begin_layout Plain Layout
+
+    level_set = set()
+\end_layout
+
+\begin_layout Plain Layout
+
+    if len(level_range) == 1:
+\end_layout
+
+\begin_layout Plain Layout
+
+        level_set.add(level_range[0])
+\end_layout
+
+\begin_layout Plain Layout
+
+    else:
+\end_layout
+
+\begin_layout Plain Layout
+
+        level_set = {element for element in range(level_range[0], level_range[1]
+ + 1)}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    category = str()
+\end_layout
+
+\begin_layout Plain Layout
+
+    try:
+\end_layout
+
+\begin_layout Plain Layout
+
+        category = context.split(':')[4]
+\end_layout
+
+\begin_layout Plain Layout
+
+    except IndexError:
+\end_layout
+
+\begin_layout Plain Layout
+
+        pass
+\end_layout
+
+\begin_layout Plain Layout
+
+    category_set = set()
+\end_layout
+
+\begin_layout Plain Layout
+
+    if category:
+\end_layout
+
+\begin_layout Plain Layout
+
+        category_range = findall(r'c(
+\backslash
+d+)
+\backslash
+.c(
+\backslash
+d+)', category)
+\end_layout
+
+\begin_layout Plain Layout
+
+        for subrange in category_range:
+\end_layout
+
+\begin_layout Plain Layout
+
+            replace = str()
+\end_layout
+
+\begin_layout Plain Layout
+
+            for index in range(int(subrange[0]), int(subrange[1]) + 1):
+\end_layout
+
+\begin_layout Plain Layout
+
+                replace += 'c%s,' % index
+\end_layout
+
+\begin_layout Plain Layout
+
+            replace = replace[:-1]
+\end_layout
+
+\begin_layout Plain Layout
+
+            category = category.replace(str(r'c%s.c%s' % (subrange[0], subrange[1]
+)), replace)
+\end_layout
+
+\begin_layout Plain Layout
+
+    category_set = set(findall(r'c(
+\backslash
+d+)', category))
+\end_layout
+
+\begin_layout Plain Layout
+
+    category_set = {int(element) for element in category_set}
+\end_layout
+
+\begin_layout Plain Layout
+
+    return level_set, category_set
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def verify_user_context(user, current_context):
+\end_layout
+
+\begin_layout Plain Layout
+
+    main_user_context = get_extension(DIGITAL_SIGNATURE_PATH + '/%s.crt'
+ % user, 'selinuxContext')
+\end_layout
+
+\begin_layout Plain Layout
+
+    if not main_user_context:
+\end_layout
+
+\begin_layout Plain Layout
+
+        return False
+\end_layout
+
+\begin_layout Plain Layout
+
+    main_level, main_category = make_level_and_category_sets(main_user_context)
+\end_layout
+
+\begin_layout Plain Layout
+
+    current_level, current_category = make_level_and_category_sets(current_conte
+xt)
+\end_layout
+
+\begin_layout Plain Layout
+
+    if current_level.issubset(main_level) and current_category.issubset(main_categ
+ory):
+\end_layout
+
+\begin_layout Plain Layout
+
+        return True
+\end_layout
+
+\begin_layout Plain Layout
+
+    else:
+\end_layout
+
+\begin_layout Plain Layout
+
+        return False
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def sign(private_key_path, certificate_path, request_path):
+\end_layout
+
+\begin_layout Plain Layout
+
+    request = None
+\end_layout
+
+\begin_layout Plain Layout
+
+    try:
+\end_layout
+
+\begin_layout Plain Layout
+
+        request = X509.load_request(request_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    except X509.X509Error:
+\end_layout
+
+\begin_layout Plain Layout
+
+        print('ERROR sign: Could not load request from %s' % request_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+        exit(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+    text = BIO.MemoryBuffer(request.as_pem())
+\end_layout
+
+\begin_layout Plain Layout
+
+    smime = SMIME.SMIME()
+\end_layout
+
+\begin_layout Plain Layout
+
+    try:
+\end_layout
+
+\begin_layout Plain Layout
+
+        smime.load_key(private_key_path, certificate_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    except (ValueError, IOError, X509.X509Error):
+\end_layout
+
+\begin_layout Plain Layout
+
+        print('ERROR sign: Could not load digital signature')
+\end_layout
+
+\begin_layout Plain Layout
+
+        exit(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+    sign_request = smime.sign(text)
+\end_layout
+
+\begin_layout Plain Layout
+
+    sign_request_file = BIO.openfile(request_path + '.sign', 'w')
+\end_layout
+
+\begin_layout Plain Layout
+
+    smime.write(sign_request_file, sign_request)
+\end_layout
+
+\begin_layout Plain Layout
+
+    sign_request_file.close()
+\end_layout
+
+\begin_layout Plain Layout
+
+    print('Signing request was saved to %s' % request_path + '.sign')
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def verify(certificate_path, ca_certificate_path, sign_request_path, output):
+\end_layout
+
+\begin_layout Plain Layout
+
+    smime = SMIME.SMIME()
+\end_layout
+
+\begin_layout Plain Layout
+
+    certificate = None
+\end_layout
+
+\begin_layout Plain Layout
+
+    try:
+\end_layout
+
+\begin_layout Plain Layout
+
+        certificate = X509.load_cert(certificate_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    except (X509.X509Error, ValueError):
+\end_layout
+
+\begin_layout Plain Layout
+
+        print('ERROR verify: Could not load certificate for verifying')
+\end_layout
+
+\begin_layout Plain Layout
+
+        exit(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+    stack = X509.X509_Stack()
+\end_layout
+
+\begin_layout Plain Layout
+
+    stack.push(certificate)
+\end_layout
+
+\begin_layout Plain Layout
+
+    smime.set_x509_stack(stack)
+\end_layout
+
+\begin_layout Plain Layout
+
+    store = X509.X509_Store()
+\end_layout
+
+\begin_layout Plain Layout
+
+    store.load_info(ca_certificate_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    smime.set_x509_store(store)
+\end_layout
+
+\begin_layout Plain Layout
+
+    pks7, data = SMIME.smime_load_pkcs7(sign_request_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    clear_text = smime.verify(pks7, data)
 \end_layout
 
 \begin_layout Plain Layout
@@ -13978,12 +14506,75 @@ def make_private_key(bits, output):
 
 \begin_layout Plain Layout
 
-        output = path.abspath(path.curdir) + "/mykey.pem"
+        output = path.abspath(path.curdir) + '/%s.csr' % DEFAULT_FIELDS['CN']
 \end_layout
 
 \begin_layout Plain Layout
 
-    rsa_key.save_key(output, None)
+    if clear_text:
+\end_layout
+
+\begin_layout Plain Layout
+
+        request = X509.load_request_string(clear_text)
+\end_layout
+
+\begin_layout Plain Layout
+
+        request.save(output)
+\end_layout
+
+\begin_layout Plain Layout
+
+        print('Verification OK')
+\end_layout
+
+\begin_layout Plain Layout
+
+        print('Request file was saved to %s' % output)
+\end_layout
+
+\begin_layout Plain Layout
+
+    else:
+\end_layout
+
+\begin_layout Plain Layout
+
+        print('Verification failed')
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def make_private_key(bits, output):
+\end_layout
+
+\begin_layout Plain Layout
+
+    key_pair = RSA.gen_key(bits, 65537, callback=password)
+\end_layout
+
+\begin_layout Plain Layout
+
+    if not output:
+\end_layout
+
+\begin_layout Plain Layout
+
+        output = path.abspath(path.curdir) + '/mykey.pem'
+\end_layout
+
+\begin_layout Plain Layout
+
+    key_pair.save_key(output, None)
 \end_layout
 
 \begin_layout Plain Layout
@@ -14007,12 +14598,33 @@ def make_request(private_key_path, username, user_context, critical, output,
 
 \begin_layout Plain Layout
 
-    check_path(private_key_path)
+    key_pair = None
 \end_layout
 
 \begin_layout Plain Layout
 
-    private_key = EVP.load_key(private_key_path, callback=password)
+    try:
+\end_layout
+
+\begin_layout Plain Layout
+
+        key_pair = EVP.load_key(private_key_path, callback=password)
+\end_layout
+
+\begin_layout Plain Layout
+
+    except EVP.EVPError:
+\end_layout
+
+\begin_layout Plain Layout
+
+        print('ERROR request: Could not load key pair from %s' % private_key_pat
+h)
+\end_layout
+
+\begin_layout Plain Layout
+
+        exit(1)
 \end_layout
 
 \begin_layout Plain Layout
@@ -14022,7 +14634,7 @@ def make_request(private_key_path, username, user_context, critical, output,
 
 \begin_layout Plain Layout
 
-    request.set_pubkey(private_key)
+    request.set_pubkey(key_pair)
 \end_layout
 
 \begin_layout Plain Layout
@@ -14082,9 +14694,7 @@ def make_request(private_key_path, username, user_context, critical, output,
 
 \begin_layout Plain Layout
 
-        context = check_output("id -Z", shell=True).split('
-\backslash
-n')[0]
+        context = getcon_raw()[1]
 \end_layout
 
 \begin_layout Plain Layout
@@ -14094,7 +14704,8 @@ n')[0]
 
 \begin_layout Plain Layout
 
-        print('Command `id -Z` return with error code')
+        print('ERROR request: Could not get SELinux context for user %s'
+ % username)
 \end_layout
 
 \begin_layout Plain Layout
@@ -14114,7 +14725,7 @@ n')[0]
 
 \begin_layout Plain Layout
 
-    stack.push(X509.new_extension("selinuxContext", context, int(critical)))
+    stack.push(X509.new_extension('selinuxContext', context, int(critical)))
 \end_layout
 
 \begin_layout Plain Layout
@@ -14124,7 +14735,7 @@ n')[0]
 
 \begin_layout Plain Layout
 
-    request.sign(private_key, 'sha1')
+    request.sign(key_pair, 'sha1')
 \end_layout
 
 \begin_layout Plain Layout
@@ -14168,17 +14779,38 @@ n')[0]
 \begin_layout Plain Layout
 
 def make_certificate(request_path, ca_private_key_file, ca_certificate_file,
- output, is_printed):
+ output, is_digital, is_printed):
 \end_layout
 
 \begin_layout Plain Layout
 
-    check_path(request_path)
+    request = None
 \end_layout
 
 \begin_layout Plain Layout
 
-    request = X509.load_request(request_path)
+    try:
+\end_layout
+
+\begin_layout Plain Layout
+
+        request = X509.load_request(request_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    except X509.X509Error:
+\end_layout
+
+\begin_layout Plain Layout
+
+        print('ERROR certificate: Could not load request from %s' % request_path
+)
+\end_layout
+
+\begin_layout Plain Layout
+
+        exit(1)
 \end_layout
 
 \begin_layout Plain Layout
@@ -14193,7 +14825,7 @@ def make_certificate(request_path, ca_private_key_file, ca_certificate_file,
 
 \begin_layout Plain Layout
 
-        print('Error verifying request')
+        print('ERROR certificate: Request is invalid')
 \end_layout
 
 \begin_layout Plain Layout
@@ -14248,7 +14880,12 @@ def make_certificate(request_path, ca_private_key_file, ca_certificate_file,
 
 \begin_layout Plain Layout
 
-    not_before.set_datetime(datetime.today())
+    now = int(time() - timezone)
+\end_layout
+
+\begin_layout Plain Layout
+
+    not_before.set_time(now)
 \end_layout
 
 \begin_layout Plain Layout
@@ -14258,8 +14895,7 @@ def make_certificate(request_path, ca_private_key_file, ca_certificate_file,
 
 \begin_layout Plain Layout
 
-    not_after.set_datetime(datetime(datetime.today().year + 1, datetime.today().month
-, datetime.today().day))
+    not_after.set_time(now + 60 * 60 * 24 * 365)
 \end_layout
 
 \begin_layout Plain Layout
@@ -14284,7 +14920,7 @@ def make_certificate(request_path, ca_private_key_file, ca_certificate_file,
 
 \begin_layout Plain Layout
 
-    selinux_extension = request.get_extension_by_name("selinuxContext")
+    selinux_extension = request.get_extension_by_name('selinuxContext')
 \end_layout
 
 \begin_layout Plain Layout
@@ -14294,7 +14930,8 @@ def make_certificate(request_path, ca_private_key_file, ca_certificate_file,
 
 \begin_layout Plain Layout
 
-        print("No extension selinuxContext in request %s" % request_path)
+        print('ERROR certificate: No extension selinuxContext in request
+ %s' % request_path)
 \end_layout
 
 \begin_layout Plain Layout
@@ -14304,12 +14941,44 @@ def make_certificate(request_path, ca_private_key_file, ca_certificate_file,
 
 \begin_layout Plain Layout
 
+    if not is_digital:
+\end_layout
+
+\begin_layout Plain Layout
+
+        if not verify_user_context(subject.CN, selinux_extension.get_value()):
+\end_layout
+
+\begin_layout Plain Layout
+
+            print('ERROR certificate: Invalid SELinux context in request
+ file %s' % request_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+            exit(1)
+\end_layout
+
+\begin_layout Plain Layout
+
     certificate.add_ext(selinux_extension)
 \end_layout
 
 \begin_layout Plain Layout
 
-    certificate.add_ext(X509.new_extension("basicConstraints", "CA:FALSE",
+    certificate.add_ext(X509.new_extension('basicConstraints', 'CA:FALSE',
+ 1))
+\end_layout
+
+\begin_layout Plain Layout
+
+    if is_digital:
+\end_layout
+
+\begin_layout Plain Layout
+
+        certificate.add_ext(X509.new_extension('keyUsage', 'Digital Signature',
  1))
 \end_layout
 
@@ -14363,12 +15032,33 @@ def print_certificate(certificate_file_path):
 
 \begin_layout Plain Layout
 
-    check_path(certificate_file_path)
+    certificate = None
 \end_layout
 
 \begin_layout Plain Layout
 
-    certificate = X509.load_cert(certificate_file_path)
+    try:
+\end_layout
+
+\begin_layout Plain Layout
+
+        certificate = X509.load_cert(certificate_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    except (X509.X509Error, ValueError):
+\end_layout
+
+\begin_layout Plain Layout
+
+        print('ERROR print: Could not load certificate from %s' % certificate_fi
+le_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+        exit(1)
 \end_layout
 
 \begin_layout Plain Layout
@@ -14391,12 +15081,32 @@ def print_request(request_file_path):
 
 \begin_layout Plain Layout
 
-    check_path(request_file_path)
+    request = None
 \end_layout
 
 \begin_layout Plain Layout
 
-    request = X509.load_request(request_file_path)
+    try:
+\end_layout
+
+\begin_layout Plain Layout
+
+        request = X509.load_request(request_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    except X509.X509Error:
+\end_layout
+
+\begin_layout Plain Layout
+
+        print('ERROR print: Could not load request from %s' % request_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+        exit(1)
 \end_layout
 
 \begin_layout Plain Layout
@@ -14419,12 +15129,33 @@ def get_subject(certificate_file_path):
 
 \begin_layout Plain Layout
 
-    check_path(certificate_file_path)
+    certificate = None
 \end_layout
 
 \begin_layout Plain Layout
 
-    certificate = X509.load_cert(certificate_file_path)
+    try:
+\end_layout
+
+\begin_layout Plain Layout
+
+        certificate = X509.load_cert(certificate_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    except (X509.X509Error, ValueError):
+\end_layout
+
+\begin_layout Plain Layout
+
+        print('ERROR print: Could not load certificate from %s' % certificate_fi
+le_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+        exit(1)
 \end_layout
 
 \begin_layout Plain Layout
@@ -14447,12 +15178,33 @@ def get_issuer(certificate_file_path):
 
 \begin_layout Plain Layout
 
-    check_path(certificate_file_path)
+    certificate = None
 \end_layout
 
 \begin_layout Plain Layout
 
-    certificate = X509.load_cert(certificate_file_path)
+    try:
+\end_layout
+
+\begin_layout Plain Layout
+
+        certificate = X509.load_cert(certificate_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    except (X509.X509Error, ValueError):
+\end_layout
+
+\begin_layout Plain Layout
+
+        print('ERROR print: Could not load certificate from %s' % certificate_fi
+le_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+        exit(1)
 \end_layout
 
 \begin_layout Plain Layout
@@ -14475,12 +15227,33 @@ def get_extension(certificate_file_path, name):
 
 \begin_layout Plain Layout
 
-    check_path(certificate_file_path)
+    certificate = None
 \end_layout
 
 \begin_layout Plain Layout
 
-    certificate = X509.load_cert(certificate_file_path)
+    try:
+\end_layout
+
+\begin_layout Plain Layout
+
+        certificate = X509.load_cert(certificate_file_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    except (X509.X509Error, ValueError):
+\end_layout
+
+\begin_layout Plain Layout
+
+        print('ERROR print: Could not load certificate from %s' % certificate_fi
+le_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+        exit(1)
 \end_layout
 
 \begin_layout Plain Layout
@@ -14500,7 +15273,7 @@ def get_extension(certificate_file_path, name):
 
 \begin_layout Plain Layout
 
-        print("Certificate %s does not has extension %s" % (certificate_file_pat
+        print('Certificate %s does not has extension %s' % (certificate_file_pat
 h, name))
 \end_layout
 
@@ -14511,7 +15284,7 @@ h, name))
 
 \begin_layout Plain Layout
 
-        print(extension.get_value())
+        return extension.get_value()
 \end_layout
 
 \begin_layout Plain Layout
@@ -14524,12 +15297,12 @@ h, name))
 
 \begin_layout Plain Layout
 
-if __name__ == "__main__":
+if __name__ == '__main__':
 \end_layout
 
 \begin_layout Plain Layout
 
-    parser = OptionParser(usage="usage: %prog [Main Options] options",
+    parser = OptionParser(usage='usage: %prog [Main Options] options',
 \end_layout
 
 \begin_layout Plain Layout
@@ -14539,51 +15312,76 @@ if __name__ == "__main__":
 
 \begin_layout Plain Layout
 
-                          description="This program use M2Crypto library
- and can generate X509 certificate "
+                          description='This program use M2Crypto library
+ and can generate X509 certificate '
 \end_layout
 
 \begin_layout Plain Layout
 
-                                      "with X509v3 extension SELinux Context")
+                                      'with X509v3 extension SELinux Context')
 \end_layout
 
 \begin_layout Plain Layout
 
-    main_options = OptionGroup(parser, "Main Options")
+    main_options = OptionGroup(parser, 'Main Options')
 \end_layout
 
 \begin_layout Plain Layout
 
-    main_options.add_option("--genkey", dest="genkey", action="store_true",
+    main_options.add_option('--genkey', dest='genkey', action='store_true',
  default=False,
 \end_layout
 
 \begin_layout Plain Layout
 
-                            help="generate private key")
+                            help='generate private key')
 \end_layout
 
 \begin_layout Plain Layout
 
-    main_options.add_option("--genreq", dest="genreq", action="store_true",
+    main_options.add_option('--genreq', dest='genreq', action='store_true',
  default=False,
 \end_layout
 
 \begin_layout Plain Layout
 
-                            help="generate certificate request")
+                            help='generate certificate request')
 \end_layout
 
 \begin_layout Plain Layout
 
-    main_options.add_option("--gencert", dest="gencert", action="store_true",
+    main_options.add_option('--gencert', dest='gencert', action='store_true',
  default=False,
 \end_layout
 
 \begin_layout Plain Layout
 
-                            help="generate certificate for user")
+                            help='generate certificate for user')
+\end_layout
+
+\begin_layout Plain Layout
+
+    main_options.add_option('--sign', dest='sign', action='store_true', default=F
+alse,
+\end_layout
+
+\begin_layout Plain Layout
+
+                            help='sign request by user
+\backslash
+'s digital signature')
+\end_layout
+
+\begin_layout Plain Layout
+
+    main_options.add_option('--verify', dest='verify', action='store_true',
+ default=False,
+\end_layout
+
+\begin_layout Plain Layout
+
+                            help='verify signature of request by user digital
+ signature')
 \end_layout
 
 \begin_layout Plain Layout
@@ -14597,13 +15395,17 @@ if __name__ == "__main__":
 
 \begin_layout Plain Layout
 
-    pkey_group = OptionGroup(parser, "Private key options")
+    pkey_group = OptionGroup(parser, 'Private key options')
 \end_layout
 
 \begin_layout Plain Layout
 
-    pkey_group.add_option("--bits", dest="bits", type="int", default=2048,
- help="set length of key, default: %default")
+    pkey_group.add_option('--bits', dest='bits', type=int, default=2048,
+\end_layout
+
+\begin_layout Plain Layout
+
+                          help='set length of private key, default: %default')
 \end_layout
 
 \begin_layout Plain Layout
@@ -14617,35 +15419,35 @@ if __name__ == "__main__":
 
 \begin_layout Plain Layout
 
-    req_group = OptionGroup(parser, "Request options")
+    req_group = OptionGroup(parser, 'Request options')
 \end_layout
 
 \begin_layout Plain Layout
 
-    req_group.add_option("--user", dest="user", default=DEFAULT_FIELDS['CN'],
+    req_group.add_option('--user', dest='user', default=DEFAULT_FIELDS['CN'],
 \end_layout
 
 \begin_layout Plain Layout
 
-                         help="add username to request, default: %default")
+                         help='set CN of request, default: %default')
 \end_layout
 
 \begin_layout Plain Layout
 
-    req_group.add_option("--secontext", dest="secontext", help="add selinux
- context of user")
+    req_group.add_option('--secontext', dest='secontext', help='add SELinux
+ context to request')
 \end_layout
 
 \begin_layout Plain Layout
 
-    req_group.add_option("--critical", dest="critical", action="store_true",
+    req_group.add_option('--critical', dest='critical', action='store_true',
  default=False,
 \end_layout
 
 \begin_layout Plain Layout
 
-                         help="set critical of selinuxContext extension,
- default %default")
+                         help='set critical of selinuxContext extension,
+ default: %default')
 \end_layout
 
 \begin_layout Plain Layout
@@ -14659,49 +15461,82 @@ if __name__ == "__main__":
 
 \begin_layout Plain Layout
 
-    input_options = OptionGroup(parser, "Input options")
+    certificate_group = OptionGroup(parser, 'Certificate options')
 \end_layout
 
 \begin_layout Plain Layout
 
-    input_options.add_option("--pkey", dest="pkey", help="add location of
- private key")
+    certificate_group.add_option('--signature', dest='signature', action='store_t
+rue', default=False,
 \end_layout
 
 \begin_layout Plain Layout
 
-    input_options.add_option("--request", dest="request", help="add location
- of certificate request")
+                                 help='add extension keyUsage with value
+ 
+\backslash
+'Digital signature
+\backslash
+' to certificate, '
 \end_layout
 
 \begin_layout Plain Layout
 
-    input_options.add_option("--certificate", dest="certificate", help="add
- location of certificate")
+                                      'default: %default')
 \end_layout
 
 \begin_layout Plain Layout
 
-    input_options.add_option("--cacert", dest="cacert", default="/etc/pki/CA/cace
-rt.pem",
+    parser.add_option_group(certificate_group)
 \end_layout
 
 \begin_layout Plain Layout
 
-                             help="add location of ca certificate, default:
- %default")
 \end_layout
 
 \begin_layout Plain Layout
 
-    input_options.add_option("--cakey", dest="cakey", default="/etc/pki/CA/privat
-e/cakey.pem",
+    input_options = OptionGroup(parser, 'Input options')
 \end_layout
 
 \begin_layout Plain Layout
 
-                             help="add location of ca private key, default:
- %default")
+    input_options.add_option('--pkey', dest='pkey', help='set location of
+ private key')
+\end_layout
+
+\begin_layout Plain Layout
+
+    input_options.add_option('--request', dest='request', help='set location
+ of certificate request')
+\end_layout
+
+\begin_layout Plain Layout
+
+    input_options.add_option('--certificate', dest='certificate', help='set
+ location of certificate')
+\end_layout
+
+\begin_layout Plain Layout
+
+    input_options.add_option('--cakey', dest='cakey', default=CAKEY,
+\end_layout
+
+\begin_layout Plain Layout
+
+                             help='set location of ca private key, default:
+ %default')
+\end_layout
+
+\begin_layout Plain Layout
+
+    input_options.add_option('--cacert', dest='cacert', default=CACERT,
+\end_layout
+
+\begin_layout Plain Layout
+
+                             help='set location of ca certificate, default:
+ %default')
 \end_layout
 
 \begin_layout Plain Layout
@@ -14715,23 +15550,23 @@ e/cakey.pem",
 
 \begin_layout Plain Layout
 
-    output_options = OptionGroup(parser, "Output options")
+    output_options = OptionGroup(parser, 'Output options')
 \end_layout
 
 \begin_layout Plain Layout
 
-    output_options.add_option("--output", dest="output", help="save to file")
+    output_options.add_option('--output', dest='output', help='save to file')
 \end_layout
 
 \begin_layout Plain Layout
 
-    output_options.add_option("--text", dest="text", action="store_true",
+    output_options.add_option('--text', dest='text', action='store_true',
  default=False,
 \end_layout
 
 \begin_layout Plain Layout
 
-                              help="print request or certificate")
+                              help='print request or certificate')
 \end_layout
 
 \begin_layout Plain Layout
@@ -14745,35 +15580,35 @@ e/cakey.pem",
 
 \begin_layout Plain Layout
 
-    info_options = OptionGroup(parser, "Info options")
+    info_options = OptionGroup(parser, 'Info options')
 \end_layout
 
 \begin_layout Plain Layout
 
-    info_options.add_option("--issuer", dest="issuer", action="store_true",
+    info_options.add_option('--issuer', dest='issuer', action='store_true',
  default=False,
 \end_layout
 
 \begin_layout Plain Layout
 
-                            help="get issuer of certificate")
+                            help='get issuer of certificate')
 \end_layout
 
 \begin_layout Plain Layout
 
-    info_options.add_option("--subject", dest="subject", action="store_true",
+    info_options.add_option('--subject', dest='subject', action='store_true',
  default=False,
 \end_layout
 
 \begin_layout Plain Layout
 
-                            help="get subject of certificate")
+                            help='get subject of certificate')
 \end_layout
 
 \begin_layout Plain Layout
 
-    info_options.add_option("--extension", dest="extension", help="get extension
- of certificate")
+    info_options.add_option('--extension', dest='extension', help='get extension
+ of certificate')
 \end_layout
 
 \begin_layout Plain Layout
@@ -14807,6 +15642,11 @@ e/cakey.pem",
 
 \begin_layout Plain Layout
 
+        check_selinux_context(options.secontext)
+\end_layout
+
+\begin_layout Plain Layout
+
         make_request(options.pkey, options.user, options.secontext, options.critical
 , options.output, options.text)
 \end_layout
@@ -14823,8 +15663,33 @@ e/cakey.pem",
 
 \begin_layout Plain Layout
 
-        make_certificate(options.request, options.cakey, options.cacert, options.out
-put, options.text)
+        make_certificate(options.request, options.cakey, options.cacert,
+\end_layout
+
+\begin_layout Plain Layout
+
+                         options.output, options.signature, options.text)
+\end_layout
+
+\begin_layout Plain Layout
+
+    elif options.sign and options.pkey and options.certificate and options.request:
+\end_layout
+
+\begin_layout Plain Layout
+
+        sign(options.pkey, options.certificate, options.request)
+\end_layout
+
+\begin_layout Plain Layout
+
+    elif options.verify and options.cacert and options.certificate and options.reque
+st:
+\end_layout
+
+\begin_layout Plain Layout
+
+        verify(options.certificate, options.cacert, options.request, options.output)
 \end_layout
 
 \begin_layout Plain Layout
@@ -14864,7 +15729,7 @@ put, options.text)
 
 \begin_layout Plain Layout
 
-        get_extension(options.certificate, options.extension)
+        print(get_extension(options.certificate, options.extension))
 \end_layout
 
 \begin_layout Plain Layout
@@ -16108,27 +16973,318 @@ status collapsed
 
 \begin_layout Plain Layout
 
-#!/bin/sh -p
+polydir_path="$1"
 \end_layout
 
 \begin_layout Plain Layout
 
-if [ "$3" = 1 ]; then
+instance_path="$2"
 \end_layout
 
 \begin_layout Plain Layout
 
-    [ -x /sbin/restorecon ] && /sbin/restorecon "$1"
+need_to_create="$3"
+\end_layout
+
+\begin_layout Plain Layout
+
+user="$4"
+\end_layout
+
+\begin_layout Plain Layout
+
+secontext="$5"
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+devnull="/dev/null"
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+pgcertdir="$polydir_path/.postgresql"
+\end_layout
+
+\begin_layout Plain Layout
+
+signerdir="/etc/pki/keys"
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ca_ip="192.168.100.4"
+\end_layout
+
+\begin_layout Plain Layout
+
+ca_password="123456"
+\end_layout
+
+\begin_layout Plain Layout
+
+ca_certdir="/root/certs"
+\end_layout
+
+\begin_layout Plain Layout
+
+ca_signaturedir="/etc/pki/certs"
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+create_certificate() {
+\end_layout
+
+\begin_layout Plain Layout
+
+	mkdir $pgcertdir
+\end_layout
+
+\begin_layout Plain Layout
+
+	pgcert --genkey  --output $pgcertdir/postgresql.key >> $devnull
+\end_layout
+
+\begin_layout Plain Layout
+
+	chmod 0600 $pgcertdir/postgresql.key
+\end_layout
+
+\begin_layout Plain Layout
+
+	pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --secontext
+ $secontext --output $pgcertdir/postgresql.csr >> $devnull
+\end_layout
+
+\begin_layout Plain Layout
+
+	pgcert --sign --pkey $signerdir/private.key --certificate $signerdir/$user.crt
+ --request $pgcertdir/postgresql.csr >> $devnull
+\end_layout
+
+\begin_layout Plain Layout
+
+	sshpass -p $ca_password scp -o StrictHostKeyChecking=no $pgcertdir/postgresql.cs
+r.sign root@$ca_ip:$ca_certdir/postgresql.csr.sign >> $devnull
+\end_layout
+
+\begin_layout Plain Layout
+
+	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
+ "pgcert --verify --certificate /etc/pki/certs/$user.crt --request $ca_certdir/po
+stgresql.csr.sign --output $ca_certdir/postgresql.csr" >> $devnull
+\end_layout
+
+\begin_layout Plain Layout
+
+	if [ $? -eq 0 ]
+\end_layout
+
+\begin_layout Plain Layout
+
+	then
+\end_layout
+
+\begin_layout Plain Layout
+
+		sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
+ "pgcert --gencert --request $ca_certdir/postgresql.csr --output $ca_certdir/post
+gresql.crt" >> $devnull
+\end_layout
+
+\begin_layout Plain Layout
+
+		sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:$ca_certdi
+r/postgresql.crt $pgcertdir/postgresql.crt >> $devnull
+\end_layout
+
+\begin_layout Plain Layout
+
+		sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:/etc/pki/C
+A/cacert.pem $pgcertdir/root.crt >> $devnull
+\end_layout
+
+\begin_layout Plain Layout
+
+	fi
+\end_layout
+
+\begin_layout Plain Layout
+
+	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
+ "rm -f $ca_certdir/*"
+\end_layout
+
+\begin_layout Plain Layout
+
+	rm -f $pgcertdir/postgresql.csr*
+\end_layout
+
+\begin_layout Plain Layout
+
+	chown -R $user.$user $pgcertdir
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+create_signature() {
+\end_layout
+
+\begin_layout Plain Layout
+
+	private_key="$signerdir/private.key"
+\end_layout
+
+\begin_layout Plain Layout
+
+	request="$signerdir/$user.csr"
+\end_layout
+
+\begin_layout Plain Layout
+
+	certificate="$signerdir/$user.crt"
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	pgcert --genkey --output $private_key >> $devnull
+\end_layout
+
+\begin_layout Plain Layout
+
+	pgcert --genreq --pkey $private_key --user $user --secontext $secontext
+ --output $request >> $devnull
+\end_layout
+
+\begin_layout Plain Layout
+
+	sshpass -p $ca_password ssh -T root@$ca_ip bash -s <<-EOF
+\end_layout
+
+\begin_layout Plain Layout
+
+	if ! [ -d $ca_signaturedir ]
+\end_layout
+
+\begin_layout Plain Layout
+
+	then
+\end_layout
+
+\begin_layout Plain Layout
+
+		mkdir -p $ca_signaturedir
+\end_layout
+
+\begin_layout Plain Layout
+
+	fi 
+\end_layout
+
+\begin_layout Plain Layout
+
+	EOF
+\end_layout
+
+\begin_layout Plain Layout
+
+	sshpass -p $ca_password scp -o StrictHostKeyChecking=no $request root@$ca_ip:$c
+a_signaturedir/$user.csr
+\end_layout
+
+\begin_layout Plain Layout
+
+	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
+ "pgcert --gencert --request $ca_signaturedir/$user.csr --signature --output
+ $ca_signaturedir/$user.crt" >> $devnull
+\end_layout
+
+\begin_layout Plain Layout
+
+	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
+ "rm -f ca_signaturedir/$user.csr" 
+\end_layout
+
+\begin_layout Plain Layout
+
+	sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:$ca_signatu
+redir/$user.crt $certificate
+\end_layout
+
+\begin_layout Plain Layout
+
+	rm -f $request
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+if [ "$need_to_create" = 1 ]; then
+\end_layout
+
+\begin_layout Plain Layout
+
+    # This line will fix the labeling on all newly created directories
+\end_layout
+
+\begin_layout Plain Layout
+
+    [ -x /sbin/restorecon ] && /sbin/restorecon "$polydir_path"
 \end_layout
 
 \begin_layout Plain Layout
 
     user="$4"
-\end_layout
-
-\begin_layout Plain Layout
-
-    context=$5
 \end_layout
 
 \begin_layout Plain Layout
@@ -16143,32 +17299,12 @@ if [ "$3" = 1 ]; then
 
 \begin_layout Plain Layout
 
-    pgcertdir="$1/.postgresql"
+    if [ "$polydir_path" = "$homedir" ]; then
 \end_layout
 
 \begin_layout Plain Layout
 
-    ca="192.168.100.4"
-\end_layout
-
-\begin_layout Plain Layout
-
-    certdir="/root/certs"
-\end_layout
-
-\begin_layout Plain Layout
-
-    ca_password="123456"
-\end_layout
-
-\begin_layout Plain Layout
-
-    if [ "$1" = "$homedir" ]; then
-\end_layout
-
-\begin_layout Plain Layout
-
-        gid=$(echo "$passwd" | cut -f4 -d":")
+		gid=$(echo "$passwd" | cut -f4 -d":")
 \end_layout
 
 \begin_layout Plain Layout
@@ -16204,69 +17340,37 @@ s)
 
 \begin_layout Plain Layout
 
+		
 \end_layout
 
 \begin_layout Plain Layout
 
-        mkdir $pgcertdir
+		if ! [ -f "$signerdir/private.key" ]
 \end_layout
 
 \begin_layout Plain Layout
 
-        pgcert --genrsa --bits 2048 --output $pgcertdir/postgresql.key >>
- /dev/null
+		then
 \end_layout
 
 \begin_layout Plain Layout
 
-        chmod 0600 $pgcertdir/postgresql.key
+			create_signature
 \end_layout
 
 \begin_layout Plain Layout
 
-        pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --context
- $secontext --output $pgcertdir/postgresql.csr >> /dev/null
+		fi
 \end_layout
 
 \begin_layout Plain Layout
 
-        sshpass -p $ca_password scp -o StrictHostKeyChecking=no $pgcertdir/postg
-resql.csr root@$ca:$certdir >> /dev/null
+		create_certificate
 \end_layout
 
 \begin_layout Plain Layout
 
-        sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca
- "pgcert --gencert --request $certdir/postgresql.csr --output $certdir/postgresql.
-crt" >> /dev/null
-\end_layout
-
-\begin_layout Plain Layout
-
-        sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca:$certdi
-r/postgresql.crt $pgcertdir/postgresql.crt >> /dev/null
-\end_layout
-
-\begin_layout Plain Layout
-
-        sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca
- "rm -fr $certdir/*"
-\end_layout
-
-\begin_layout Plain Layout
-
-        sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca:/etc/pk
-i/CA/cacert.pem $pgcertdir/root.crt
-\end_layout
-
-\begin_layout Plain Layout
-
-        chown -R $user.$user $pgcertdir
-\end_layout
-
-\begin_layout Plain Layout
-
-    fi
+	fi
 \end_layout
 
 \begin_layout Plain Layout
