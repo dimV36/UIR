@@ -21,6 +21,9 @@
 \usepackage{listings}
 \usepackage{pdflscape}
 \usepackage{totcount}
+\usepackage{tocloft}
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows}
 
 
 %\usepackage{titlesec}
@@ -28,7 +31,6 @@
 %\titleformat{\subsection}[hang]{\normalsize\centering}{\thesubsection.}{1em}{}
 %\titleformat{\subsubsection}[hang]{\normalsize\centering}{\thesubsubsection.}{1em}{}
 %\titleformat{\paragraph}[hang]{\normalsize\centering}{\thesubsubsection.}{1em}{}
-\usepackage{tocloft}
 \renewcommand{\cftsubsecindent}{0pt}
 \renewcommand{\cftsubsubsecindent}{0pt}
 
@@ -64,9 +66,6 @@
 
 %пока отменил, с ХеТеХ работает криво
 %Это то что нужно для того, чтобы листинги выводились с моноширинным шрифтом
-\usepackage{listings}
-\lstloadlanguages{C,[ANSI]C++,Clean,make,Fortran}%Загружаемые языки
-
 \lstset{
 breaklines=true,                % sets automatic line breaking
 basicstyle=\ttfamily,
@@ -2964,15 +2963,358 @@ reference "fig:Алгоритм-работы-разрабатываемого"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
-\begin_inset Graphics
-	filename /home/dimv36/vbox/algorithm.png
-	width 95text%
-	height 75pheight%
-	keepAspectRatio
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+tikzstyle{decision} =
+\end_layout
+
+\begin_layout Plain Layout
+
+        [
+\end_layout
+
+\begin_layout Plain Layout
+
+                diamond,
+\end_layout
+
+\begin_layout Plain Layout
+
+                draw,
+\end_layout
+
+\begin_layout Plain Layout
+
+                fill = green!20,
+\end_layout
+
+\begin_layout Plain Layout
+
+                text width = 6em,
+\end_layout
+
+\begin_layout Plain Layout
+
+                text badly centered,
+\end_layout
+
+\begin_layout Plain Layout
+
+                node distance = 2cm,
+\end_layout
+
+\begin_layout Plain Layout
+
+                inner sep = 0pt
+\end_layout
+
+\begin_layout Plain Layout
+
+        ]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+tikzstyle{block} =
+\end_layout
+
+\begin_layout Plain Layout
+
+        [
+\end_layout
+
+\begin_layout Plain Layout
+
+                rectangle,
+\end_layout
+
+\begin_layout Plain Layout
+
+                draw,
+\end_layout
+
+\begin_layout Plain Layout
+
+                fill = blue!20,
+\end_layout
+
+\begin_layout Plain Layout
+
+                text width = 10em,
+\end_layout
+
+\begin_layout Plain Layout
+
+                text centered,
+\end_layout
+
+\begin_layout Plain Layout
+
+                rounded corners,
+\end_layout
+
+\begin_layout Plain Layout
+
+                minimum height = 2em
+\end_layout
+
+\begin_layout Plain Layout
+
+        ]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+tikzstyle{line} =
+\end_layout
+
+\begin_layout Plain Layout
+
+        [
+\end_layout
+
+\begin_layout Plain Layout
+
+                draw,
+\end_layout
+
+\begin_layout Plain Layout
+
+                -latex'
+\end_layout
+
+\begin_layout Plain Layout
+
+        ]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+tikzstyle{cloud} =
+\end_layout
+
+\begin_layout Plain Layout
+
+        [
+\end_layout
+
+\begin_layout Plain Layout
+
+                draw,
+\end_layout
+
+\begin_layout Plain Layout
+
+                ellipse,
+\end_layout
+
+\begin_layout Plain Layout
+
+                fill = red!20,
+\end_layout
+
+\begin_layout Plain Layout
+
+                node distance = 3cm,
+\end_layout
+
+\begin_layout Plain Layout
+
+                minimum height = 2em
+\end_layout
+
+\begin_layout Plain Layout
+
+        ]
+\end_layout
+
+\begin_layout Plain Layout
+
+% ...
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tikzpicture}[node distance = 1cm, auto]
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+node [cloud] (start) {Начало};
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+node [block, below of = start] (phase1) {Этап 1};
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+node [block, below of = phase1] (phase2) {Этап 2};
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+node [block, below of = phase2] (phase3) {Этап 3};
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+node [block, below of = phase3] (phase4) {Этап 4};
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+node [block, below of = phase4] (phase5) {Этап 5};
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+node [block, below of = phase5] (phase6) {Этап 6};
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+node [block, below of = phase6] (phase7) {Этап 7};
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+node [block, left of = phase4, node distance = 3cm] (correction) {Коррекция};
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+node [decision, below of = phase7] (condition) {Условие};
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+node [cloud, below of = condition] (finish) {Конец};
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+path [line] (start) -- (phase1);
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+path [line] (phase1) -- (phase2);
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+path [line] (phase2) -- (phase3);
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+path [line] (phase3) -- (phase4);
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+path [line] (phase4) -- (phase5);
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+path [line] (phase5) -- (phase6);
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+path [line] (phase6) -- (phase7);
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+path [line] (phase7) -- (condition);
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+path [line] (condition) -| node [near start] {Нет} (correction);
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+path [line] (correction) |- (phase1);
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+path [line] (condition) -- node {Да}(finish);
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tikzpicture}
+\end_layout
 
 \end_inset
 
@@ -9864,7 +10206,7 @@ secontext="$5"
 
 \begin_layout Plain Layout
 
-devnull="/dev/null"                    # sasdasd
+devnull="/dev/null"                    
 \end_layout
 
 \begin_layout Plain Layout
