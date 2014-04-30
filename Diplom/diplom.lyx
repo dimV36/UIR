@@ -3009,7 +3009,7 @@ tikzstyle{decision} =
 
 \begin_layout Plain Layout
 
-                node distance = 2cm,
+                %node distance = 3cm,
 \end_layout
 
 \begin_layout Plain Layout
@@ -3066,7 +3066,12 @@ tikzstyle{block} =
 
 \begin_layout Plain Layout
 
-                minimum height = 2em
+                minimum height = 2em,
+\end_layout
+
+\begin_layout Plain Layout
+
+%				node distance = 5cm
 \end_layout
 
 \begin_layout Plain Layout
@@ -3130,7 +3135,7 @@ tikzstyle{cloud} =
 
 \begin_layout Plain Layout
 
-                node distance = 3cm,
+%                node distance = 3cm,
 \end_layout
 
 \begin_layout Plain Layout
@@ -3152,7 +3157,7 @@ tikzstyle{cloud} =
 
 
 \backslash
-begin{tikzpicture}[node distance = 1cm, auto]
+begin{tikzpicture}[node distance = 2cm, auto]
 \end_layout
 
 \begin_layout Plain Layout
@@ -3166,68 +3171,90 @@ node [cloud] (start) {Начало};
 
         
 \backslash
-node [block, below of = start] (phase1) {Этап 1};
+node [block, below of = start] (phase1) {Вход клиента в ОС};
 \end_layout
 
 \begin_layout Plain Layout
 
-        
+		
 \backslash
-node [block, below of = phase1] (phase2) {Этап 2};
+node [decision, below of = phase1] (dsa_condition) {ЭЦП создана?};
 \end_layout
 
 \begin_layout Plain Layout
 
-        
+		
+\backslash
+node [block, below of = dsa_condition] (phase2) {Create pkey};
+\end_layout
+
+\begin_layout Plain Layout
+
+%		
+\backslash
+node [block, left of = dsa_condition, node distance = 5cm] (create_dsa)
+ {DSA};
+\end_layout
+
+\begin_layout Plain Layout
+
+%		
+\backslash
+node [block, below of = dsa_condition] (finish) {END};
+\end_layout
+
+\begin_layout Plain Layout
+
+%        
 \backslash
 node [block, below of = phase2] (phase3) {Этап 3};
 \end_layout
 
 \begin_layout Plain Layout
 
-        
+%        
 \backslash
 node [block, below of = phase3] (phase4) {Этап 4};
 \end_layout
 
 \begin_layout Plain Layout
 
-        
+%        
 \backslash
 node [block, below of = phase4] (phase5) {Этап 5};
 \end_layout
 
 \begin_layout Plain Layout
 
-        
+%        
 \backslash
 node [block, below of = phase5] (phase6) {Этап 6};
 \end_layout
 
 \begin_layout Plain Layout
 
-        
+%        
 \backslash
 node [block, below of = phase6] (phase7) {Этап 7};
 \end_layout
 
 \begin_layout Plain Layout
 
-        
+%        
 \backslash
 node [block, left of = phase4, node distance = 3cm] (correction) {Коррекция};
 \end_layout
 
 \begin_layout Plain Layout
 
-        
+%        
 \backslash
 node [decision, below of = phase7] (condition) {Условие};
 \end_layout
 
 \begin_layout Plain Layout
 
-        
+%        
 \backslash
 node [cloud, below of = condition] (finish) {Конец};
 \end_layout
@@ -3241,70 +3268,98 @@ path [line] (start) -- (phase1);
 
 \begin_layout Plain Layout
 
-        
+		
+\backslash
+path [line] (phase1) -- (dsa_condition);
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+path [line] (dsa_condition) -- node {Yes} (phase2);
+\end_layout
+
+\begin_layout Plain Layout
+
+%		
+\backslash
+path [line] (dsa_condition) -- node {Да} (finish);
+\end_layout
+
+\begin_layout Plain Layout
+
+%		
+\backslash
+path [line] (dsa_condition) -| node {No} (create_dsa);
+\end_layout
+
+\begin_layout Plain Layout
+
+%        
 \backslash
 path [line] (phase1) -- (phase2);
 \end_layout
 
 \begin_layout Plain Layout
 
-        
+%        
 \backslash
 path [line] (phase2) -- (phase3);
 \end_layout
 
 \begin_layout Plain Layout
 
-        
+%        
 \backslash
 path [line] (phase3) -- (phase4);
 \end_layout
 
 \begin_layout Plain Layout
 
-        
+%        
 \backslash
 path [line] (phase4) -- (phase5);
 \end_layout
 
 \begin_layout Plain Layout
 
-        
+%        
 \backslash
 path [line] (phase5) -- (phase6);
 \end_layout
 
 \begin_layout Plain Layout
 
-        
+%        
 \backslash
 path [line] (phase6) -- (phase7);
 \end_layout
 
 \begin_layout Plain Layout
 
-        
+%        
 \backslash
 path [line] (phase7) -- (condition);
 \end_layout
 
 \begin_layout Plain Layout
 
-        
+%        
 \backslash
 path [line] (condition) -| node [near start] {Нет} (correction);
 \end_layout
 
 \begin_layout Plain Layout
 
-        
+%        
 \backslash
 path [line] (correction) |- (phase1);
 \end_layout
 
 \begin_layout Plain Layout
 
-        
+%        
 \backslash
 path [line] (condition) -- node {Да}(finish);
 \end_layout
