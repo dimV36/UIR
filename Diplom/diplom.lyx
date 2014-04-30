@@ -67,13 +67,14 @@
 \usepackage{listings}
 \lstloadlanguages{C,[ANSI]C++,Clean,make,Fortran}%Загружаемые языки
 
-\lstset{extendedchars=true, %Чтобы русские буквы в комментариях были
-        commentstyle=\it,
-        stringstyle=\bf,
-        language=bash, %Язык по умолчанию
-        belowcaptionskip=5pt}
-
-\renewcommand{\lstlistingname}{Распечатка \No}
+\lstset{
+breaklines=true,                % sets automatic line breaking
+basicstyle=\ttfamily,
+%отступ примерно 4 пробела
+breakindent={-1.2cm},
+xleftmargin=0.5cm
+}
+\fi
 
 %русские буквы в нумерации
 \renewcommand\theenumii{\asbuk{enumii}}
@@ -2294,7 +2295,7 @@ PKI реализуется в модели клиент-сервер, то ес�
  сертификата и использующие инфраструктуру управления открытыми ключами.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Формат сертификатов открытых ключей X509
 \end_layout
 
@@ -2768,7 +2769,7 @@ Authority Access Info
  
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Электронно-цифровая подпись
 \end_layout
 
