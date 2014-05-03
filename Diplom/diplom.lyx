@@ -64,16 +64,16 @@
 
 %пока отменил, с ХеТеХ работает криво
 %Это то что нужно для того, чтобы листинги выводились с моноширинным шрифтом
-\usepackage{listings}
-\lstloadlanguages{C,[ANSI]C++,Clean,make,Fortran}%Загружаемые языки
 
-\lstset{extendedchars=true, %Чтобы русские буквы в комментариях были
-        commentstyle=\it,
-        stringstyle=\bf,
-        language=bash, %Язык по умолчанию
-        belowcaptionskip=5pt}
+\lstset{
+breaklines=true,                % sets automatic line breaking
+basicstyle=\ttfamily,
+%отступ примерно 4 пробела
+breakindent={-1.2cm},
+xleftmargin=0.5cm
+}
 
-\renewcommand{\lstlistingname}{Распечатка \No}
+\fi
 
 %русские буквы в нумерации
 \renewcommand\theenumii{\asbuk{enumii}}
@@ -16565,31 +16565,38 @@ inline false
 status collapsed
 
 \begin_layout Plain Layout
+
 #!/bin/sh -p
 \end_layout
 
 \begin_layout Plain Layout
+
 # It receives polydir path as $1, the instance path as $2, 
 \end_layout
 
 \begin_layout Plain Layout
+
 # a flag whether the instance dir was newly created (0 - no, 1 - yes) in
  $3,
 \end_layout
 
 \begin_layout Plain Layout
+
 # and user name in $4 and his context in $5.
 \end_layout
 
 \begin_layout Plain Layout
+
 #
 \end_layout
 
 \begin_layout Plain Layout
+
 # The following section will copy the contents of /etc/skel if this is a
 \end_layout
 
 \begin_layout Plain Layout
+
 # newly created home directory.
 \end_layout
 
@@ -16598,22 +16605,27 @@ status collapsed
 \end_layout
 
 \begin_layout Plain Layout
+
 polydir_path="$1"
 \end_layout
 
 \begin_layout Plain Layout
+
 instance_path="$2"
 \end_layout
 
 \begin_layout Plain Layout
+
 need_to_create="$3"
 \end_layout
 
 \begin_layout Plain Layout
+
 user="$4"
 \end_layout
 
 \begin_layout Plain Layout
+
 secontext="$5"
 \end_layout
 
@@ -16622,6 +16634,7 @@ secontext="$5"
 \end_layout
 
 \begin_layout Plain Layout
+
 devnull="/dev/null"
 \end_layout
 
@@ -16630,10 +16643,12 @@ devnull="/dev/null"
 \end_layout
 
 \begin_layout Plain Layout
+
 pgcertdir="$polydir_path/.postgresql"
 \end_layout
 
 \begin_layout Plain Layout
+
 signerdir="/etc/pki/keys"
 \end_layout
 
@@ -16642,18 +16657,22 @@ signerdir="/etc/pki/keys"
 \end_layout
 
 \begin_layout Plain Layout
+
 ca_ip="192.168.100.4"
 \end_layout
 
 \begin_layout Plain Layout
+
 ca_password="123456"
 \end_layout
 
 \begin_layout Plain Layout
+
 ca_certdir="/root/certs"
 \end_layout
 
 \begin_layout Plain Layout
+
 ca_signaturedir="/etc/pki/certs"
 \end_layout
 
@@ -16666,84 +16685,102 @@ ca_signaturedir="/etc/pki/certs"
 \end_layout
 
 \begin_layout Plain Layout
+
 create_certificate() {
 \end_layout
 
 \begin_layout Plain Layout
+
 	mkdir $pgcertdir
 \end_layout
 
 \begin_layout Plain Layout
+
 	pgcert --genkey  --output $pgcertdir/postgresql.key >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
+
 	chmod 0600 $pgcertdir/postgresql.key
 \end_layout
 
 \begin_layout Plain Layout
+
 	pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --secontext
  $secontext --output $pgcertdir/postgresql.csr >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
+
 	pgcert --sign --pkey $signerdir/private.key --certificate $signerdir/$user.crt
  --request $pgcertdir/postgresql.csr >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
+
 	sshpass -p $ca_password scp -o StrictHostKeyChecking=no $pgcertdir/postgresql.cs
 r.sign root@$ca_ip:$ca_certdir/postgresql.csr.sign >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
+
 	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
  "pgcert --verify --certificate /etc/pki/certs/$user.crt --request $ca_certdir/po
 stgresql.csr.sign --output $ca_certdir/postgresql.csr" >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
+
 	if [ $? -eq 0 ]
 \end_layout
 
 \begin_layout Plain Layout
+
 	then
 \end_layout
 
 \begin_layout Plain Layout
+
 		sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
  "pgcert --gencert --request $ca_certdir/postgresql.csr --output $ca_certdir/post
 gresql.crt" >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
+
 		sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:$ca_certdi
 r/postgresql.crt $pgcertdir/postgresql.crt >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
+
 		sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:/etc/pki/C
 A/cacert.pem $pgcertdir/root.crt >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
+
 	fi
 \end_layout
 
 \begin_layout Plain Layout
+
 	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
  "rm -f $ca_certdir/*"
 \end_layout
 
 \begin_layout Plain Layout
+
 	rm -f $pgcertdir/postgresql.csr*
 \end_layout
 
 \begin_layout Plain Layout
+
 	chown -R $user.$user $pgcertdir
 \end_layout
 
 \begin_layout Plain Layout
+
 }
 \end_layout
 
@@ -16756,18 +16793,22 @@ A/cacert.pem $pgcertdir/root.crt >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
+
 create_signature() {
 \end_layout
 
 \begin_layout Plain Layout
+
 	private_key=$signerdir/private.key
 \end_layout
 
 \begin_layout Plain Layout
+
 	request=$signerdir/$user.csr
 \end_layout
 
 \begin_layout Plain Layout
+
 	certificate=$signerdir/$user.crt
 \end_layout
 
@@ -16776,64 +16817,78 @@ create_signature() {
 \end_layout
 
 \begin_layout Plain Layout
+
 	pgcert --genkey --output $private_key >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
+
 	pgcert --genreq --pkey $private_key --user $user --secontext $secontext
  --output $request >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
+
 	sshpass -p $ca_password ssh -T root@$ca_ip bash -s <<-EOF
 \end_layout
 
 \begin_layout Plain Layout
+
 	if ! [ -d $ca_signaturedir ]
 \end_layout
 
 \begin_layout Plain Layout
+
 	then
 \end_layout
 
 \begin_layout Plain Layout
+
 		mkdir -p $ca_signaturedir
 \end_layout
 
 \begin_layout Plain Layout
+
 	fi 
 \end_layout
 
 \begin_layout Plain Layout
+
 	EOF
 \end_layout
 
 \begin_layout Plain Layout
+
 	sshpass -p $ca_password scp -o StrictHostKeyChecking=no $request root@$ca_ip:$c
 a_signaturedir/$user.csr
 \end_layout
 
 \begin_layout Plain Layout
+
 	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
  "pgcert --gencert --request $ca_signaturedir/$user.csr --signature --output
  $ca_signaturedir/$user.crt" >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
+
 	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
  "rm -f ca_signaturedir/$user.csr" 
 \end_layout
 
 \begin_layout Plain Layout
+
 	sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:$ca_signatu
 redir/$user.crt $certificate
 \end_layout
 
 \begin_layout Plain Layout
+
 	rm -f $request
 \end_layout
 
 \begin_layout Plain Layout
+
 }
 \end_layout
 
@@ -16846,91 +16901,113 @@ redir/$user.crt $certificate
 \end_layout
 
 \begin_layout Plain Layout
+
 if [ "$need_to_create" = 1 ]; then
 \end_layout
 
 \begin_layout Plain Layout
+
     # This line will fix the labeling on all newly created directories
 \end_layout
 
 \begin_layout Plain Layout
+
     [ -x /sbin/restorecon ] && /sbin/restorecon "$polydir_path"
 \end_layout
 
 \begin_layout Plain Layout
+
     user="$4"
 \end_layout
 
 \begin_layout Plain Layout
+
     passwd=$(getent passwd "$user")
 \end_layout
 
 \begin_layout Plain Layout
+
     homedir=$(echo "$passwd" | cut -f6 -d":")
 \end_layout
 
 \begin_layout Plain Layout
+
     if [ "$polydir_path" = "$homedir" ]; then
 \end_layout
 
 \begin_layout Plain Layout
+
 		gid=$(echo "$passwd" | cut -f4 -d":")
 \end_layout
 
 \begin_layout Plain Layout
+
         cp -rT /etc/skel "$homedir"
 \end_layout
 
 \begin_layout Plain Layout
+
         chown -R "$user":"$gid" "$homedir"
 \end_layout
 
 \begin_layout Plain Layout
+
         mask=$(awk '/^UMASK/{gsub("#.*$", "", $2); print $2; exit}' /etc/login.def
 s)
 \end_layout
 
 \begin_layout Plain Layout
+
         mode=$(printf "%o" $((0777 & ~$mask)))
 \end_layout
 
 \begin_layout Plain Layout
+
         chmod ${mode:-700} "$homedir"
 \end_layout
 
 \begin_layout Plain Layout
+
         [ -x /sbin/restorecon ] && /sbin/restorecon -R "$homedir"
 \end_layout
 
 \begin_layout Plain Layout
+
 		
 \end_layout
 
 \begin_layout Plain Layout
+
 		if ! [ -f "$signerdir/private.key" ]
 \end_layout
 
 \begin_layout Plain Layout
+
 		then
 \end_layout
 
 \begin_layout Plain Layout
+
 			create_signature
 \end_layout
 
 \begin_layout Plain Layout
+
 		fi
 \end_layout
 
 \begin_layout Plain Layout
+
 		create_certificate
 \end_layout
 
 \begin_layout Plain Layout
+
 	fi
 \end_layout
 
 \begin_layout Plain Layout
+
 fi
 \end_layout
 
@@ -16939,6 +17016,7 @@ fi
 \end_layout
 
 \begin_layout Plain Layout
+
 exit 0
 \end_layout
 
