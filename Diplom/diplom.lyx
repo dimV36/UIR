@@ -21,9 +21,6 @@
 \usepackage{listings}
 \usepackage{pdflscape}
 \usepackage{totcount}
-\usepackage{tocloft}
-\usepackage{tikz}
-\usetikzlibrary{shapes, arrows}
 
 
 %\usepackage{titlesec}
@@ -31,6 +28,7 @@
 %\titleformat{\subsection}[hang]{\normalsize\centering}{\thesubsection.}{1em}{}
 %\titleformat{\subsubsection}[hang]{\normalsize\centering}{\thesubsubsection.}{1em}{}
 %\titleformat{\paragraph}[hang]{\normalsize\centering}{\thesubsubsection.}{1em}{}
+\usepackage{tocloft}
 \renewcommand{\cftsubsecindent}{0pt}
 \renewcommand{\cftsubsubsecindent}{0pt}
 
@@ -66,14 +64,16 @@
 
 %пока отменил, с ХеТеХ работает криво
 %Это то что нужно для того, чтобы листинги выводились с моноширинным шрифтом
-\lstset{
-breaklines=true,                % sets automatic line breaking
-basicstyle=\ttfamily,
-%отступ примерно 4 пробела
-breakindent={-1.2cm},
-xleftmargin=0.5cm
-}
-\fi
+\usepackage{listings}
+\lstloadlanguages{C,[ANSI]C++,Clean,make,Fortran}%Загружаемые языки
+
+\lstset{extendedchars=true, %Чтобы русские буквы в комментариях были
+        commentstyle=\it,
+        stringstyle=\bf,
+        language=bash, %Язык по умолчанию
+        belowcaptionskip=5pt}
+
+\renewcommand{\lstlistingname}{Распечатка \No}
 
 %русские буквы в нумерации
 \renewcommand\theenumii{\asbuk{enumii}}
@@ -235,7 +235,7 @@ height "1pt"
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename ../template/files/mephi.png
+	filename files/mephi.png
 
 \end_inset
 
@@ -2905,7 +2905,7 @@ Authority Access Info
 \end_layout
 
 \begin_layout Enumerate
-Создается приватный ключ клиента;
+Создается закрытый ключ клиента;
 \end_layout
 
 \begin_layout Enumerate
@@ -2959,409 +2959,11 @@ status open
 
 \begin_layout Plain Layout
 \align center
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-tikzstyle{decision} =
-\end_layout
-
-\begin_layout Plain Layout
-
-        [
-\end_layout
-
-\begin_layout Plain Layout
-
-                diamond,
-\end_layout
-
-\begin_layout Plain Layout
-
-                draw,
-\end_layout
-
-\begin_layout Plain Layout
-
-                fill = green!20,
-\end_layout
-
-\begin_layout Plain Layout
-
-                text width = 6em,
-\end_layout
-
-\begin_layout Plain Layout
-
-                text badly centered,
-\end_layout
-
-\begin_layout Plain Layout
-
-                %node distance = 3cm,
-\end_layout
-
-\begin_layout Plain Layout
-
-                inner sep = 0pt
-\end_layout
-
-\begin_layout Plain Layout
-
-        ]
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-tikzstyle{block} =
-\end_layout
-
-\begin_layout Plain Layout
-
-        [
-\end_layout
-
-\begin_layout Plain Layout
-
-                rectangle,
-\end_layout
-
-\begin_layout Plain Layout
-
-                draw,
-\end_layout
-
-\begin_layout Plain Layout
-
-                fill = blue!20,
-\end_layout
-
-\begin_layout Plain Layout
-
-                text width = 10em,
-\end_layout
-
-\begin_layout Plain Layout
-
-                text centered,
-\end_layout
-
-\begin_layout Plain Layout
-
-                rounded corners,
-\end_layout
-
-\begin_layout Plain Layout
-
-                minimum height = 2em,
-\end_layout
-
-\begin_layout Plain Layout
-
-%				node distance = 5cm
-\end_layout
-
-\begin_layout Plain Layout
-
-        ]
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-tikzstyle{line} =
-\end_layout
-
-\begin_layout Plain Layout
-
-        [
-\end_layout
-
-\begin_layout Plain Layout
-
-                draw,
-\end_layout
-
-\begin_layout Plain Layout
-
-                -latex'
-\end_layout
-
-\begin_layout Plain Layout
-
-        ]
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-tikzstyle{cloud} =
-\end_layout
-
-\begin_layout Plain Layout
-
-        [
-\end_layout
-
-\begin_layout Plain Layout
-
-                draw,
-\end_layout
-
-\begin_layout Plain Layout
-
-                ellipse,
-\end_layout
-
-\begin_layout Plain Layout
-
-                fill = red!20,
-\end_layout
-
-\begin_layout Plain Layout
-
-%                node distance = 3cm,
-\end_layout
-
-\begin_layout Plain Layout
-
-                minimum height = 2em
-\end_layout
-
-\begin_layout Plain Layout
-
-        ]
-\end_layout
-
-\begin_layout Plain Layout
-
-% ...
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{tikzpicture}[node distance = 2cm, auto]
-\end_layout
-
-\begin_layout Plain Layout
-
-        
-\backslash
-node [cloud] (start) {Начало};
-\end_layout
-
-\begin_layout Plain Layout
-
-        
-\backslash
-node [block, below of = start] (phase1) {Вход клиента в ОС};
-\end_layout
-
-\begin_layout Plain Layout
-
-		
-\backslash
-node [decision, below of = phase1] (dsa_condition) {ЭЦП создана?};
-\end_layout
-
-\begin_layout Plain Layout
-
-		
-\backslash
-node [block, below of = dsa_condition] (phase2) {Create pkey};
-\end_layout
-
-\begin_layout Plain Layout
-
-%		
-\backslash
-node [block, left of = dsa_condition, node distance = 5cm] (create_dsa)
- {DSA};
-\end_layout
-
-\begin_layout Plain Layout
-
-%		
-\backslash
-node [block, below of = dsa_condition] (finish) {END};
-\end_layout
-
-\begin_layout Plain Layout
-
-%        
-\backslash
-node [block, below of = phase2] (phase3) {Этап 3};
-\end_layout
-
-\begin_layout Plain Layout
-
-%        
-\backslash
-node [block, below of = phase3] (phase4) {Этап 4};
-\end_layout
-
-\begin_layout Plain Layout
-
-%        
-\backslash
-node [block, below of = phase4] (phase5) {Этап 5};
-\end_layout
-
-\begin_layout Plain Layout
-
-%        
-\backslash
-node [block, below of = phase5] (phase6) {Этап 6};
-\end_layout
-
-\begin_layout Plain Layout
-
-%        
-\backslash
-node [block, below of = phase6] (phase7) {Этап 7};
-\end_layout
-
-\begin_layout Plain Layout
-
-%        
-\backslash
-node [block, left of = phase4, node distance = 3cm] (correction) {Коррекция};
-\end_layout
-
-\begin_layout Plain Layout
-
-%        
-\backslash
-node [decision, below of = phase7] (condition) {Условие};
-\end_layout
-
-\begin_layout Plain Layout
-
-%        
-\backslash
-node [cloud, below of = condition] (finish) {Конец};
-\end_layout
-
-\begin_layout Plain Layout
-
-        
-\backslash
-path [line] (start) -- (phase1);
-\end_layout
-
-\begin_layout Plain Layout
-
-		
-\backslash
-path [line] (phase1) -- (dsa_condition);
-\end_layout
-
-\begin_layout Plain Layout
-
-		
-\backslash
-path [line] (dsa_condition) -- node {Yes} (phase2);
-\end_layout
-
-\begin_layout Plain Layout
-
-%		
-\backslash
-path [line] (dsa_condition) -- node {Да} (finish);
-\end_layout
-
-\begin_layout Plain Layout
-
-%		
-\backslash
-path [line] (dsa_condition) -| node {No} (create_dsa);
-\end_layout
-
-\begin_layout Plain Layout
-
-%        
-\backslash
-path [line] (phase1) -- (phase2);
-\end_layout
-
-\begin_layout Plain Layout
-
-%        
-\backslash
-path [line] (phase2) -- (phase3);
-\end_layout
-
-\begin_layout Plain Layout
-
-%        
-\backslash
-path [line] (phase3) -- (phase4);
-\end_layout
-
-\begin_layout Plain Layout
-
-%        
-\backslash
-path [line] (phase4) -- (phase5);
-\end_layout
-
-\begin_layout Plain Layout
-
-%        
-\backslash
-path [line] (phase5) -- (phase6);
-\end_layout
-
-\begin_layout Plain Layout
-
-%        
-\backslash
-path [line] (phase6) -- (phase7);
-\end_layout
-
-\begin_layout Plain Layout
-
-%        
-\backslash
-path [line] (phase7) -- (condition);
-\end_layout
-
-\begin_layout Plain Layout
-
-%        
-\backslash
-path [line] (condition) -| node [near start] {Нет} (correction);
-\end_layout
-
-\begin_layout Plain Layout
-
-%        
-\backslash
-path [line] (correction) |- (phase1);
-\end_layout
-
-\begin_layout Plain Layout
-
-%        
-\backslash
-path [line] (condition) -- node {Да}(finish);
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{tikzpicture}
-\end_layout
+\begin_inset Graphics
+	filename /home/dimv36/vbox/algorithm.png
+	width 95text%
+	height 75pheight%
+	keepAspectRatio
 
 \end_inset
 
@@ -5325,23 +4927,6 @@ X509_Request
  сертификата;
 \end_layout
 
-\begin_layout Enumerate
-Произведён обзор модулей 
-\family typewriter
-sslinfo
-\family default
-, 
-\family typewriter
-sepgsql
-\family default
-.
- В модуле 
-\family typewriter
-sslinfo
-\family default
- отсутствуют функции просмотра значения сертификата.
-\end_layout
-
 \begin_layout --Separator--
 
 \end_layout
@@ -6356,8 +5941,7 @@ main_options = OptionGroup(parser, "Main Options")
 \end_layout
 
 \begin_layout Standard
-При желании указывается описание данной группы опций.
- Чтобы отобразить группу в справочной странице, необходимо вызвать метод
+Чтобы отобразить группу в справочной странице, необходимо вызвать метод
  
 \family typewriter
 add_group_option()
@@ -6476,6 +6060,151 @@ options, args = parser.parse_args()
 \end_layout
 
 \begin_layout Subsubsection*
+Вспомогательные функции утилиты
+\end_layout
+
+\begin_layout Standard
+В утилите следующие константы:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+DEFAULT_FIELDS
+\family default
+ 
+\series default
+--- словарь, хранящий значение субъекта по умолчанию;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+CAKEY 
+\family default
+\series default
+--- путь к закрытому ключу удостоверяющего центра по умолчанию;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+CACERT
+\family default
+\series default
+ --- путь к сертификату удостоверяющего центра по умолчанию;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+DIGITAL_SIGNATURE_PATH
+\family default
+ 
+\series default
+--- путь к папке с ЭЦП клиентов на удостоверяющем центре;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+DEFAULT_PASSWORD
+\family default
+\series default
+ --- пароль, используемый при создании закрытого ключа.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Для реализации основных функций утилиты были созданы дополнительные функции:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+password(*args, **kwargs)
+\family default
+\series default
+ --- необходима, чтобы реализовать генерацию закрытого ключа по парольной
+ фразе, ввод которой реализован в этой функции;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+check_selinux_context(context)
+\family default
+\series default
+ --- проверяет корректность контекста безопасности клиента при установке
+ его в дополнение при создании запроса на подпись сертификата; 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+make_level_and_category_sets(context)
+\family default
+\series default
+ --- создает список множеств допустимых уровней и категорий по переданному
+ контексту;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+verify_user_context(user, current_context)
+\family default
+\series default
+ --- проверяет, является ли текущий контекст пользователя 
+\family typewriter
+current_context
+\family default
+ допустимым при выпуске сертификата клиента;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+check_permissions() 
+\family default
+\series default
+--- проверяет, запущена ли утилита от имени суперпользователя 
+\family typewriter
+root
+\family default
+, если нет, то выводит сообщение
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Please, login as `root` and try again
+\end_layout
+
+\end_inset
+
+и завершает свою работу.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Subsubsection*
 Создание закрытого ключа
 \end_layout
 
@@ -6534,7 +6263,7 @@ status open
 
 \begin_layout Plain Layout
 
-rsa_key = RSA.gen_key(bits, 65537, callback=password)
+private_key = RSA.gen_key(bits, 65537, callback=password)
 \end_layout
 
 \end_inset
@@ -6564,7 +6293,7 @@ status open
 
 \begin_layout Plain Layout
 
-rsa_key.save_key(output, None)
+private_key.save_key(output, None)
 \end_layout
 
 \end_inset
@@ -6592,98 +6321,6 @@ output
 mykey.pem
 \family default
 .
-\end_layout
-
-\begin_layout Subsubsection*
-Вспомогательные функции утилиты
-\end_layout
-
-\begin_layout Standard
-В утилите объявлены 2 константных объекта:
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-DEFAULT_FIELDS
-\family default
- 
-\series default
---- словарь, хранящий значение субъекта по умолчанию;
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-DEFAULT_PASSWORD
-\family default
-\series default
- --- пароль, используемый при создании закрытого ключа.
-\end_layout
-
-\begin_layout --Separator--
-
-\end_layout
-
-\begin_layout Standard
-Для реализации основных функций утилиты были созданы дополнительные функции:
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-password(*args, **kwargs)
-\family default
-\series default
- --- необходима, чтобы реализовать генерацию закрытого ключа по парольной
- фразе, ввод которой реализован в этой функции;
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-check_path(file_path)
-\family default
- 
-\series default
---- проверяет корректность пути, переданного при генерации запроса на подпись
- сертификата, сертификата или при развёртывании удостоверяющего центра.
- Если переданный функции путь не существует, возвращается соответствующее
- сообщение и выполнение работы утилиты прекращается;
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-check_permissions() 
-\family default
-\series default
---- проверяет, запущена ли утилита от имени суперпользователя 
-\family typewriter
-root
-\family default
-, если нет, то выводит сообщение
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-Please, login as `root` and try again
-\end_layout
-
-\end_inset
-
-и завершает свою работу.
-\end_layout
-
-\begin_layout --Separator--
-
 \end_layout
 
 \begin_layout Subsubsection*
@@ -6793,12 +6430,86 @@ False
 \end_layout
 
 \begin_layout Standard
-Работа данной функции начинается с 
+Работа данной функции начинается с попытки загрузки закрытого ключа клиента:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+private_key = None
+\end_layout
+
+\begin_layout Plain Layout
+
+try:
+\end_layout
+
+\begin_layout Plain Layout
+
+	private_key = EVP.load_key(private_key_path, callback=password)
+\end_layout
+
+\begin_layout Plain Layout
+
+except EVP.EVPError:
+\end_layout
+
+\begin_layout Plain Layout
+
+	print('ERROR request: Could not load key pair from %s' % private_key_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    exit(1)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Использование механизма исключений позволяет отловить ошибку, если загрузить
+ приватный ключ не удалось.
+ 
+\end_layout
+
+\begin_layout Standard
+Далее создается объект запроса на подпись сертификата 
 \family typewriter
-check_path()
+X509.X509_Request
 \family default
-, определяющей, корректный ли путь был передан утилите, после чего предпринимает
-ся попытка загрузки закрытого ключа клиента.
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+request = X509.Request()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+По загруженному закрытому ключу устанавливается открытый ключ: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+request.set_pubkey(private_key)
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -6831,7 +6542,7 @@ if username:
 
 \begin_layout Plain Layout
 
-  name.CN = username
+	name.CN = username
 \end_layout
 
 \end_inset
@@ -6852,19 +6563,32 @@ user_context
 \family typewriter
  
 \family default
-то выполняется системный вызов утилиты 
+то выполняется вызов функции SELinux 
 \family typewriter
-id -Z
+getcon_raw()
 \family default
-,
+.
+ Функция 
 \family typewriter
- 
+getcon_raw()
 \family default
-её результат сохраняется в переменной 
+ возвращает список, состоящий из результата вызова (
+\family typewriter
+0
+\family default
+, если вызов функции успешен) и значение контекста.
+ Так как требуется получить значение контекста, берётся 2й элемент списка.
+ Это значение хранится в переменной 
 \family typewriter
 context
 \family default
-:
+.
+ Если же после выполнения этой функции в переменной 
+\family typewriter
+context
+\family default
+ не содержится значение, то выводится ошибка на экран и прекращается дальнейшая
+ работа:
 \begin_inset listings
 inline false
 status open
@@ -6876,44 +6600,38 @@ if user_context:
 
 \begin_layout Plain Layout
 
-  context = user_context
+        context = user_context
 \end_layout
 
 \begin_layout Plain Layout
 
-else:
+    else:
 \end_layout
 
 \begin_layout Plain Layout
 
-  context = check_output("id -Z", shell=True).split('
-\backslash
-n')[0]
+        context = getcon_raw()[1]
 \end_layout
 
 \begin_layout Plain Layout
 
-if not context:
+    if not context:
 \end_layout
 
 \begin_layout Plain Layout
 
-  print('Command `id -Z` return with error code')
+        print('ERROR request: Could not get SELinux context for user %s'
+ % username)
 \end_layout
 
 \begin_layout Plain Layout
 
-  exit(1)
+        exit(1)
 \end_layout
 
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-В случае ошибки получения контекста (это может произойти только, если SELinux
- отключён), происходит незамедлительный выход из утилиты.
 \end_layout
 
 \begin_layout Standard
@@ -6991,6 +6709,471 @@ is_printed
 True
 \family default
 , выполняется печать запроса.
+\end_layout
+
+\begin_layout Subsubsection*
+Подпись запроса цифровой подписью клиента
+\end_layout
+
+\begin_layout Standard
+Для того, чтобы удостоверяющий центр мог удостовериться в том, что запрос
+ на подпись сертификата действительно пришёл от клиента, клиент выполняет
+ подпись ЭЦП запрос на подпись сертификата, после чего подписанный запрос
+ отправляется на удостоверяющий центр.
+ 
+\end_layout
+
+\begin_layout Standard
+В данной утилите подпись запроса ЭЦП реализована в функции 
+\family typewriter
+sign(private_key_path, certificate_path, request_path)
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Аргументы функции:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+private_key_path
+\family default
+ 
+\series default
+--- путь к приватному ключу ЭЦП клиента;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+certificate_path
+\family default
+\series default
+ --- путь к сертификату ЭЦП клиента;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+request_path
+\family default
+ 
+\series default
+--- путь к запросу на подпись сертификата;
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Работа функции начинается с загрузки запроса из файла:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+request = None
+\end_layout
+
+\begin_layout Plain Layout
+
+try:
+\end_layout
+
+\begin_layout Plain Layout
+
+	request = X509.load_request(request_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+except X509.X509Error:
+\end_layout
+
+\begin_layout Plain Layout
+
+    print('ERROR sign: Could not load request from %s' % request_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+	exit(1)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Запрос в цифровом формате загружается в память:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+text = BIO.MemoryBuffer(request.as_pem())
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Для подписи запроса используется модуль библиотеки 
+\family typewriter
+M2Crypto SMIME
+\family default
+.
+ Первым делом создается объект данного класса:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+smime = SMIME.SMIME()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+После чего выполняется загрузка цифровой подписи: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+try:
+\end_layout
+
+\begin_layout Plain Layout
+
+	smime.load_key(private_key_path, certificate_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+except (ValueError, IOError, X509.X509Error):
+\end_layout
+
+\begin_layout Plain Layout
+
+	print('ERROR sign: Could not load digital signature')
+\end_layout
+
+\begin_layout Plain Layout
+
+    exit(1)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В случае отсутствия или невозможности загрузки закрытого ключа или сертификата,
+ используемых для подписи запроса, на экран выводится ошибка и происходит
+ незамедлительный останов программы.
+\end_layout
+
+\begin_layout Standard
+Подписание запроса осуществляется методом 
+\family typewriter
+sign()
+\family default
+ класса 
+\family typewriter
+SMIME
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+sign_request = smime.sign(text)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Для сохранения подписанного запроса в файл используется следующий блок кода:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+sign_request_file = BIO.openfile(request_path + '.sign', 'w')
+\end_layout
+
+\begin_layout Plain Layout
+
+smime.write(sign_request_file, sign_request)
+\end_layout
+
+\begin_layout Plain Layout
+
+sign_request_file.close()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+При успешной отработке функции будет создан файл 
+\family typewriter
+name.sign
+\family default
+, где 
+\family typewriter
+name
+\family default
+ --- имя загруженного запроса.
+ 
+\end_layout
+
+\begin_layout Subsubsection*
+Верификация цифровой подписи
+\end_layout
+
+\begin_layout Standard
+Проверка цифровой подписи реализуется в функции 
+\family typewriter
+verify(certificate_path, ca_certificate_path, sign_request_path, output)
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Аргументы функции:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+certificate_path 
+\family default
+\series default
+--- путь к сертификату цифровой подписи клиента;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+ca_certificate_path
+\family default
+\series default
+ --- путь к сертификату удостоверяющего центра, выпустивший сертификат цифровой
+ подписи клиента;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+sign_request_path 
+\family default
+\series default
+--- путь к файлу подписанного запроса;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+output 
+\family default
+\series default
+--- путь, по которому будет сохранён запрос в открытом виде.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Для проверки цифровой подписи клиента используется модуль 
+\family typewriter
+SMIME
+\family default
+.
+ Для проверки цифровой подписи необходимо создать объект класса 
+\family typewriter
+SMIME
+\family default
+, загрузить сертификат цифровой подписи клиента:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+smime = SMIME.SMIME()
+\end_layout
+
+\begin_layout Plain Layout
+
+certificate = None
+\end_layout
+
+\begin_layout Plain Layout
+
+try:
+\end_layout
+
+\begin_layout Plain Layout
+
+	certificate = X509.load_cert(certificate_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+except (X509.X509Error, ValueError):
+\end_layout
+
+\begin_layout Plain Layout
+
+	print('ERROR verify: Could not load certificate for verifying')
+\end_layout
+
+\begin_layout Plain Layout
+
+    exit(1)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Далее загружается сертификат цифровой подписи клиента в объект 
+\family typewriter
+smime
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+stack = X509.X509_Stack()
+\end_layout
+
+\begin_layout Plain Layout
+
+stack.push(certificate)
+\end_layout
+
+\begin_layout Plain Layout
+
+smime.set_x509_stack(stack)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Для проверки данного сертификата необходима загрузка сертификата удостоверяющего
+ центра:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+store = X509.X509_Store()
+\end_layout
+
+\begin_layout Plain Layout
+
+store.load_info(ca_certificate_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+smime.set_x509_store(store)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Верификация цифровой подписи выполняется с помощью следующих строк:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+pks7, data = SMIME.smime_load_pkcs7(sign_request_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+clear_text = smime.verify(pks7, data)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+При этом выполняется загрузка подписанного запроса в формате 
+\family typewriter
+PKCS7
+\family default
+ из файла, путь к которому передан был функции, после чего функцией 
+\family typewriter
+verify()
+\family default
+ выполняется проверка подписи и получение текста запроса.
+ В случае, если в значении 
+\family typewriter
+clear_text
+\family default
+ содержится значение запроса клиента, то расшифрованный текст сохраняется
+ в файл запроса и выводится сообщение об успешности проверки подписи.
+ 
 \end_layout
 
 \begin_layout Subsubsection*
@@ -9273,7 +9456,7 @@ secontext="$5"
 
 \begin_layout Plain Layout
 
-devnull="/dev/null"                    
+devnull="/dev/null"                    # sasdasd
 \end_layout
 
 \begin_layout Plain Layout
@@ -16382,27 +16565,55 @@ inline false
 status collapsed
 
 \begin_layout Plain Layout
+#!/bin/sh -p
+\end_layout
 
+\begin_layout Plain Layout
+# It receives polydir path as $1, the instance path as $2, 
+\end_layout
+
+\begin_layout Plain Layout
+# a flag whether the instance dir was newly created (0 - no, 1 - yes) in
+ $3,
+\end_layout
+
+\begin_layout Plain Layout
+# and user name in $4 and his context in $5.
+\end_layout
+
+\begin_layout Plain Layout
+#
+\end_layout
+
+\begin_layout Plain Layout
+# The following section will copy the contents of /etc/skel if this is a
+\end_layout
+
+\begin_layout Plain Layout
+# newly created home directory.
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
 polydir_path="$1"
 \end_layout
 
 \begin_layout Plain Layout
-
 instance_path="$2"
 \end_layout
 
 \begin_layout Plain Layout
-
 need_to_create="$3"
 \end_layout
 
 \begin_layout Plain Layout
-
 user="$4"
 \end_layout
 
 \begin_layout Plain Layout
-
 secontext="$5"
 \end_layout
 
@@ -16411,7 +16622,6 @@ secontext="$5"
 \end_layout
 
 \begin_layout Plain Layout
-
 devnull="/dev/null"
 \end_layout
 
@@ -16420,12 +16630,10 @@ devnull="/dev/null"
 \end_layout
 
 \begin_layout Plain Layout
-
 pgcertdir="$polydir_path/.postgresql"
 \end_layout
 
 \begin_layout Plain Layout
-
 signerdir="/etc/pki/keys"
 \end_layout
 
@@ -16434,22 +16642,18 @@ signerdir="/etc/pki/keys"
 \end_layout
 
 \begin_layout Plain Layout
-
 ca_ip="192.168.100.4"
 \end_layout
 
 \begin_layout Plain Layout
-
 ca_password="123456"
 \end_layout
 
 \begin_layout Plain Layout
-
 ca_certdir="/root/certs"
 \end_layout
 
 \begin_layout Plain Layout
-
 ca_signaturedir="/etc/pki/certs"
 \end_layout
 
@@ -16462,102 +16666,84 @@ ca_signaturedir="/etc/pki/certs"
 \end_layout
 
 \begin_layout Plain Layout
-
 create_certificate() {
 \end_layout
 
 \begin_layout Plain Layout
-
 	mkdir $pgcertdir
 \end_layout
 
 \begin_layout Plain Layout
-
 	pgcert --genkey  --output $pgcertdir/postgresql.key >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
-
 	chmod 0600 $pgcertdir/postgresql.key
 \end_layout
 
 \begin_layout Plain Layout
-
 	pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --secontext
  $secontext --output $pgcertdir/postgresql.csr >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
-
 	pgcert --sign --pkey $signerdir/private.key --certificate $signerdir/$user.crt
  --request $pgcertdir/postgresql.csr >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
-
 	sshpass -p $ca_password scp -o StrictHostKeyChecking=no $pgcertdir/postgresql.cs
 r.sign root@$ca_ip:$ca_certdir/postgresql.csr.sign >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
-
 	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
  "pgcert --verify --certificate /etc/pki/certs/$user.crt --request $ca_certdir/po
 stgresql.csr.sign --output $ca_certdir/postgresql.csr" >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
-
 	if [ $? -eq 0 ]
 \end_layout
 
 \begin_layout Plain Layout
-
 	then
 \end_layout
 
 \begin_layout Plain Layout
-
 		sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
  "pgcert --gencert --request $ca_certdir/postgresql.csr --output $ca_certdir/post
 gresql.crt" >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
-
 		sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:$ca_certdi
 r/postgresql.crt $pgcertdir/postgresql.crt >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
-
 		sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:/etc/pki/C
 A/cacert.pem $pgcertdir/root.crt >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
-
 	fi
 \end_layout
 
 \begin_layout Plain Layout
-
 	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
  "rm -f $ca_certdir/*"
 \end_layout
 
 \begin_layout Plain Layout
-
 	rm -f $pgcertdir/postgresql.csr*
 \end_layout
 
 \begin_layout Plain Layout
-
 	chown -R $user.$user $pgcertdir
 \end_layout
 
 \begin_layout Plain Layout
-
 }
 \end_layout
 
@@ -16570,102 +16756,84 @@ A/cacert.pem $pgcertdir/root.crt >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
-
 create_signature() {
 \end_layout
 
 \begin_layout Plain Layout
+	private_key=$signerdir/private.key
+\end_layout
 
-	private_key="$signerdir/private.key"
+\begin_layout Plain Layout
+	request=$signerdir/$user.csr
+\end_layout
+
+\begin_layout Plain Layout
+	certificate=$signerdir/$user.crt
 \end_layout
 
 \begin_layout Plain Layout
 
-	request="$signerdir/$user.csr"
 \end_layout
 
 \begin_layout Plain Layout
-
-	certificate="$signerdir/$user.crt"
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
 	pgcert --genkey --output $private_key >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
-
 	pgcert --genreq --pkey $private_key --user $user --secontext $secontext
  --output $request >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
-
 	sshpass -p $ca_password ssh -T root@$ca_ip bash -s <<-EOF
 \end_layout
 
 \begin_layout Plain Layout
-
 	if ! [ -d $ca_signaturedir ]
 \end_layout
 
 \begin_layout Plain Layout
-
 	then
 \end_layout
 
 \begin_layout Plain Layout
-
 		mkdir -p $ca_signaturedir
 \end_layout
 
 \begin_layout Plain Layout
-
 	fi 
 \end_layout
 
 \begin_layout Plain Layout
-
 	EOF
 \end_layout
 
 \begin_layout Plain Layout
-
 	sshpass -p $ca_password scp -o StrictHostKeyChecking=no $request root@$ca_ip:$c
 a_signaturedir/$user.csr
 \end_layout
 
 \begin_layout Plain Layout
-
 	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
  "pgcert --gencert --request $ca_signaturedir/$user.csr --signature --output
  $ca_signaturedir/$user.crt" >> $devnull
 \end_layout
 
 \begin_layout Plain Layout
-
 	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
  "rm -f ca_signaturedir/$user.csr" 
 \end_layout
 
 \begin_layout Plain Layout
-
 	sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:$ca_signatu
 redir/$user.crt $certificate
 \end_layout
 
 \begin_layout Plain Layout
-
 	rm -f $request
 \end_layout
 
 \begin_layout Plain Layout
-
 }
 \end_layout
 
@@ -16678,113 +16846,91 @@ redir/$user.crt $certificate
 \end_layout
 
 \begin_layout Plain Layout
-
 if [ "$need_to_create" = 1 ]; then
 \end_layout
 
 \begin_layout Plain Layout
-
     # This line will fix the labeling on all newly created directories
 \end_layout
 
 \begin_layout Plain Layout
-
     [ -x /sbin/restorecon ] && /sbin/restorecon "$polydir_path"
 \end_layout
 
 \begin_layout Plain Layout
-
     user="$4"
 \end_layout
 
 \begin_layout Plain Layout
-
     passwd=$(getent passwd "$user")
 \end_layout
 
 \begin_layout Plain Layout
-
     homedir=$(echo "$passwd" | cut -f6 -d":")
 \end_layout
 
 \begin_layout Plain Layout
-
     if [ "$polydir_path" = "$homedir" ]; then
 \end_layout
 
 \begin_layout Plain Layout
-
 		gid=$(echo "$passwd" | cut -f4 -d":")
 \end_layout
 
 \begin_layout Plain Layout
-
         cp -rT /etc/skel "$homedir"
 \end_layout
 
 \begin_layout Plain Layout
-
         chown -R "$user":"$gid" "$homedir"
 \end_layout
 
 \begin_layout Plain Layout
-
         mask=$(awk '/^UMASK/{gsub("#.*$", "", $2); print $2; exit}' /etc/login.def
 s)
 \end_layout
 
 \begin_layout Plain Layout
-
         mode=$(printf "%o" $((0777 & ~$mask)))
 \end_layout
 
 \begin_layout Plain Layout
-
         chmod ${mode:-700} "$homedir"
 \end_layout
 
 \begin_layout Plain Layout
-
         [ -x /sbin/restorecon ] && /sbin/restorecon -R "$homedir"
 \end_layout
 
 \begin_layout Plain Layout
-
 		
 \end_layout
 
 \begin_layout Plain Layout
-
 		if ! [ -f "$signerdir/private.key" ]
 \end_layout
 
 \begin_layout Plain Layout
-
 		then
 \end_layout
 
 \begin_layout Plain Layout
-
 			create_signature
 \end_layout
 
 \begin_layout Plain Layout
-
 		fi
 \end_layout
 
 \begin_layout Plain Layout
-
 		create_certificate
 \end_layout
 
 \begin_layout Plain Layout
-
 	fi
 \end_layout
 
 \begin_layout Plain Layout
-
 fi
 \end_layout
 
@@ -16793,7 +16939,6 @@ fi
 \end_layout
 
 \begin_layout Plain Layout
-
 exit 0
 \end_layout
 
