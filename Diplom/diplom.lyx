@@ -22,6 +22,10 @@
 \usepackage{pdflscape}
 \usepackage{totcount}
 
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows}
+\usetikzlibrary{positioning}
+
 
 %\usepackage{titlesec}
 %\titleformat{\section}[hang]{\normalsize\centering\uppercase}{\thesection.}{1em}{}
@@ -2959,11 +2963,376 @@ status open
 
 \begin_layout Plain Layout
 \align center
-\begin_inset Graphics
-	filename /home/dimv36/vbox/algorithm.png
-	width 95text%
-	height 75pheight%
-	keepAspectRatio
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tikzpicture}[
+\end_layout
+
+\begin_layout Plain Layout
+
+    auto,
+\end_layout
+
+\begin_layout Plain Layout
+
+    decision/.style = { diamond, draw=blue, thick, fill=blue!20,
+\end_layout
+
+\begin_layout Plain Layout
+
+                        text width=5em, text badly centered,
+\end_layout
+
+\begin_layout Plain Layout
+
+                        inner sep=1pt, rounded corners,
+\end_layout
+
+\begin_layout Plain Layout
+
+                        scale = 0.75 },
+\end_layout
+
+\begin_layout Plain Layout
+
+    block/.style    = { rectangle, draw=blue, thick, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                        fill=blue!20, text width=10em, text centered,
+\end_layout
+
+\begin_layout Plain Layout
+
+                        rounded corners, minimum height=2em,
+\end_layout
+
+\begin_layout Plain Layout
+
+                        scale = 0.75 },
+\end_layout
+
+\begin_layout Plain Layout
+
+    line/.style     = { draw, thick, ->, shorten >=2pt, scale = 0.75 },
+\end_layout
+
+\begin_layout Plain Layout
+
+    cloud/.style    = { ellipse, draw, fill=red!20, text width=5em, text
+ badly centered, inner sep=1pt, scale = 0.75 },
+\end_layout
+
+\begin_layout Plain Layout
+
+  ]
+\end_layout
+
+\begin_layout Plain Layout
+
+  % Define nodes in a matrix
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+matrix [column sep=3mm, row sep=5mm] {
+\end_layout
+
+\begin_layout Plain Layout
+
+                    & 
+\backslash
+node [cloud] (start) {Открытие сессии клиента};                        
+                         & 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+                    & 
+\backslash
+node [decision] (dsacondition) {ЭЦП создана?};                         
+                         & 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+                    & 
+\backslash
+node (null2) {}; & 
+\backslash
+node [block] (dsacreate) {Создание ЭЦП};                               
+     & 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+                    & 
+\backslash
+node (null3) {};                                                       
+                         & 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+                    & 
+\backslash
+node [block] (phase1) {Создание приватного ключа клиента};             
+                         & 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+                    & 
+\backslash
+node [block] (phase2) {Создание CSR клиента};                          
+                         & 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+                    & 
+\backslash
+node [block] (phase3) {Подпись запроса ЭЦП};                           
+                         & 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+                    & 
+\backslash
+node [block] (phase4) {Отправка CSR клиента на УЦ};                    
+                         & 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+                    & 
+\backslash
+node [decision] (dsaverify) {ЭЦП валидна?};                            
+                         & 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+                    & 
+\backslash
+node [block] (phase5) {Выпуск сертификата клиента};                    
+                         & 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+                    & 
+\backslash
+node [block] (phase6) {Отправка сертификата клиенту};                  
+                         & 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+                    & 
+\backslash
+node [decision] (newlevelcondition) {Требуется перейти на новый уровень?};
+                      & 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+                    & 
+\backslash
+node [cloud] (finish) {Конец}; & 
+\backslash
+node [cloud] (error) {Выход с ошибкой};                       & 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  };
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+begin{scope} [every path/.style=line]
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+path (start)        -- (dsacondition);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+path (dsacondition) -- node [near start] {Да} (phase1);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+path (dsacondition) -| node [near start] {Нет} (dsacreate);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+path (dsacreate) |- (null3);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+path (phase1) -- (phase2);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+path (phase2) -- (phase3);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+path (phase3) -- (phase4);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+path (phase4) -- (dsaverify);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+path (dsaverify) -- node [near start] {Да} (phase5);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+path (dsaverify) -| node [near start] {Нет} (error);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+path (phase5) -- (phase6);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+path (phase6) -- (newlevelcondition);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+path (newlevelcondition) -- node [near start] {Нет} (finish);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+path (newlevelcondition) --++ (-3,0) node [near start] {Да} |- (null2);
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+end{scope}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tikzpicture}
+\end_layout
 
 \end_inset
 
