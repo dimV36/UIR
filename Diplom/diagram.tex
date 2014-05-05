@@ -27,12 +27,12 @@
   \matrix [column sep=3mm, row sep=5mm] {
                     & \node [cloud] (start) {Открытие сессии клиента};                                                 & \\
                     & \node [decision] (dsacondition) {ЭЦП создана?};                                                  & \\
-                    & \node (null2) {}; & \node [block] (dsacreate) {Создание ЭЦП};                                    & \\
-                    & \node (null3) {};                                                                                & \\
-                    & \node [block] (phase1) {Создание приватного ключа клиента};                                      & \\
+                    & \node (null1) {}; & \node [block] (dsacreate) {Создание ЭЦП};                                    & \\
+                    & \node (null2) {};                                                                                & \\
+                    & \node [block] (phase1) {Создание закрытого ключа клиента};                                       & \\
                     & \node [block] (phase2) {Создание CSR клиента};                                                   & \\
                     & \node [block] (phase3) {Подпись запроса ЭЦП};                                                    & \\
-                    & \node [block] (phase4) {Отправка CSR клиента на УЦ};                                             & \\
+                    & \node [block] (phase4) {Отправка подписанного CSR клиента на УЦ};                                & \\
                     & \node [decision] (dsaverify) {ЭЦП валидна?};                                                     & \\
                     & \node [block] (phase5) {Выпуск сертификата клиента};                                             & \\
                     & \node [block] (phase6) {Отправка сертификата клиенту};                                           & \\
@@ -43,7 +43,7 @@
     \path (start)        -- (dsacondition);
     \path (dsacondition) -- node [near start] {Да} (phase1);
     \path (dsacondition) -| node [near start] {Нет} (dsacreate);
-    \path (dsacreate) |- (null3);
+    \path (dsacreate) |- (null2);
     \path (phase1) -- (phase2);
     \path (phase2) -- (phase3);
     \path (phase3) -- (phase4);
@@ -53,7 +53,7 @@
     \path (phase5) -- (phase6);
     \path (phase6) -- (newlevelcondition);
     \path (newlevelcondition) -- node [near start] {Нет} (finish);
-    \path (newlevelcondition) --++ (-3,0) node [near start] {Да} |- (null2);
+    \path (newlevelcondition) --++ (-3,0) node [near start] {Да} |- (null1);
   \end{scope}
   
 \end{tikzpicture}

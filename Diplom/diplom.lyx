@@ -1178,8 +1178,7 @@ key "PKI"
  Для каждой пары (субъект–объект) в системе должно быть задано явное и недвусмыс
 ленное перечисление допустимых типов доступа (чтение, запись, исполнение
  и т.д.), то есть тех типов доступа, которые являются санкционированными для
- данного субъекта (пользователя или процесса) к данному ресурсу системы
- (объекту).
+ данного субъекта (клиент или процесса) к данному ресурсу системы (объекту).
 \end_layout
 
 \begin_layout Standard
@@ -1230,9 +1229,9 @@ Mandatory access control
 \begin_inset space ~
 \end_inset
 
---- механизм, основанный на запрете пользователю или процессу, обладающему
- определённым уровнем доверия, получать доступ к информации, процессам или
- устройствам более защищённого уровня.
+--- механизм, основанный на запрете клиенту или процессу, обладающему определённ
+ым уровнем доверия, получать доступ к информации, процессам или устройствам
+ более защищённого уровня.
  Для реализации этого принципа должны сопоставляться классификационные метки
  каждого субъекта и каждого объекта, отражающие их место в соответствующей
  иерархии.
@@ -1243,7 +1242,7 @@ Mandatory access control
 \end_layout
 
 \begin_layout Standard
-При санкционированном занесении в список пользователей нового субъекта должно
+При санкционированном занесении в список клиентов нового субъекта должно
  осуществляться сопоставление ему классификационных меток.
  Внешние классификационные метки (субъектов, объектов) должны точно соответствов
 ать внутренним меткам (внутри комплекса средств защиты).
@@ -1373,7 +1372,7 @@ user
 \begin_inset space ~
 \end_inset
 
---- сущность пользователя.
+--- сущность клиента.
  Связывается с пользователем Linux и является неотъемлимой частью на протяжении
  всей пользовательской сессии;
 \end_layout
@@ -1387,7 +1386,7 @@ role
 \begin_inset space ~
 \end_inset
 
---- роль пользователя.
+--- роль клиента.
  Роль определяет, какие домены могут быть использованы.
  Домены, к которым имеет доступ пользовательская роль, предопределяются
  в конфигурационных файлах политики.
@@ -1589,8 +1588,8 @@ status open
 
 \begin_layout Standard
 Политики --- это наборы правил, определяющие список ролей, к которым имеет
- доступ пользователь, какие роли имеют доступ к каким доменам и какие домены
- имеют доступ к каким типам.
+ доступ клиент, какие роли имеют доступ к каким доменам и какие домены имеют
+ доступ к каким типам.
  
 \end_layout
 
@@ -1865,8 +1864,8 @@ key "Polyinstance"
 
 \begin_layout Standard
 В операционной системе Fedora она может быть применена для создания копий
- директорий по различным признаками: по имени пользователя, по уровню или
- контексту безопасности пользователя.
+ директорий по различным признаками: по имени клиента, по уровню или контексту
+ безопасности.
  
 \end_layout
 
@@ -1883,8 +1882,8 @@ key "PAM"
 \end_inset
 
 .
- Во время входа пользователя в операционную систему модуль PAM создает в
- пределах системной многоэкземплярной директории свою личную, которую 
+ Во время входа клиента в операционную систему модуль PAM создает в пределах
+ системной многоэкземплярной директории свою личную, которую 
 \begin_inset Quotes fld
 \end_inset
 
@@ -1892,8 +1891,7 @@ key "PAM"
 \begin_inset Quotes frd
 \end_inset
 
- только пользователь, а также файлы и директории, находящиеся в его личной
- директории.
+ только клиент.
  
 \end_layout
 
@@ -2055,7 +2053,7 @@ level
 \family typewriter
 list_of_uids
 \family default
- --- список пользователей, для которых PAM не будет создавать многоэкземплярные
+ --- список клиентов, для которых PAM не будет создавать многоэкземплярные
  директории.
 \end_layout
 
@@ -2093,17 +2091,13 @@ status open
 \family typewriter
 /var/tmp
 \family default
-, принцип создания которых основан на переключении уровней пользователей
- для всех пользователей, за исключением 
+, принцип создания которых основан на переключении уровней клиентов для
+ всех, за исключением 
 \family typewriter
 root
 \family default
 .
- В данном случае пользователь 
-\family typewriter
-root 
-\family default
-может 
+ В данном случае он может 
 \begin_inset Quotes fld
 \end_inset
 
@@ -2895,11 +2889,11 @@ Authority Access Info
 \end_layout
 
 \begin_layout Enumerate
-Пользователь входит в операционную систему;
+Открытие сессии клиента;
 \end_layout
 
 \begin_layout Enumerate
-Проверяется наличие цифровой подписи клиента.
+Проверяется наличие электронно-цифровой подписи клиента.
  Если она была создана, выполняется переход к п.
  4.
 \end_layout
@@ -2913,17 +2907,21 @@ Authority Access Info
 \end_layout
 
 \begin_layout Enumerate
-С помощью закрытого ключа создается запрос на подпись сертификата пользователя,
- содержащего текущий метку безопасности пользователя;
+С помощью закрытого ключа создается запрос на подпись сертификата пользователя
+ (CSR), содержащего текущий метку безопасности пользователя;
 \end_layout
 
 \begin_layout Enumerate
-Запрос подписывается цифровой подписью клиента и отправляется на удостоверяющий
- центр;
+Запрос подписывается цифровой подписью клиента.
 \end_layout
 
 \begin_layout Enumerate
-Удостоверяющий центр выполняет проверку цифровой подписи;
+Отправка подписанного CSR на удостоверяющий центр;
+\end_layout
+
+\begin_layout Enumerate
+Удостоверяющий центр выполняет проверку цифровой подписи.
+ В случае ошибки при проверке подписи, происходит незамедлительный останов;
 \end_layout
 
 \begin_layout Enumerate
@@ -3074,7 +3072,7 @@ node [decision] (dsacondition) {ЭЦП создана?};
 
                     & 
 \backslash
-node (null2) {}; & 
+node (null1) {}; & 
 \backslash
 node [block] (dsacreate) {Создание ЭЦП};                               
      & 
@@ -3088,7 +3086,7 @@ node [block] (dsacreate) {Создание ЭЦП};
 
                     & 
 \backslash
-node (null3) {};                                                       
+node (null2) {};                                                       
                          & 
 \backslash
 
@@ -3100,7 +3098,7 @@ node (null3) {};
 
                     & 
 \backslash
-node [block] (phase1) {Создание приватного ключа клиента};             
+node [block] (phase1) {Создание закрытого ключа клиента};              
                          & 
 \backslash
 
@@ -3136,7 +3134,7 @@ node [block] (phase3) {Подпись запроса ЭЦП};
 
                     & 
 \backslash
-node [block] (phase4) {Отправка CSR клиента на УЦ};                    
+node [block] (phase4) {Отправка подписанного CSR клиента на УЦ};       
                          & 
 \backslash
 
@@ -3242,7 +3240,7 @@ path (dsacondition) -| node [near start] {Нет} (dsacreate);
 
     
 \backslash
-path (dsacreate) |- (null3);
+path (dsacreate) |- (null2);
 \end_layout
 
 \begin_layout Plain Layout
@@ -3312,7 +3310,7 @@ path (newlevelcondition) -- node [near start] {Нет} (finish);
 
     
 \backslash
-path (newlevelcondition) --++ (-3,0) node [near start] {Да} |- (null2);
+path (newlevelcondition) --++ (-3,0) node [near start] {Да} |- (null1);
 \end_layout
 
 \begin_layout Plain Layout
@@ -6471,11 +6469,21 @@ CACERT
 
 \family typewriter
 \series bold
-DIGITAL_SIGNATURE_PATH
+DIGITAL_SIGNATURE_KEY
 \family default
  
 \series default
---- путь к папке с ЭЦП клиентов на удостоверяющем центре;
+--- путь к приватному ключу ЭЦП клиента по умолчанию;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+DIGITAL_SIGNATURE_CERT
+\family default
+\series default
+ --- путь к сертификату ЭЦП клиента по умолчанию;
 \end_layout
 
 \begin_layout Itemize
@@ -7264,6 +7272,56 @@ except (ValueError, IOError, X509.X509Error):
 \end_layout
 
 \begin_layout Standard
+Дополнительно в данную функцию включена проверка условия, можно ли использовать
+ данную пару ключей для подписывания:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+certificate = X509.load_cert(certificate_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+key_usage_extension = certificate.get_ext('keyUsage')
+\end_layout
+
+\begin_layout Plain Layout
+
+if not key_usage_extension.get_value() == 'Digital Signature':
+\end_layout
+
+\begin_layout Plain Layout
+
+	print('ERROR sign: Signature key %s does not have extension `Digital Signature`
+' % certificate_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    exit(1)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В данном фрагменте выполняется получение значения дополнения 
+\family typewriter
+keyUsage
+\family default
+, в котором описано его использование, и сравнивается с значением 
+\family typewriter
+Digital Signature
+\family default
+, которое означает использование в цифровых подписях.
+\end_layout
+
+\begin_layout Standard
 Подписание запроса осуществляется методом 
 \family typewriter
 sign()
@@ -7321,7 +7379,7 @@ sign_request_file.close()
 \family typewriter
 name.sign
 \family default
-, где 
+, в котором будет находиться подписанный запрос, где 
 \family typewriter
 name
 \family default
@@ -7540,8 +7598,8 @@ verify()
 \family typewriter
 clear_text
 \family default
- содержится значение запроса клиента, то расшифрованный текст сохраняется
- в файл запроса и выводится сообщение об успешности проверки подписи.
+ содержится значение запроса клиента, то текст запроса сохраняется в файл
+ и выводится сообщение об успешности проверки подписи.
  
 \end_layout
 
@@ -7605,7 +7663,18 @@ ca_certificate_path
 output
 \family default
 \series default
- --- путь к файлу, в который будет сохранён сертификат.
+ --- путь к файлу, в который будет сохранён сертификат;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+is_digital
+\family default
+ 
+\series default
+--- флаг, определяющий необходимость выпуска сертификата цифровой подписи;
 \end_layout
 
 \begin_layout Itemize
@@ -7633,13 +7702,44 @@ False
 \end_layout
 
 \begin_layout Standard
-Работа функции начинается с вызова функции 
-\family typewriter
-check_path()
-\family default
-, определяющая корректность пути, переданной утилите, после чего выполняется
- загрузка запроса из файла.
- 
+Работа данной функции начинается с загрузки запроса:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+request = None
+\end_layout
+
+\begin_layout Plain Layout
+
+try:
+\end_layout
+
+\begin_layout Plain Layout
+
+	request = X509.load_request(request_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+except X509.X509Error:
+\end_layout
+
+\begin_layout Plain Layout
+
+	print('ERROR certificate: Could not load request from %s' % request_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+    exit(1)
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -7675,12 +7775,12 @@ status open
 
 \begin_layout Plain Layout
 
-not_before = ASN1.ASN1_UTCTIME()
+now = int(time() - timezone)
 \end_layout
 
 \begin_layout Plain Layout
 
-not_before.set_datetime(datetime.today())
+not_before.set_time(now)
 \end_layout
 
 \begin_layout Plain Layout
@@ -7690,8 +7790,7 @@ not_after = ASN1.ASN1_UTCTIME()
 
 \begin_layout Plain Layout
 
-not_after.set_datetime(datetime(datetime.today().year + 1, datetime.today().month,
- datetime.today().day))
+not_after.set_time(now + 60 * 60 * 24 * 365)
 \end_layout
 
 \begin_layout Plain Layout
@@ -7725,7 +7824,7 @@ ca_certificate
  ca_private_
 \family default
 key.
- Подписчик сертификата устанавливается из сертификата удостоверяющего центра:
+ Подписчиком сертификата клиента является удостоверяющий центр:
 \end_layout
 
 \begin_layout Standard
@@ -7793,7 +7892,7 @@ status open
 
 \begin_layout Plain Layout
 
-selinux_extension = request.get_extension_by_name("selinuxContext")
+selinux_extension = request.get_extension_by_name('selinuxContext')
 \end_layout
 
 \begin_layout Plain Layout
@@ -7803,17 +7902,13 @@ if not selinux_extension:
 
 \begin_layout Plain Layout
 
-  print("No extension selinuxContext in request %s" % request_path)
+        print('ERROR certificate: No extension selinuxContext in request
+ %s' % request_path)
 \end_layout
 
 \begin_layout Plain Layout
 
-  exit(1)
-\end_layout
-
-\begin_layout Plain Layout
-
-certificate.add_ext(selinux_extension)
+        exit(1)
 \end_layout
 
 \end_inset
@@ -7838,8 +7933,47 @@ selinuxContext
 \end_layout
 
 \begin_layout Standard
-В случае, если объект дополнения был получен после выполнения функции, дополнени
-е добавляется в сертификат методом 
+Проверка текущего контекста безопасности реализуется на основе сертификата
+ цифровой подписи, хранящейся на удостоверяющем центре:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if not is_digital:
+\end_layout
+
+\begin_layout Plain Layout
+
+        if not verify_user_context(subject.CN, selinux_extension.get_value()):
+\end_layout
+
+\begin_layout Plain Layout
+
+            print('ERROR certificate: Invalid SELinux context in request
+ file %s' % request_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+            exit(1)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Если данные проверки прошли успешно, дополнение 
+\family typewriter
+selinuxContext
+\family default
+ добавляется в сертификат методом 
 \family typewriter
 add_ext()
 \family default
@@ -7993,7 +8127,7 @@ name
 \begin_layout Enumerate
 Создать закрытый ключ длины 
 \family typewriter
-n
+length
 \family default
  бита: 
 \begin_inset listings
@@ -8002,7 +8136,7 @@ status open
 
 \begin_layout Plain Layout
 
-$ pgcert --genkey --bits n
+$ pgcert --genkey --bits <length>
 \end_layout
 
 \end_inset
@@ -8013,16 +8147,16 @@ $ pgcert --genkey --bits n
 \begin_layout Enumerate
 Создать закрытый ключ 
 \family typewriter
-pkey.pem
+pkey
 \family default
- в домашней директории: 
+: 
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-$ pgcert --genkey --output ~/pkey.pem
+$ pgcert --genkey --output <pkey>
 \end_layout
 
 \end_inset
@@ -8037,21 +8171,20 @@ user
 \family default
  с контекстом безопастности 
 \family typewriter
-user_u:user_r:user_t:s0
+context
 \family default
  по закрытому ключу 
 \family typewriter
-~/pkey.pem
+pkey
 \family default
-, сделать дополнение критическим:
+:
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-$ pgcert --genreq --pkey ~/pkey.pem --user user --secontext user_u:user_r:user_t:
-s0 --critical
+$ pgcert --genreq --pkey <pkey> --user <user> --secontext <context>
 \end_layout
 
 \end_inset
@@ -8067,7 +8200,39 @@ status open
 
 \begin_layout Plain Layout
 
-# pgcert --gencert --request user.csr --text
+# pgcert --gencert --request <request> --text
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Создать сертификат, закрытый ключ которого используется для цифровой подписи:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# pgcert --gencert --request <request> --createdsa
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Проверить цифровую подпись запроса:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# pgcert --verify --request <request.sign> --output <request>
 \end_layout
 
 \end_inset
@@ -8148,20 +8313,13 @@ $ pgcert --certificate mycert.pem --extension basicConstraints
 \end_layout
 
 \begin_layout Standard
-Для упрощения установки и обновления утилиты 
-\family typewriter
-pgcert
-\family default
- был разработан RPM-пакет с утилитой.
- 
-\end_layout
-
-\begin_layout Standard
 Разработанная таким образом утилита позволяет выполнить стандартные действия
  с сертификатами: создание закрытого ключа, создание запроса на подпись
  сертификата, а также подписать сертификат удостоверяющим центром.
  С помощью опций можно указать имя владельца сертификата и его контекст
  безопасности.
+ Кроме того, реализован механизм подписи запросов на создание сертификатов
+ и их проверку.
  Благодаря функциональному стилю программирования дополнение нового функционала
  несложно: достаточно реализовать новую функцию, добавить опцию в парсер.
  
@@ -9652,6 +9810,11 @@ status open
 $HOME		$HOME/$USER.int/    level root
 \end_layout
 
+\begin_layout Plain Layout
+
+/etc/pki/certs/ /etc/pki/certs/certs.inst/ user root
+\end_layout
+
 \end_inset
 
 Таким образом, будут созданные многоэкземплярные директории 
@@ -9668,6 +9831,8 @@ $HOME		$HOME/$USER.int/    level root
 root
 \family default
 .
+ Последняя строка отвечает за создание директории с электронно-цифровыми
+ подписями клиентов, используемых для генерации сертификатов.
 \end_layout
 
 \begin_layout Enumerate
@@ -9825,37 +9990,51 @@ secontext="$5"
 
 \begin_layout Plain Layout
 
-devnull="/dev/null"                    # sasdasd
 \end_layout
 
 \begin_layout Plain Layout
 
-pgcertdir="$polydir_path/.postgresql"
+log="$polydir_path/cert.log"            #лог-файл, в который выводится вывод
+ утилиты pgcert
 \end_layout
 
 \begin_layout Plain Layout
 
-signerdir="/etc/pki/keys"
+pgcertdir="$polydir_path/.postgresql"   #каталог, в котором хранится закрытый
+ ключ и сертификат клиента
 \end_layout
 
 \begin_layout Plain Layout
 
-ca_ip="192.168.100.4"
+signerdir="/etc/pki/keys"               #каталог, в котором хранится электронно-
+цифровая подпись клиента
 \end_layout
 
 \begin_layout Plain Layout
 
-ca_password="123456"
 \end_layout
 
 \begin_layout Plain Layout
 
-ca_certdir="/root/certs"
+ca_ip="192.168.100.4"                   #IP-адрес удостоверяющего центра
 \end_layout
 
 \begin_layout Plain Layout
 
-ca_signaturedir="/etc/pki/certs"
+ca_password="123456"                    #пароль пользователя root удостоверяющег
+о центра 
+\end_layout
+
+\begin_layout Plain Layout
+
+ca_certdir="/root/certs"                #директория, в которую будут копироватьс
+я запросы на подпись сертификата и в которой будут создаваться
+\end_layout
+
+\begin_layout Plain Layout
+
+ca_signaturedir="/etc/pki/certs"        #директория, в которой хранятся
+ открытые ключи электронно-цифровой подписи клиентов
 \end_layout
 
 \end_inset
@@ -9876,7 +10055,7 @@ status open
 
 \begin_layout Plain Layout
 
-[ -x /sbin/restorecon ] && /sbin/restorecon "$1"
+[ -x /sbin/restorecon ] && /sbin/restorecon "$polydir_path"
 \end_layout
 
 \end_inset
@@ -9885,25 +10064,8 @@ status open
 \end_layout
 
 \begin_layout Standard
-Для упрощения читаемости скрипта объявляются переменные: 
-\family typewriter
-user
-\family default
-, в которой определяется имя пользователя, 
-\family typewriter
-context
-\family default
-, в которой хранится контекст безопасности пользователя, переданного модулем
- 
-\family typewriter
-pam_namespace.so
-\family default
-.
- 
-\end_layout
-
-\begin_layout Standard
-Вычисление имени пользователя реализуются в следующих строках:
+Далее определяется, является ли экземпляр многоэкземплярной папки домашней
+ директорией:
 \begin_inset listings
 inline false
 status open
@@ -9915,7 +10077,22 @@ passwd=$(getent passwd "$user")
 
 \begin_layout Plain Layout
 
-homedir=$(echo "$passwd" | cut -f6 -d":") 
+homedir=$(echo "$passwd" | cut -f6 -d":")
+\end_layout
+
+\begin_layout Plain Layout
+
+if [ "$polydir_path" = "$homedir" ]; then
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
+\end_layout
+
+\begin_layout Plain Layout
+
+fi
 \end_layout
 
 \end_inset
@@ -9924,79 +10101,49 @@ homedir=$(echo "$passwd" | cut -f6 -d":")
 \end_layout
 
 \begin_layout Standard
-Далее объявляются константные переменные: 
-\end_layout
-
-\begin_layout Itemize
-
+Если является, то выполняются дополнительные действия по инициализации:
+ копирование шаблона-каталога из 
 \family typewriter
-pgcertdir
+/etc/skel
 \family default
- --- путь к директории, в которой будут храниться сертификаты (
-\family typewriter
-~/.postgresql
-\family default
-);
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-ca 
-\family default
---- IP-адрес удостоверяющего центра;
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-certdir 
-\family default
---- путь к директории, в которую будут присылаться запросы на подпись сертификат
-ов и в которую удостоверяющий центр будет сохранять сертификаты;
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-ca_password 
-\family default
---- пароль пользователя 
-\family typewriter
-root
-\family default
-, от имени которого удостоверяющий центр будет выпускать сертификаты.
- 
-\end_layout
-
-\begin_layout --Separator--
-
+, назначение прав и т.д.
 \end_layout
 
 \begin_layout Standard
-В 
-\emph on
-строках 13-19
-\emph default
- описываются все необходимые действия по созданию экземпляра директории.
+После выполнения этих действий выполняется создание сертификата пользователя.
+ Сначала осуществляется проверка наличия электронно-цифровой подписи у клиента.
+ Если её нет, она создаётся с помощью функции 
+\family typewriter
+create_signature
+\family default
+.
+ В ней описываются действия по созданию подписи и копированию в каталог
+ 
+\family typewriter
+$ca_signaturedir
+\family default
+ удостоверяющего центра.
+\end_layout
+
+\begin_layout Standard
+Действия по созданию сертификата клиента объединены в функции 
+\family typewriter
+create_certificate
+\family default
+.
  
 \end_layout
 
 \begin_layout Standard
-Начиная 
-\emph on
-со строки 21 
-\emph default
-определяется перечень операций по созданию закрытого ключа, создания запроса
- на подпись сертификата и его выпуск.
-\end_layout
-
-\begin_layout Standard
-Первым делом создается директория для хранения сертификатов 
+Работа данной функции начинается с создания директории для хранения сертификатов
+ 
 \family typewriter
 $pgcertdir
 \family default
 :
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
@@ -10030,7 +10177,7 @@ status open
 
 \begin_layout Plain Layout
 
-pgcert --genkey --bits 2048 --output $pgcertdir/postgresql.key >> /dev/null
+pgcert --genkey --bits 2048 --output $pgcertdir/postgresql.key >> $log
 \end_layout
 
 \begin_layout Plain Layout
@@ -10044,16 +10191,6 @@ chmod 0600 $pgcertdir/postgresql.key
 \end_layout
 
 \begin_layout Standard
-Чтобы скрыть результат выполнения команд, выполняется перенаправление вывода
- команды в 
-\family typewriter
-/dev/null
-\family default
-.
- При отладке скрипта рекомендуется убрать это перенаправление.
-\end_layout
-
-\begin_layout Standard
 Для создания запроса на подпись сертификата используется следующая команда:
  
 \begin_inset listings
@@ -10063,7 +10200,7 @@ status open
 \begin_layout Plain Layout
 
 pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --secontext
- $secontext --output $pgcertdir/postgresql.csr >> /dev/null
+ $secontext --output $pgcertdir/postgresql.csr >> $log
 \end_layout
 
 \end_inset
@@ -10072,16 +10209,33 @@ pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --secontext
 \end_layout
 
 \begin_layout Standard
-Созданный таким образом пересылается на удостоверяющий центр с помощью следующей
- команды:
+Запрос подписывается цифровой подписью клиента:
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-sshpass -p $ca_password scp -o StrictHostKeyChecking=no $pgcertdir/postgresql.csr
- root@$ca:$certdir >> /dev/null
+pgcert --sign --pkey $signerdir/private.key --certificate $signerdir/$user.crt
+ --request $pgcertdir/postgresql.csr >> $log
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+После чего подписанный запрос пересылается на удостоверяющий центр с помощью
+ следующей команды:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+sshpass -p $ca_password scp -o StrictHostKeyChecking=no $pgcertdir/postgresql.csr.
+sign root@$ca_ip:$ca_certdir/postgresql.csr.sign >> $log
 \end_layout
 
 \end_inset
@@ -10109,7 +10263,7 @@ $ca_password
 .
  После этого файл запроса копируется в директорию 
 \family typewriter
-$certdir 
+$ca_certdir 
 \family default
 удостоверяющего центра.
 
@@ -10118,14 +10272,31 @@ $certdir
 \end_layout
 
 \begin_layout Standard
+На удостоверяющем центре выполняется проверка цифровой подписи клиента:
+\end_layout
 
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert
+ --verify --certificate /etc/pki/certs/$user.crt --request $ca_certdir/postgresql.
+csr.sign --output $ca_certdir/postgresql.csr" >> $log
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+При успешной проверке удостоверяющей центр выпускает сертификат клиента
+ и сохраняет его в директорию 
 \family typewriter
-На
-\family default
- удостоверяющем центре выполняется подписание сертификата и сохранение сертифика
-та в директорию 
-\family typewriter
-$certdir
+$ca_certdir
 \family default
 :
 \end_layout
@@ -10137,8 +10308,9 @@ status open
 
 \begin_layout Plain Layout
 
-sshpass -p $password ssh -o StrictHostKeyChecking=no -T root@$ca "pgcert
- --gencert --request $certdir/postgresql.csr --output $certdir/postgresql.crt"
+shpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert
+ --gencert --request $ca_certdir/postgresql.csr --output $ca_certdir/postgresql.cr
+t" >> $log
 \end_layout
 
 \end_inset
@@ -10147,7 +10319,7 @@ sshpass -p $password ssh -o StrictHostKeyChecking=no -T root@$ca "pgcert
 \end_layout
 
 \begin_layout Standard
-Далее сертификат пользователя копируется пользователю в директорию 
+Далее сертификат клиента копируется пользователю в директорию 
 \family typewriter
 $pgcertdir
 \family default
@@ -10161,26 +10333,8 @@ status open
 
 \begin_layout Plain Layout
 
-sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca:$certdir/postgr
-esql.crt $pgcertdir/postgresql.crt >> /dev/null
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Сертификат и запрос на его подпись удаляются из директории удостоверяющего
- центра:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca "rm
- -fr $certdir/*"
+sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:$ca_certdir/
+postgresql.crt $pgcertdir/postgresql.crt >> $log
 \end_layout
 
 \end_inset
@@ -13963,7 +14117,12 @@ CACERT = '/etc/pki/CA/cacert.pem'
 
 \begin_layout Plain Layout
 
-DIGITAL_SIGNATURE_PATH = '/etc/pki/certs'
+DIGITAL_SIGNATURE_KEY = '/etc/pki/certs/private.key'
+\end_layout
+
+\begin_layout Plain Layout
+
+DIGITAL_SIGNATURE_CERT = '/etc/pki/certs/%s.crt' % DEFAULT_FIELDS['CN']
 \end_layout
 
 \begin_layout Plain Layout
@@ -14224,8 +14383,7 @@ def verify_user_context(user, current_context):
 
 \begin_layout Plain Layout
 
-    main_user_context = get_extension(DIGITAL_SIGNATURE_PATH + '/%s.crt'
- % user, 'selinuxContext')
+    main_user_context = get_extension(DIGITAL_SIGNATURE_CERT, 'selinuxContext')
 \end_layout
 
 \begin_layout Plain Layout
@@ -14423,6 +14581,27 @@ def verify(certificate_path, ca_certificate_path, sign_request_path, output):
 
 \begin_layout Plain Layout
 
+    key_usage_extension = certificate.get_ext('keyUsage')
+\end_layout
+
+\begin_layout Plain Layout
+
+    if not key_usage_extension.get_value() == 'Digital Signature':
+\end_layout
+
+\begin_layout Plain Layout
+
+        print('ERROR verify: Signature key %s does not have extension `Digital
+ Signature`' % certificate_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+        exit(1)
+\end_layout
+
+\begin_layout Plain Layout
+
     stack = X509.X509_Stack()
 \end_layout
 
@@ -14521,7 +14700,7 @@ def make_private_key(bits, output):
 
 \begin_layout Plain Layout
 
-    key_pair = RSA.gen_key(bits, 65537, callback=password)
+    private_key = RSA.gen_key(bits, 65537, callback=password)
 \end_layout
 
 \begin_layout Plain Layout
@@ -14536,7 +14715,7 @@ def make_private_key(bits, output):
 
 \begin_layout Plain Layout
 
-    key_pair.save_key(output, None)
+    private_key.save_key(output, None)
 \end_layout
 
 \begin_layout Plain Layout
@@ -14560,7 +14739,7 @@ def make_request(private_key_path, username, user_context, critical, output,
 
 \begin_layout Plain Layout
 
-    key_pair = None
+    private_key = None
 \end_layout
 
 \begin_layout Plain Layout
@@ -14570,7 +14749,7 @@ def make_request(private_key_path, username, user_context, critical, output,
 
 \begin_layout Plain Layout
 
-        key_pair = EVP.load_key(private_key_path, callback=password)
+        private_key = EVP.load_key(private_key_path, callback=password)
 \end_layout
 
 \begin_layout Plain Layout
@@ -14596,7 +14775,7 @@ h)
 
 \begin_layout Plain Layout
 
-    request.set_pubkey(key_pair)
+    request.set_pubkey(private_key)
 \end_layout
 
 \begin_layout Plain Layout
@@ -14697,7 +14876,7 @@ h)
 
 \begin_layout Plain Layout
 
-    request.sign(key_pair, 'sha1')
+    request.sign(private_key, 'sha1')
 \end_layout
 
 \begin_layout Plain Layout
@@ -15635,7 +15814,27 @@ rue', default=False,
 
 \begin_layout Plain Layout
 
-    elif options.sign and options.pkey and options.certificate and options.request:
+    elif options.sign and options.request:
+\end_layout
+
+\begin_layout Plain Layout
+
+        if not options.pkey:
+\end_layout
+
+\begin_layout Plain Layout
+
+            options.pkey = DIGITAL_SIGNATURE_KEY
+\end_layout
+
+\begin_layout Plain Layout
+
+        if not options.certificate:
+\end_layout
+
+\begin_layout Plain Layout
+
+            options.certificate = DIGITAL_SIGNATURE_CERT
 \end_layout
 
 \begin_layout Plain Layout
@@ -15645,8 +15844,17 @@ rue', default=False,
 
 \begin_layout Plain Layout
 
-    elif options.verify and options.cacert and options.certificate and options.reque
-st:
+    elif options.verify and options.request:
+\end_layout
+
+\begin_layout Plain Layout
+
+        if not options.certificate:
+\end_layout
+
+\begin_layout Plain Layout
+
+            options.certificate = DIGITAL_SIGNATURE_CERT
 \end_layout
 
 \begin_layout Plain Layout
@@ -16940,37 +17148,6 @@ status collapsed
 
 \begin_layout Plain Layout
 
-# It receives polydir path as $1, the instance path as $2, 
-\end_layout
-
-\begin_layout Plain Layout
-
-# a flag whether the instance dir was newly created (0 - no, 1 - yes) in
- $3,
-\end_layout
-
-\begin_layout Plain Layout
-
-# and user name in $4 and his context in $5.
-\end_layout
-
-\begin_layout Plain Layout
-
-#
-\end_layout
-
-\begin_layout Plain Layout
-
-# The following section will copy the contents of /etc/skel if this is a
-\end_layout
-
-\begin_layout Plain Layout
-
-# newly created home directory.
-\end_layout
-
-\begin_layout Plain Layout
-
 \end_layout
 
 \begin_layout Plain Layout
@@ -17004,7 +17181,24 @@ secontext="$5"
 
 \begin_layout Plain Layout
 
-devnull="/dev/null"
+\end_layout
+
+\begin_layout Plain Layout
+
+log="$polydir_path/cert.log"            #лог-файл, в который выводится вывод
+ утилиты pgcert
+\end_layout
+
+\begin_layout Plain Layout
+
+pgcertdir="$polydir_path/.postgresql"   #каталог, в котором хранится закрытый
+ ключ и сертификат клиента
+\end_layout
+
+\begin_layout Plain Layout
+
+signerdir="/etc/pki/keys"               #каталог, в котором хранится электронно-
+цифровая подпись клиента
 \end_layout
 
 \begin_layout Plain Layout
@@ -17013,36 +17207,25 @@ devnull="/dev/null"
 
 \begin_layout Plain Layout
 
-pgcertdir="$polydir_path/.postgresql"
+ca_ip="192.168.100.4"                   #IP-адрес удостоверяющего центра
 \end_layout
 
 \begin_layout Plain Layout
 
-signerdir="/etc/pki/keys"
+ca_password="123456"                    #пароль пользователя root удостоверяющег
+о центра 
 \end_layout
 
 \begin_layout Plain Layout
 
+ca_certdir="/root/certs"                #директория, в которую будут копироватьс
+я запросы на подпись сертификата и в которой будут создаваться
 \end_layout
 
 \begin_layout Plain Layout
 
-ca_ip="192.168.100.4"
-\end_layout
-
-\begin_layout Plain Layout
-
-ca_password="123456"
-\end_layout
-
-\begin_layout Plain Layout
-
-ca_certdir="/root/certs"
-\end_layout
-
-\begin_layout Plain Layout
-
-ca_signaturedir="/etc/pki/certs"
+ca_signaturedir="/etc/pki/certs"        #директория, в которой хранятся
+ открытые ключи электронно-цифровой подписи клиентов
 \end_layout
 
 \begin_layout Plain Layout
@@ -17065,7 +17248,7 @@ create_certificate() {
 
 \begin_layout Plain Layout
 
-	pgcert --genkey  --output $pgcertdir/postgresql.key >> $devnull
+	pgcert --genkey  --output $pgcertdir/postgresql.key >> $log
 \end_layout
 
 \begin_layout Plain Layout
@@ -17076,26 +17259,26 @@ create_certificate() {
 \begin_layout Plain Layout
 
 	pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --secontext
- $secontext --output $pgcertdir/postgresql.csr >> $devnull
+ $secontext --output $pgcertdir/postgresql.csr >> $log
 \end_layout
 
 \begin_layout Plain Layout
 
 	pgcert --sign --pkey $signerdir/private.key --certificate $signerdir/$user.crt
- --request $pgcertdir/postgresql.csr >> $devnull
+ --request $pgcertdir/postgresql.csr >> $log
 \end_layout
 
 \begin_layout Plain Layout
 
 	sshpass -p $ca_password scp -o StrictHostKeyChecking=no $pgcertdir/postgresql.cs
-r.sign root@$ca_ip:$ca_certdir/postgresql.csr.sign >> $devnull
+r.sign root@$ca_ip:$ca_certdir/postgresql.csr.sign >> $log
 \end_layout
 
 \begin_layout Plain Layout
 
 	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
  "pgcert --verify --certificate /etc/pki/certs/$user.crt --request $ca_certdir/po
-stgresql.csr.sign --output $ca_certdir/postgresql.csr" >> $devnull
+stgresql.csr.sign --output $ca_certdir/postgresql.csr" >> $log
 \end_layout
 
 \begin_layout Plain Layout
@@ -17112,19 +17295,19 @@ stgresql.csr.sign --output $ca_certdir/postgresql.csr" >> $devnull
 
 		sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
  "pgcert --gencert --request $ca_certdir/postgresql.csr --output $ca_certdir/post
-gresql.crt" >> $devnull
+gresql.crt" >> $log
 \end_layout
 
 \begin_layout Plain Layout
 
 		sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:$ca_certdi
-r/postgresql.crt $pgcertdir/postgresql.crt >> $devnull
+r/postgresql.crt $pgcertdir/postgresql.crt >> $log
 \end_layout
 
 \begin_layout Plain Layout
 
 		sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:/etc/pki/C
-A/cacert.pem $pgcertdir/root.crt >> $devnull
+A/cacert.pem $pgcertdir/root.crt >> $log
 \end_layout
 
 \begin_layout Plain Layout
@@ -17187,13 +17370,13 @@ create_signature() {
 
 \begin_layout Plain Layout
 
-	pgcert --genkey --output $private_key >> $devnull
+	pgcert --genkey --output $private_key >> $log
 \end_layout
 
 \begin_layout Plain Layout
 
 	pgcert --genreq --pkey $private_key --user $user --secontext $secontext
- --output $request >> $devnull
+ --output $request >> $log
 \end_layout
 
 \begin_layout Plain Layout
@@ -17236,7 +17419,7 @@ a_signaturedir/$user.csr
 
 	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
  "pgcert --gencert --request $ca_signaturedir/$user.csr --signature --output
- $ca_signaturedir/$user.crt" >> $devnull
+ $ca_signaturedir/$user.crt" >> $log
 \end_layout
 
 \begin_layout Plain Layout
@@ -17282,11 +17465,6 @@ if [ "$need_to_create" = 1 ]; then
 \begin_layout Plain Layout
 
     [ -x /sbin/restorecon ] && /sbin/restorecon "$polydir_path"
-\end_layout
-
-\begin_layout Plain Layout
-
-    user="$4"
 \end_layout
 
 \begin_layout Plain Layout
