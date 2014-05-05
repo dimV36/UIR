@@ -11,7 +11,8 @@ from re import findall
 DEFAULT_FIELDS = dict(C='ru', ST='msk', L='msk', O='mephi', OU='kaf36', CN=getlogin())
 CAKEY = '/etc/pki/CA/private/cakey.pem'
 CACERT = '/etc/pki/CA/cacert.pem'
-DIGITAL_SIGNATURE_PATH = '/etc/pki/certs'
+DIGITAL_SIGNATURE_KEY = '/etc/pki/certs/private.key'
+DIGITAL_SIGNATURE_CERT = '/etc/pki/certs/%s.crt' % DEFAULT_FIELDS['CN']
 DEFAULT_PASSWORD = '123456'
 
 
@@ -63,7 +64,7 @@ def make_level_and_category_sets(context):
 
 
 def verify_user_context(user, current_context):
-    main_user_context = get_extension(DIGITAL_SIGNATURE_PATH + '/%s.crt' % user, 'selinuxContext')
+    main_user_context = get_extension(DIGITAL_SIGNATURE_CERT, 'selinuxContext')
     if not main_user_context:
         return False
     main_level, main_category = make_level_and_category_sets(main_user_context)
@@ -88,6 +89,11 @@ def sign(private_key_path, certificate_path, request_path):
     except (ValueError, IOError, X509.X509Error):
         print('ERROR sign: Could not load digital signature')
         exit(1)
+    certificate = X509.load_cert(certificate_path)
+    key_usage_extension = certificate.get_ext('keyUsage')
+    if not key_usage_extension.get_value() == 'Digital Signature':
+        print('ERROR sign: Signature key %s does not have extension `Digital Signature`' % certificate_path)
+        exit(1)
     sign_request = smime.sign(text)
     sign_request_file = BIO.openfile(request_path + '.sign', 'w')
     smime.write(sign_request_file, sign_request)
@@ -102,6 +108,10 @@ def verify(certificate_path, ca_certificate_path, sign_request_path, output):
         certificate = X509.load_cert(certificate_path)
     except (X509.X509Error, ValueError):
         print('ERROR verify: Could not load certificate for verifying')
+        exit(1)
+    key_usage_extension = certificate.get_ext('keyUsage')
+    if not key_usage_extension.get_value() == 'Digital Signature':
+        print('ERROR verify: Signature key %s does not have extension `Digital Signature`' % certificate_path)
         exit(1)
     stack = X509.X509_Stack()
     stack.push(certificate)
@@ -175,9 +185,6 @@ def make_certificate(request_path, ca_private_key_file, ca_certificate_file, out
         print('ERROR certificate: Could not load request from %s' % request_path)
         exit(1)
     public_key = request.get_pubkey()
-    if not request.verify(public_key):
-        print('ERROR certificate: Request is invalid')
-        exit(1)
     subject = request.get_subject()
     ca_certificate = X509.load_cert(ca_certificate_file)
     ca_private_key = EVP.load_key(ca_private_key_file, callback=password)
@@ -342,9 +349,15 @@ if __name__ == '__main__':
         check_permissions()
         make_certificate(options.request, options.cakey, options.cacert,
                          options.output, options.signature, options.text)
-    elif options.sign and options.pkey and options.certificate and options.request:
+    elif options.sign and options.request:
+        if not options.pkey:
+            options.pkey = DIGITAL_SIGNATURE_KEY
+        if not options.certificate:
+            options.certificate = DIGITAL_SIGNATURE_CERT
         sign(options.pkey, options.certificate, options.request)
-    elif options.verify and options.cacert and options.certificate and options.request:
+    elif options.verify and options.request:
+        if not options.certificate:
+            options.certificate = DIGITAL_SIGNATURE_CERT
         verify(options.certificate, options.cacert, options.request, options.output)
     elif options.issuer and options.certificate:
         get_issuer(options.certificate)
