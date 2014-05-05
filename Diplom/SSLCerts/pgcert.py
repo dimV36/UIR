@@ -123,22 +123,22 @@ def verify(certificate_path, ca_certificate_path, sign_request_path, output):
 
 
 def make_private_key(bits, output):
-    key_pair = RSA.gen_key(bits, 65537, callback=password)
+    private_key = RSA.gen_key(bits, 65537, callback=password)
     if not output:
         output = path.abspath(path.curdir) + '/mykey.pem'
-    key_pair.save_key(output, None)
+    private_key.save_key(output, None)
     print('Key was saved to %s' % output)
 
 
 def make_request(private_key_path, username, user_context, critical, output, is_printed):
-    key_pair = None
+    private_key = None
     try:
-        key_pair = EVP.load_key(private_key_path, callback=password)
+        private_key = EVP.load_key(private_key_path, callback=password)
     except EVP.EVPError:
         print('ERROR request: Could not load key pair from %s' % private_key_path)
         exit(1)
     request = X509.Request()
-    request.set_pubkey(key_pair)
+    request.set_pubkey(private_key)
     request.set_version(2)
     name = X509.X509_Name()
     name.C = DEFAULT_FIELDS['C']
@@ -158,7 +158,7 @@ def make_request(private_key_path, username, user_context, critical, output, is_
     stack = X509.X509_Extension_Stack()
     stack.push(X509.new_extension('selinuxContext', context, int(critical)))
     request.add_extensions(stack)
-    request.sign(key_pair, 'sha1')
+    request.sign(private_key, 'sha1')
     if not output:
         output = path.abspath(path.curdir) + '/%s.csr' % DEFAULT_FIELDS['CN']
     request.save_pem(output)

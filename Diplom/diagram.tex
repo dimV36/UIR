@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage[T2A]{fontenc}
+\usepackage[russian,english]{babel}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows}
+\usetikzlibrary{positioning}
+
+\begin{document}
+
+\begin{tikzpicture} [
+    auto,
+    decision/.style = { diamond, draw=blue, thick, fill=blue!20,
+                        text width=5em, text badly centered,
+                        inner sep=1pt, rounded corners },
+    block/.style    = { rectangle, draw=blue, thick, 
+                        fill=blue!20, text width=10em, text centered,
+                        rounded corners, minimum height=2em },
+    line/.style     = { draw, thick, ->, shorten >=2pt },
+    cloud/.style    = { ellipse, draw, fill=red!20, text width=5em, text badly centered, inner sep=1pt },
+  ]
+  % Define nodes in a matrix
+  \matrix [column sep=5mm, row sep=10mm] {
+                    & \node [cloud] (start) {Начало};                                             & \\
+                    & \node [block] (phase1) {Клиент входит в ОС};                                & \\
+                    %& \node (null1) {};                                                           & \\
+                    & \node [decision] (dsacondition) {ЭЦП создана?};                             & \\
+%                    & \node (null1) {};                                                           & \\
+                    & \node [block] (phase2) {Создание приватного ключа клиента};                 & \\
+                    & \node [block] (phase3) {Создание CSR клиента};                              & \\
+                    & \node [block] (phase4) {Подпись запроса ЭЦП};                               & \\
+                    & \node [block] (phase5) {Отправка CSR клиента на УЦ};                        & \\
+                    & \node [decision] (dsaverify) {ЭЦП валидна?};                                & \\
+                    & \node [block] (phase5) {Выпуск сертификата клиента};                        & \\
+                    & \node [block] (phase6) {Отправка сертификата клиенту};                      & \\
+                    & \node [decision] (newlevelcondition) {Требуется перейти на новый уровень?}; & \\
+                    & \node [cloud] (finish) {Конец};                                             & \\
+  };
+  
+\end{tikzpicture}
+
+%        \node [cloud] (start) {Начало};
+%        \node [block, below of = start] (phase1) {Клиент входит в ОС};
+%	\node [decision, below of = phase1] (dsacondition) {ЭЦП создана?};
+%        \node [block, below of = dsacondition, node distance = 2.5cm] (phase2) {Создаётся приватный ключ клиента};
+%        \node [block, left of = phase2, node distance = 7.5cm] (createdsa) {Создается ЭЦП клиента};
+%	\node [bellow of = dsacondition] (null1) {};
+%        \node [block, below of = phase2, node distance = 1.5cm] (phase3) {Создаётся запрос на подпись сертификата};
+%        \node [block, below of = phase3, node distance = 1.5cm] (phase4) {УЦ проверяет ЭЦП клиента};
+%        \node [block, below of = phase4, node distance = 1.5cm] (phase5) {Выпуск сертификата клиента УЦ};
+%        \node [decision, below of = phase5, node distance = 3cm] (condition) {Требуется перейти на новый уровень?};
+%        \node [cloud, below of = condition] (finish) {Конец};
+%        \path [line] (start) -- (phase1);
+%	\path [line] (phase1) -- (dsacondition);
+%	\path [line] (dsacondition) -- (phase2);
+%	%\path [line] (dsacondition) -- node {Да}(null1);
+%	%\path [line] (null1) -- (phase2);
+%	\path [line] (dsacondition) -| node [near start] {Нет} (createdsa);
+%	\path [line] (createdsa) -- (phase2);
+%        \path [line] (phase2) -- (phase3);
+%        \path [line] (phase3) -- (phase4);
+%        \path [line] (phase4) -- (phase5);
+%        \path [line] (phase5) -- (condition);
+%        \path [line] (condition) --++ (-3,0) node [near start] {Да} |- (phase2);
+%        %\path [line] (correction) |- (phase1);
+%        \path [line] (condition) -- node {Нет}(finish);
+
+\end{document}
