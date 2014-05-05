@@ -12,30 +12,30 @@ need_to_create="$3"
 user="$4"
 secontext="$5"
 
-devnull="/dev/null"
 
-pgcertdir="$polydir_path/.postgresql"
-signerdir="/etc/pki/keys"
+log="$polydir_path/cert.log"            #лог-файл, в который выводится вывод утилиты pgcert
+pgcertdir="$polydir_path/.postgresql"   #каталог, в котором хранится закрытый ключ и сертификат клиента
+signerdir="/etc/pki/keys"               #каталог, в котором хранится электронно-цифровая подпись клиента
 
-ca_ip="192.168.100.4"
-ca_password="123456"
-ca_certdir="/root/certs"
-ca_signaturedir="/etc/pki/certs"
+ca_ip="192.168.100.4"                   #IP-адрес удостоверяющего центра
+ca_password="123456"                    #пароль пользователя root удостоверяющего центра 
+ca_certdir="/root/certs"                #директория, в которую будут копироваться запросы на подпись сертификата и в которой будут создаваться
+ca_signaturedir="/etc/pki/certs"        #директория, в которой хранятся открытые ключи электронно-цифровой подписи клиентов
 
 
 create_certificate() {
 	mkdir $pgcertdir
-	pgcert --genkey  --output $pgcertdir/postgresql.key >> $devnull
+	pgcert --genkey  --output $pgcertdir/postgresql.key >> $log
 	chmod 0600 $pgcertdir/postgresql.key
-	pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --secontext $secontext --output $pgcertdir/postgresql.csr >> $devnull
-	pgcert --sign --pkey $signerdir/private.key --certificate $signerdir/$user.crt --request $pgcertdir/postgresql.csr >> $devnull
-	sshpass -p $ca_password scp -o StrictHostKeyChecking=no $pgcertdir/postgresql.csr.sign root@$ca_ip:$ca_certdir/postgresql.csr.sign >> $devnull
-	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert --verify --certificate /etc/pki/certs/$user.crt --request $ca_certdir/postgresql.csr.sign --output $ca_certdir/postgresql.csr" >> $devnull
+	pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --secontext $secontext --output $pgcertdir/postgresql.csr >> $log
+	pgcert --sign --pkey $signerdir/private.key --certificate $signerdir/$user.crt --request $pgcertdir/postgresql.csr >> $log
+	sshpass -p $ca_password scp -o StrictHostKeyChecking=no $pgcertdir/postgresql.csr.sign root@$ca_ip:$ca_certdir/postgresql.csr.sign >> $log
+	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert --verify --certificate /etc/pki/certs/$user.crt --request $ca_certdir/postgresql.csr.sign --output $ca_certdir/postgresql.csr" >> $log
 	if [ $? -eq 0 ]
 	then
-		sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert --gencert --request $ca_certdir/postgresql.csr --output $ca_certdir/postgresql.crt" >> $devnull
-		sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:$ca_certdir/postgresql.crt $pgcertdir/postgresql.crt >> $devnull
-		sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:/etc/pki/CA/cacert.pem $pgcertdir/root.crt >> $devnull
+		sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert --gencert --request $ca_certdir/postgresql.csr --output $ca_certdir/postgresql.crt" >> $log
+		sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:$ca_certdir/postgresql.crt $pgcertdir/postgresql.crt >> $log
+		sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:/etc/pki/CA/cacert.pem $pgcertdir/root.crt >> $log
 	fi
 	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "rm -f $ca_certdir/*"
 	rm -f $pgcertdir/postgresql.csr*
@@ -48,8 +48,8 @@ create_signature() {
 	request=$signerdir/$user.csr
 	certificate=$signerdir/$user.crt
 
-	pgcert --genkey --output $private_key >> $devnull
-	pgcert --genreq --pkey $private_key --user $user --secontext $secontext --output $request >> $devnull
+	pgcert --genkey --output $private_key >> $log
+	pgcert --genreq --pkey $private_key --user $user --secontext $secontext --output $request >> $log
 	sshpass -p $ca_password ssh -T root@$ca_ip bash -s <<-EOF
 	if ! [ -d $ca_signaturedir ]
 	then
@@ -57,7 +57,7 @@ create_signature() {
 	fi 
 	EOF
 	sshpass -p $ca_password scp -o StrictHostKeyChecking=no $request root@$ca_ip:$ca_signaturedir/$user.csr
-	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert --gencert --request $ca_signaturedir/$user.csr --signature --output $ca_signaturedir/$user.crt" >> $devnull
+	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert --gencert --request $ca_signaturedir/$user.csr --signature --output $ca_signaturedir/$user.crt" >> $log
 	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "rm -f ca_signaturedir/$user.csr" 
 	sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:$ca_signaturedir/$user.crt $certificate
 	rm -f $request
@@ -67,7 +67,6 @@ create_signature() {
 if [ "$need_to_create" = 1 ]; then
     # This line will fix the labeling on all newly created directories
     [ -x /sbin/restorecon ] && /sbin/restorecon "$polydir_path"
-    user="$4"
     passwd=$(getent passwd "$user")
     homedir=$(echo "$passwd" | cut -f6 -d":")
     if [ "$polydir_path" = "$homedir" ]; then
