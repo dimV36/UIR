@@ -1,0 +1,39 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage[T2A]{fontenc}
+\usepackage[russian,english]{babel}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows}
+\usetikzlibrary{positioning}
+
+\begin{document}
+
+\begin{tikzpicture} [
+    auto,
+    block/.style    = { rectangle, draw=blue, thick, 
+                        fill=blue!20, text width=5em,
+                        font=\ttfamily,
+                        text centered,
+                        rounded corners, minimum height=2em,
+                        scale = 0.75 },
+    line/.style     = { draw, thick, shorten >=2pt, scale = 0.75 },
+  ]
+  % Define nodes in a matrix
+  \matrix [column sep=3mm, row sep=5mm] {
+                      & \node (null1) {}; & \node (null2) {}; & \node (null3) {}; & \node [block, text width = 23em] (instance1) {user\_u:object\_r:user\_home\_dir\_t:s0-s1\_user};                                              & \\
+                      & \node [block, fill = red!20] (home) {home}; & \node [block, fill = red!20] (user) {user}; & \node [block] (userinst) {user.inst}; & \node [block, text width = 23em, fill = red!20] (instance2) {user\_u:object\_r:user\_home\_dir\_t:s0-s0\_user};    & \\
+                      & \node (null4) {}; & \node (null5) {}; & \node (null6) {}; & \node [block, text width = 23em] (instance3) {user\_u:object\_r:user\_home\_dir\_t:s1-s1\_user};                                              & \\
+  };
+  \begin{scope} [every path/.style=line]
+      \path (home)     --     (user);
+      \path (user)     --     (userinst);
+      \path (userinst) --     (instance1.west);
+      \path (userinst) --     (instance2.west);
+      \path (userinst) --     (instance3.west);
+  \end{scope}
+  
+\end{tikzpicture}
+
+\end{document}

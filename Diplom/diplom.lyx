@@ -1919,13 +1919,231 @@ reference "fig:Многоэкземплярность-директории-/"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
-\begin_inset Graphics
-	filename files/polyinstance.png
-	width 95text%
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tikzpicture} [
+\end_layout
+
+\begin_layout Plain Layout
+
+    auto,
+\end_layout
+
+\begin_layout Plain Layout
+
+    block/.style    = { rectangle, draw=blue, thick, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                        fill=blue!20, text width=5em,
+\end_layout
+
+\begin_layout Plain Layout
+
+                        font=
+\backslash
+ttfamily,
+\end_layout
+
+\begin_layout Plain Layout
+
+                        text centered,
+\end_layout
+
+\begin_layout Plain Layout
+
+                        rounded corners, minimum height=2em,
+\end_layout
+
+\begin_layout Plain Layout
+
+                        scale = 0.75 },
+\end_layout
+
+\begin_layout Plain Layout
+
+    line/.style     = { draw, thick, shorten >=2pt, scale = 0.75 },
+\end_layout
+
+\begin_layout Plain Layout
+
+  ]
+\end_layout
+
+\begin_layout Plain Layout
+
+  % Define nodes in a matrix
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+matrix [column sep=3mm, row sep=5mm] {
+\end_layout
+
+\begin_layout Plain Layout
+
+                      & 
+\backslash
+node (null1) {}; & 
+\backslash
+node (null2) {}; & 
+\backslash
+node (null3) {}; & 
+\backslash
+node [block, text width = 23em] (instance1) {user
+\backslash
+_u:object
+\backslash
+_r:user
+\backslash
+_home
+\backslash
+_dir
+\backslash
+_t:s0-s1
+\backslash
+_user};                                              & 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+                      & 
+\backslash
+node [block, fill = red!20] (home) {home}; & 
+\backslash
+node [block, fill = red!20] (user) {user}; & 
+\backslash
+node [block] (userinst) {user.inst}; & 
+\backslash
+node [block, text width = 23em, fill = red!20] (instance2) {user
+\backslash
+_u:object
+\backslash
+_r:user
+\backslash
+_home
+\backslash
+_dir
+\backslash
+_t:s0-s0
+\backslash
+_user};    & 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+                      & 
+\backslash
+node (null4) {}; & 
+\backslash
+node (null5) {}; & 
+\backslash
+node (null6) {}; & 
+\backslash
+node [block, text width = 23em] (instance3) {user
+\backslash
+_u:object
+\backslash
+_r:user
+\backslash
+_home
+\backslash
+_dir
+\backslash
+_t:s1-s1
+\backslash
+_user};                                              & 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  };
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+begin{scope} [every path/.style=line]
+\end_layout
+
+\begin_layout Plain Layout
+
+      
+\backslash
+path (home)     --     (user);
+\end_layout
+
+\begin_layout Plain Layout
+
+      
+\backslash
+path (user)     --     (userinst);
+\end_layout
+
+\begin_layout Plain Layout
+
+      
+\backslash
+path (userinst) --     (instance1.west);
+\end_layout
+
+\begin_layout Plain Layout
+
+      
+\backslash
+path (userinst) --     (instance2.west);
+\end_layout
+
+\begin_layout Plain Layout
+
+      
+\backslash
+path (userinst) --     (instance3.west);
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+end{scope}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tikzpicture}
+\end_layout
 
 \end_inset
 
@@ -1942,9 +2160,9 @@ name "fig:Многоэкземплярность-директории-/"
 
 \end_inset
 
-Многоэкземплярность директории 
+Многоэкземплярность домашней директории пользователя
 \family typewriter
-/tmp
+ user 
 \end_layout
 
 \end_inset
