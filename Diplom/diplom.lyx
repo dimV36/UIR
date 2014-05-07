@@ -9237,7 +9237,7 @@ if (NULL == certificate)
 
 \begin_layout Plain Layout
 
-    PG_RETURN_NULL();
+	PG_RETURN_NULL();
 \end_layout
 
 \end_inset
@@ -9960,12 +9960,12 @@ reference "fig:Схема-разворачиваемого-стенда"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
