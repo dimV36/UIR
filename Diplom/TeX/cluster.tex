@@ -1,0 +1,78 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage[T2A]{fontenc}
+\usepackage[russian,english]{babel}
+\usepackage{xcolor,colortbl}
+\usepackage{array}
+\usepackage{tikz}
+
+\usetikzlibrary{shapes, arrows}
+\usetikzlibrary{positioning}
+
+\renewcommand{\arraystretch}{1.2}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+\begin{document}
+
+\begin{tikzpicture} [
+    auto,
+    block/.style    = { rectangle, thick, draw = blue, 
+                        text width=22.3em, text centered,
+                        rounded corners, minimum height=2em,
+                        scale = 0.75, 
+                        %font=\ttfamily, 
+                        },
+                        ->,>=stealth',shorten >=1pt,auto,
+                        thick,
+  ]
+  % Define nodes in a matrix
+
+\node[block] (ca) {
+	\begin{tabular}{C{7.4cm}}
+		\rowcolor{blue!30}
+		\textbf{\begin{tabular}[c]{@{}c@{}}\Large Удостоверяющий центр\\ \large IP: 192.168.100.4\end{tabular}} \\                                                   
+	\end{tabular}
+};
+
+\node[block, below of = ca, node distance = 15cm] (client) {
+	\begin{tabular}{ll}
+		\rowcolor{blue!30}
+		\multicolumn{2}{c}{\textbf{\begin{tabular}[c]{@{}c@{}} \LargeКлиент\\ \large IP: 192.168.100.3\end{tabular}}} \\
+		\rowcolor{blue!15}
+		\multicolumn{2}{c}{\largeПользователи ОС:}                                                            \\
+		\rowcolor{blue!10}
+		\texttt{user1}                           & \texttt{user\_u:user\_r:user\_t:s0}                                    \\
+		\rowcolor{blue!10}
+		\texttt{user2}                           & \texttt{user\_u:user\_r:user\_t:s0-s2}                                 \\
+		\rowcolor{blue!10}
+		\texttt{user3}                           & \texttt{user\_u:user\_r:user\_r:s1-s3:c0.c10}                         
+	\end{tabular}
+};
+
+\node[block] (postgresql) [below left of=ca, node distance = 15cm] {
+	\begin{tabular}{C{7.4cm}}
+		\rowcolor{blue!30}
+		\textbf{\begin{tabular}[c]{@{}c@{}}\Large PostgreSQL\\ \Large IP: 192.168.100.2\end{tabular}} \\
+		\rowcolor{blue!15}
+		\largeПользователи СУБД:                                                          \\
+		\rowcolor{blue!10}
+		user1                                                                       \\
+		\rowcolor{blue!10}
+		user2                                                                       \\
+		\rowcolor{blue!10}
+		user3                                                                      
+	\end{tabular}
+};
+
+  \path[every node/.style={font=\sffamily\small}]
+    (client) edge [bend right] node [left, align = center] {Запрос к БД} (postgresql)
+    (client) edge [bend right] node [right, align = center] {CSR \\клиента} (ca)
+    (postgresql) edge [bend right] node [left, align = center] {Ответ БД} (client)
+    (postgresql) edge [bend left] node [right, align = center] {CSR \\сервера} (ca.west)
+    (ca) edge [bend right] node [right, align = center] {Сертификат \\клиента} (client)
+    (ca.west) edge [bend left] node [left, align = center] {Сертификат \\сервера СУБД} (postgresql);
+  
+\end{tikzpicture}
+
+\end{document}

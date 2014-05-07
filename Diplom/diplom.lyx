@@ -25,6 +25,7 @@
 \usepackage{tikz}
 \usetikzlibrary{shapes, arrows}
 \usetikzlibrary{positioning}
+\usepackage{xcolor,colortbl}
 
 
 %\usepackage{titlesec}
@@ -3598,12 +3599,12 @@ reference "fig:Алгоритм-работы-разрабатываемого"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -9959,13 +9960,535 @@ reference "fig:Схема-разворачиваемого-стенда"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
-\begin_inset Graphics
-	filename files/cluster.png
-	width 75text%
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+renewcommand{
+\backslash
+arraystretch}{1.2} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcolumntype{C}[1]{>{
+\backslash
+centering
+\backslash
+arraybackslash}p{#1}}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tikzpicture} [
+\end_layout
+
+\begin_layout Plain Layout
+
+    auto,
+\end_layout
+
+\begin_layout Plain Layout
+
+    block/.style    = { rectangle, thick, draw = blue, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                        text width=22.3em, text centered,
+\end_layout
+
+\begin_layout Plain Layout
+
+                        rounded corners, minimum height=2em,
+\end_layout
+
+\begin_layout Plain Layout
+
+                        scale = 0.75, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                        %font=
+\backslash
+ttfamily, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                        },
+\end_layout
+
+\begin_layout Plain Layout
+
+                        ->,>=stealth',shorten >=1pt,auto,
+\end_layout
+
+\begin_layout Plain Layout
+
+                        thick,
+\end_layout
+
+\begin_layout Plain Layout
+
+  ]
+\end_layout
+
+\begin_layout Plain Layout
+
+  % Define nodes in a matrix
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node[block] (ca) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{tabular}{C{8.8cm}}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+rowcolor{blue!30}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+textbf{
+\backslash
+begin{tabular}[c]{@{}c@{}}
+\backslash
+large Удостоверяющий центр
+\backslash
+
+\backslash
+ 
+\backslash
+large IP: 192.168.100.4
+\backslash
+end{tabular}} 
+\backslash
+
+\backslash
+                                                   
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+end{tabular}
+\end_layout
+
+\begin_layout Plain Layout
+
+};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node[block, below of = ca, node distance = 15cm] (client) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{tabular}{ll}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+rowcolor{blue!30}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+multicolumn{2}{c}{
+\backslash
+textbf{
+\backslash
+begin{tabular}[c]{@{}c@{}} 
+\backslash
+large Клиент
+\backslash
+
+\backslash
+ 
+\backslash
+large IP: 192.168.100.3
+\backslash
+end{tabular}}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+rowcolor{blue!15}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+multicolumn{2}{c}{
+\backslash
+largeПользователи ОС:}                                                 
+           
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+rowcolor{blue!10}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+texttt{user1}                           & 
+\backslash
+texttt{user
+\backslash
+_u:user
+\backslash
+_r:user
+\backslash
+_t:s0}                                    
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+rowcolor{blue!10}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+texttt{user2}                           & 
+\backslash
+texttt{user
+\backslash
+_u:user
+\backslash
+_r:user
+\backslash
+_t:s0-s2}                                 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+rowcolor{blue!10}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+texttt{user3}                           & 
+\backslash
+texttt{user
+\backslash
+_u:user
+\backslash
+_r:user
+\backslash
+_r:s1-s3:c0.c10}                         
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+end{tabular}
+\end_layout
+
+\begin_layout Plain Layout
+
+};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node[block] (postgresql) [below left of=ca, node distance = 15cm] {
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{tabular}{C{8.8cm}}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+rowcolor{blue!30}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+textbf{
+\backslash
+begin{tabular}[c]{@{}c@{}}
+\backslash
+large PostgreSQL
+\backslash
+
+\backslash
+ 
+\backslash
+large IP: 192.168.100.2
+\backslash
+end{tabular}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+rowcolor{blue!15}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+largeПользователи СУБД:                                                
+          
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+rowcolor{blue!10}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+texttt{user1}                                                          
+             
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+rowcolor{blue!10}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+texttt{user2}                                                          
+             
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+rowcolor{blue!10}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+texttt{user3}                                                          
+            
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+end{tabular}
+\end_layout
+
+\begin_layout Plain Layout
+
+};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+path[every node/.style={font=
+\backslash
+sffamily
+\backslash
+footnotesize}]
+\end_layout
+
+\begin_layout Plain Layout
+
+    (client) edge [bend right] node [left, align = center] {Запрос
+\backslash
+
+\backslash
+ к БД} (postgresql)
+\end_layout
+
+\begin_layout Plain Layout
+
+    (client) edge [bend right] node [right, align = center] {CSR 
+\backslash
+
+\backslash
+клиента} (ca)
+\end_layout
+
+\begin_layout Plain Layout
+
+    (postgresql) edge [bend right] node [left, align = center] {Ответ БД}
+ (client)
+\end_layout
+
+\begin_layout Plain Layout
+
+    (postgresql) edge [bend left] node [left, align = center] {CSR 
+\backslash
+
+\backslash
+сервера} (ca.west)
+\end_layout
+
+\begin_layout Plain Layout
+
+    (ca) edge [bend right] node [right, align = center] {Сертификат 
+\backslash
+
+\backslash
+клиента} (client)
+\end_layout
+
+\begin_layout Plain Layout
+
+    (ca.west) edge [bend left] node [left, align = center] {Сертификат 
+\backslash
+
+\backslash
+сервера СУБД} (postgresql);
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tikzpicture}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
 
 \end_inset
 
