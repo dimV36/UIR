@@ -6,7 +6,7 @@ from optparse import OptionParser, OptionGroup
 from os import path, getlogin
 from time import time, timezone
 from re import findall
-
+import hashlib
 
 DEFAULT_FIELDS = dict(C='ru', ST='msk', L='msk', O='mephi', OU='kaf36', CN=getlogin())
 CAKEY = '/etc/pki/CA/private/cakey.pem'
@@ -374,3 +374,13 @@ if __name__ == '__main__':
         print_request(options.request)
     else:
         parser.print_help()
+    # request = X509.load_request('dimv36.csr')
+    # message = request.as_text()
+    # h = hashlib.new('sha512')
+    # h.update(message)
+    # digest = h.digest()
+    # private_key = RSA.load_key('mykey.pem', password)
+    # signature = private_key.sign(digest)
+    # public_key = X509.load_cert('dimv36.crt').get_pubkey().get_rsa()
+    # verify = public_key.verify(digest, signature)
+    # print(verify)
