@@ -3,7 +3,7 @@ __author__ = 'dimv36'
 from M2Crypto import RSA, X509, EVP, ASN1, BIO, SMIME
 from selinux import security_check_context_raw, getcon_raw
 from optparse import OptionParser, OptionGroup
-from os import path, getuid, getlogin
+from os import path, getlogin
 from time import time, timezone
 from re import findall
 
@@ -27,12 +27,6 @@ def check_selinux_context(context):
         except OSError:
             print('ERROR: Invalid SELinux context in argument')
             exit(1)
-
-
-def check_permissions():
-    if getuid() != 0:
-        print('Please, login as `root` and try again')
-        exit(1)
 
 
 def make_level_and_category_sets(context):
@@ -186,8 +180,18 @@ def make_certificate(request_path, ca_private_key_file, ca_certificate_file, out
         exit(1)
     public_key = request.get_pubkey()
     subject = request.get_subject()
-    ca_certificate = X509.load_cert(ca_certificate_file)
-    ca_private_key = EVP.load_key(ca_private_key_file, callback=password)
+    ca_certificate = None
+    try:
+        ca_certificate = X509.load_cert(ca_certificate_file)
+    except (IOError, BIO.BIOError):
+        print('ERROR certificate: Could not load ca certificate file. Check permissions and try again')
+        exit(1)
+    ca_private_key = None
+    try:
+        ca_private_key = EVP.load_key(ca_private_key_file, callback=password)
+    except (IOError, BIO.BIOError):
+        print('ERROR certificate: Could not load ca private key file. Check permissions and try again')
+        exit(1)
     certificate = X509.X509()
     certificate.set_serial_number(time().as_integer_ratio()[0])
     certificate.set_version(2)
@@ -346,7 +350,6 @@ if __name__ == '__main__':
         check_selinux_context(options.secontext)
         make_request(options.pkey, options.user, options.secontext, options.critical, options.output, options.text)
     elif options.gencert and options.request:
-        check_permissions()
         make_certificate(options.request, options.cakey, options.cacert,
                          options.output, options.signature, options.text)
     elif options.sign and options.request:
