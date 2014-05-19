@@ -5636,7 +5636,8 @@ M2Crypto.RSA
 \family typewriter
 M2Crypto.EVP
 \family default
- используется уже сохранённого на жесткий диск ключа.
+ используется уже сохранённого на жесткий диск ключа, а также при выполнении
+ подписи файла и проверки подписи.
  
 \end_layout
 
@@ -7786,7 +7787,54 @@ request_path
 \end_layout
 
 \begin_layout Standard
-Работа функции начинается с загрузки запроса из файла:
+Выполняется проверка на использование пары ключей для подписи запроса:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if not get_extension(certificate_path, 'keyUsage') == 'Digital Signature':
+\end_layout
+
+\begin_layout Plain Layout
+
+	print('ERROR sign: key pair %s and %s could not be used for signing file
+ because policy' % (private_key_path, certificate_path))
+\end_layout
+
+\begin_layout Plain Layout
+
+    exit(1)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Если значение дополнения 
+\family typewriter
+keyUsage
+\family default
+ не совпадает с 
+\family typewriter
+Digital Signature
+\family default
+, т.е.
+ сертификат и закрытый ключ нельзя использовать для подписи запросов, то
+ выводится сообщение и происходит выход из функции с ошибочным кодом.
+ 
+\end_layout
+
+\begin_layout Standard
+Выполняется загрузка запроса из файла.
+ При этом с помощью механизма исключений осуществляется обработка ошибочных
+ ситуаций:
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
@@ -7827,47 +7875,8 @@ except X509.X509Error:
 \end_layout
 
 \begin_layout Standard
-Запрос в цифровом формате загружается в память:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-text = BIO.MemoryBuffer(request.as_pem())
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Для подписи запроса используется модуль библиотеки 
-\family typewriter
-M2Crypto SMIME
-\family default
-.
- Первым делом создается объект данного класса:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-smime = SMIME.SMIME()
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-После чего выполняется загрузка цифровой подписи: 
+Аналогично запросу на подпись сертификата выполняется загрузка из файла
+ закрытый ключ, с помощью которого будет осуществлена подпись:
 \begin_inset listings
 inline false
 status open
@@ -7879,61 +7888,17 @@ try:
 
 \begin_layout Plain Layout
 
-	smime.load_key(private_key_path, certificate_path)
+	private_key = EVP.load_key(private_key_path, password)
 \end_layout
 
 \begin_layout Plain Layout
 
-except (ValueError, IOError, X509.X509Error):
+except (IOError, EVP.EVPError):
 \end_layout
 
 \begin_layout Plain Layout
 
-	print('ERROR sign: Could not load digital signature')
-\end_layout
-
-\begin_layout Plain Layout
-
-    exit(1)
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-В случае отсутствия или невозможности загрузки закрытого ключа или сертификата,
- используемых для подписи запроса, на экран выводится ошибка и происходит
- незамедлительный останов программы.
-\end_layout
-
-\begin_layout Standard
-Дополнительно в данную функцию включена проверка условия, можно ли использовать
- данную пару ключей для подписывания:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-certificate = X509.load_cert(certificate_path)
-\end_layout
-
-\begin_layout Plain Layout
-
-key_usage_extension = certificate.get_ext('keyUsage')
-\end_layout
-
-\begin_layout Plain Layout
-
-if not key_usage_extension.get_value() == 'Digital Signature':
-\end_layout
-
-\begin_layout Plain Layout
-
-	print('ERROR sign: Signature key %s does not have extension `Digital Signature`
-' % certificate_path)
+	print('ERROR sign: Could not load private key')
 \end_layout
 
 \begin_layout Plain Layout
@@ -7947,37 +7912,24 @@ if not key_usage_extension.get_value() == 'Digital Signature':
 \end_layout
 
 \begin_layout Standard
-В данном фрагменте выполняется получение значения дополнения 
-\family typewriter
-keyUsage
-\family default
-, в котором описано его использование, и сравнивается с значением 
-\family typewriter
-Digital Signature
-\family default
-, которое означает использование в цифровых подписях.
-\end_layout
-
-\begin_layout Standard
-Подписание запроса осуществляется методом 
-\family typewriter
-sign()
-\family default
- класса 
-\family typewriter
-SMIME
-\family default
-:
-\end_layout
-
-\begin_layout Standard
+На основе содержимого файла запроса создаётся присоединённая подпись:
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-sign_request = smime.sign(text)
+private_key.sign_init()
+\end_layout
+
+\begin_layout Plain Layout
+
+private_key.sign_update(request.as_text())
+\end_layout
+
+\begin_layout Plain Layout
+
+signature = private_key.sign_final()
 \end_layout
 
 \end_inset
@@ -7986,42 +7938,66 @@ sign_request = smime.sign(text)
 \end_layout
 
 \begin_layout Standard
-Для сохранения подписанного запроса в файл используется следующий блок кода:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-sign_request_file = BIO.openfile(request_path + '.sign', 'w')
-\end_layout
-
-\begin_layout Plain Layout
-
-smime.write(sign_request_file, sign_request)
-\end_layout
-
-\begin_layout Plain Layout
-
-sign_request_file.close()
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-При успешной отработке функции будет создан файл 
+После выполнения приведённого блока кода в переменной 
 \family typewriter
-name.sign
+signature
 \family default
-, в котором будет находиться подписанный запрос, где 
-\family typewriter
-name
-\family default
- --- имя загруженного запроса.
+ будет содержаться подпись загруженного запроса.
  
+\end_layout
+
+\begin_layout Standard
+Для её сохранения на жёсткий диск используется следующая строка:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+open('%s.signature' % request_path, 'w').write(signature)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+С стандартной функции для работы с файлами в Python 
+\family typewriter
+open()
+\family default
+ открывается на запись (параметр функции
+\family typewriter
+ 'w'
+\family default
+) файл, именем которого является имя файла запроса с суффиксом 
+\family typewriter
+.signature
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+После чего выводится сообщение об успешности выполненной операции:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+print('Signature was saved to %s.signature' % request_path)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Таким образом будет создана присоединённая подпись запроса, путь которого
+ передан в функцию.
 \end_layout
 
 \begin_layout Subsubsection*
@@ -8031,7 +8007,7 @@ name
 \begin_layout Standard
 Проверка цифровой подписи реализуется в функции 
 \family typewriter
-verify(certificate_path, ca_certificate_path, sign_request_path, output)
+verify(certificate_path, signature_path, request_path)
 \family default
 .
 \end_layout
@@ -8054,31 +8030,20 @@ certificate_path
 
 \family typewriter
 \series bold
-ca_certificate_path
+signature_path
 \family default
 \series default
- --- путь к сертификату удостоверяющего центра, выпустивший сертификат цифровой
- подписи клиента;
+ --- путь к файлу с подписью запроса;
 \end_layout
 
 \begin_layout Itemize
 
 \family typewriter
 \series bold
-sign_request_path 
+request_path 
 \family default
 \series default
---- путь к файлу подписанного запроса;
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-output 
-\family default
-\series default
---- путь, по которому будет сохранён запрос в открытом виде.
+--- путь к запросу на подпись сертификата.
 \end_layout
 
 \begin_layout --Separator--
@@ -8086,24 +8051,15 @@ output
 \end_layout
 
 \begin_layout Standard
-Для проверки цифровой подписи клиента используется модуль 
-\family typewriter
-SMIME
-\family default
-.
- Для проверки цифровой подписи необходимо создать объект класса 
-\family typewriter
-SMIME
-\family default
-, загрузить сертификат цифровой подписи клиента:
+Для верификации подписи клиента необходим публичный ключ, который может
+ быть получен из объекта сертификата.
+ Для этого сертификат загружается:
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
-
-\begin_layout Plain Layout
-
-smime = SMIME.SMIME()
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -8127,7 +8083,7 @@ except (X509.X509Error, ValueError):
 
 \begin_layout Plain Layout
 
-	print('ERROR verify: Could not load certificate for verifying')
+	print('ERROR verify: Could not load certificate for verification')
 \end_layout
 
 \begin_layout Plain Layout
@@ -8141,64 +8097,109 @@ except (X509.X509Error, ValueError):
 \end_layout
 
 \begin_layout Standard
-Далее загружается сертификат цифровой подписи клиента в объект 
+В переменную 
 \family typewriter
-smime
+signature
+\family default
+ выполняется загрузка подписи из файла:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+signature = None
+\end_layout
+
+\begin_layout Plain Layout
+
+try:
+\end_layout
+
+\begin_layout Plain Layout
+
+	signature = open(signature_path, 'r').read()
+\end_layout
+
+\begin_layout Plain Layout
+
+except IOError:
+\end_layout
+
+\begin_layout Plain Layout
+
+	print('ERROR verify: Could not load signature for verification')
+\end_layout
+
+\begin_layout Plain Layout
+
+    exit(1)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Если по каким-либо причинам загрузить текст подписи не удалось, выводится
+ соответствующее сообщение и происходит выход из функции с ошибкой.
+ 
+\end_layout
+
+\begin_layout Standard
+Аналогично сертификату, с помощью которого будет проводиться верификация
+ подписи, загружается запрос на подпись сертификата: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+request = None
+\end_layout
+
+\begin_layout Plain Layout
+
+try:
+\end_layout
+
+\begin_layout Plain Layout
+
+	request = X509.load_request(request_path)
+\end_layout
+
+\begin_layout Plain Layout
+
+except (X509.X509Error, ValueError):
+\end_layout
+
+\begin_layout Plain Layout
+
+	print('ERROR verify: Could not load request for verification')
+\end_layout
+
+\begin_layout Plain Layout
+
+    exit(1)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Для верификации подписи необходимо создать объект класса 
+\family typewriter
+EVP.Pkey()
+\family default
+, установить открытый ключ, взяв его из сертификата, после чего загрузить
+ текст запроса в созданный объект 
+\family typewriter
+EVP.Pkey
 \family default
 :
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-stack = X509.X509_Stack()
-\end_layout
-
-\begin_layout Plain Layout
-
-stack.push(certificate)
-\end_layout
-
-\begin_layout Plain Layout
-
-smime.set_x509_stack(stack)
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Для проверки данного сертификата необходима загрузка сертификата удостоверяющего
- центра:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-store = X509.X509_Store()
-\end_layout
-
-\begin_layout Plain Layout
-
-store.load_info(ca_certificate_path)
-\end_layout
-
-\begin_layout Plain Layout
-
-smime.set_x509_store(store)
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Верификация цифровой подписи выполняется с помощью следующих строк:
 \end_layout
 
 \begin_layout Standard
@@ -8208,12 +8209,22 @@ status open
 
 \begin_layout Plain Layout
 
-pks7, data = SMIME.smime_load_pkcs7(sign_request_path)
+public_key = EVP.PKey()
 \end_layout
 
 \begin_layout Plain Layout
 
-clear_text = smime.verify(pks7, data)
+public_key.assign_rsa(certificate.get_pubkey().get_rsa())
+\end_layout
+
+\begin_layout Plain Layout
+
+public_key.verify_init()
+\end_layout
+
+\begin_layout Plain Layout
+
+public_key.verify_update(request.as_text())
 \end_layout
 
 \end_inset
@@ -8222,22 +8233,70 @@ clear_text = smime.verify(pks7, data)
 \end_layout
 
 \begin_layout Standard
-При этом выполняется загрузка подписанного запроса в формате 
+Непосредственно верификация выполняется с помощью метода 
 \family typewriter
-PKCS7
+verify_final()
 \family default
- из файла, путь к которому передан был функции, после чего функцией 
+, аргументом которого передаётся текст подписи.
+ Данный метод возвращает 
 \family typewriter
-verify()
+1
 \family default
- выполняется проверка подписи и получение текста запроса.
- В случае, если в значении 
+ в случае успешной верификации и 
 \family typewriter
-clear_text
+0
 \family default
- содержится значение запроса клиента, то текст запроса сохраняется в файл
- и выводится сообщение об успешности проверки подписи.
+ --- при ошибке:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+status = public_key.verify_final(signature)
+\end_layout
+
+\begin_layout Plain Layout
+
+if status:
+\end_layout
+
+\begin_layout Plain Layout
+
+	print('Verification OK')
+\end_layout
+
+\begin_layout Plain Layout
+
+else:
+\end_layout
+
+\begin_layout Plain Layout
+
+	print('Verification failed')
+\end_layout
+
+\begin_layout Plain Layout
+
+    exit(1)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Таким образом, при успешной верификации подписи будет выведено сообщение
  
+\family typewriter
+Verification OK
+\family default
+, в случае ошибки --- 
+\family typewriter
+Verification failed
+\family default
+.
 \end_layout
 
 \begin_layout Subsubsection*

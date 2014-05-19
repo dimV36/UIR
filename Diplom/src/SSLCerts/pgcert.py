@@ -69,7 +69,7 @@ def verify_user_context(user, current_context):
 
 
 def sign(private_key_path, certificate_path, request_path):
-    if not get_extension(certificate_path, 'keyUsage'):
+    if not get_extension(certificate_path, 'keyUsage') == 'Digital Signature':
         print('ERROR sign: key pair %s and %s could not be used for signing file because policy' %
               (private_key_path, certificate_path))
         exit(1)
@@ -88,7 +88,7 @@ def sign(private_key_path, certificate_path, request_path):
     private_key.sign_init()
     private_key.sign_update(request.as_text())
     signature = private_key.sign_final()
-    open(request_path + '.signature', 'w').write(signature)
+    open('%s.signature' % request_path, 'w').write(signature)
     print('Signature was saved to %s.signature' % request_path)
 
 
