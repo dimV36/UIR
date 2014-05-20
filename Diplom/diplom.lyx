@@ -5753,6 +5753,10 @@ OpenSSL предоставляет несколько вариантов доб�
 \end_layout
 
 \begin_layout Subsection
+Доработка программных модулей
+\end_layout
+
+\begin_layout Subsubsection
 \begin_inset CommandInset label
 LatexCommand label
 name "sub:Модификация-pam_namespace.so"
@@ -6206,7 +6210,7 @@ $5
  текущий контекст безопасности пользователя.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Реализация дополнения сертификата selinuxContext в OpenSSL
 \end_layout
 
@@ -6592,7 +6596,7 @@ selinuxContext
  структуры дополнения.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Расширение функционала библиотеки M2Crypto
 \end_layout
 
@@ -6808,7 +6812,7 @@ get_extensions_count()
  с использованием библиотеки M2Crypto.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Реализация утилиты создания сертификатов
 \end_layout
 
@@ -7875,8 +7879,8 @@ except X509.X509Error:
 \end_layout
 
 \begin_layout Standard
-Аналогично запросу на подпись сертификата выполняется загрузка из файла
- закрытый ключ, с помощью которого будет осуществлена подпись:
+Аналогично выполняется загрузка из файла закрытого ключа, с помощью которого
+ будет осуществлена подпись:
 \begin_inset listings
 inline false
 status open
@@ -7912,7 +7916,7 @@ except (IOError, EVP.EVPError):
 \end_layout
 
 \begin_layout Standard
-На основе содержимого файла запроса создаётся присоединённая подпись:
+На основе текста запроса создаётся присоединённая подпись:
 \begin_inset listings
 inline false
 status open
@@ -7963,7 +7967,7 @@ open('%s.signature' % request_path, 'w').write(signature)
 \end_layout
 
 \begin_layout Standard
-С стандартной функции для работы с файлами в Python 
+С помощью стандартной функции для работы с файлами 
 \family typewriter
 open()
 \family default
@@ -8001,7 +8005,7 @@ print('Signature was saved to %s.signature' % request_path)
 \end_layout
 
 \begin_layout Subsubsection*
-Верификация электронно-цифровой подписи
+Верификация подписи запроса
 \end_layout
 
 \begin_layout Standard
@@ -8778,7 +8782,13 @@ get_subject(certificate_file_path)
 
 \family typewriter
 \series bold
-get_issuer(certificate_file_path) --- 
+get_issuer(certificate_file_path) 
+\family default
+\series default
+---
+\family typewriter
+\series bold
+ 
 \family default
 \series default
 получить имя подписывающего сертификата
@@ -9017,6 +9027,1410 @@ $ pgcert --certificate mycert.pem --extension basicConstraints
  Благодаря функциональному стилю программирования дополнение нового функционала
  несложно: достаточно реализовать новую функцию и добавить опцию в парсер.
  
+\end_layout
+
+\begin_layout Subsection
+Настройка механизма автоматического выбора сертификата
+\end_layout
+
+\begin_layout Standard
+Для выполнения настройки механизма автоматического выбора сертификата клиента
+ согласно контекста безопасности, необходимо развернуть стенд из двух машин:
+ удостоверяющий центр (
+\family typewriter
+IP: 192.168.100.2
+\family default
+) и клиентскую машину (
+\family typewriter
+IP: 192.168.100.3
+\family default
+).
+ На клиентской машине созданы пользователи операционной системы 
+\family typewriter
+user1
+\family default
+, 
+\family typewriter
+user2
+\family default
+, 
+\family typewriter
+user3
+\family default
+ с разными контекстами безопасности.
+ Схема стенда приведена 
+\emph on
+на рисунке 
+\emph default
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Стенд-без-postgres"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+renewcommand{
+\backslash
+arraystretch}{1.2}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcolumntype{C}[1]{>{
+\backslash
+centering
+\backslash
+arraybackslash}p{#1}}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tikzpicture} [
+\end_layout
+
+\begin_layout Plain Layout
+
+    auto,
+\end_layout
+
+\begin_layout Plain Layout
+
+    block/.style    = { rectangle, thick, draw = blue, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                        text width=22.3em, text centered,
+\end_layout
+
+\begin_layout Plain Layout
+
+                        rounded corners, minimum height=2em,
+\end_layout
+
+\begin_layout Plain Layout
+
+                        scale = 0.75, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                        %font=
+\backslash
+ttfamily, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                        },
+\end_layout
+
+\begin_layout Plain Layout
+
+                        ->,>=stealth',shorten >=1pt,auto,
+\end_layout
+
+\begin_layout Plain Layout
+
+                        thick,
+\end_layout
+
+\begin_layout Plain Layout
+
+  ]
+\end_layout
+
+\begin_layout Plain Layout
+
+  % Define nodes in a matrix
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node[block] (ca) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{tabular}{C{8.5cm}}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+rowcolor{blue!30}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+textbf{
+\backslash
+begin{tabular}[c]{@{}c@{}}
+\backslash
+Large Удостоверяющий центр
+\backslash
+
+\backslash
+ 
+\backslash
+large IP: 192.168.100.2
+\backslash
+end{tabular}} 
+\backslash
+
+\backslash
+                                                   
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+end{tabular}
+\end_layout
+
+\begin_layout Plain Layout
+
+};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node[block, right of = ca, node distance = 13cm] (client) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{tabular}{ll}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+rowcolor{blue!30}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+multicolumn{2}{c}{
+\backslash
+textbf{
+\backslash
+begin{tabular}[c]{@{}c@{}} 
+\backslash
+LargeКлиент
+\backslash
+
+\backslash
+ 
+\backslash
+large IP: 192.168.100.3
+\backslash
+end{tabular}}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+rowcolor{blue!15}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+multicolumn{2}{c}{
+\backslash
+largeПользователи ОС:}                                                 
+           
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+rowcolor{blue!10}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+texttt{user1}                           & 
+\backslash
+texttt{user
+\backslash
+_u:user
+\backslash
+_r:user
+\backslash
+_t:s0}                                    
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+rowcolor{blue!10}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+texttt{user2}                           & 
+\backslash
+texttt{user
+\backslash
+_u:user
+\backslash
+_r:user
+\backslash
+_t:s0-s2}                                 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+rowcolor{blue!10}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+texttt{user3}                           & 
+\backslash
+texttt{user
+\backslash
+_u:user
+\backslash
+_r:user
+\backslash
+_r:s1-s3:c0.c10}                         
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+end{tabular}
+\end_layout
+
+\begin_layout Plain Layout
+
+};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+path[every node/.style={font=
+\backslash
+sffamily
+\backslash
+small}]
+\end_layout
+
+\begin_layout Plain Layout
+
+    (client) edge [bend right] node [right, align = center] {CSR клиента,
+ 
+\backslash
+
+\backslash
+подпись
+\backslash
+
+\backslash
+ запроса} (ca)
+\end_layout
+
+\begin_layout Plain Layout
+
+    (ca) edge [bend right] node [right, align = center] {Сертификат 
+\backslash
+
+\backslash
+клиента} (client);
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tikzpicture}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Стенд-без-postgres"
+
+\end_inset
+
+Схема разворачиваемого стенда
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В качестве операционных систем на всех машинах используется 
+\family typewriter
+Fedora 20
+\family default
+.
+\end_layout
+
+\begin_layout Subsubsection
+Общая настройка машин стенда
+\end_layout
+
+\begin_layout Standard
+Действия, указанные в данном разделе, требуется произвести на каждой машине
+ стенда.
+\end_layout
+
+\begin_layout Enumerate
+Перевести SELinux в разрешающий режим работы.
+ Для этого в конфигурационном файле 
+\family typewriter
+/etc/selinux/config
+\family default
+ заменяется строка 
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+SELINUX=enforcing
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+на строку
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+SELINUX=permissive
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Установить многоуровневую политику:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# yum install selinux-policy-mls policycoreutils-python -y
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Первый пакет содержит набор бинарных модулей многоуровневой политики SELinux,
+ второй --- содержит утилиты, упрощающие написание политик SELinux и их
+ редактирование.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+В конфигурационном файле SELinux изменяется тип политики, используемой по
+ умолчанию:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+SELINUXTYPE=mls
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+После чего расставляются метки безопасности в файловой системе:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# touch /.autorelabel
+\end_layout
+
+\begin_layout Plain Layout
+
+# reboot
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Установить модифицированные библиотеки 
+\family typewriter
+openssl
+\family default
+ и 
+\family typewriter
+m2crypto
+\family default
+, наложив патч и выполнив установку;
+\end_layout
+
+\begin_layout Enumerate
+Скопировать утилиту 
+\family typewriter
+pgcert
+\family default
+ в каталог исполняемых файлов.
+ Для этого:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# cp pgcert.py /usr/bin/pgcert
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Subsubsection
+Настройка удостоверяющего центра
+\end_layout
+
+\begin_layout Standard
+Настройка удостоверяющего центра состоит в разворачивании удостоверяющего
+ центра.
+ Это можно сделать с помощью скрипта 
+\family typewriter
+CA
+\family default
+: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# /etc/pki/tls/misc/CA -newca
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+При выполнении данного скрипта в диалоговом режиме будет предложено ввести
+ информацию об удостоверяющем центре:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Enter PEM pass phrase: <пароль>
+\end_layout
+
+\begin_layout Plain Layout
+
+Verifying - Enter PEM pass phrase: <пароль>
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+Country Name (2 letter code) [XX]:ru
+\end_layout
+
+\begin_layout Plain Layout
+
+State or Province Name (full name) []:msk
+\end_layout
+
+\begin_layout Plain Layout
+
+Locality Name (eg, city) [Default City]:msk
+\end_layout
+
+\begin_layout Plain Layout
+
+Organization Name (eg, complany) [Default Company Ltd]:mephi
+\end_layout
+
+\begin_layout Plain Layout
+
+Organizational Unit Name (eg, section) []:kaf36
+\end_layout
+
+\begin_layout Plain Layout
+
+Common Name (eg, your name or your server's hostname) []:root
+\end_layout
+
+\begin_layout Plain Layout
+
+Email Address []:root@kaf36
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+После выполнения данного скрипта будет развёрнут удостоверяющий центр, закрытый
+ ключ которого будет расположен в директории 
+\family typewriter
+/etc/pki/CA/private
+\family default
+ и сертификат удостоверяющего центра 
+\family typewriter
+cacert.pem
+\family default
+, расположенного в 
+\family typewriter
+/etc/pki/CA
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Создается директория 
+\family typewriter
+certs
+\family default
+, в которую будут присылаться запросы на подпись сертификатов и в которой
+ будут содержаться сертификаты:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# mkdir /root/certs
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Настройка клиента
+\end_layout
+
+\begin_layout Standard
+Настройка клиентской машины состоит в создании пользователей операционной
+ системы, назначение им контекста безопасности, а также в настройке скрипта
+ инициализации многоэкземплярных папок 
+\family typewriter
+namespace.init
+\family default
+ и дополнительной установке пакетов.
+\end_layout
+
+\begin_layout Enumerate
+Устанавливается модифицированный модуль 
+\family typewriter
+pam
+\family default
+ (его модификация проводилось 
+\emph on
+в разделе 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Модификация-pam_namespace.so"
+
+\end_inset
+
+
+\emph default
+),
+\family typewriter
+ 
+\family default
+с помощью которого становится возможным получить контекст пользователя в
+ скрипте инициализации:
+\end_layout
+
+\begin_layout Enumerate
+Устанавливается пакет 
+\family typewriter
+sshpass
+\family default
+, необходимый при автоматическом вводе пароля при подключении по протоколу
+ SSH:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# yum install -y sshpass
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Настроить механизм многоэкземплярности папок.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Для этого в конфигурационном файле 
+\family typewriter
+/etc/security/namespace.conf
+\family default
+ записать следующие строки:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+/tmp 		/tmp/tmp-inst/	    level root
+\end_layout
+
+\begin_layout Plain Layout
+
+/var/tmp	/var/tpm/tmp-inst/  level root
+\end_layout
+
+\begin_layout Plain Layout
+
+$HOME		$HOME/$USER.int/    level root
+\end_layout
+
+\begin_layout Plain Layout
+
+/etc/pki/certs/ /etc/pki/certs/certs.inst/ user root
+\end_layout
+
+\end_inset
+
+Таким образом, будут созданные многоэкземплярные директории 
+\family typewriter
+/tmp
+\family default
+, 
+\family typewriter
+/var/tmp
+\family default
+ и пользовательские домашние директории для всех пользователей, за исключением
+ суперпользователя 
+\family typewriter
+root
+\family default
+.
+ Последняя строка отвечает за создание директории с электронно-цифровыми
+ подписями клиентов, используемых для генерации сертификатов.
+\end_layout
+
+\begin_layout Enumerate
+В конфигурационный файл PAM 
+\family typewriter
+/etc/pam.d/sshd
+\family default
+ дописать следующую строку:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+session	required	pam_namespace.so
+\end_layout
+
+\end_inset
+
+Данная строка позволяет работать с многоэкземплярными директориями демону
+ 
+\family typewriter
+SSHD
+\family default
+.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Создается пользователь SELinux 
+\family typewriter
+user_u
+\family default
+, сущность которого будет сопоставлена с пользователями клиентской машины:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# semanage user -m -r s0-s3:c0.c1023 user_u
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Модифицируется скрипт инициализации многоэкземплярных директорий 
+\family typewriter
+/etc/security/namespace.init
+\family default
+:
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Скрипт 
+\family typewriter
+namespace.init
+\family default
+ исполняется интерпретатором 
+\family typewriter
+BASH
+\family default
+.
+ Полный текст скрипта приведён в 
+\emph on
+приложении 7
+\emph default
+.
+ Скрипт принимает пять параметра:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+$1
+\family default
+ --- путь к многоэкземплярной директории;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+$2
+\family default
+ --- путь к экземпляру директории;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+$3 
+\family default
+--- флаг, равен 0, если не требуется создание экземпляра директории и 1,
+ если требуется;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+$4
+\family default
+ --- имя пользователя;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+$5
+\family default
+ --- текущий контекст безопасности пользователя.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Для улучшения читаемости скрипта были объявлены следующие глобальные переменные:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+polydir_path="$1"
+\end_layout
+
+\begin_layout Plain Layout
+
+instance_path="$2"
+\end_layout
+
+\begin_layout Plain Layout
+
+need_to_create="$3"
+\end_layout
+
+\begin_layout Plain Layout
+
+user="$4"
+\end_layout
+
+\begin_layout Plain Layout
+
+secontext="$5"
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+log="$polydir_path/cert.log"            #лог-файл, в который выводится вывод
+ утилиты pgcert
+\end_layout
+
+\begin_layout Plain Layout
+
+pgcertdir="$polydir_path/.postgresql"   #каталог, в котором хранится закрытый
+ ключ и сертификат клиента
+\end_layout
+
+\begin_layout Plain Layout
+
+signerdir="/etc/pki/keys"               #каталог, в котором хранится электронно-
+цифровая подпись клиента
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ca_ip="192.168.100.2"                   #IP-адрес удостоверяющего центра
+\end_layout
+
+\begin_layout Plain Layout
+
+ca_password="123456"                    #пароль пользователя root удостоверяющег
+о центра 
+\end_layout
+
+\begin_layout Plain Layout
+
+ca_certdir="/root/certs"                #директория, в которую будут копироватьс
+я запросы на подпись сертификата и в которой будут создаваться
+\end_layout
+
+\begin_layout Plain Layout
+
+ca_signaturedir="/etc/pki/certs"        #директория, в которой хранятся
+ открытые ключи электронно-цифровой подписи клиентов
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Если экземпляр многоэкземплярной директории требует создания, выполняются
+ команды по инициализации директории.
+ Контекст безопасности устанавливается по умолчанию:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+[ -x /sbin/restorecon ] && /sbin/restorecon "$polydir_path"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Далее определяется, является ли экземпляр многоэкземплярной папки домашней
+ директорией:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+passwd=$(getent passwd "$user")
+\end_layout
+
+\begin_layout Plain Layout
+
+homedir=$(echo "$passwd" | cut -f6 -d":")
+\end_layout
+
+\begin_layout Plain Layout
+
+if [ "$polydir_path" = "$homedir" ]; then
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
+\end_layout
+
+\begin_layout Plain Layout
+
+fi
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Если является, то выполняются дополнительные действия по инициализации:
+ копирование шаблона-каталога из 
+\family typewriter
+/etc/skel
+\family default
+, назначение прав и т.д.
+\end_layout
+
+\begin_layout Standard
+После выполнения этих действий выполняется создание сертификата пользователя.
+ Сначала осуществляется проверка наличия электронно-цифровой подписи у клиента.
+ Если её нет, она создаётся с помощью функции 
+\family typewriter
+create_signature
+\family default
+.
+ В ней описываются действия по созданию подписи и копированию в каталог
+ 
+\family typewriter
+$ca_signaturedir
+\family default
+ удостоверяющего центра.
+\end_layout
+
+\begin_layout Standard
+Действия по созданию сертификата клиента объединены в функции 
+\family typewriter
+create_certificate
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Работа данной функции начинается с создания директории для хранения сертификатов
+ 
+\family typewriter
+$pgcertdir
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+mkdir $pgcertdir
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+С помощью утилиты 
+\family typewriter
+pgcert 
+\family default
+выполняется создание закрытого ключа и назначение ему прав 
+\family typewriter
+0600 
+\family default
+(права на чтение, запись, исполнение только для владельца ключа):
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+pgcert --genkey --bits 2048 --output $pgcertdir/postgresql.key >> $log
+\end_layout
+
+\begin_layout Plain Layout
+
+chmod 0600 $pgcertdir/postgresql.key
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Для создания запроса на подпись сертификата используется следующая команда:
+ 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --secontext
+ $secontext --output $pgcertdir/postgresql.csr >> $log
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Запрос подписывается цифровой подписью клиента:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+pgcert --sign --pkey $signerdir/private.key --certificate $signerdir/$user.crt
+ --request $pgcertdir/postgresql.csr >> $log
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+После чего запрос и его подпись пересылаеюся на удостоверяющий центр с помощью
+ следующей команды:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+sshpass -p $ca_password scp -o StrictHostKeyChecking=no $pgcertdir/postgresql.csr.
+* root@$ca_ip:$ca_certdir/ >> $log
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Данная команда создает 
+\family typewriter
+SSH
+\family default
+ соединение без проверки ключей (
+\family typewriter
+StrictHostKeyChecking=no
+\family default
+), при просьбе ввести пароль от удалённой машины, утилита 
+\family typewriter
+sshpass
+\family default
+ вводит пароль, хранящийся в переменной 
+\family typewriter
+$ca_password
+\family default
+.
+ После этого файл запроса копируется в директорию 
+\family typewriter
+$ca_certdir 
+\family default
+удостоверяющего центра.
+
+\family typewriter
+ 
+\end_layout
+
+\begin_layout Standard
+На удостоверяющем центре выполняется проверка цифровой подписи клиента:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert
+ --verify $certdir/postgresql.csr.signature --certificate /etc/pki/certs/$user.crt
+ --request $ca_certdir/postgresql.csr" >> $log
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+При успешной проверке удостоверяющей центр выпускает сертификат клиента
+ и сохраняет его в директорию 
+\family typewriter
+$ca_certdir
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+shpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert
+ --gencert --request $ca_certdir/postgresql.csr --output $ca_certdir/postgresql.cr
+t" >> $log
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Далее сертификат клиента копируется пользователю в директорию 
+\family typewriter
+$pgcertdir
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:$ca_certdir/
+postgresql.crt $pgcertdir/postgresql.crt >> $log
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+В директорию 
+\family typewriter
+$pgcertdir
+\family default
+ с удостоверяющего центра копируется сертификат удостоверяющего центра:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca:/etc/pki/CA/cac
+ert.pem $pgcertdir/root.crt
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Всем файлам в директории устанавливается владелец 
+\family typewriter
+$user.$user
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+chown -R $user.$user $pgcertdir
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -10021,10 +11435,6 @@ status collapsed
 
 \begin_layout Plain Layout
 
-\end_layout
-
-\begin_layout Plain Layout
-
 
 \backslash
 renewcommand{
@@ -10538,10 +11948,6 @@ footnotesize}]
 end{tikzpicture}
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
@@ -10611,991 +12017,6 @@ cert
 Fedora 20
 \family default
  и версия СУБД PostgreSQL --- 9.3.4.
-\end_layout
-
-\begin_layout Subsubsection
-Общая настройка машин стенда
-\end_layout
-
-\begin_layout Standard
-Действия, указанные в данном разделе, требуется произвести на каждой машине
- стенда.
-\end_layout
-
-\begin_layout Enumerate
-Перевести SELinux в разрешающий режим работы.
- Для этого в конфигурационном файле 
-\family typewriter
-/etc/selinux/config
-\family default
- заменяется строка 
-\end_layout
-
-\begin_deeper
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-SELINUX=enforcing
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-на строку
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-SELINUX=permissive
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_deeper
-\begin_layout Enumerate
-Установить многоуровневую политику:
-\end_layout
-
-\begin_deeper
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# yum install selinux-policy-mls policycoreutils-python -y
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Первый пакет содержит набор бинарных модулей многоуровневой политики SELinux,
- второй --- содержит утилиты, упрощающие написание политик SELinux и их
- редактирование.
- 
-\end_layout
-
-\end_deeper
-\begin_layout Enumerate
-В конфигурационном файле SELinux изменяется тип политики, используемой по
- умолчанию:
-\end_layout
-
-\begin_deeper
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-SELINUXTYPE=mls
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_deeper
-\begin_layout Enumerate
-После чего расставляются метки безопасности в файловой системе:
-\end_layout
-
-\begin_deeper
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# touch /.autorelabel
-\end_layout
-
-\begin_layout Plain Layout
-
-# reboot
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_deeper
-\begin_layout Enumerate
-Установить модифицированные RPM-пакеты 
-\family typewriter
-openssl
-\family default
- и 
-\family typewriter
-m2crypto
-\family default
-, а также пакет 
-\family typewriter
-pgcert
-\family default
-.
- Для этого требуется скопировать бинарные RPM пакеты и выполнить их установку:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# yum localinstall m2crypto-0.21.2-1.fc20.x86_64.rpm openssl-* pgcert-1.0.0-1.fc20.noarch.
-rpm -y
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout --Separator--
-
-\end_layout
-
-\begin_layout Subsubsection
-Настройка удостоверяющего центра
-\end_layout
-
-\begin_layout Standard
-Настройка удостоверяющего центра состоит в разворачивании удостоверяющего
- центра.
- Это можно сделать с помощью скрипта 
-\family typewriter
-CA
-\family default
-: 
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# /etc/pki/tls/misc/CA -newca
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-При выполнении данного скрипта в диалоговом режиме будет предложено ввести
- информацию об удостоверяющем центре:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-Enter PEM pass phrase: <пароль>
-\end_layout
-
-\begin_layout Plain Layout
-
-Verifying - Enter PEM pass phrase: <пароль>
-\end_layout
-
-\begin_layout Plain Layout
-
-...
-\end_layout
-
-\begin_layout Plain Layout
-
-Country Name (2 letter code) [XX]:ru
-\end_layout
-
-\begin_layout Plain Layout
-
-State or Province Name (full name) []:msk
-\end_layout
-
-\begin_layout Plain Layout
-
-Locality Name (eg, city) [Default City]:msk
-\end_layout
-
-\begin_layout Plain Layout
-
-Organization Name (eg, complany) [Default Company Ltd]:mephi
-\end_layout
-
-\begin_layout Plain Layout
-
-Organizational Unit Name (eg, section) []:kaf36
-\end_layout
-
-\begin_layout Plain Layout
-
-Common Name (eg, your name or your server's hostname) []:root
-\end_layout
-
-\begin_layout Plain Layout
-
-Email Address []:root@kaf36
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-После выполнения данного скрипта будет развёрнут удостоверяющий центр, закрытый
- ключ которого будет расположен в директории 
-\family typewriter
-/etc/pki/CA/private
-\family default
- и сертификат удостоверяющего центра 
-\family typewriter
-cacert.pem
-\family default
-, расположенного в 
-\family typewriter
-/etc/pki/CA
-\family default
-.
- 
-\end_layout
-
-\begin_layout Standard
-Создается директория 
-\family typewriter
-certs
-\family default
-, в которую будут присылаться запросы на подпись сертификатов и в которой
- будут содержаться сертификаты:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# mkdir /root/certs
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-Настройка клиента
-\end_layout
-
-\begin_layout Standard
-Настройка клиентской машины состоит в создании пользователей операционной
- системы, назначение им контекста безопасности, а также в настройке скрипта
- инициализации многоэкземплярных папок 
-\family typewriter
-namespace.init
-\family default
- и дополнительной установке пакетов.
-\end_layout
-
-\begin_layout Enumerate
-Для установки клиентской части PostgreSQL требуется подключить репозиторий
- PostgreSQL 9.3.4 и выполнить команду:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# yum install postgresql93 -y
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Устанавливается модифицированный модуль 
-\family typewriter
-pam
-\family default
- (его модификация проводилось 
-\emph on
-в разделе 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sub:Модификация-pam_namespace.so"
-
-\end_inset
-
-
-\emph default
-),
-\family typewriter
- 
-\family default
-с помощью которого становится возможным получить контекст пользователя в
- скрипте инициализации:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# yum localinstall -y pam-1.1.8-1.fc20.x86_64.rpm
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Устанавливается пакет 
-\family typewriter
-sshpass
-\family default
-, необходимый при автоматическом вводе пароля при подключении по протоколу
- SSH:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# yum install -y sshpass
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Настроить механизм многоэкземплярности папок.
- 
-\end_layout
-
-\begin_deeper
-\begin_layout Enumerate
-Для этого в конфигурационном файле 
-\family typewriter
-/etc/security/namespace.conf
-\family default
- записать следующие строки:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-/tmp 		/tmp/tmp-inst/	    level root
-\end_layout
-
-\begin_layout Plain Layout
-
-/var/tmp	/var/tpm/tmp-inst/  level root
-\end_layout
-
-\begin_layout Plain Layout
-
-$HOME		$HOME/$USER.int/    level root
-\end_layout
-
-\begin_layout Plain Layout
-
-/etc/pki/certs/ /etc/pki/certs/certs.inst/ user root
-\end_layout
-
-\end_inset
-
-Таким образом, будут созданные многоэкземплярные директории 
-\family typewriter
-/tmp
-\family default
-, 
-\family typewriter
-/var/tmp
-\family default
- и пользовательские домашние директории для всех пользователей, за исключением
- суперпользователя 
-\family typewriter
-root
-\family default
-.
- Последняя строка отвечает за создание директории с электронно-цифровыми
- подписями клиентов, используемых для генерации сертификатов.
-\end_layout
-
-\begin_layout Enumerate
-В конфигурационный файл PAM 
-\family typewriter
-/etc/pam.d/sshd
-\family default
- дописать следующую строку:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-session	required	pam_namespace.so
-\end_layout
-
-\end_inset
-
-Данная строка позволяет работать с многоэкземплярными директориями демону
- 
-\family typewriter
-SSHD
-\family default
-.
-\end_layout
-
-\end_deeper
-\begin_layout Enumerate
-Создается пользователь SELinux 
-\family typewriter
-user_u
-\family default
-, сущность которого будет сопоставлена с пользователями клиентской машины:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# semanage user -m -r s0-s3:c0.c1023 user_u
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Модифицируется скрипт инициализации многоэкземплярных директорий 
-\family typewriter
-/etc/security/namespace.init
-\family default
-:
-\end_layout
-
-\begin_layout --Separator--
-
-\end_layout
-
-\begin_layout Standard
-Скрипт 
-\family typewriter
-namespace.init
-\family default
- исполняется интерпретатором 
-\family typewriter
-BASH
-\family default
-.
- Полный текст скрипта приведён в 
-\emph on
-приложении 7
-\emph default
-.
- Скрипт принимает пять параметра:
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-$1
-\family default
- --- путь к многоэкземплярной директории;
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-$2
-\family default
- --- путь к экземпляру директории;
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-$3 
-\family default
---- флаг, равен 0, если не требуется создание экземпляра директории и 1,
- если требуется;
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-$4
-\family default
- --- имя пользователя;
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-$5
-\family default
- --- текущий контекст безопасности пользователя.
-\end_layout
-
-\begin_layout --Separator--
-
-\end_layout
-
-\begin_layout Standard
-Для улучшения читаемости скрипта были объявлены следующие глобальные переменные:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-polydir_path="$1"
-\end_layout
-
-\begin_layout Plain Layout
-
-instance_path="$2"
-\end_layout
-
-\begin_layout Plain Layout
-
-need_to_create="$3"
-\end_layout
-
-\begin_layout Plain Layout
-
-user="$4"
-\end_layout
-
-\begin_layout Plain Layout
-
-secontext="$5"
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-log="$polydir_path/cert.log"            #лог-файл, в который выводится вывод
- утилиты pgcert
-\end_layout
-
-\begin_layout Plain Layout
-
-pgcertdir="$polydir_path/.postgresql"   #каталог, в котором хранится закрытый
- ключ и сертификат клиента
-\end_layout
-
-\begin_layout Plain Layout
-
-signerdir="/etc/pki/keys"               #каталог, в котором хранится электронно-
-цифровая подпись клиента
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-ca_ip="192.168.100.4"                   #IP-адрес удостоверяющего центра
-\end_layout
-
-\begin_layout Plain Layout
-
-ca_password="123456"                    #пароль пользователя root удостоверяющег
-о центра 
-\end_layout
-
-\begin_layout Plain Layout
-
-ca_certdir="/root/certs"                #директория, в которую будут копироватьс
-я запросы на подпись сертификата и в которой будут создаваться
-\end_layout
-
-\begin_layout Plain Layout
-
-ca_signaturedir="/etc/pki/certs"        #директория, в которой хранятся
- открытые ключи электронно-цифровой подписи клиентов
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Если экземпляр многоэкземплярной директории требует создания, выполняются
- команды по инициализации директории.
- Контекст безопасности устанавливается по умолчанию:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-[ -x /sbin/restorecon ] && /sbin/restorecon "$polydir_path"
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Далее определяется, является ли экземпляр многоэкземплярной папки домашней
- директорией:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-passwd=$(getent passwd "$user")
-\end_layout
-
-\begin_layout Plain Layout
-
-homedir=$(echo "$passwd" | cut -f6 -d":")
-\end_layout
-
-\begin_layout Plain Layout
-
-if [ "$polydir_path" = "$homedir" ]; then
-\end_layout
-
-\begin_layout Plain Layout
-
-	...
-\end_layout
-
-\begin_layout Plain Layout
-
-fi
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Если является, то выполняются дополнительные действия по инициализации:
- копирование шаблона-каталога из 
-\family typewriter
-/etc/skel
-\family default
-, назначение прав и т.д.
-\end_layout
-
-\begin_layout Standard
-После выполнения этих действий выполняется создание сертификата пользователя.
- Сначала осуществляется проверка наличия электронно-цифровой подписи у клиента.
- Если её нет, она создаётся с помощью функции 
-\family typewriter
-create_signature
-\family default
-.
- В ней описываются действия по созданию подписи и копированию в каталог
- 
-\family typewriter
-$ca_signaturedir
-\family default
- удостоверяющего центра.
-\end_layout
-
-\begin_layout Standard
-Действия по созданию сертификата клиента объединены в функции 
-\family typewriter
-create_certificate
-\family default
-.
- 
-\end_layout
-
-\begin_layout Standard
-Работа данной функции начинается с создания директории для хранения сертификатов
- 
-\family typewriter
-$pgcertdir
-\family default
-:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-mkdir $pgcertdir
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-С помощью утилиты 
-\family typewriter
-pgcert 
-\family default
-выполняется создание закрытого ключа и назначение ему прав 
-\family typewriter
-0600 
-\family default
-(права на чтение, запись, исполнение только для владельца ключа):
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-pgcert --genkey --bits 2048 --output $pgcertdir/postgresql.key >> $log
-\end_layout
-
-\begin_layout Plain Layout
-
-chmod 0600 $pgcertdir/postgresql.key
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Для создания запроса на подпись сертификата используется следующая команда:
- 
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --secontext
- $secontext --output $pgcertdir/postgresql.csr >> $log
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Запрос подписывается цифровой подписью клиента:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-pgcert --sign --pkey $signerdir/private.key --certificate $signerdir/$user.crt
- --request $pgcertdir/postgresql.csr >> $log
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-После чего подписанный запрос пересылается на удостоверяющий центр с помощью
- следующей команды:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-sshpass -p $ca_password scp -o StrictHostKeyChecking=no $pgcertdir/postgresql.csr.
-sign root@$ca_ip:$ca_certdir/postgresql.csr.sign >> $log
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Данная команда создает 
-\family typewriter
-SSH
-\family default
- соединение без проверки ключей (
-\family typewriter
-StrictHostKeyChecking=no
-\family default
-), при просьбе ввести пароль от удалённой машины, утилита 
-\family typewriter
-sshpass
-\family default
- вводит пароль, хранящийся в переменной 
-\family typewriter
-$ca_password
-\family default
-.
- После этого файл запроса копируется в директорию 
-\family typewriter
-$ca_certdir 
-\family default
-удостоверяющего центра.
-
-\family typewriter
- 
-\end_layout
-
-\begin_layout Standard
-На удостоверяющем центре выполняется проверка цифровой подписи клиента:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert
- --verify --certificate /etc/pki/certs/$user.crt --request $ca_certdir/postgresql.
-csr.sign --output $ca_certdir/postgresql.csr" >> $log
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-При успешной проверке удостоверяющей центр выпускает сертификат клиента
- и сохраняет его в директорию 
-\family typewriter
-$ca_certdir
-\family default
-:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-shpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert
- --gencert --request $ca_certdir/postgresql.csr --output $ca_certdir/postgresql.cr
-t" >> $log
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Далее сертификат клиента копируется пользователю в директорию 
-\family typewriter
-$pgcertdir
-\family default
-:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:$ca_certdir/
-postgresql.crt $pgcertdir/postgresql.crt >> $log
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-В директорию 
-\family typewriter
-$pgcertdir
-\family default
- с удостоверяющего центра копируется сертификат удостоверяющего центра:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca:/etc/pki/CA/cac
-ert.pem $pgcertdir/root.crt
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Всем файлам в директории устанавливается владелец 
-\family typewriter
-$user.$user
-\family default
-:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-chown -R $user.$user $pgcertdir
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Subsubsection
