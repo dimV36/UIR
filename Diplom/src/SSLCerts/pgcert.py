@@ -11,7 +11,7 @@ DEFAULT_FIELDS = dict(C='ru', ST='msk', L='msk', O='mephi', OU='kaf36', CN=getlo
 CAKEY = '/etc/pki/CA/private/cakey.pem'
 CACERT = '/etc/pki/CA/cacert.pem'
 DIGITAL_SIGNATURE_KEY = '/etc/pki/certs/private.key'
-DIGITAL_SIGNATURE_CERT = '/etc/pki/certs/%s.crt' % DEFAULT_FIELDS['CN']
+DIGITAL_SIGNATURE_CERT = '/etc/pki/certs/%s.crt'
 DEFAULT_PASSWORD = '123456'
 
 
@@ -57,7 +57,7 @@ def make_level_and_category_sets(context):
 
 
 def verify_user_context(user, current_context):
-    main_user_context = get_extension(DIGITAL_SIGNATURE_CERT, 'selinuxContext')
+    main_user_context = get_extension(DIGITAL_SIGNATURE_CERT % user, 'selinuxContext')
     if not main_user_context:
         return False
     main_level, main_category = make_level_and_category_sets(main_user_context)
@@ -268,7 +268,7 @@ def get_extension(certificate_file_path, name):
     certificate = None
     try:
         certificate = X509.load_cert(certificate_file_path)
-    except (X509.X509Error, ValueError):
+    except (X509.X509Error, IOError):
         print('ERROR print: Could not load certificate from %s' % certificate_file_path)
         exit(1)
     try:
@@ -354,11 +354,11 @@ if __name__ == '__main__':
         if not options.pkey:
             options.pkey = DIGITAL_SIGNATURE_KEY
         if not options.certificate:
-            options.certificate = DIGITAL_SIGNATURE_CERT
+            options.certificate = DIGITAL_SIGNATURE_CERT % DEFAULT_FIELDS['CN']
         sign(options.pkey, options.certificate, options.request)
     elif options.signature and options.request:
         if not options.certificate:
-            options.certificate = DIGITAL_SIGNATURE_CERT
+            options.certificate = DIGITAL_SIGNATURE_CERT % DEFAULT_FIELDS['CN']
         verify(options.certificate, options.signature, options.request)
     elif options.issuer and options.certificate:
         get_issuer(options.certificate)
