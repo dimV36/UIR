@@ -9076,12 +9076,12 @@ reference "fig:Стенд-без-postgres"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -10044,13 +10044,13 @@ secontext="$5"
 
 \begin_layout Plain Layout
 
-log="$polydir_path/cert.log"            #лог-файл, в который выводится вывод
+log="$polydir_path/log"            	 #лог-файл, в который выводится вывод
  утилиты pgcert
 \end_layout
 
 \begin_layout Plain Layout
 
-pgcertdir="$polydir_path/.postgresql"   #каталог, в котором хранится закрытый
+certdir="$polydir_path/certs"           #каталог, в котором хранится закрытый
  ключ и сертификат клиента
 \end_layout
 
@@ -10178,7 +10178,7 @@ $ca_signaturedir
 \begin_layout Standard
 Действия по созданию сертификата клиента объединены в функции 
 \family typewriter
-create_certificate
+create_certificate()
 \family default
 .
  
@@ -10200,7 +10200,7 @@ status open
 
 \begin_layout Plain Layout
 
-mkdir $pgcertdir
+mkdir $certdir
 \end_layout
 
 \end_inset
@@ -10227,12 +10227,12 @@ status open
 
 \begin_layout Plain Layout
 
-pgcert --genkey --bits 2048 --output $pgcertdir/postgresql.key >> $log
+pgcert --genkey --bits 2048 --output $certdir/private.key >> $log
 \end_layout
 
 \begin_layout Plain Layout
 
-chmod 0600 $pgcertdir/postgresql.key
+chmod 0600 $certdir/private.key
 \end_layout
 
 \end_inset
@@ -10249,13 +10249,24 @@ status open
 
 \begin_layout Plain Layout
 
-pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --secontext
- $secontext --output $pgcertdir/postgresql.csr >> $log
+pgcert --genreq --pkey $certdir/private.key --user $user --secontext $secontext
+ --output $certdir/$user.csr >> $log
 \end_layout
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Так будет создан запрос для клиента 
+\family typewriter
+$user.csr
+\family default
+.
+
+\family typewriter
+ 
 \end_layout
 
 \begin_layout Standard
@@ -10267,7 +10278,7 @@ status open
 \begin_layout Plain Layout
 
 pgcert --sign --pkey $signerdir/private.key --certificate $signerdir/$user.crt
- --request $pgcertdir/postgresql.csr >> $log
+ --request $certdir/$user.csr >> $log
 \end_layout
 
 \end_inset
@@ -10276,7 +10287,7 @@ pgcert --sign --pkey $signerdir/private.key --certificate $signerdir/$user.crt
 \end_layout
 
 \begin_layout Standard
-После чего запрос и его подпись пересылаеюся на удостоверяющий центр с помощью
+После чего запрос и его подпись пересылаются на удостоверяющий центр с помощью
  следующей команды:
 \begin_inset listings
 inline false
@@ -10284,8 +10295,8 @@ status open
 
 \begin_layout Plain Layout
 
-sshpass -p $ca_password scp -o StrictHostKeyChecking=no $pgcertdir/postgresql.csr.
-* root@$ca_ip:$ca_certdir/ >> $log
+sshpass -p $ca_password scp -o StrictHostKeyChecking=no $certdir/$user.csr*
+ root@$ca_ip:$ca_certdir/ >> $log
 \end_layout
 
 \end_inset
@@ -10333,8 +10344,8 @@ status open
 \begin_layout Plain Layout
 
 sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert
- --verify $certdir/postgresql.csr.signature --certificate /etc/pki/certs/$user.crt
- --request $ca_certdir/postgresql.csr" >> $log
+ --verify $certdir/$user.csr.signature --certificate /etc/pki/certs/$user.crt
+ --request $ca_certdir/$user.csr" >> $log
 \end_layout
 
 \end_inset
@@ -10359,8 +10370,8 @@ status open
 \begin_layout Plain Layout
 
 shpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert
- --gencert --request $ca_certdir/postgresql.csr --output $ca_certdir/postgresql.cr
-t" >> $log
+ --gencert --request $ca_certdir/$user.csr --output $ca_certdir/$user.crt"
+ >> $log
 \end_layout
 
 \end_inset
@@ -10384,7 +10395,7 @@ status open
 \begin_layout Plain Layout
 
 sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:$ca_certdir/
-postgresql.crt $pgcertdir/postgresql.crt >> $log
+$user.crt $certdir/$user.crt >> $log
 \end_layout
 
 \end_inset
@@ -10397,7 +10408,7 @@ postgresql.crt $pgcertdir/postgresql.crt >> $log
 \family typewriter
 $pgcertdir
 \family default
- с удостоверяющего центра копируется сертификат удостоверяющего центра:
+ с удостоверяющего центра копируется его сертификат:
 \begin_inset listings
 inline false
 status open
@@ -10405,7 +10416,7 @@ status open
 \begin_layout Plain Layout
 
 sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca:/etc/pki/CA/cac
-ert.pem $pgcertdir/root.crt
+ert.pem $certdir/root.crt
 \end_layout
 
 \end_inset
@@ -10425,11 +10436,1084 @@ status open
 
 \begin_layout Plain Layout
 
-chown -R $user.$user $pgcertdir
+chown -R $user.$user $certdir
 \end_layout
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
+Таким образом, при аутентификации клиента в операционной системе будут созданы:
+\end_layout
+
+\begin_layout Itemize
+закрытый ключ 
+\family typewriter
+/etc/pki/keys/private.key
+\family default
+ и сертификат цифровой подписи 
+\family typewriter
+/etc/pki/keys/$user.crt
+\family default
+, создаваемые при первом входе в систему;
+\end_layout
+
+\begin_layout Itemize
+закрытый ключ 
+\family typewriter
+/home/$user/certs/private.key
+\family default
+ и сертификат 
+\family typewriter
+/home/$user/certs/$user.crt
+\family default
+, которые могут быть использованы в различных программных средствах.
+\end_layout
+
+\begin_layout Subsection
+Тестирование механизма автоматического выбора сертификата пользователя
+\end_layout
+
+\begin_layout Standard
+Для того, чтобы убедиться в корректности работы разработанного механизма
+ автоматического выбора сертификата, осуществляется проверка на контекста
+ безопасности пользователя, полученное средствами операционной системы,
+ и контекста безопасности пользователя, указанного в дополнении сертификата
+ клиента.
+ Данный сертификат должен храниться в домашнем каталоге клиента.
+\end_layout
+
+\begin_layout Subsubsection
+Подготовка к тестированию
+\end_layout
+
+\begin_layout Standard
+На клиентской машине создаются пользователи 
+\family typewriter
+user1
+\family default
+, 
+\family typewriter
+user2
+\family default
+, 
+\family typewriter
+user3
+\family default
+.
+ Их контексты безопасности представлены в 
+\emph on
+таблице 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Контексты-пользователей-клиентск"
+
+\end_inset
+
+
+\emph default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="8" columns="2">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell multirow="3" alignment="left" valignment="middle" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Пользователь
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="3" alignment="left" valignment="middle" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+контекст SELinux
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="4" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="3" alignment="left" valignment="middle" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+user1
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="3" alignment="left" valignment="middle" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+user_u:user_r:user_t:s0
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="4" alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="3" alignment="left" valignment="middle" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+user2
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="3" alignment="left" valignment="middle" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+user_u:user_r:user_t:s0-s2
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="4" alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="3" alignment="left" valignment="middle" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+user3
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="3" alignment="left" valignment="middle" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+user_u:user_r:user_t:s1-s3:c0.c10
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="4" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Контексты-пользователей-клиентск"
+
+\end_inset
+
+Контексты пользователей клиентской машины
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Далее будет приведена последовательность команд, необходимых для создания
+ пользователей на и для назначения требуемого контекста безопасности.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Создается пользователь системы 
+\family typewriter
+user1
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# useradd user1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Назначается произвольный пароль с помощью утилиты 
+\family typewriter
+passwd
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# passwd user1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Пользователю сопоставляется пользователь SELinux 
+\family typewriter
+user_u
+\family default
+ и назначается контекст согласно 
+\emph on
+таблице 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Контексты-пользователей-клиентск"
+
+\end_inset
+
+
+\emph default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# semanage login -a -s user_u -r s0 user1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Меняется контекст домашней директории пользователя в соответствии с его
+ уровнем:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# chcon -R -l 's0' /home/user1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Для пользователей 
+\family typewriter
+user2
+\family default
+ и 
+\family typewriter
+user3
+\family default
+ выполняются аналогичные действия.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Алгоритм тестирования механизма передачи метки безопасности серверу PostgreSQL
+\end_layout
+
+\begin_layout Standard
+Для проверки корректности работы механизма выбора сертификатов пользователей
+ клиентом PostgreSQL выполняются следующие действия:
+\end_layout
+
+\begin_layout Enumerate
+Зайти за пользователя в систему на клиентской машине.
+\end_layout
+
+\begin_layout Enumerate
+Выполнить команду, возвращающей текущий контекст пользователя:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ id -Z
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Удостовериться, что была создана директория 
+\family typewriter
+.postgresql
+\family default
+ и в ней находится 4 файла: 
+\family typewriter
+postgresql.key
+\family default
+, 
+\family typewriter
+postgresql.csr
+\family default
+, 
+\family typewriter
+postgresql.crt
+\family default
+ и
+\family typewriter
+ root.crt
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ ls -l ~/.postgresql
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Удостовериться, что существует дополнение 
+\family typewriter
+selinuxContext
+\family default
+ в сертификате пользователя 
+\family typewriter
+~/.postgresql/postgresql.crt
+\family default
+ и его значение соответствует текущему контексту безопасности пользователя:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ pgcert --text --certificate ~/.postgresql/postgresql.crt
+\end_layout
+
+\end_inset
+
+Проверка по данному пункту может быть реализована с помощью утилиты 
+\family typewriter
+openssl
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ openssl x509 -in ~/.postgresql/postgresql.crt -text
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Подключиться к PostgreSQL с помощью команды:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ psql -h 192.168.100.2 testdb
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Убедиться в том, что функции из модуля 
+\family typewriter
+sslinfo
+\family default
+ загружены в базу данных
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+df
+\end_layout
+
+\end_inset
+
+Команда выдаст таблицу всех доступных в данной базе данных функций.
+\end_layout
+
+\begin_layout Enumerate
+Вызвать хранимую процедуру 
+\family typewriter
+ssl_get_extension_by_name()
+\family default
+, передав ей в качестве аргумента имя дополнения 
+\family typewriter
+selinuxContext
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+SELECT ssl_get_extension_by_name('selinuxContext');
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Вызвать функцию модуля 
+\family typewriter
+sepgsql
+\family default
+, которая возвращает текущий контекст безопасности клиента:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+SELECT sepgsql_getcon();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Сравнить результаты выполнения функций из пунктов 7-8 с контекстом безопасности
+ пользователя;
+\end_layout
+
+\begin_layout Enumerate
+Отключиться от базы данных с помощью команды
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+q
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Повторить описанные действия в пунктах 2-10 после перехода на другой возможный
+ мандатный уровень (с помощью команды 
+\family typewriter
+newrole
+\family default
+).
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Subsubsection
+Пример проверки механизма для пользователя user2
+\end_layout
+
+\begin_layout Standard
+Данная проверка может проводиться для других пользователей.
+ 
+\end_layout
+
+\begin_layout Standard
+На 
+\emph on
+рисунках
+\emph default
+ 
+\family typewriter
+\emph on
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Результат-s0"
+
+\end_inset
+
+
+\family default
+-
+\family typewriter
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Вызов-процедуры-s1"
+
+\end_inset
+
+
+\family default
+ 
+\emph default
+приведены
+\family typewriter
+ с
+\family default
+криншоты проверки корректности создания сертификата для пользователя 
+\family typewriter
+user2
+\family default
+ с меткой безопасности пользователя.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/user2_1_1-3.png
+	width 95text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Результат-s0"
+
+\end_inset
+
+Контекст пользователя 
+\family typewriter
+user2
+\family default
+ на мандатном уровне 
+\family typewriter
+s0-s2
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/user2_1_4.png
+	width 95text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:сертификат-пользователя-s0"
+
+\end_inset
+
+Сертификат пользователя 
+\family typewriter
+user2
+\family default
+ на мандатном уровне 
+\family typewriter
+s0-s2
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/user2_1_7-8.png
+	width 95text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Вызов-процедуры-s0"
+
+\end_inset
+
+Вызов процедур 
+\family typewriter
+ssl_get_extension_by_name() 
+\family default
+и 
+\family typewriter
+sepgsql_getcon()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/user2_2_0-3.png
+	width 95text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Переход-на-s1"
+
+\end_inset
+
+Переход на новый мандатный уровень 
+\family typewriter
+s1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/user2_2_4.png
+	width 95text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Сертификат-пользователя-s1"
+
+\end_inset
+
+Сертификат пользователя 
+\family typewriter
+user2
+\family default
+ на мандатном уровне 
+\family typewriter
+s1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/user2_2_7-8.png
+	width 95text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Вызов-процедуры-s1"
+
+\end_inset
+
+Вызов процедуры 
+\family typewriter
+ssl_get_extension_by_name()
+\family default
+ на мандатном уровне 
+\family typewriter
+s1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Подобные проверки могут быть проведены для других пользователей с иными
+ контекстами безопасности.
+ 
+\end_layout
+
+\begin_layout Subsection
+Тестирование СУБД
+\end_layout
+
+\begin_layout Standard
+На сервере СУБД выполняются следующие действия:
+\end_layout
+
+\begin_layout Enumerate
+Создаётся тестовая база данных 
+\family typewriter
+testdb
+\family default
+ от имени пользователя 
+\family typewriter
+postgres
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ createdb testdb
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Создаются пользователи базы данных 
+\family typewriter
+user1
+\family default
+, 
+\family typewriter
+user2
+\family default
+, 
+\family typewriter
+user3
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ psql -c "CREATE USER user1 login;"
+\end_layout
+
+\begin_layout Plain Layout
+
+$ psql -c "CREATE USER user1 login;"
+\end_layout
+
+\begin_layout Plain Layout
+
+$ psql -c "CREATE USER user1 login;"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Загружается созданный модифицированный модуль 
+\family typewriter
+sslinfo
+\family default
+ в базу данных 
+\family typewriter
+testdb
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ psql testdb -c "CREATE EXTENSION sslextensions;"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Загружается модуль 
+\family typewriter
+sepgsql
+\family default
+ в базу данных 
+\family typewriter
+testdb
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ psql testdb -f /usr/pgsql-9.3/share/contrib/sepgsql.sql
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
 
 \end_layout
 
@@ -12510,1071 +13594,6 @@ status open
 \end_inset
 
 
-\end_layout
-
-\begin_layout Subsection
-Тестирование стенда
-\end_layout
-
-\begin_layout Standard
-В данном разделе будет описан процесс проверки корректности создания пользовател
-ьских сертификатов и их использование в СУБД PostgreSQL.
-\end_layout
-
-\begin_layout Subsubsection
-Подготовка к тестированию
-\end_layout
-
-\begin_layout Standard
-На клиентской машине создаются пользователи 
-\family typewriter
-user1
-\family default
-, 
-\family typewriter
-user2
-\family default
-, 
-\family typewriter
-user3
-\family default
-.
- Их контексты безопасности представлены в 
-\emph on
-таблице 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "tab:Контексты-пользователей-клиентск"
-
-\end_inset
-
-
-\emph default
-.
- На сервере СУБД им соответствуют пользователи 
-\family typewriter
-user1
-\family default
-, 
-\family typewriter
-user2
-\family default
-, 
-\family typewriter
-user3
-\family default
-.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float table
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Tabular
-<lyxtabular version="3" rows="8" columns="2">
-<features rotate="0" tabularvalignment="middle">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<row>
-<cell multirow="3" alignment="left" valignment="middle" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Пользователь
-\end_layout
-
-\end_inset
-</cell>
-<cell multirow="3" alignment="left" valignment="middle" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-контекст SELinux
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell multirow="4" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell multirow="4" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell multirow="3" alignment="left" valignment="middle" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\family typewriter
-user1
-\end_layout
-
-\end_inset
-</cell>
-<cell multirow="3" alignment="left" valignment="middle" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\family typewriter
-user_u:user_r:user_t:s0
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell multirow="4" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell multirow="4" alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell multirow="3" alignment="left" valignment="middle" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\family typewriter
-user2
-\end_layout
-
-\end_inset
-</cell>
-<cell multirow="3" alignment="left" valignment="middle" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\family typewriter
-user_u:user_r:user_t:s0-s2
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell multirow="4" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell multirow="4" alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell multirow="3" alignment="left" valignment="middle" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\family typewriter
-user3
-\end_layout
-
-\end_inset
-</cell>
-<cell multirow="3" alignment="left" valignment="middle" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\family typewriter
-user_u:user_r:user_t:s1-s3:c0.c10
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell multirow="4" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell multirow="4" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "tab:Контексты-пользователей-клиентск"
-
-\end_inset
-
-Контексты пользователей клиентской машины
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Далее будет приведена последовательность команд, необходимых для создания
- пользователей на и для назначения требуемого контекста безопасности.
- Данная последовательность действий должна быть выполнена аналогично для
- пользователей 
-\family typewriter
-user2
-\family default
- и 
-\family typewriter
-user3
-\family default
-.
-\end_layout
-
-\begin_layout Enumerate
-Создается пользователь системы 
-\family typewriter
-user1
-\family default
-:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# useradd user1
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Назначается произвольный пароль с помощью утилиты 
-\family typewriter
-passwd
-\family default
-:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# passwd user1
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Пользователю сопоставляется пользователь SELinux 
-\family typewriter
-user_u
-\family default
- и назначается контекст согласно 
-\emph on
-таблице 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "tab:Контексты-пользователей-клиентск"
-
-\end_inset
-
-
-\emph default
-:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# semanage login -a -s user_u -r s0 user1
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Меняется контекст домашней директории пользователя в соответствии с его
- уровнем:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# chcon -R -l 's0' /home/user1
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout --Separator--
-
-\end_layout
-
-\begin_layout Standard
-На сервере СУБД выполняются следующие действия:
-\end_layout
-
-\begin_layout Enumerate
-Создаётся тестовая база данных 
-\family typewriter
-testdb
-\family default
- от имени пользователя 
-\family typewriter
-postgres
-\family default
-:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-$ createdb testdb
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Создаются пользователи базы данных 
-\family typewriter
-user1
-\family default
-, 
-\family typewriter
-user2
-\family default
-, 
-\family typewriter
-user3
-\family default
-:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-$ psql -c "CREATE USER user1 login;"
-\end_layout
-
-\begin_layout Plain Layout
-
-$ psql -c "CREATE USER user1 login;"
-\end_layout
-
-\begin_layout Plain Layout
-
-$ psql -c "CREATE USER user1 login;"
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Загружается созданный модифицированный модуль 
-\family typewriter
-sslinfo
-\family default
- в базу данных 
-\family typewriter
-testdb
-\family default
-:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-$ psql testdb -c "CREATE EXTENSION sslextensions;"
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Загружается модуль 
-\family typewriter
-sepgsql
-\family default
- в базу данных 
-\family typewriter
-testdb
-\family default
-:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-$ psql testdb -f /usr/pgsql-9.3/share/contrib/sepgsql.sql
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout --Separator--
-
-\end_layout
-
-\begin_layout Subsubsection
-Алгоритм тестирования механизма передачи метки безопасности серверу PostgreSQL
-\end_layout
-
-\begin_layout Standard
-Для проверки корректности работы механизма выбора сертификатов пользователей
- клиентом PostgreSQL выполняются следующие действия:
-\end_layout
-
-\begin_layout Enumerate
-Зайти за пользователя в систему на клиентской машине.
-\end_layout
-
-\begin_layout Enumerate
-Выполнить команду, возвращающей текущий контекст пользователя:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-$ id -Z
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Удостовериться, что была создана директория 
-\family typewriter
-.postgresql
-\family default
- и в ней находится 4 файла: 
-\family typewriter
-postgresql.key
-\family default
-, 
-\family typewriter
-postgresql.csr
-\family default
-, 
-\family typewriter
-postgresql.crt
-\family default
- и
-\family typewriter
- root.crt
-\family default
-:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-$ ls -l ~/.postgresql
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Удостовериться, что существует дополнение 
-\family typewriter
-selinuxContext
-\family default
- в сертификате пользователя 
-\family typewriter
-~/.postgresql/postgresql.crt
-\family default
- и его значение соответствует текущему контексту безопасности пользователя:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-$ pgcert --text --certificate ~/.postgresql/postgresql.crt
-\end_layout
-
-\end_inset
-
-Проверка по данному пункту может быть реализована с помощью утилиты 
-\family typewriter
-openssl
-\family default
-:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-$ openssl x509 -in ~/.postgresql/postgresql.crt -text
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Подключиться к PostgreSQL с помощью команды:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-$ psql -h 192.168.100.2 testdb
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Убедиться в том, что функции из модуля 
-\family typewriter
-sslinfo
-\family default
- загружены в базу данных
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-df
-\end_layout
-
-\end_inset
-
-Команда выдаст таблицу всех доступных в данной базе данных функций.
-\end_layout
-
-\begin_layout Enumerate
-Вызвать хранимую процедуру 
-\family typewriter
-ssl_get_extension_by_name()
-\family default
-, передав ей в качестве аргумента имя дополнения 
-\family typewriter
-selinuxContext
-\family default
-:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-SELECT ssl_get_extension_by_name('selinuxContext');
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Вызвать функцию модуля 
-\family typewriter
-sepgsql
-\family default
-, которая возвращает текущий контекст безопасности клиента:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-SELECT sepgsql_getcon();
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Сравнить результаты выполнения функций из пунктов 7-8 с контекстом безопасности
- пользователя;
-\end_layout
-
-\begin_layout Enumerate
-Отключиться от базы данных с помощью команды
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-q
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Повторить описанные действия в пунктах 2-10 после перехода на другой возможный
- мандатный уровень (с помощью команды 
-\family typewriter
-newrole
-\family default
-).
-\end_layout
-
-\begin_layout --Separator--
-
-\end_layout
-
-\begin_layout Subsubsection
-Пример проверки механизма для пользователя user2
-\end_layout
-
-\begin_layout Standard
-Данная проверка может проводиться для других пользователей.
- 
-\end_layout
-
-\begin_layout Standard
-На 
-\emph on
-рисунках
-\emph default
- 
-\family typewriter
-\emph on
-
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Результат-s0"
-
-\end_inset
-
-
-\family default
--
-\family typewriter
-
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Вызов-процедуры-s1"
-
-\end_inset
-
-
-\family default
- 
-\emph default
-приведены
-\family typewriter
- с
-\family default
-криншоты проверки корректности создания сертификата для пользователя 
-\family typewriter
-user2
-\family default
- с меткой безопасности пользователя.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename files/user2_1_1-3.png
-	width 95text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Результат-s0"
-
-\end_inset
-
-Контекст пользователя 
-\family typewriter
-user2
-\family default
- на мандатном уровне 
-\family typewriter
-s0-s2
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename files/user2_1_4.png
-	width 95text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:сертификат-пользователя-s0"
-
-\end_inset
-
-Сертификат пользователя 
-\family typewriter
-user2
-\family default
- на мандатном уровне 
-\family typewriter
-s0-s2
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename files/user2_1_7-8.png
-	width 95text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Вызов-процедуры-s0"
-
-\end_inset
-
-Вызов процедур 
-\family typewriter
-ssl_get_extension_by_name() 
-\family default
-и 
-\family typewriter
-sepgsql_getcon()
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename files/user2_2_0-3.png
-	width 95text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Переход-на-s1"
-
-\end_inset
-
-Переход на новый мандатный уровень 
-\family typewriter
-s1
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename files/user2_2_4.png
-	width 95text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Сертификат-пользователя-s1"
-
-\end_inset
-
-Сертификат пользователя 
-\family typewriter
-user2
-\family default
- на мандатном уровне 
-\family typewriter
-s1
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename files/user2_2_7-8.png
-	width 95text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Вызов-процедуры-s1"
-
-\end_inset
-
-Вызов процедуры 
-\family typewriter
-ssl_get_extension_by_name()
-\family default
- на мандатном уровне 
-\family typewriter
-s1
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Подобные проверки могут быть проведены для других пользователей с иными
- контекстами безопасности.
- 
 \end_layout
 
 \begin_layout Standard
