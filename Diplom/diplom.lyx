@@ -10473,7 +10473,7 @@ chown -R $user.$user $certdir
 \end_layout
 
 \begin_layout Subsection
-Тестирование механизма автоматического выбора сертификата пользователя
+Тестирование механизма автоматического выбора сертификата 
 \end_layout
 
 \begin_layout Standard
@@ -10845,16 +10845,21 @@ user3
 \end_layout
 
 \begin_layout Subsubsection
-Алгоритм тестирования механизма передачи метки безопасности серверу PostgreSQL
+Алгоритм тестирования механизма 
 \end_layout
 
 \begin_layout Standard
-Для проверки корректности работы механизма выбора сертификатов пользователей
- клиентом PostgreSQL выполняются следующие действия:
+Для проверки корректности работы автоматического механизма выбора сертификатов
+ пользователей клиентом PostgreSQL выполняются следующие действия:
 \end_layout
 
 \begin_layout Enumerate
-Зайти за пользователя в систему на клиентской машине.
+Зайти за пользователя 
+\family typewriter
+user
+\family default
+ в систему на клиентской машине.
+ 
 \end_layout
 
 \begin_layout Enumerate
@@ -10876,19 +10881,15 @@ $ id -Z
 \begin_layout Enumerate
 Удостовериться, что была создана директория 
 \family typewriter
-.postgresql
+certs
 \family default
- и в ней находится 4 файла: 
+ и в ней находится 3 файла: 
 \family typewriter
-postgresql.key
-\family default
-, 
-\family typewriter
-postgresql.csr
+private.key
 \family default
 , 
 \family typewriter
-postgresql.crt
+user.crt
 \family default
  и
 \family typewriter
@@ -10901,7 +10902,7 @@ status open
 
 \begin_layout Plain Layout
 
-$ ls -l ~/.postgresql
+$ ls -l ~/certs
 \end_layout
 
 \end_inset
@@ -10925,7 +10926,7 @@ status open
 
 \begin_layout Plain Layout
 
-$ pgcert --text --certificate ~/.postgresql/postgresql.crt
+$ pgcert --text --certificate ~/certs/user.crt
 \end_layout
 
 \end_inset
@@ -10941,7 +10942,7 @@ status open
 
 \begin_layout Plain Layout
 
-$ openssl x509 -in ~/.postgresql/postgresql.crt -text
+$ openssl x509 -in ~/certs/user.crt -text
 \end_layout
 
 \end_inset
@@ -10950,117 +10951,27 @@ $ openssl x509 -in ~/.postgresql/postgresql.crt -text
 \end_layout
 
 \begin_layout Enumerate
-Подключиться к PostgreSQL с помощью команды:
+Сменить контекст безопасности с помощью команды:
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-$ psql -h 192.168.100.2 testdb
+$ newrole -l <уровень>
 \end_layout
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Enumerate
-Убедиться в том, что функции из модуля 
+При выполнении данной команды необходимо ввести пароль пользователя 
 \family typewriter
-sslinfo
+user
 \family default
- загружены в базу данных
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-df
-\end_layout
-
-\end_inset
-
-Команда выдаст таблицу всех доступных в данной базе данных функций.
+.
 \end_layout
 
 \begin_layout Enumerate
-Вызвать хранимую процедуру 
-\family typewriter
-ssl_get_extension_by_name()
-\family default
-, передав ей в качестве аргумента имя дополнения 
-\family typewriter
-selinuxContext
-\family default
-:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-SELECT ssl_get_extension_by_name('selinuxContext');
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Вызвать функцию модуля 
-\family typewriter
-sepgsql
-\family default
-, которая возвращает текущий контекст безопасности клиента:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-SELECT sepgsql_getcon();
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Сравнить результаты выполнения функций из пунктов 7-8 с контекстом безопасности
- пользователя;
-\end_layout
-
-\begin_layout Enumerate
-Отключиться от базы данных с помощью команды
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-q
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-Повторить описанные действия в пунктах 2-10 после перехода на другой возможный
- мандатный уровень (с помощью команды 
-\family typewriter
-newrole
-\family default
-).
+Повторить шаги (2-5).
 \end_layout
 
 \begin_layout --Separator--
@@ -11068,7 +10979,7 @@ newrole
 \end_layout
 
 \begin_layout Subsubsection
-Пример проверки механизма для пользователя user2
+Пример проверки работы механизма для пользователя user2
 \end_layout
 
 \begin_layout Standard
@@ -11393,6 +11304,36 @@ s1
 Подобные проверки могут быть проведены для других пользователей с иными
  контекстами безопасности.
  
+\end_layout
+
+\begin_layout Subsection
+Применение разработанного механизма для СУБД PostgreSQL
+\end_layout
+
+\begin_layout Standard
+Механизм автоматического выбора сертификата открытого ключа может быть использов
+ан при аутентификации клиента СУБД PostgreSQL.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Дополнительная настройка namespace.init
+\end_layout
+
+\begin_layout Subsubsection
+Доработка модуля sslinfo
+\end_layout
+
+\begin_layout Subsubsection
+Доработка модуля sepgsql
+\end_layout
+
+\begin_layout Subsubsection
+Настройка СУБД PostgreSQL
+\end_layout
+
+\begin_layout Subsubsection
+Тестирование
 \end_layout
 
 \begin_layout Subsection
