@@ -10038,7 +10038,7 @@ BASH
 .
  Полный текст скрипта приведён в 
 \emph on
-приложении 7
+приложении 5
 \emph default
 .
  Скрипт принимает пять параметра:
@@ -10987,7 +10987,7 @@ name "sub:Certs-test"
 
 \end_inset
 
-Алгоритм тестирования механизма 
+Алгоритм тестирования 
 \end_layout
 
 \begin_layout Standard
@@ -13502,9 +13502,9 @@ sslinfo
 \family default
  реализовано с помощью патча, полный текст которого доступен в 
 \emph on
-приложении 5
+приложении 
 \emph default
-.
+6.
  
 \end_layout
 
@@ -13577,7 +13577,11 @@ CREATE EXTENSION sslinfo;
 
 \begin_layout Standard
 Для реализации возможности установки контекста из сертификата была доработана
- библиотека sepgsql.
+ библиотека 
+\family typewriter
+sepgsql
+\family default
+.
  В файле 
 \family typewriter
 label.c
@@ -13894,13 +13898,13 @@ sepgsql
 \family default
  оформлена в виде патча, с которым ознакомиться можно в 
 \emph on
-приложении 6
+приложении 7
 \emph default
 .
 \end_layout
 
 \begin_layout Subsection
-Тестирование возможности применения разработанного механизма для СУБД PostgreSQL
+Тестирование разработанного механизма для СУБД PostgreSQL
 \end_layout
 
 \begin_layout Subsubsection
@@ -14158,6 +14162,20 @@ $ psql -h 192.168.100.4 testdb
 \end_inset
 
 
+\family default
+и убедиться в активности SSL-соединения (должны быть выведен текст 
+\begin_inset Quotes fld
+\end_inset
+
+
+\family typewriter
+SSL-соединение
+\family default
+
+\begin_inset Quotes frd
+\end_inset
+
+, а также его шифр).
 \end_layout
 
 \begin_layout Enumerate
@@ -14320,6 +14338,236 @@ user_u:user_r:user_t:s0-s
 \end_layout
 
 \begin_layout Standard
+
+\emph on
+На рисунке 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Подключение-к-СУБД"
+
+\end_inset
+
+ 
+\emph default
+приведён скриншот подключения пользователя 
+\family typewriter
+user2
+\family default
+ к базе данных 
+\family typewriter
+testdb
+\family default
+.
+ При этом используется шифрование соединения по протоколу SSL/
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/user2_pgsql_1-3.png
+	width 95text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Подключение-к-СУБД"
+
+\end_inset
+
+Подключение к СУБД PostgreSQL
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+На рисунке 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:pgsql-s0-s2"
+
+\end_inset
+
+
+\emph default
+ приведён вывод хранимой процедуры из расширенного модуля 
+\family typewriter
+sslinfo
+\family default
+ 
+\family typewriter
+ssl_get_extension_by_name()
+\family default
+ и 
+\family typewriter
+sepgsql_getcon()
+\family default
+, функция, с помощью которой можно получить текущий контекст безопасности
+ пользователя.
+ Контекст безопасности, установленный пользователю СУБД 
+\family typewriter
+user2
+\family default
+ совпадает с контекстом безопасности, указанном в сертификате пользователя
+ 
+\family typewriter
+user2
+\family default
+.
+
+\family typewriter
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/user2_pgsql_1-4-6.png
+	width 95text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:pgsql-s0-s2"
+
+\end_inset
+
+Контекст безопасности пользователя 
+\family typewriter
+user2
+\family default
+ на 
+\family typewriter
+s0-s2
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+При смене уровня безопасности с помощью команды 
+\family typewriter
+newrole
+\family default
+ контекст безопасности пользователя СУБД меняется согласно уровню безопасности
+ пользователя (см.
+ 
+\emph on
+рисунок 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:pgsql-s1"
+
+\end_inset
+
+
+\emph default
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename files/user2_pgsql_2-4-7.png
+	width 95text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:pgsql-s1"
+
+\end_inset
+
+Контекст безопасности пользователя 
+\family typewriter
+user2
+\family default
+ на 
+\family typewriter
+s1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Аналогичные проверки выполнялись и для остальных пользователей.
+\end_layout
+
+\begin_layout Standard
 \begin_inset ERT
 status open
 
@@ -14369,30 +14617,31 @@ v3_secon
 \family typewriter
 pgcert
 \family default
- с использованием библиотеки M2Crypto, с помощью которой стало возможно
- хранить создавать сертификат открытых ключей с дополнением 
-\family typewriter
-v3_secon
-\family default
-;
+ с использованием библиотеки M2Crypto.
+ Функционал утилиты позволяет создавать закрытые ключи, запросы на подписи
+ сертификата, сертификаты, электронно-цифровые подписи.
+ С её помощью стало возможным реализовать механизм автоматического создания
+ сертификата на основе контекста безопасности;
 \end_layout
 
 \begin_layout Enumerate
-Модуль 
+Показана применимость механизма для использования в СУБД PostgreSQL.
+ Для этого vодуль 
 \family typewriter
 sslinfo
 \family default
  был дополнен функциями, предоставляющие справочную информацию о дополнениях
- сертификата клиента;
-\end_layout
-
-\begin_layout Enumerate
-Модуль 
+ сертификата клиента, а модуль 
 \family typewriter
 sepgsql
 \family default
  был дополнен возможностью установки метки безопасности клиента из сертификата
  клиента.
+\end_layout
+
+\begin_layout Enumerate
+Разработанный механизм был протестирован (в т.ч.
+ СУБД PostgreSQL).
 \end_layout
 
 \begin_layout --Separator--
@@ -16441,7 +16690,7 @@ __author__ = 'dimv36'
 
 \begin_layout Plain Layout
 
-from M2Crypto import RSA, X509, EVP, ASN1, BIO, SMIME
+from M2Crypto import RSA, X509, ASN1, BIO, SMIME
 \end_layout
 
 \begin_layout Plain Layout
@@ -16475,10 +16724,6 @@ from re import findall
 
 \begin_layout Plain Layout
 
-\end_layout
-
-\begin_layout Plain Layout
-
 DEFAULT_FIELDS = dict(C='ru', ST='msk', L='msk', O='mephi', OU='kaf36',
  CN=getlogin())
 \end_layout
@@ -16500,7 +16745,7 @@ DIGITAL_SIGNATURE_KEY = '/etc/pki/certs/private.key'
 
 \begin_layout Plain Layout
 
-DIGITAL_SIGNATURE_CERT = '/etc/pki/certs/%s.crt' % DEFAULT_FIELDS['CN']
+DIGITAL_SIGNATURE_CERT = '/etc/pki/certs/%s.crt'
 \end_layout
 
 \begin_layout Plain Layout
@@ -16733,7 +16978,8 @@ def verify_user_context(user, current_context):
 
 \begin_layout Plain Layout
 
-    main_user_context = get_extension(DIGITAL_SIGNATURE_CERT, 'selinuxContext')
+    main_user_context = get_extension(DIGITAL_SIGNATURE_CERT % user, 'selinuxCon
+text')
 \end_layout
 
 \begin_layout Plain Layout
@@ -16793,6 +17039,27 @@ def sign(private_key_path, certificate_path, request_path):
 
 \begin_layout Plain Layout
 
+    if not get_extension(certificate_path, 'keyUsage') == 'Digital Signature':
+\end_layout
+
+\begin_layout Plain Layout
+
+        print('ERROR sign: key pair %s and %s could not be used for signing
+ file because policy' %
+\end_layout
+
+\begin_layout Plain Layout
+
+              (private_key_path, certificate_path))
+\end_layout
+
+\begin_layout Plain Layout
+
+        exit(1)
+\end_layout
+
+\begin_layout Plain Layout
+
     request = None
 \end_layout
 
@@ -16808,7 +17075,7 @@ def sign(private_key_path, certificate_path, request_path):
 
 \begin_layout Plain Layout
 
-    except X509.X509Error:
+    except (IOError, X509.X509Error):
 \end_layout
 
 \begin_layout Plain Layout
@@ -16858,32 +17125,6 @@ def sign(private_key_path, certificate_path, request_path):
 
 \begin_layout Plain Layout
 
-    certificate = X509.load_cert(certificate_path)
-\end_layout
-
-\begin_layout Plain Layout
-
-    key_usage_extension = certificate.get_ext('keyUsage')
-\end_layout
-
-\begin_layout Plain Layout
-
-    if not key_usage_extension.get_value() == 'Digital Signature':
-\end_layout
-
-\begin_layout Plain Layout
-
-        print('ERROR sign: Signature key %s does not have extension `Digital
- Signature`' % certificate_path)
-\end_layout
-
-\begin_layout Plain Layout
-
-        exit(1)
-\end_layout
-
-\begin_layout Plain Layout
-
     sign_request = smime.sign(text)
 \end_layout
 
@@ -16922,11 +17163,6 @@ def verify(certificate_path, ca_certificate_path, sign_request_path, output):
 
 \begin_layout Plain Layout
 
-    smime = SMIME.SMIME()
-\end_layout
-
-\begin_layout Plain Layout
-
     certificate = None
 \end_layout
 
@@ -16942,7 +17178,7 @@ def verify(certificate_path, ca_certificate_path, sign_request_path, output):
 
 \begin_layout Plain Layout
 
-    except (X509.X509Error, ValueError):
+    except (X509.X509Error, IOError):
 \end_layout
 
 \begin_layout Plain Layout
@@ -16957,23 +17193,7 @@ def verify(certificate_path, ca_certificate_path, sign_request_path, output):
 
 \begin_layout Plain Layout
 
-    key_usage_extension = certificate.get_ext('keyUsage')
-\end_layout
-
-\begin_layout Plain Layout
-
-    if not key_usage_extension.get_value() == 'Digital Signature':
-\end_layout
-
-\begin_layout Plain Layout
-
-        print('ERROR verify: Signature key %s does not have extension `Digital
- Signature`' % certificate_path)
-\end_layout
-
-\begin_layout Plain Layout
-
-        exit(1)
+    smime = SMIME.SMIME()
 \end_layout
 
 \begin_layout Plain Layout
@@ -17125,12 +17345,12 @@ def make_request(private_key_path, username, user_context, critical, output,
 
 \begin_layout Plain Layout
 
-        private_key = EVP.load_key(private_key_path, callback=password)
+        private_key = RSA.load_key(private_key_path, callback=password)
 \end_layout
 
 \begin_layout Plain Layout
 
-    except EVP.EVPError:
+    except (IOError, RSA.RSAError):
 \end_layout
 
 \begin_layout Plain Layout
@@ -17383,7 +17603,7 @@ def make_certificate(request_path, ca_private_key_file, ca_certificate_file,
 
 \begin_layout Plain Layout
 
-        ca_private_key = EVP.load_key(ca_private_key_file, callback=password)
+        ca_private_key = RSA.load_key(ca_private_key_file, callback=password)
 \end_layout
 
 \begin_layout Plain Layout
@@ -17703,8 +17923,8 @@ def get_subject(certificate_file_path):
 
 \begin_layout Plain Layout
 
-        print('ERROR print: Could not load certificate from %s' % certificate_fi
-le_path)
+        print('ERROR subject: Could not load certificate from %s' % certificate_
+file_path)
 \end_layout
 
 \begin_layout Plain Layout
@@ -17752,8 +17972,8 @@ def get_issuer(certificate_file_path):
 
 \begin_layout Plain Layout
 
-        print('ERROR print: Could not load certificate from %s' % certificate_fi
-le_path)
+        print('ERROR issuer: Could not load certificate from %s' % certificate_f
+ile_path)
 \end_layout
 
 \begin_layout Plain Layout
@@ -17796,13 +18016,13 @@ def get_extension(certificate_file_path, name):
 
 \begin_layout Plain Layout
 
-    except (X509.X509Error, ValueError):
+    except (X509.X509Error, IOError):
 \end_layout
 
 \begin_layout Plain Layout
 
-        print('ERROR print: Could not load certificate from %s' % certificate_fi
-le_path)
+        print('ERROR extension: Could not load certificate from %s' % certificat
+e_file_path)
 \end_layout
 
 \begin_layout Plain Layout
@@ -17928,8 +18148,8 @@ alse,
 
 \begin_layout Plain Layout
 
-    main_options.add_option('--verify', dest='verify', action='store_true',
- default=False,
+    main_options.add_option('--verify', dest='verify', default=False, action="sto
+re_true",
 \end_layout
 
 \begin_layout Plain Layout
@@ -18020,7 +18240,7 @@ alse,
 
 \begin_layout Plain Layout
 
-    certificate_group.add_option('--signature', dest='signature', action='store_t
+    certificate_group.add_option('--createdsa', dest='createdsa', action='store_t
 rue', default=False,
 \end_layout
 
@@ -18091,6 +18311,14 @@ rue', default=False,
 
                              help='set location of ca certificate, default:
  %default')
+\end_layout
+
+\begin_layout Plain Layout
+
+    input_options.add_option('--signature', dest='signature', help='set location
+ of signature file of user
+\backslash
+'s request')
 \end_layout
 
 \begin_layout Plain Layout
@@ -18217,7 +18445,7 @@ rue', default=False,
 
 \begin_layout Plain Layout
 
-                         options.output, options.signature, options.text)
+                         options.output, options.createdsa, options.text)
 \end_layout
 
 \begin_layout Plain Layout
@@ -18242,7 +18470,7 @@ rue', default=False,
 
 \begin_layout Plain Layout
 
-            options.certificate = DIGITAL_SIGNATURE_CERT
+            options.certificate = DIGITAL_SIGNATURE_CERT % ['CN']
 \end_layout
 
 \begin_layout Plain Layout
@@ -18262,7 +18490,7 @@ rue', default=False,
 
 \begin_layout Plain Layout
 
-            options.certificate = DIGITAL_SIGNATURE_CERT
+            options.certificate = DIGITAL_SIGNATURE_CERT % DEFAULT_FIELDS['CN']
 \end_layout
 
 \begin_layout Plain Layout
@@ -18344,7 +18572,7 @@ rue', default=False,
 
 \begin_layout Subsection*
 Приложение 5.
- Патч для модуля sslinfo
+ Скрипт инициализации namespace.init
 \end_layout
 
 \begin_layout Standard
@@ -18356,6 +18584,522 @@ status open
 
 \backslash
 addcontentsline{toc}{subsection}{Приложение 5.
+ Скрипт инициализации namespace.init}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Скрипт используется для инициализации многоэкземплярных папок пользователей,
+ а также при переходе на другой уровень безопасности с помощью команды 
+\family typewriter
+newrole
+\family default
+.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+\series bold
+namespace.init
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=bash,numbers=left,showstringspaces=false"
+inline false
+status collapsed
+
+\begin_layout Plain Layout
+
+#!/bin/sh -p
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+polydir_path="$1"
+\end_layout
+
+\begin_layout Plain Layout
+
+instance_path="$2"
+\end_layout
+
+\begin_layout Plain Layout
+
+need_to_create="$3"
+\end_layout
+
+\begin_layout Plain Layout
+
+user="$4"
+\end_layout
+
+\begin_layout Plain Layout
+
+secontext="$5"
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+log="certs.log"
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+certdir="$polydir_path/.postgresql"
+\end_layout
+
+\begin_layout Plain Layout
+
+signerdir="/etc/pki/keys"
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ca_ip="192.168.100.4"
+\end_layout
+
+\begin_layout Plain Layout
+
+ca_password="123456"
+\end_layout
+
+\begin_layout Plain Layout
+
+ca_certdir="/root/certs"
+\end_layout
+
+\begin_layout Plain Layout
+
+ca_signaturedir="/etc/pki/certs"
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+create_certificate() {
+\end_layout
+
+\begin_layout Plain Layout
+
+	private_key="private.key"
+\end_layout
+
+\begin_layout Plain Layout
+
+	request="$user.csr"
+\end_layout
+
+\begin_layout Plain Layout
+
+	certificate="$user.crt"
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	mkdir $certdir
+\end_layout
+
+\begin_layout Plain Layout
+
+	pgcert --genkey --output $certdir/$private_key >> $log
+\end_layout
+
+\begin_layout Plain Layout
+
+	chmod 0600 $certdir/$private_key
+\end_layout
+
+\begin_layout Plain Layout
+
+	pgcert --genreq --pkey $certdir/$private_key --user $user --secontext $secontex
+t --output $certdir/$request >> $log
+\end_layout
+
+\begin_layout Plain Layout
+
+	pgcert --sign --pkey $signerdir/private.key --certificate $signerdir/$user.crt
+ --request $certdir/$request >> $log
+\end_layout
+
+\begin_layout Plain Layout
+
+	sshpass -p $ca_password scp -o StrictHostKeyChecking=no $certdir/$request.sign
+ root@$ca_ip:$ca_certdir/$request.sign >> $log
+\end_layout
+
+\begin_layout Plain Layout
+
+	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
+ "pgcert --verify --certificate /etc/pki/certs/$user.crt --request $ca_certdir/$r
+equest.sign --output $ca_certdir/$request" >> $log
+\end_layout
+
+\begin_layout Plain Layout
+
+	if [ $? -eq 0 ]
+\end_layout
+
+\begin_layout Plain Layout
+
+	then
+\end_layout
+
+\begin_layout Plain Layout
+
+		sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
+ "pgcert --gencert --request $ca_certdir/$request --output $ca_certdir/$certific
+ate" >> $log
+\end_layout
+
+\begin_layout Plain Layout
+
+		if [ $? -eq 0 ]
+\end_layout
+
+\begin_layout Plain Layout
+
+		then
+\end_layout
+
+\begin_layout Plain Layout
+
+			sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:$ca_certd
+ir/$certificate $certdir/$certificate >> $log
+\end_layout
+
+\begin_layout Plain Layout
+
+		fi
+\end_layout
+
+\begin_layout Plain Layout
+
+		sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:/etc/pki/C
+A/cacert.pem $certdir/root.crt >> $log
+\end_layout
+
+\begin_layout Plain Layout
+
+	fi
+\end_layout
+
+\begin_layout Plain Layout
+
+	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
+ "rm -f $ca_certdir/*"
+\end_layout
+
+\begin_layout Plain Layout
+
+	rm -f $certdir/$request*
+\end_layout
+
+\begin_layout Plain Layout
+
+	chown -R $user.$user $certdir
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+create_signature() {
+\end_layout
+
+\begin_layout Plain Layout
+
+	private_key=$signerdir/private.key
+\end_layout
+
+\begin_layout Plain Layout
+
+	request=$signerdir/$user.csr
+\end_layout
+
+\begin_layout Plain Layout
+
+	certificate=$signerdir/$user.crt
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	pgcert --genkey --output $private_key >> $log
+\end_layout
+
+\begin_layout Plain Layout
+
+	pgcert --genreq --pkey $private_key --user $user --secontext $secontext
+ --output $request >> $log
+\end_layout
+
+\begin_layout Plain Layout
+
+	sshpass -p $ca_password ssh -T root@$ca_ip bash -s <<-EOF
+\end_layout
+
+\begin_layout Plain Layout
+
+	if ! [ -d $ca_signaturedir ]
+\end_layout
+
+\begin_layout Plain Layout
+
+	then
+\end_layout
+
+\begin_layout Plain Layout
+
+		mkdir -p $ca_signaturedir
+\end_layout
+
+\begin_layout Plain Layout
+
+	fi
+\end_layout
+
+\begin_layout Plain Layout
+
+	EOF
+\end_layout
+
+\begin_layout Plain Layout
+
+	sshpass -p $ca_password scp -o StrictHostKeyChecking=no $request root@$ca_ip:$c
+a_signaturedir/$user.csr
+\end_layout
+
+\begin_layout Plain Layout
+
+	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
+ "pgcert --gencert --request $ca_signaturedir/$user.csr --signature --output
+ $ca_signaturedir/$user.crt" >> $log
+\end_layout
+
+\begin_layout Plain Layout
+
+	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
+ "rm -f ca_signaturedir/$user.csr"
+\end_layout
+
+\begin_layout Plain Layout
+
+	sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:$ca_signatu
+redir/$user.crt $certificate
+\end_layout
+
+\begin_layout Plain Layout
+
+rm -f $request
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+if [ "$need_to_create" = 1 ]; then
+\end_layout
+
+\begin_layout Plain Layout
+
+    # This line will fix the labeling on all newly created directories
+\end_layout
+
+\begin_layout Plain Layout
+
+    [ -x /sbin/restorecon ] && /sbin/restorecon "$polydir_path"
+\end_layout
+
+\begin_layout Plain Layout
+
+    user="$4"
+\end_layout
+
+\begin_layout Plain Layout
+
+    passwd=$(getent passwd "$user")
+\end_layout
+
+\begin_layout Plain Layout
+
+    homedir=$(echo "$passwd" | cut -f6 -d":")
+\end_layout
+
+\begin_layout Plain Layout
+
+    if [ "$polydir_path" = "$homedir" ]; then
+\end_layout
+
+\begin_layout Plain Layout
+
+	gid=$(echo "$passwd" | cut -f4 -d":")
+\end_layout
+
+\begin_layout Plain Layout
+
+        cp -rT /etc/skel "$homedir"
+\end_layout
+
+\begin_layout Plain Layout
+
+        chown -R "$user":"$gid" "$homedir"
+\end_layout
+
+\begin_layout Plain Layout
+
+        mask=$(awk '/^UMASK/{gsub("#.*$", "", $2); print $2; exit}' /etc/login.def
+s)
+\end_layout
+
+\begin_layout Plain Layout
+
+        mode=$(printf "%o" $((0777 & ~$mask)))
+\end_layout
+
+\begin_layout Plain Layout
+
+        chmod ${mode:-700} "$homedir"
+\end_layout
+
+\begin_layout Plain Layout
+
+        [ -x /sbin/restorecon ] && /sbin/restorecon -R "$homedir"
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		if ! [ -f "$signerdir/private.key" ]
+\end_layout
+
+\begin_layout Plain Layout
+
+		then
+\end_layout
+
+\begin_layout Plain Layout
+
+			create_signature
+\end_layout
+
+\begin_layout Plain Layout
+
+		fi
+\end_layout
+
+\begin_layout Plain Layout
+
+		create_certificate
+\end_layout
+
+\begin_layout Plain Layout
+
+	fi
+\end_layout
+
+\begin_layout Plain Layout
+
+fi
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+exit 0
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Приложение 6.
+ Патч для модуля sslinfo
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+addcontentsline{toc}{subsection}{Приложение 6.
  Патч для модуля sslinfo}
 \end_layout
 
@@ -19016,7 +19760,7 @@ status collapsed
 \end_layout
 
 \begin_layout Subsection*
-Приложение 6.
+Приложение 7.
  Патч для модуля sepgsql
 \end_layout
 
@@ -19028,7 +19772,7 @@ status open
 
 
 \backslash
-addcontentsline{toc}{subsection}{Приложение 6.
+addcontentsline{toc}{subsection}{Приложение 7.
  Патч для модуля sepgsql}
 \end_layout
 
@@ -19496,485 +20240,6 @@ status collapsed
 
 \begin_layout Standard
 \begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection*
-Приложение 7.
- Скрипт инициализации namespace.init
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-addcontentsline{toc}{subsection}{Приложение 7.
- Скрипт инициализации namespace.init}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Скрипт используется для инициализации многоэкземплярных папок пользователей,
- а также при переходе на другой уровень безопасности с помощью команды 
-\family typewriter
-newrole
-\family default
-.
-\begin_inset Newline newline
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-
-\family typewriter
-\series bold
-namespace.init
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=bash,numbers=left,showstringspaces=false"
-inline false
-status collapsed
-
-\begin_layout Plain Layout
-
-#!/bin/sh -p
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-polydir_path="$1"
-\end_layout
-
-\begin_layout Plain Layout
-
-instance_path="$2"
-\end_layout
-
-\begin_layout Plain Layout
-
-need_to_create="$3"
-\end_layout
-
-\begin_layout Plain Layout
-
-user="$4"
-\end_layout
-
-\begin_layout Plain Layout
-
-secontext="$5"
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-log="$polydir_path/cert.log"            #лог-файл, в который выводится вывод
- утилиты pgcert
-\end_layout
-
-\begin_layout Plain Layout
-
-pgcertdir="$polydir_path/.postgresql"   #каталог, в котором хранится закрытый
- ключ и сертификат клиента
-\end_layout
-
-\begin_layout Plain Layout
-
-signerdir="/etc/pki/keys"               #каталог, в котором хранится электронно-
-цифровая подпись клиента
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-ca_ip="192.168.100.4"                   #IP-адрес удостоверяющего центра
-\end_layout
-
-\begin_layout Plain Layout
-
-ca_password="123456"                    #пароль пользователя root удостоверяющег
-о центра 
-\end_layout
-
-\begin_layout Plain Layout
-
-ca_certdir="/root/certs"                #директория, в которую будут копироватьс
-я запросы на подпись сертификата и в которой будут создаваться
-\end_layout
-
-\begin_layout Plain Layout
-
-ca_signaturedir="/etc/pki/certs"        #директория, в которой хранятся
- открытые ключи электронно-цифровой подписи клиентов
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-create_certificate() {
-\end_layout
-
-\begin_layout Plain Layout
-
-	mkdir $pgcertdir
-\end_layout
-
-\begin_layout Plain Layout
-
-	pgcert --genkey  --output $pgcertdir/postgresql.key >> $log
-\end_layout
-
-\begin_layout Plain Layout
-
-	chmod 0600 $pgcertdir/postgresql.key
-\end_layout
-
-\begin_layout Plain Layout
-
-	pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --secontext
- $secontext --output $pgcertdir/postgresql.csr >> $log
-\end_layout
-
-\begin_layout Plain Layout
-
-	pgcert --sign --pkey $signerdir/private.key --certificate $signerdir/$user.crt
- --request $pgcertdir/postgresql.csr >> $log
-\end_layout
-
-\begin_layout Plain Layout
-
-	sshpass -p $ca_password scp -o StrictHostKeyChecking=no $pgcertdir/postgresql.cs
-r.sign root@$ca_ip:$ca_certdir/postgresql.csr.sign >> $log
-\end_layout
-
-\begin_layout Plain Layout
-
-	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
- "pgcert --verify --certificate /etc/pki/certs/$user.crt --request $ca_certdir/po
-stgresql.csr.sign --output $ca_certdir/postgresql.csr" >> $log
-\end_layout
-
-\begin_layout Plain Layout
-
-	if [ $? -eq 0 ]
-\end_layout
-
-\begin_layout Plain Layout
-
-	then
-\end_layout
-
-\begin_layout Plain Layout
-
-		sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
- "pgcert --gencert --request $ca_certdir/postgresql.csr --output $ca_certdir/post
-gresql.crt" >> $log
-\end_layout
-
-\begin_layout Plain Layout
-
-		sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:$ca_certdi
-r/postgresql.crt $pgcertdir/postgresql.crt >> $log
-\end_layout
-
-\begin_layout Plain Layout
-
-		sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:/etc/pki/C
-A/cacert.pem $pgcertdir/root.crt >> $log
-\end_layout
-
-\begin_layout Plain Layout
-
-	fi
-\end_layout
-
-\begin_layout Plain Layout
-
-	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
- "rm -f $ca_certdir/*"
-\end_layout
-
-\begin_layout Plain Layout
-
-	rm -f $pgcertdir/postgresql.csr*
-\end_layout
-
-\begin_layout Plain Layout
-
-	chown -R $user.$user $pgcertdir
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-create_signature() {
-\end_layout
-
-\begin_layout Plain Layout
-
-	private_key=$signerdir/private.key
-\end_layout
-
-\begin_layout Plain Layout
-
-	request=$signerdir/$user.csr
-\end_layout
-
-\begin_layout Plain Layout
-
-	certificate=$signerdir/$user.crt
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-	pgcert --genkey --output $private_key >> $log
-\end_layout
-
-\begin_layout Plain Layout
-
-	pgcert --genreq --pkey $private_key --user $user --secontext $secontext
- --output $request >> $log
-\end_layout
-
-\begin_layout Plain Layout
-
-	sshpass -p $ca_password ssh -T root@$ca_ip bash -s <<-EOF
-\end_layout
-
-\begin_layout Plain Layout
-
-	if ! [ -d $ca_signaturedir ]
-\end_layout
-
-\begin_layout Plain Layout
-
-	then
-\end_layout
-
-\begin_layout Plain Layout
-
-		mkdir -p $ca_signaturedir
-\end_layout
-
-\begin_layout Plain Layout
-
-	fi 
-\end_layout
-
-\begin_layout Plain Layout
-
-	EOF
-\end_layout
-
-\begin_layout Plain Layout
-
-	sshpass -p $ca_password scp -o StrictHostKeyChecking=no $request root@$ca_ip:$c
-a_signaturedir/$user.csr
-\end_layout
-
-\begin_layout Plain Layout
-
-	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
- "pgcert --gencert --request $ca_signaturedir/$user.csr --signature --output
- $ca_signaturedir/$user.crt" >> $log
-\end_layout
-
-\begin_layout Plain Layout
-
-	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip
- "rm -f ca_signaturedir/$user.csr" 
-\end_layout
-
-\begin_layout Plain Layout
-
-	sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:$ca_signatu
-redir/$user.crt $certificate
-\end_layout
-
-\begin_layout Plain Layout
-
-	rm -f $request
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-if [ "$need_to_create" = 1 ]; then
-\end_layout
-
-\begin_layout Plain Layout
-
-    # This line will fix the labeling on all newly created directories
-\end_layout
-
-\begin_layout Plain Layout
-
-    [ -x /sbin/restorecon ] && /sbin/restorecon "$polydir_path"
-\end_layout
-
-\begin_layout Plain Layout
-
-    passwd=$(getent passwd "$user")
-\end_layout
-
-\begin_layout Plain Layout
-
-    homedir=$(echo "$passwd" | cut -f6 -d":")
-\end_layout
-
-\begin_layout Plain Layout
-
-    if [ "$polydir_path" = "$homedir" ]; then
-\end_layout
-
-\begin_layout Plain Layout
-
-		gid=$(echo "$passwd" | cut -f4 -d":")
-\end_layout
-
-\begin_layout Plain Layout
-
-        cp -rT /etc/skel "$homedir"
-\end_layout
-
-\begin_layout Plain Layout
-
-        chown -R "$user":"$gid" "$homedir"
-\end_layout
-
-\begin_layout Plain Layout
-
-        mask=$(awk '/^UMASK/{gsub("#.*$", "", $2); print $2; exit}' /etc/login.def
-s)
-\end_layout
-
-\begin_layout Plain Layout
-
-        mode=$(printf "%o" $((0777 & ~$mask)))
-\end_layout
-
-\begin_layout Plain Layout
-
-        chmod ${mode:-700} "$homedir"
-\end_layout
-
-\begin_layout Plain Layout
-
-        [ -x /sbin/restorecon ] && /sbin/restorecon -R "$homedir"
-\end_layout
-
-\begin_layout Plain Layout
-
-		
-\end_layout
-
-\begin_layout Plain Layout
-
-		if ! [ -f "$signerdir/private.key" ]
-\end_layout
-
-\begin_layout Plain Layout
-
-		then
-\end_layout
-
-\begin_layout Plain Layout
-
-			create_signature
-\end_layout
-
-\begin_layout Plain Layout
-
-		fi
-\end_layout
-
-\begin_layout Plain Layout
-
-		create_certificate
-\end_layout
-
-\begin_layout Plain Layout
-
-	fi
-\end_layout
-
-\begin_layout Plain Layout
-
-fi
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-exit 0
-\end_layout
-
 \end_inset
 
 
