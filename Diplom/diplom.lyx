@@ -471,7 +471,7 @@ height "1pt"
 
 \size large
 \begin_inset Tabular
-<lyxtabular version="3" rows="8" columns="5">
+<lyxtabular version="3" rows="10" columns="5">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="5.8cm">
 <column alignment="center" valignment="top" width="4cm">
@@ -583,7 +583,7 @@ height "1pt"
 \begin_layout Plain Layout
 
 \size large
-Выполнил
+Студент-дипломник
 \end_layout
 
 \end_inset
@@ -601,6 +601,8 @@ height "1pt"
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size large
 (
 \end_layout
 
@@ -610,6 +612,8 @@ height "1pt"
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size large
 Воронин Д.Л.
 \end_layout
 
@@ -619,6 +623,8 @@ height "1pt"
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size large
 )
 \end_layout
 
@@ -748,6 +754,8 @@ height "1pt"
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size large
 (
 \end_layout
 
@@ -757,6 +765,8 @@ height "1pt"
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size large
 Муравьёв С.К.
 \end_layout
 
@@ -766,6 +776,8 @@ height "1pt"
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size large
 )
 \end_layout
 
@@ -856,6 +868,112 @@ height "1pt"
 
 \begin_layout Plain Layout
 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+Заведующий кафедрой
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+(
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+Шумилов Ю.Ю.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size large
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+(подпись)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+(ФИО)
 \end_layout
 
 \end_inset
@@ -9716,12 +9834,7 @@ Organizational Unit Name (eg, section) []:kaf36
 
 \begin_layout Plain Layout
 
-Common Name (eg, your name or your server's hostname) []:root
-\end_layout
-
-\begin_layout Plain Layout
-
-Email Address []:root@kaf36
+Common Name (eg, your name or your server's hostname) []:CA
 \end_layout
 
 \end_inset
@@ -10187,14 +10300,13 @@ create_certificate()
 \begin_layout Standard
 В этой функции объявлены локальные переменные 
 \family typewriter
-$request
+$private_key, $request
 \family default
 , 
 \family typewriter
 $certificate
 \family default
-, в которых определяется имя запроса на подпись сертификата и имя сертификата
- соответственно:
+:
 \end_layout
 
 \begin_layout Standard
@@ -10204,12 +10316,18 @@ status open
 
 \begin_layout Plain Layout
 
-request=$user.csr 	
+private_key="private.key" # файл, в который будет храниться закрытый ключ
 \end_layout
 
 \begin_layout Plain Layout
 
-certificate=$user.crt
+request="$user.csr" 	  # файл, в котором будет храниться запрос на подпись
+ сертификата
+\end_layout
+
+\begin_layout Plain Layout
+
+certificate="$user.crt"   # файл, в котором будет храниться сертификат
 \end_layout
 
 \end_inset
@@ -10263,12 +10381,12 @@ status open
 
 \begin_layout Plain Layout
 
-pgcert --genkey --bits 2048 --output $certdir/private.key >> $log
+pgcert --genkey --bits 2048 --output $certdir/$private_key >> $log
 \end_layout
 
 \begin_layout Plain Layout
 
-chmod 0600 $certdir/private.key
+chmod 0600 $certdir/$private_key
 \end_layout
 
 \end_inset
@@ -10285,7 +10403,7 @@ status open
 
 \begin_layout Plain Layout
 
-pgcert --genreq --pkey $certdir/private.key --user $user --secontext $secontext
+pgcert --genreq --pkey $certdir/$private_key --user $user --secontext $secontext
  --output $certdir/$request >> $log
 \end_layout
 
@@ -10886,6 +11004,12 @@ user3
 \end_layout
 
 \begin_layout Subsubsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Certs-test"
+
+\end_inset
+
 Алгоритм тестирования механизма 
 \end_layout
 
@@ -11105,6 +11229,12 @@ $ cd user/
 \end_layout
 
 \begin_layout Subsubsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Certs-test-user2"
+
+\end_inset
+
 Пример проверки работы механизма для пользователя user2
 \end_layout
 
@@ -12364,7 +12494,7 @@ METHOD
 \end_layout
 
 \begin_layout Standard
-Для установки метода аутентификации 
+Например, для установки метода аутентификации 
 \family typewriter
 cert 
 \family default
@@ -12429,8 +12559,8 @@ $ cd /var/lib/pgsql/9.3/data
 
 \begin_layout Plain Layout
 
-$ openssl req -new -nodes -subj '/CN=postgres/O=mephi/C=ru/ST=msk/L=msk'
- -keyout server.key -out server.csr
+$ openssl req -new -newkey rsa:2048 -nodes -keyout mykey.pem -out myreq.pem
+ 
 \end_layout
 
 \begin_layout Plain Layout
@@ -12465,7 +12595,7 @@ status open
 
 \begin_layout Plain Layout
 
-$ ssh server.csr root@192.168.100.2:/root/certs/
+$ scp server.csr root@192.168.100.2:/root/certs/
 \end_layout
 
 \end_inset
@@ -12706,14 +12836,19 @@ certdir="$polydir_path/.postgresql"
 \family typewriter
 create_certificate()
 \family default
- изменяются значения имени файла запроса на подпись сертификата и имени
- файла сертификата:
+ изменяются значения пути к закрытому ключу, запросу на подпись сертфиката
+ и сертификату:
 \end_layout
 
 \begin_layout Standard
 \begin_inset listings
 inline false
 status open
+
+\begin_layout Plain Layout
+
+private_key="postgresql.key"
+\end_layout
 
 \begin_layout Plain Layout
 
@@ -12731,7 +12866,8 @@ certificate="postgresql.crt"
 \end_layout
 
 \begin_layout Standard
-После изменения значений переменных сертификаты будут хранится в папке 
+После изменения значений переменных закрытый ключ пользователя, его сертификат
+ и сертификат удостоверяющего центра будут хранится в папке 
 \family typewriter
 ~/.postgresql
 \family default
@@ -12739,6 +12875,12 @@ certificate="postgresql.crt"
 \end_layout
 
 \begin_layout Subsubsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:sslinfo"
+
+\end_inset
+
 Доработка модуля sslinfo
 \end_layout
 
@@ -13440,7 +13582,7 @@ status open
 
 \begin_layout Plain Layout
 
-CREATE OR REPLACE EXTENSION sslinfo;
+CREATE EXTENSION sslinfo;
 \end_layout
 
 \end_inset
@@ -13781,7 +13923,11 @@ sepgsql
 \end_layout
 
 \begin_layout Subsection
-Тестирование
+Тестирование возможности применения разработанного механизма для СУБД PostgreSQL
+\end_layout
+
+\begin_layout Subsubsection
+Подготовка к тестированию
 \end_layout
 
 \begin_layout Standard
@@ -13851,6 +13997,63 @@ $ psql -c "CREATE USER user1 login;"
 \end_layout
 
 \begin_layout Enumerate
+Модифицированные библиотеки 
+\family typewriter
+sepgsql.so
+\family default
+ и 
+\family typewriter
+sslinfo.so
+\family default
+ копируются в каталог 
+\family typewriter
+/usr/pgsql-9.3/lib
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# cp sepgsql.so /usr/pgsql-9.3/lib/
+\end_layout
+
+\begin_layout Plain Layout
+
+# cp sslinfo.so /usr/pgsql-9.3/lib/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Модифицированный файл загрузки расширения 
+\family typewriter
+sslinfo
+\family default
+ копируется в каталог 
+\family typewriter
+/usr/pgsql-9.3/share/extension
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# cp sslinfo-1.0.sql /usr/pgsql-9.3/share/extension/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
 Загружается созданный модифицированный модуль 
 \family typewriter
 sslinfo
@@ -13866,7 +14069,7 @@ status open
 
 \begin_layout Plain Layout
 
-$ psql testdb -c "CREATE EXTENSION sslextensions;"
+$ psql testdb -c "CREATE EXTENSION sslinfo;"
 \end_layout
 
 \end_inset
@@ -13898,8 +14101,228 @@ $ psql testdb -f /usr/pgsql-9.3/share/contrib/sepgsql.sql
 
 \end_layout
 
+\begin_layout Enumerate
+Выполняется перезапуск сервера СУБД:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# service postgresql-9.3 restart
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout --Separator--
 
+\end_layout
+
+\begin_layout Subsubsection
+Алгоритм тестирования 
+\end_layout
+
+\begin_layout Standard
+Тестирование применения механизма автоматического выбора сертификата для
+ СУБД PostgreSQL проводилось при настроенном методе аутентификации 
+\family typewriter
+cert
+\family default
+, хотя может быть проведено для других методов аутентификации с активным
+ SSL-шифрованием.
+\end_layout
+
+\begin_layout Enumerate
+Зайти в систему на клиентской машине за пользователя 
+\family typewriter
+user
+\family default
+.
+\end_layout
+
+\begin_layout Enumerate
+Удостовериться, что пользователю был создан сертификат с текущим уровнем
+ безопасности (
+\emph on
+см.
+ п.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Certs-test"
+
+\end_inset
+
+
+\emph default
+).
+\end_layout
+
+\begin_layout Enumerate
+Подключиться удалённо к базе данных 
+\family typewriter
+testdb
+\family default
+ с помощью клиента 
+\family typewriter
+psql:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ psql -h 192.168.100.4 testdb
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Убедиться в том, что в базе данных 
+\family typewriter
+testdb
+\family default
+ содержатся дополнительные функции модуля 
+\family typewriter
+sslinfo
+\family default
+, разработка которых велась в 
+\emph on
+п.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:sslinfo"
+
+\end_inset
+
+
+\emph default
+.
+ Для этого необходимо выполнить команду 
+\family typewriter
+
+\backslash
+df
+\family default
+ и убедиться в наличии данных функций.
+\end_layout
+
+\begin_layout Enumerate
+Получить значение дополнения 
+\family typewriter
+selinuxContext
+\family default
+ клиентского сертификата с помощью функции 
+\family typewriter
+ssl_get_extension_by_name()
+\family default
+ модуля 
+\family typewriter
+sslinfo
+\family default
+:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+SELECT ssl_get_extension_by_name('selinuxContext');
+\end_layout
+
+\end_inset
+
+и сравнить вывод этой функции с значением контекста безопасности, полученного
+ в п.
+ 2 данного алгоритма.
+\end_layout
+
+\begin_layout Enumerate
+Убедиться в том, что клиенту установлен контекст безопасности модулем 
+\family typewriter
+sepgsql
+\family default
+ и он соответствует контексту безопасности контексту безопасности клиента,
+ полученного в п.
+ 2 данного алгоритма: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+SELECT sepgsql_getcon();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Выйти из клиента 
+\family typewriter
+psql
+\family default
+ с помощью команды 
+\family typewriter
+
+\backslash
+q
+\family default
+, сменить контекст безопасности с помощью команды 
+\family typewriter
+newrole
+\family default
+ и повторить п.
+ 2-7.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Subsubsection
+Пример проверки для пользователя user2
+\end_layout
+
+\begin_layout Standard
+Шаг 2 настоящего алгоритма был проверен 
+\emph on
+в п.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Certs-test-user2"
+
+\end_inset
+
+
+\emph default
+.
+ Пользователю 
+\family typewriter
+user2
+\family default
+ были созданы закрытый ключ и его сертификат в каталоге 
+\family typewriter
+~/.postgresql
+\family default
+.
+ В этом каталоге также содержится сертификат удостоверяющего центра, который
+ подписал сертфиикат пользователя 
+\family typewriter
+user2
+\family default
+.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -14113,7 +14536,7 @@ status open
 
 
 \backslash
-addcontentsline{toc}{section}{Список литературы}
+addcontentsline{toc}{section}{Список использованных источников}
 \end_layout
 
 \end_inset
