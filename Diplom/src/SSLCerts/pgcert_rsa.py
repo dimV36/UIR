@@ -1,6 +1,6 @@
 #!/usr/bin/python
 __author__ = 'dimv36'
-from M2Crypto import RSA, X509, EVP, ASN1, BIO, SMIME
+from M2Crypto import RSA, X509, EVP, ASN1, BIO
 from selinux import security_check_context_raw, getcon_raw
 from optparse import OptionParser, OptionGroup
 from os import path, getlogin
@@ -69,51 +69,61 @@ def verify_user_context(user, current_context):
 
 
 def sign(private_key_path, certificate_path, request_path):
+    if not get_extension(certificate_path, 'keyUsage') == 'Digital Signature':
+        print('ERROR sign: key pair %s and %s could not be used for signing file because policy' %
+              (private_key_path, certificate_path))
+        exit(1)
     request = None
     try:
         request = X509.load_request(request_path)
     except (IOError, X509.X509Error):
         print('ERROR sign: Could not load request from %s' % request_path)
         exit(1)
-    text = BIO.MemoryBuffer(request.as_pem())
-    smime = SMIME.SMIME()
+    private_key = None
     try:
-        smime.load_key(private_key_path, certificate_path)
-    except (ValueError, IOError, X509.X509Error):
-        print('ERROR sign: Could not load digital signature')
+        private_key = RSA.load_key(private_key_path, password)
+    except (IOError, EVP.EVPError):
+        print('ERROR sign: Could not load private key')
         exit(1)
-    sign_request = smime.sign(text)
-    sign_request_file = BIO.openfile(request_path + '.sign', 'w')
-    smime.write(sign_request_file, sign_request)
-    sign_request_file.close()
-    print('Signing request was saved to %s' % request_path + '.sign')
+    digest = EVP.MessageDigest('sha1')
+    digest.update(request.as_text())
+    signature = private_key.sign_rsassa_pss(digest.digest())
+#    signature = private_key.sign(sha1(request.as_text()).digest(), 'sha1')
+    # private_key.sign_init()
+    # private_key.sign_update(request.as_text())
+    # signature = private_key.sign_final()
+    open('%s.signature' % request_path, 'w').write(signature)
+    print('Signature was saved to %s.signature' % request_path)
 
 
-def verify(certificate_path, ca_certificate_path, sign_request_path, output):
-    smime = SMIME.SMIME()
+def verify(certificate_path, signature_path, request_path):
     certificate = None
     try:
         certificate = X509.load_cert(certificate_path)
     except (X509.X509Error, IOError):
-        print('ERROR verify: Could not load certificate for verifying')
+        print('ERROR verify: Could not load certificate for verification')
         exit(1)
-    stack = X509.X509_Stack()
-    stack.push(certificate)
-    smime.set_x509_stack(stack)
-    store = X509.X509_Store()
-    store.load_info(ca_certificate_path)
-    smime.set_x509_store(store)
-    pks7, data = SMIME.smime_load_pkcs7(sign_request_path)
-    clear_text = smime.verify(pks7, data)
-    if not output:
-        output = path.abspath(path.curdir) + '/%s.csr' % DEFAULT_FIELDS['CN']
-    if clear_text:
-        request = X509.load_request_string(clear_text)
-        request.save(output)
+    signature = None
+    try:
+        signature = open(signature_path, 'r').read()
+    except IOError:
+        print('ERROR verify: Could not load signature for verification')
+        exit(1)
+    request = None
+    try:
+        request = X509.load_request(request_path)
+    except (X509.X509Error, IOError):
+        print('ERROR verify: Could not load request for verification')
+        exit(1)
+    digest = EVP.MessageDigest('sha1')
+    digest.update(request.as_text())
+    public_key = certificate.get_pubkey().get_rsa()
+    status = public_key.verify_rsassa_pss(digest.digest(), signature)
+    if status:
         print('Verification OK')
-        print('Request file was saved to %s' % output)
     else:
         print('Verification failed')
+        exit(1)
 
 
 def make_private_key(bits, output):
@@ -128,7 +138,7 @@ def make_request(private_key_path, username, user_context, critical, output, is_
     private_key = None
     try:
         private_key = EVP.load_key(private_key_path, callback=password)
-    except (IOError, EVP.EVPError):
+    except EVP.EVPError:
         print('ERROR request: Could not load key pair from %s' % private_key_path)
         exit(1)
     request = X509.Request()
@@ -242,7 +252,7 @@ def get_subject(certificate_file_path):
     try:
         certificate = X509.load_cert(certificate_file_path)
     except (X509.X509Error, ValueError):
-        print('ERROR subject: Could not load certificate from %s' % certificate_file_path)
+        print('ERROR print: Could not load certificate from %s' % certificate_file_path)
         exit(1)
     print(certificate.get_subject().as_text())
 
@@ -252,7 +262,7 @@ def get_issuer(certificate_file_path):
     try:
         certificate = X509.load_cert(certificate_file_path)
     except (X509.X509Error, ValueError):
-        print('ERROR issuer: Could not load certificate from %s' % certificate_file_path)
+        print('ERROR print: Could not load certificate from %s' % certificate_file_path)
         exit(1)
     print(certificate.get_issuer().as_text())
 
@@ -262,7 +272,7 @@ def get_extension(certificate_file_path, name):
     try:
         certificate = X509.load_cert(certificate_file_path)
     except (X509.X509Error, IOError):
-        print('ERROR extension: Could not load certificate from %s' % certificate_file_path)
+        print('ERROR print: Could not load certificate from %s' % certificate_file_path)
         exit(1)
     try:
         extension = certificate.get_ext(name)
@@ -286,7 +296,7 @@ if __name__ == '__main__':
                             help='generate certificate for user')
     main_options.add_option('--sign', dest='sign', action='store_true', default=False,
                             help='sign request by user\'s digital signature')
-    main_options.add_option('--verify', dest='verify', default=False, action="store_true",
+    main_options.add_option('--verify', dest='signature', default=False,
                             help='verify signature of request by user digital signature')
     parser.add_option_group(main_options)
 
@@ -347,12 +357,12 @@ if __name__ == '__main__':
         if not options.pkey:
             options.pkey = DIGITAL_SIGNATURE_KEY
         if not options.certificate:
-            options.certificate = DIGITAL_SIGNATURE_CERT % ['CN']
+            options.certificate = DIGITAL_SIGNATURE_CERT % DEFAULT_FIELDS['CN']
         sign(options.pkey, options.certificate, options.request)
-    elif options.verify and options.request:
+    elif options.signature and options.request:
         if not options.certificate:
             options.certificate = DIGITAL_SIGNATURE_CERT % DEFAULT_FIELDS['CN']
-        verify(options.certificate, options.cacert, options.request, options.output)
+        verify(options.certificate, options.signature, options.request)
     elif options.issuer and options.certificate:
         get_issuer(options.certificate)
     elif options.subject and options.certificate:

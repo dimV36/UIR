@@ -22,13 +22,14 @@ ca_certdir="/root/certs"                # директория, в котору�
 ca_signaturedir="/etc/pki/certs"        # директория, в которой хранятся открытые ключи электронно-цифровой подписи клиентов
 
 create_certificate() {
+	private_key="postgresql.key"
 	request="postgresql.csr"
 	certificate="postgresql.crt"
 	
 	mkdir $certdir
-	pgcert --genkey  --output $certdir/private.key >> $log
-	chmod 0600 $certdir/private.key
-	pgcert --genreq --pkey $certdir/private.key --user $user --secontext $secontext --output $certdir/$request >> $log
+	pgcert --genkey  --output $certdir/$private_key >> $log
+	chmod 0600 $certdir/$private_key
+	pgcert --genreq --pkey $certdir/$private_key --user $user --secontext $secontext --output $certdir/$request >> $log
 	pgcert --sign --pkey $signerdir/private.key --certificate $signerdir/$user.crt --request $certdir/$request >> $log
 	sshpass -p $ca_password scp -o StrictHostKeyChecking=no $certdir/$request* root@$ca_ip:$ca_certdir/ >> $log
 	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert --verify $ca_certdir/$request.signature --certificate /etc/pki/certs/$user.crt --request $ca_certdir/$request" >> $log
@@ -42,7 +43,7 @@ create_certificate() {
 		sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:/etc/pki/CA/cacert.pem $certdir/root.crt >> $log
 	fi
 	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "rm -f $ca_certdir/*" 
-	rm -f $certdir/$user.csr*
+	rm -f $certdir/$request*
 	chown -R $user.$user $certdir
 }
 
