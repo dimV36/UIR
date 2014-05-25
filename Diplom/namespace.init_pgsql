@@ -1,5 +1,5 @@
 #!/bin/sh -p
-# It receives polydir path as $1, the instance path as $2, 
+# It receives polydir path as $1, the instance path as $2,
 # a flag whether the instance dir was newly created (0 - no, 1 - yes) in $3,
 # and user name in $4 and his context in $5.
 #
@@ -12,39 +12,34 @@ need_to_create="$3"
 user="$4"
 secontext="$5"
 
-log="$polydir_path/init.log"            # лог-файл, в который выводится вывод утилиты pgcert
-certdir="$polydir_path/.postgresql"     # каталог, в котором хранится закрытый ключ и сертификат клиента
-signerdir="/etc/pki/keys"               # каталог, в котором хранится электронно-цифровая подпись клиента
+devnull="/dev/null"
 
-ca_ip="192.168.100.2"                   # IP-адрес удостоверяющего центра
-ca_password="123456"                    # пароль пользователя root удостоверяющего центра 
-ca_certdir="/root/certs"                # директория, в которую будут копироваться запросы на подпись сертификата и в которой будут создаваться
-ca_signaturedir="/etc/pki/certs"        # директория, в которой хранятся открытые ключи электронно-цифровой подписи клиентов
+pgcertdir="$polydir_path/.postgresql"
+signerdir="/etc/pki/keys"
+
+ca_ip="192.168.100.4"
+ca_password="123456"
+ca_certdir="/root/certs"
+ca_signaturedir="/etc/pki/certs"
+
 
 create_certificate() {
-	private_key="postgresql.key"
-	request="postgresql.csr"
-	certificate="postgresql.crt"
-	
-	mkdir $certdir
-	pgcert --genkey  --output $certdir/$private_key >> $log
-	chmod 0600 $certdir/$private_key
-	pgcert --genreq --pkey $certdir/$private_key --user $user --secontext $secontext --output $certdir/$request >> $log
-	pgcert --sign --pkey $signerdir/private.key --certificate $signerdir/$user.crt --request $certdir/$request >> $log
-	sshpass -p $ca_password scp -o StrictHostKeyChecking=no $certdir/$request* root@$ca_ip:$ca_certdir/ >> $log
-	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert --verify $ca_certdir/$request.signature --certificate /etc/pki/certs/$user.crt --request $ca_certdir/$request" >> $log
+	mkdir $pgcertdir
+	pgcert --genkey --output $pgcertdir/postgresql.key >> $devnull
+	chmod 0600 $pgcertdir/postgresql.key
+	pgcert --genreq --pkey $pgcertdir/postgresql.key --user $user --secontext $secontext --output $pgcertdir/postgresql.csr >> $devnull
+	pgcert --sign --pkey $signerdir/private.key --certificate $signerdir/$user.crt --request $pgcertdir/postgresql.csr >> $devnull
+	sshpass -p $ca_password scp -o StrictHostKeyChecking=no $pgcertdir/postgresql.csr.sign root@$ca_ip:$ca_certdir/postgresql.csr.sign >> $devnull
+	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert --verify --certificate /etc/pki/certs/$user.crt --request $ca_certdir/postgresql.csr.sign --output $ca_certdir/postgresql.csr" >> $devnull
 	if [ $? -eq 0 ]
 	then
-		sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert --gencert --request $ca_certdir/$request --output $ca_certdir/$certificate" >> $log
-		if [ $? -eq 0 ]
-		then
-			sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:$ca_certdir/$certificate $certdir/$certificate >> $log
-		fi
-		sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:/etc/pki/CA/cacert.pem $certdir/root.crt >> $log
+		sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert --gencert --request $ca_certdir/postgresql.csr --output $ca_certdir/postgresql.crt" >> $devnull
+		sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:$ca_certdir/postgresql.crt $pgcertdir/postgresql.crt >> $devnull
+	sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:/etc/pki/CA/cacert.pem $pgcertdir/root.crt >> $devnull
 	fi
-	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "rm -f $ca_certdir/*" 
-	rm -f $certdir/$request*
-	chown -R $user.$user $certdir
+	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "rm -f $ca_certdir/*"
+	rm -f $pgcertdir/postgresql.csr*
+	chown -R $user.$user $pgcertdir
 }
 
 
@@ -53,36 +48,37 @@ create_signature() {
 	request=$signerdir/$user.csr
 	certificate=$signerdir/$user.crt
 
-	pgcert --genkey --output $private_key >> $log
-	pgcert --genreq --pkey $private_key --user $user --secontext $secontext --output $request >> $log
+	pgcert --genkey --output $private_key >> $devnull
+	pgcert --genreq --pkey $private_key --user $user --secontext $secontext --output $request >> $devnull
 	sshpass -p $ca_password ssh -T root@$ca_ip bash -s <<-EOF
 	if ! [ -d $ca_signaturedir ]
 	then
 		mkdir -p $ca_signaturedir
-	fi 
+	fi
 	EOF
-	sshpass -p $ca_password scp -o StrictHostKeyChecking=no $request root@$ca_ip:$ca_signaturedir/$user.csr >> $log
-	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert --gencert --request $ca_signaturedir/$user.csr --createdsa --output $ca_signaturedir/$user.crt" >> $log
-	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "rm -f ca_signaturedir/$user.csr" >> $log
-	sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:$ca_signaturedir/$user.crt $certificate >> $log
-	rm -f $request
+	sshpass -p $ca_password scp -o StrictHostKeyChecking=no $request root@$ca_ip:$ca_signaturedir/$user.csr
+	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert --gencert --request $ca_signaturedir/$user.csr --signature --output $ca_signaturedir/$user.crt" >> $devnull
+	sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "rm -f ca_signaturedir/$user.csr"
+	sshpass -p $ca_password scp -o StrictHostKeyChecking=no root@$ca_ip:$ca_signaturedir/$user.crt $certificate
+rm -f $request
 }
 
 
 if [ "$need_to_create" = 1 ]; then
     # This line will fix the labeling on all newly created directories
     [ -x /sbin/restorecon ] && /sbin/restorecon "$polydir_path"
+    user="$4"
     passwd=$(getent passwd "$user")
     homedir=$(echo "$passwd" | cut -f6 -d":")
     if [ "$polydir_path" = "$homedir" ]; then
-		gid=$(echo "$passwd" | cut -f4 -d":")
+	gid=$(echo "$passwd" | cut -f4 -d":")
         cp -rT /etc/skel "$homedir"
         chown -R "$user":"$gid" "$homedir"
         mask=$(awk '/^UMASK/{gsub("#.*$", "", $2); print $2; exit}' /etc/login.defs)
         mode=$(printf "%o" $((0777 & ~$mask)))
         chmod ${mode:-700} "$homedir"
         [ -x /sbin/restorecon ] && /sbin/restorecon -R "$homedir"
-		
+
 		if ! [ -f "$signerdir/private.key" ]
 		then
 			create_signature
@@ -92,3 +88,4 @@ if [ "$need_to_create" = 1 ]; then
 fi
 
 exit 0
+

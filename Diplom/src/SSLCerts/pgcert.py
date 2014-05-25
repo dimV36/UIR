@@ -1,6 +1,6 @@
 #!/usr/bin/python
 __author__ = 'dimv36'
-from M2Crypto import RSA, X509, EVP, ASN1, BIO, SMIME
+from M2Crypto import RSA, X509, ASN1, BIO, SMIME
 from selinux import security_check_context_raw, getcon_raw
 from optparse import OptionParser, OptionGroup
 from os import path, getlogin
@@ -69,6 +69,10 @@ def verify_user_context(user, current_context):
 
 
 def sign(private_key_path, certificate_path, request_path):
+    if not get_extension(certificate_path, 'keyUsage') == 'Digital Signature':
+        print('ERROR sign: key pair %s and %s could not be used for signing file because policy' %
+              (private_key_path, certificate_path))
+        exit(1)
     request = None
     try:
         request = X509.load_request(request_path)
@@ -90,13 +94,13 @@ def sign(private_key_path, certificate_path, request_path):
 
 
 def verify(certificate_path, ca_certificate_path, sign_request_path, output):
-    smime = SMIME.SMIME()
     certificate = None
     try:
         certificate = X509.load_cert(certificate_path)
     except (X509.X509Error, IOError):
         print('ERROR verify: Could not load certificate for verifying')
         exit(1)
+    smime = SMIME.SMIME()
     stack = X509.X509_Stack()
     stack.push(certificate)
     smime.set_x509_stack(stack)
@@ -127,8 +131,8 @@ def make_private_key(bits, output):
 def make_request(private_key_path, username, user_context, critical, output, is_printed):
     private_key = None
     try:
-        private_key = EVP.load_key(private_key_path, callback=password)
-    except (IOError, EVP.EVPError):
+        private_key = RSA.load_key(private_key_path, callback=password)
+    except (IOError, RSA.RSAError):
         print('ERROR request: Could not load key pair from %s' % private_key_path)
         exit(1)
     request = X509.Request()
@@ -178,7 +182,7 @@ def make_certificate(request_path, ca_private_key_file, ca_certificate_file, out
         exit(1)
     ca_private_key = None
     try:
-        ca_private_key = EVP.load_key(ca_private_key_file, callback=password)
+        ca_private_key = RSA.load_key(ca_private_key_file, callback=password)
     except (IOError, BIO.BIOError):
         print('ERROR certificate: Could not load ca private key file. Check permissions and try again')
         exit(1)

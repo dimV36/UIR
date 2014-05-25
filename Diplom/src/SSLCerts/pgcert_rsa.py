@@ -86,12 +86,8 @@ def sign(private_key_path, certificate_path, request_path):
         print('ERROR sign: Could not load private key')
         exit(1)
     digest = EVP.MessageDigest('sha1')
-    digest.update(request.as_text())
+    digest.update(request.as_pem())
     signature = private_key.sign_rsassa_pss(digest.digest())
-#    signature = private_key.sign(sha1(request.as_text()).digest(), 'sha1')
-    # private_key.sign_init()
-    # private_key.sign_update(request.as_text())
-    # signature = private_key.sign_final()
     open('%s.signature' % request_path, 'w').write(signature)
     print('Signature was saved to %s.signature' % request_path)
 
@@ -116,7 +112,7 @@ def verify(certificate_path, signature_path, request_path):
         print('ERROR verify: Could not load request for verification')
         exit(1)
     digest = EVP.MessageDigest('sha1')
-    digest.update(request.as_text())
+    digest.update(request.as_pem())
     public_key = certificate.get_pubkey().get_rsa()
     status = public_key.verify_rsassa_pss(digest.digest(), signature)
     if status:

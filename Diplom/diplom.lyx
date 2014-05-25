@@ -5752,16 +5752,6 @@ M2Crypto.RSA
 \begin_layout Itemize
 Подмодуль 
 \family typewriter
-M2Crypto.EVP
-\family default
- используется уже сохранённого на жесткий диск ключа, а также при выполнении
- подписи файла и проверки подписи.
- 
-\end_layout
-
-\begin_layout Itemize
-Подмодуль 
-\family typewriter
 M2Crypto.ASN1
 \family default
  необходим для создания ASN1 объектов сертификата и для их идентификации.
@@ -5794,8 +5784,8 @@ M2Crypto.SMIME
 \family typewriter
 SMIME
 \family default
-, позволяющий подписывать сообщения электронно-цифровой подписью, а также
- её проверять.
+, позволяющий подписывать создавать подписи с восстановлением документа,
+ а также их проверять.
 
 \family typewriter
  
@@ -7584,12 +7574,12 @@ try:
 
 \begin_layout Plain Layout
 
-	private_key = EVP.load_key(private_key_path, callback=password)
+	private_key = RSA.load_key(private_key_path, callback=password)
 \end_layout
 
 \begin_layout Plain Layout
 
-except EVP.EVPError:
+except (RSA.RSAError, IOError):
 \end_layout
 
 \begin_layout Plain Layout
@@ -7849,7 +7839,7 @@ True
 \end_layout
 
 \begin_layout Subsubsection*
-Подпись запроса электронно-цифровой подписью клиента
+Подпись запроса ЭЦП
 \end_layout
 
 \begin_layout Standard
@@ -7945,8 +7935,8 @@ keyUsage
 Digital Signature
 \family default
 , т.е.
- сертификат и закрытый ключ нельзя использовать для подписи запросов, то
- выводится сообщение и происходит выход из функции с ошибочным кодом.
+ сертификат и закрытый ключ не предназначены для подписи запросов, то выводится
+ сообщение и происходит выход из функции с кодом.
  
 \end_layout
 
@@ -7978,7 +7968,7 @@ try:
 
 \begin_layout Plain Layout
 
-except X509.X509Error:
+except (IOError, X509.X509Error):
 \end_layout
 
 \begin_layout Plain Layout
@@ -8010,12 +8000,12 @@ try:
 
 \begin_layout Plain Layout
 
-	private_key = EVP.load_key(private_key_path, password)
+	private_key = RSA.load_key(private_key_path, password)
 \end_layout
 
 \begin_layout Plain Layout
 
-except (IOError, EVP.EVPError):
+except (IOError, RSA.RSAError):
 \end_layout
 
 \begin_layout Plain Layout
@@ -8034,24 +8024,28 @@ except (IOError, EVP.EVPError):
 \end_layout
 
 \begin_layout Standard
-На основе текста запроса создаётся присоединённая подпись:
+На основе текста запроса создаётся присоединённая подпись.
+ Для этого создаётся объект класса 
+\family typewriter
+SMIME
+\family default
+, текст запроса загружается в память с помощью модуля 
+\family typewriter
+BIO
+\family default
+:
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-private_key.sign_init()
+text = BIO.MemoryBuffer(request.as_pem())
 \end_layout
 
 \begin_layout Plain Layout
 
-private_key.sign_update(request.as_text())
-\end_layout
-
-\begin_layout Plain Layout
-
-signature = private_key.sign_final()
+smime = SMIME.SMIME()
 \end_layout
 
 \end_inset
@@ -8060,45 +8054,61 @@ signature = private_key.sign_final()
 \end_layout
 
 \begin_layout Standard
-После выполнения приведённого блока кода в переменной 
+Чтобы иметь возможность подписывать файлы цифровой подписи, необходимо загрузить
+ закрытый ключ и сертификат.
+ Это становится возможным с помощью метода 
 \family typewriter
-signature
-\family default
- будет содержаться подпись загруженного запроса.
- 
-\end_layout
-
-\begin_layout Standard
-Для её сохранения на жёсткий диск используется следующая строка:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-open('%s.signature' % request_path, 'w').write(signature)
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-С помощью стандартной функции для работы с файлами 
-\family typewriter
-open()
-\family default
- открывается на запись (параметр функции
-\family typewriter
- 'w'
-\family default
-) файл, именем которого является имя файла запроса с суффиксом 
-\family typewriter
-.signature
+load_key()
 \family default
 .
- 
+ Параметрами данного метода являются путь к закрытому ключу подписи и путь
+ к сертификату.
+\end_layout
+
+\begin_layout Standard
+С помощью метода 
+\family typewriter
+sign()
+\family default
+ выполняется подпись текста запроса:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+sign_request = smime.sign(text)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Текст подписи сохраняется в файл:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+sign_request_file = BIO.openfile(request_path + '.sign', 'w')
+\end_layout
+
+\begin_layout Plain Layout
+
+smime.write(sign_request_file, sign_request)
+\end_layout
+
+\begin_layout Plain Layout
+
+sign_request_file.close()
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -8118,8 +8128,7 @@ print('Signature was saved to %s.signature' % request_path)
 \end_layout
 
 \begin_layout Standard
-Таким образом будет создана присоединённая подпись запроса, путь которого
- передан в функцию.
+Таким образом будет создана подпись запроса с восстановлением запроса.
 \end_layout
 
 \begin_layout Subsubsection*
@@ -8127,9 +8136,10 @@ print('Signature was saved to %s.signature' % request_path)
 \end_layout
 
 \begin_layout Standard
-Проверка цифровой подписи реализуется в функции 
+Для проверки цифровой подписи и восстановления исходного текста запроса
+ реализуется в функции 
 \family typewriter
-verify(certificate_path, signature_path, request_path)
+verify(certificate_path, ca_certificate_path, sign_request_path, output)
 \family default
 .
 \end_layout
@@ -8152,20 +8162,31 @@ certificate_path
 
 \family typewriter
 \series bold
-signature_path
+ca_certificate_path
 \family default
 \series default
- --- путь к файлу с подписью запроса;
+ --- путь к сертификату удостоверяющего центра;
 \end_layout
 
 \begin_layout Itemize
 
 \family typewriter
 \series bold
-request_path 
+sign_request_path 
 \family default
 \series default
---- путь к запросу на подпись сертификата.
+--- путь к цифровой подписи;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+output
+\family default
+ 
+\series default
+--- путь, по которому будет сохранён исходный текст запроса.
 \end_layout
 
 \begin_layout --Separator--
@@ -8219,43 +8240,44 @@ except (X509.X509Error, ValueError):
 \end_layout
 
 \begin_layout Standard
-В переменную 
+Для восстановления исходного текста запроса создаётся объект класса 
 \family typewriter
-signature
+SMIME
 \family default
- выполняется загрузка подписи из файла:
+, после чего выполняется загрузка в него сертификатов цифровой подписи и
+ удостоверяющего центра:
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-signature = None
+stack = X509.X509_Stack()
 \end_layout
 
 \begin_layout Plain Layout
 
-try:
+stack.push(certificate)
 \end_layout
 
 \begin_layout Plain Layout
 
-	signature = open(signature_path, 'r').read()
+smime.set_x509_stack(stack)
 \end_layout
 
 \begin_layout Plain Layout
 
-except IOError:
+store = X509.X509_Store()
 \end_layout
 
 \begin_layout Plain Layout
 
-	print('ERROR verify: Could not load signature for verification')
+store.load_info(ca_certificate_path)
 \end_layout
 
 \begin_layout Plain Layout
 
-    exit(1)
+smime.set_x509_store(store)
 \end_layout
 
 \end_inset
@@ -8264,46 +8286,23 @@ except IOError:
 \end_layout
 
 \begin_layout Standard
-Если по каким-либо причинам загрузить текст подписи не удалось, выводится
- соответствующее сообщение и происходит выход из функции с ошибкой.
- 
+В следующих строках выполняется загрузка подписи из файла, а также восстановлени
+я исходного текста запроса:
 \end_layout
 
 \begin_layout Standard
-Аналогично сертификату, с помощью которого будет проводиться верификация
- подписи, загружается запрос на подпись сертификата: 
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-request = None
+pks7, data = SMIME.smime_load_pkcs7(sign_request_path)
 \end_layout
 
 \begin_layout Plain Layout
 
-try:
-\end_layout
-
-\begin_layout Plain Layout
-
-	request = X509.load_request(request_path)
-\end_layout
-
-\begin_layout Plain Layout
-
-except (X509.X509Error, ValueError):
-\end_layout
-
-\begin_layout Plain Layout
-
-	print('ERROR verify: Could not load request for verification')
-\end_layout
-
-\begin_layout Plain Layout
-
-    exit(1)
+clear_text = smime.verify(pks7, data)
 \end_layout
 
 \end_inset
@@ -8312,14 +8311,23 @@ except (X509.X509Error, ValueError):
 \end_layout
 
 \begin_layout Standard
-Для верификации подписи необходимо создать объект класса 
+Если верификация подписи прошла успешно, то в переменной 
 \family typewriter
-EVP.Pkey()
+clear_text
 \family default
-, установить открытый ключ, взяв его из сертификата, после чего загрузить
- текст запроса в созданный объект 
+ будет содержаться текст запроса.
+ На основе этого текста создаётся объект 
 \family typewriter
-EVP.Pkey
+X509.X509_Request
+\family default
+.
+ С помощью метода 
+\family typewriter
+save()
+\family default
+запрос сохраняется по пути 
+\family typewriter
+output
 \family default
 :
 \end_layout
@@ -8331,61 +8339,27 @@ status open
 
 \begin_layout Plain Layout
 
-public_key = EVP.PKey()
+if clear_text:
 \end_layout
 
 \begin_layout Plain Layout
 
-public_key.assign_rsa(certificate.get_pubkey().get_rsa())
+	request = X509.load_request_string(clear_text)
 \end_layout
 
 \begin_layout Plain Layout
 
-public_key.verify_init()
+    request.save(output)
 \end_layout
 
 \begin_layout Plain Layout
 
-public_key.verify_update(request.as_text())
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Непосредственно верификация выполняется с помощью метода 
-\family typewriter
-verify_final()
-\family default
-, аргументом которого передаётся текст подписи.
- Данный метод возвращает 
-\family typewriter
-1
-\family default
- в случае успешной верификации и 
-\family typewriter
-0
-\family default
- --- при ошибке:
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-status = public_key.verify_final(signature)
+    print('Verification OK')
 \end_layout
 
 \begin_layout Plain Layout
 
-if status:
-\end_layout
-
-\begin_layout Plain Layout
-
-	print('Verification OK')
+    print('Request file was saved to %s' % output)
 \end_layout
 
 \begin_layout Plain Layout
@@ -8396,11 +8370,6 @@ else:
 \begin_layout Plain Layout
 
 	print('Verification failed')
-\end_layout
-
-\begin_layout Plain Layout
-
-    exit(1)
 \end_layout
 
 \end_inset
@@ -10442,16 +10411,23 @@ pgcert --sign --pkey $signerdir/private.key --certificate $signerdir/$user.crt
 \end_layout
 
 \begin_layout Standard
-После чего запрос и его подпись пересылаются на удостоверяющий центр с помощью
- команды:
+После выполнения данной команды создаётся файл 
+\family typewriter
+$certdir/$request.sign
+\family default
+, в котором содержится цифровая подпись с восстановлением.
+\end_layout
+
+\begin_layout Standard
+Подпись пересылаются на удостоверяющий центр с помощью команды:
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-sshpass -p $ca_password scp -o StrictHostKeyChecking=no $certdir/$request*
- root@$ca_ip:$ca_certdir/ >> $log
+sshpass -p $ca_password scp -o StrictHostKeyChecking=no $certdir/$request.sign
+ root@$ca_ip:$ca_certdir/$request.sign >> $log
 \end_layout
 
 \end_inset
@@ -10488,7 +10464,8 @@ $ca_certdir
 \end_layout
 
 \begin_layout Standard
-На удостоверяющем центре выполняется проверка цифровой подписи клиента:
+На удостоверяющем центре выполняется проверка цифровой подписи клиента.
+ Результатом работы является дешифрованный запрос на подпись сертификата:
 \end_layout
 
 \begin_layout Standard
@@ -10499,8 +10476,8 @@ status open
 \begin_layout Plain Layout
 
 sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert
- --verify $certdir/$request.signature --certificate /etc/pki/certs/$user.crt
- --request $ca_certdir/$request" >> $log
+ --verify --certificate /etc/pki/certs/$user.crt --request $ca_certdir/$request.si
+gn --output $ca_certdir/$request" >> $log
 \end_layout
 
 \end_inset
@@ -10509,8 +10486,8 @@ sshpass -p $ca_password ssh -o StrictHostKeyChecking=no -T root@$ca_ip "pgcert
 \end_layout
 
 \begin_layout Standard
-При успешной проверке удостоверяющей центр выпускает сертификат клиента
- и сохраняет его в директорию 
+С помощью расшифрованного запроса на подпись сертификата удостоверяющей
+ центр выпускает сертификат клиента и сохраняет его в директорию 
 \family typewriter
 $ca_certdir
 \family default
@@ -14316,13 +14293,30 @@ user2
 ~/.postgresql
 \family default
 .
- В этом каталоге также содержится сертификат удостоверяющего центра, который
- подписал сертфиикат пользователя 
+ В этом каталоге также содержится сертификат удостоверяющего центра 
+\family typewriter
+root.crt
+\family default
+.
+ Контекст безопасности пользователя 
 \family typewriter
 user2
 \family default
-.
+, согласно 
+\emph on
+таблице
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Контексты-пользователей-клиентск"
+
+\end_inset
+
  
+\family typewriter
+\emph default
+user_u:user_r:user_t:s0-s
+\family default
+2.
 \end_layout
 
 \begin_layout Standard
