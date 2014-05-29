@@ -5,6 +5,9 @@
 \textclass extarticle
 \begin_preamble
 \renewcommand\theenumii{\asbuk{enumii}}
+
+\newcommand{\NormalStretch}{\renewcommand{\baselinestretch}{1.0}\selectfont}
+\newcommand{\LargeStretch} {\renewcommand{\baselinestretch}{1.5}\selectfont}
 \end_preamble
 \use_default_options true
 \maintain_unincluded_children false
@@ -27,7 +30,7 @@
 \output_sync 0
 \bibtex_command default
 \index_command default
-\paperfontsize 12
+\paperfontsize 11
 \spacing single
 \use_hyperref false
 \papersize default
@@ -320,6 +323,22 @@ height "1pt"
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+LargeStretch
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Enumerate
 Фамилия, имя, отчество дипломанта 
 \bar under
@@ -381,53 +400,47 @@ height "1pt"
 
 \begin_layout Enumerate
 Срок сдачи студентом готового проекта 
+\bar under
+
 \begin_inset Quotes fld
 \end_inset
 
-
-\bar under
-
-\begin_inset space \hspace*{}
-\length 1cm
-\end_inset
-
-
-\bar default
-
+17
 \begin_inset Quotes frd
 \end_inset
 
- 
-\bar under
-
+ июня 2014г.
 \begin_inset space \hspace*{\fill}
 \end_inset
 
 
-\bar default
- 2014г.
 \end_layout
 
 \begin_layout Enumerate
 Руководитель дипломного проектирования 
 \bar under
-Муравьёв С.К
+Муравьёв Сергей Константинович, нач.
+ отдела 
 \begin_inset space \hspace*{\fill}
 \end_inset
 
 
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout Enumerate
-Консультант по зкономико-организационной и информационной части проекта
-\bar under
+ФГУП 
+\begin_inset Quotes fld
+\end_inset
 
+ЦНИИ ЭИСУ
+\begin_inset Quotes frd
+\end_inset
+
+, к.т.н.
 \begin_inset space \hspace*{\fill}
 \end_inset
 
 
-\bar default
- 
 \end_layout
 
 \begin_layout --Separator--
@@ -438,9 +451,14 @@ height "1pt"
 \end_layout
 
 \begin_layout Enumerate
-Исходные данные к проекту
+Исходные данные к проекту: 
 \bar under
 
+\begin_inset Newline newline
+\end_inset
+
+Операционная система Fedora 20, SELinux, языки программирования: C, Bash,
+ Python.
 \begin_inset space \hspace*{\fill}
 \end_inset
 
@@ -455,9 +473,31 @@ height "1pt"
 
 \begin_deeper
 \begin_layout Enumerate
-литература и обзор работ, связанных с проектом
+литература и обзор работ, связанных с проектом:
 \bar under
+ 
+\begin_inset Newline newline
+\end_inset
 
+Полянская О.Ю., Горбатов В.С.
+\begin_inset space ~
+\end_inset
+
+--- Инфраструктуры открытых ключей
+\begin_inset space ~
+\end_inset
+
+--- М.: Изд-во "Интернет-университет информационных технологий - ИНТУИТ.ру",
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+"БИНОМ.
+ Лаборатория знаний", 2007.
+ - 368 c.
 \begin_inset space \hspace*{\fill}
 \end_inset
 
@@ -467,9 +507,39 @@ height "1pt"
 \end_layout
 
 \begin_layout Enumerate
-расчетно-конструкторская, теоретическая, технологическая часть
+расчетно-конструкторская, теоретическая, технологическая часть: 
 \bar under
 
+\begin_inset Newline newline
+\end_inset
+
+Разработка алгоритма автоматического выбора сертификата пользователя на
+ основании контекста безопасности;
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Разработка способа хранения контекста безопасности в сертфикате;
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Разработка средств создания сертификата пользователя с значением контекста
+ 
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+безопасности.
 \begin_inset space \hspace*{\fill}
 \end_inset
 
@@ -477,9 +547,37 @@ height "1pt"
 \end_layout
 
 \begin_layout Enumerate
-экспериментальная часть
-\bar under
+экспериментальная часть: 
+\begin_inset Newline newline
+\end_inset
 
+
+\bar under
+Реализация структуры хранения контекста безопасности;
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Реализация средств создания сертификата с контекстом безопасности пользователя;
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Интеграция механизма автоматического выбора сертификата в СУБД PostgreSQL;
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Тестирование механизма.
 \begin_inset space \hspace*{\fill}
 \end_inset
 
@@ -522,6 +620,14 @@ height "1pt"
 графический материал (с указанием обязательных чертежей);
 \bar under
 
+\begin_inset Newline newline
+\end_inset
+
+Схема стенда
+\begin_inset Newline newline
+\end_inset
+
+Скриншоты работы механизма
 \begin_inset space \hspace*{\fill}
 \end_inset
 
@@ -532,6 +638,10 @@ height "1pt"
 макетно-экспериментальная часть
 \bar under
 
+\begin_inset Newline newline
+\end_inset
+
+Листинги кода
 \begin_inset space \hspace*{\fill}
 \end_inset
 
@@ -704,7 +814,7 @@ height "1pt"
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="7" columns="5">
+<lyxtabular version="3" rows="21" columns="5">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
@@ -743,7 +853,7 @@ height "1pt"
 \begin_inset Text
 
 \begin_layout Plain Layout
-Степень готовности 
+Степень 
 \end_layout
 
 \end_inset
@@ -781,7 +891,54 @@ height "1pt"
 \begin_inset Text
 
 \begin_layout Plain Layout
-выполнения этапов
+выполнения 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+готовности 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+выполнения
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+этапов
 \end_layout
 
 \end_inset
@@ -799,7 +956,7 @@ height "1pt"
 \begin_inset Text
 
 \begin_layout Plain Layout
-выполнения
+
 \end_layout
 
 \end_inset
@@ -858,6 +1015,8 @@ height "1pt"
 
 \begin_layout Plain Layout
 
+\size small
+1
 \end_layout
 
 \end_inset
@@ -867,6 +1026,8 @@ height "1pt"
 
 \begin_layout Plain Layout
 
+\size small
+Анализ существующих подходов
 \end_layout
 
 \end_inset
@@ -876,6 +1037,8 @@ height "1pt"
 
 \begin_layout Plain Layout
 
+\size small
+28.03.14 --- 03.04.14
 \end_layout
 
 \end_inset
@@ -885,11 +1048,62 @@ height "1pt"
 
 \begin_layout Plain Layout
 
+\size small
+5
 \end_layout
 
 \end_inset
 </cell>
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+04.04.14
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+к выбору сертификата пользователя
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -905,6 +1119,8 @@ height "1pt"
 
 \begin_layout Plain Layout
 
+\size small
+2
 \end_layout
 
 \end_inset
@@ -914,6 +1130,8 @@ height "1pt"
 
 \begin_layout Plain Layout
 
+\size small
+Анализ литературы
 \end_layout
 
 \end_inset
@@ -923,6 +1141,8 @@ height "1pt"
 
 \begin_layout Plain Layout
 
+\size small
+04.04.14 --- 08.04.14
 \end_layout
 
 \end_inset
@@ -932,11 +1152,60 @@ height "1pt"
 
 \begin_layout Plain Layout
 
+\size small
+15
 \end_layout
 
 \end_inset
 </cell>
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+08.04.14
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -952,6 +1221,8 @@ height "1pt"
 
 \begin_layout Plain Layout
 
+\size small
+3
 \end_layout
 
 \end_inset
@@ -961,6 +1232,8 @@ height "1pt"
 
 \begin_layout Plain Layout
 
+\size small
+Выбор подхода к решения задачи 
 \end_layout
 
 \end_inset
@@ -970,6 +1243,8 @@ height "1pt"
 
 \begin_layout Plain Layout
 
+\size small
+08.04.14 --- 13.04.14
 \end_layout
 
 \end_inset
@@ -979,11 +1254,63 @@ height "1pt"
 
 \begin_layout Plain Layout
 
+\size small
+30
 \end_layout
 
 \end_inset
 </cell>
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+15.04.14
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+и средств реализации.
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -994,7 +1321,7 @@ height "1pt"
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1003,7 +1330,18 @@ height "1pt"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+Написание 1 главы пояснительной записки.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1012,7 +1350,7 @@ height "1pt"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1021,7 +1359,7 @@ height "1pt"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1030,7 +1368,514 @@ height "1pt"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+Реализация компонентов механизма 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+14.04.14 --- 27.04.14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+55
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+23.04.14
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+выбора сертификата пользователя.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+Написание 2 главы пояснительной записки
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+28.04.14 --- 04.05.14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+65
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+06.05.14
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+Отладка механизма, 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+05.05.14 --- 15.05.14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+80
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+13.05.14
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+интеграция с СУБД PostgreSQL
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+7
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+Написание 3 главы пояснительной записки
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+16.06.14 --- 23.05.14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+95
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+24.05.14
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+8
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+Оформление пояснительной записки
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+24.05.14 --- 31.05.14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+100
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+29.05.14
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+и графического материала
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1056,10 +1901,10 @@ height "1pt"
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="7" columns="2">
+<lyxtabular version="3" rows="5" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="0pt">
-<column alignment="center" valignment="top">
+<column alignment="center" valignment="top" width="7cm">
 <row>
 <cell alignment="left" valignment="top" usebox="none">
 \begin_inset Text
@@ -1077,11 +1922,15 @@ height "1pt"
 \begin_inset Quotes fld
 \end_inset
 
-23
+28
 \begin_inset Quotes frd
 \end_inset
 
  марта 2014г.
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+ 
 \end_layout
 
 \end_inset
@@ -1112,47 +1961,7 @@ height "1pt"
 \begin_inset Text
 
 \begin_layout Plain Layout
-Руководители дипломного проектирования
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" bottomline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
+Руководитель дипломного проектирования
 \end_layout
 
 \end_inset
@@ -1201,7 +2010,18 @@ height "1pt"
 \begin_inset Text
 
 \begin_layout Plain Layout
+\begin_inset Quotes fld
+\end_inset
 
+28
+\begin_inset Quotes frd
+\end_inset
+
+ марта 2014г.
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+ 
 \end_layout
 
 \end_inset

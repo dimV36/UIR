@@ -1118,6 +1118,1932 @@ thispagestyle{empty}
 \end_layout
 
 \begin_layout Standard
+\align center
+МИНИСТЕРСТВО ОБРАЗОВАНИЯ И НАУКИ РОССИЙСКОЙ ФЕДЕРАЦИИ
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+Федеральное государственное автономное образовательное учреждение 
+\begin_inset Newline newline
+\end_inset
+
+высшего профессионального образования
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size large
+\begin_inset Quotes fld
+\end_inset
+
+Национальный исследовательский ядерный университет 
+\begin_inset Quotes fld
+\end_inset
+
+МИФИ
+\begin_inset Quotes frd
+\end_inset
+
+
+\series default
+\size default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100line%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align left
+Факультет 
+\bar under
+Кибернетики и информационной безопасности
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align left
+Кафедра 
+\bar under
+№36 Информационных систем и технологий
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align left
+Специальность 
+\bar under
+010501 
+\begin_inset Quotes fld
+\end_inset
+
+Прикладная математика и информатика
+\begin_inset Quotes frd
+\end_inset
+
+
+\bar default
+ Группа 
+\bar under
+К10-361
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace smallskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align right
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="3">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Утверждаю
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Зав.
+ кафедрой
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset space \hspace*{}
+\length 0.5cm
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Quotes fld
+\end_inset
+
+
+\begin_inset space \hspace*{}
+\length 2cm
+\end_inset
+
+
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2014г.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace smallskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size large
+ЗАДАНИЕ НА ДИПЛОМНЫЙ ПРОЕКТ (работу)
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace smallskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+LargeStretch
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\size small
+Фамилия, имя, отчество дипломанта 
+\bar under
+Воронин Дмитрий Леонидович
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\size small
+Тема проекта (работы) 
+\bar under
+Реализация механизма автоматического выбора сертификата открытого ключа
+ пользователя на основании его контекста безопасности
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\bar default
+
+\begin_inset Newline newline
+\end_inset
+
+Утверждена приказом по институту от 
+\begin_inset Quotes fld
+\end_inset
+
+
+\bar under
+
+\begin_inset space \hspace*{}
+\length 1cm
+\end_inset
+
+
+\bar default
+
+\begin_inset Quotes frd
+\end_inset
+
+ 
+\bar under
+
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\bar default
+ 2014г.
+ № 
+\bar under
+
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\size small
+Срок сдачи студентом готового проекта 
+\bar under
+
+\begin_inset Quotes fld
+\end_inset
+
+17
+\begin_inset Quotes frd
+\end_inset
+
+ июня 2014г.
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\size small
+Руководитель дипломного проектирования 
+\bar under
+Муравьёв Сергей Константинович, нач.
+ отдела 
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+ФГУП 
+\begin_inset Quotes fld
+\end_inset
+
+ЦНИИ ЭИСУ
+\begin_inset Quotes frd
+\end_inset
+
+, к.т.н.
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\size small
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\size small
+Исходные данные к проекту: 
+\bar under
+
+\begin_inset Newline newline
+\end_inset
+
+Операционная система Fedora 20, SELinux, языки программирования: C, Bash,
+ Python.
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\bar default
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+\size small
+Содержание проекта:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+
+\size small
+литература и обзор работ, связанных с проектом:
+\bar under
+
+\begin_inset Newline newline
+\end_inset
+
+Полянская О.Ю., Горбатов В.С.
+\begin_inset space ~
+\end_inset
+
+--- Инфраструктуры открытых ключей
+\begin_inset space ~
+\end_inset
+
+--- М.: Изд-во "Интернет-университет информационных технологий - ИНТУИТ.ру",
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+"БИНОМ.
+ Лаборатория знаний", 2007.
+ - 368 c.
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\bar default
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+\size small
+расчетно-конструкторская, теоретическая, технологическая часть: 
+\bar under
+
+\begin_inset Newline newline
+\end_inset
+
+Разработка алгоритма автоматического выбора сертификата пользователя на
+ основании контекста безопасности;
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Разработка способа хранения контекста безопасности в сертфикате;
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Разработка средств создания сертификата пользователя с значением контекста
+ 
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+безопасности.
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\size small
+экспериментальная часть: 
+\begin_inset Newline newline
+\end_inset
+
+
+\bar under
+Реализация структуры хранения контекста безопасности;
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Реализация средств создания сертификата с контекстом безопасности пользователя;
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Интеграция механизма автоматического выбора сертификата в СУБД PostgreSQL;
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Тестирование механизма.
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\size small
+экономико-организационная и информационная часть
+\bar under
+
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\bar default
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+\size small
+охрана труда и техника безопасности, экологическая часть
+\bar under
+
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+
+\size small
+Отчетный материал проекта:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+
+\size small
+пояснительная записка;
+\end_layout
+
+\begin_layout Enumerate
+
+\size small
+графический материал (с указанием обязательных чертежей);
+\bar under
+
+\begin_inset Newline newline
+\end_inset
+
+Схема стенда
+\begin_inset Newline newline
+\end_inset
+
+Скриншоты работы механизма
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\size small
+макетно-экспериментальная часть
+\bar under
+
+\begin_inset Newline newline
+\end_inset
+
+Листинги кода
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Патчи доработанных программных средств
+\begin_inset space \hspace*{\fill}
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size large
+КАЛЕНДАРНЫЙ ПЛАН РАБОТЫ НАД ПРОЕКТОМ
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size footnotesize
+(составляется руководителем с участием студента в течение первой недели
+ с начала дипломного проектирования)
+\end_layout
+
+\begin_layout Standard
+
+\size footnotesize
+\begin_inset VSpace smallskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size footnotesize
+\begin_inset Tabular
+<lyxtabular version="3" rows="21" columns="5">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+№ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Наименование 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Сроки 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Степень 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Время 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+п/п
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+ этапов работы
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+выполнения 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+готовности 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+выполнения
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+этапов
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+проекта в % 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+к объему работы
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Анализ существующих подходов
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+28.03.14 --- 03.04.14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+04.04.14
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+к выбору сертификата пользователя
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Анализ литературы
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+04.04.14 --- 08.04.14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+15
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+08.04.14
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Выбор подхода к решения задачи 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+08.04.14 --- 13.04.14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+30
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+15.04.14
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+и средств реализации.
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Написание 1 главы пояснительной записки.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Реализация компонентов механизма 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+14.04.14 --- 27.04.14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+55
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+23.04.14
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+выбора сертификата пользователя.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Написание 2 главы пояснительной записки
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+28.04.14 --- 04.05.14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+65
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+06.05.14
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Отладка механизма, 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+05.05.14 --- 15.05.14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+80
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+13.05.14
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+интеграция с СУБД PostgreSQL
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+7
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Написание 3 главы пояснительной записки
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+16.06.14 --- 23.05.14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+95
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+24.05.14
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+8
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Оформление пояснительной записки
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+24.05.14 --- 31.05.14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+100
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+29.05.14
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+и графического материала
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size footnotesize
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="2">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="left" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="7cm">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+Дата выдачи задания
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+\begin_inset Quotes fld
+\end_inset
+
+28
+\begin_inset Quotes frd
+\end_inset
+
+ марта 2014г.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+Руководитель дипломного проектирования
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+Задание принял к исполнению (дата и подпись студента)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+NormalStretch
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset CommandInset toc
 LatexCommand tableofcontents
 
@@ -1205,7 +3131,8 @@ key "PKI-EITF"
 
 ), принципы построения которой предполагает наличие удостоверяющего центра,
  выпускающего сертификаты открытых ключей пользователей.
- В каждом из сертификатов будет содержаться значение контекста безопасности.
+ В каждом из сертификатов в дополнительном атрибуте будет содержаться значение
+ контекста безопасности.
  
 \end_layout
 
@@ -1235,16 +3162,34 @@ MLS
 
 \begin_layout Standard
 Автоматизация процесса выбора сертификата будет осуществлена с использованием
- многоэкземплярности директорий --- механизм создания независимых копий
- директорий.
+ многоэкземплярности директорий --- механизма создания независимых копий.
  
 \end_layout
 
 \begin_layout Standard
-Научная новизна данной работы определяется результатом, работающим автоматически
-м механизмом выбора сертификата пользователя на основании контекста безопасности
-, который может быть использован в информационных системах.
- 
+
+\series bold
+Научная новизна
+\series default
+ данной работы является выбор сертификата открытого ключа на основании его
+ контекста безопасности пользователя.
+\end_layout
+
+\begin_layout Standard
+В работе показано применение разработанного механизма для установки контекста
+ безопасности пользователя в СУБД PostgreSQL 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "PostgreSQL"
+
+\end_inset
+
+.
+ Это определяет 
+\series bold
+практическую значимость
+\series default
+ дипломной работы.
 \end_layout
 
 \begin_layout Standard
@@ -1266,7 +3211,7 @@ MLS
 \end_layout
 
 \begin_layout Enumerate
-Исследовать основные принципы работы системы SELinux;
+Исследовать основные форматы сертификатов открытых ключей;
 \end_layout
 
 \begin_layout Enumerate
@@ -1275,7 +3220,12 @@ MLS
 \end_layout
 
 \begin_layout Enumerate
-Автоматизировать процесс выбора сертификатов.
+Автоматизировать процесс выбора сертификатов, используя механизм многоэкземплярн
+ости;
+\end_layout
+
+\begin_layout Enumerate
+Показать применение разработанного механизма для СУБД PostgreSQL.
 \end_layout
 
 \begin_layout --Separator--
@@ -1294,7 +3244,7 @@ MLS
 \end_layout
 
 \begin_layout Section
-Обзор существующих форматов сертификатов открытых ключей
+Обзор существующих подходов к управлению сертификатами пользователя
 \end_layout
 
 \begin_layout Subsection
@@ -1340,7 +3290,7 @@ PGP представляет собой гибридную систему, ко�
 
 \begin_layout Standard
 Перед работой в системе PGP пользователю необходимо сгенерировать открытый
- и секретный ключи.
+ и закрытые ключи.
  Открытый ключ может быть передан абоненту как сообщение электронной почты,
  как файл или помещен на сервер открытых ключей.
  Получив копию чьего-либо открытого ключа, пользователь может добавить его
@@ -1400,102 +3350,73 @@ PGP поддерживает, в качестве частного случая 
 \end_layout
 
 \begin_layout Standard
-Достоинства:
+Сертификат PGP обычно содержит следующие поля:
+\end_layout
+
+\begin_layout Itemize
+Версия PGP --- какой версией PGP был создан ключ, связанный с сертификатом.
+ 
+\end_layout
+
+\begin_layout Itemize
+Открытый ключ обладателя сертификата --- открытая часть ключевой пары и
+ её алгоритм
+\end_layout
+
+\begin_layout Itemize
+Сведения об обладателе сертификата --- информация о личности пользователя,
+ в частности ФИО, ID, адрес электронной почты, фотография;
+\end_layout
+
+\begin_layout Itemize
+ЭЦП обладателя сертификата --- также называемая автоподпись (self-signature),
+ это подпись личного ключа, соответвующего открытому ключу, связанному с
+ сертификатом.
+ 
+\end_layout
+
+\begin_layout Itemize
+Срок действия сертификата --- дата/время начала действия сертификата и дата/врем
+я окончания его действия; указывает на то, когда сертификат станет просрочен.
+ 
+\end_layout
+
+\begin_layout --Separator--
+
 \end_layout
 
 \begin_layout Standard
-Гибкость системы доверия
+Достоинства использования сертификата PGP:
 \end_layout
 
-\begin_layout Standard
-Возможность образования круга доверия
+\begin_layout Itemize
+Образование круга доверия;
 \end_layout
 
 \begin_layout Standard
 Недостатки:
 \end_layout
 
-\begin_layout Standard
-Для реализации необходимо 
-\end_layout
-
-\begin_layout Subsection
-TACK
-\end_layout
-
-\begin_layout Standard
-Система 
-\series bold
-TACK
-\series default
- (англ.
- 
-\emph on
-Trust Assertions for Certificate Keys
-\emph default
-), 
-\begin_inset Quotes fld
-\end_inset
-
-достоверное утверждение ключей сертификатов
-\begin_inset Quotes frd
-\end_inset
-
- --- система, построенная на базе протокола TLS (англ.
- 
-\emph on
-Transport Layer Security
-\emph default
-), 
-\begin_inset Quotes fld
-\end_inset
-
-Безопасность транспортного уровня
-\begin_inset Quotes frd
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-Данная система представляет собой систему выдачи одноразовых сертификатов.
+\begin_layout Itemize
+Необходимость проверять публичный ключ пользователя перед включением его
+ в свою связку открытых ключей.
  
 \end_layout
 
-\begin_layout Standard
-Для проверки подлинности ключа сервера клиент соотносит имя хоста с публичным
- ключом сервера.
- 
+\begin_layout Itemize
+Существует вероятность включения невалидного ключа в сеть;
 \end_layout
 
-\begin_layout Standard
-Обычно клиент TLS проверяет открытый ключ сервера используя цепочку сертификатов
-, выданных некоторыми удостоверяющими центрами.
- Закрепление позволяет клиентами удостовериться в подлинности открытого
- ключа сервера.
- Сам процесс закрепления состоит в установке соответствии имени хоста и
- публичного ключа сервера.
+\begin_layout Itemize
+Требуется распределённая сеть пользователей;
 \end_layout
 
-\begin_layout Standard
-TACK позволяет выбрать ключ сервера, который будет подписывать сертификаты
- сервера TLS.
- Закрепление в данном случае даёт гибкий доступ к узлу, чтобы внедрить различные
- сертификаты и TLS ключи для различных серверов и в разное время.
- Если закрепление основано на TSK ключах, то доверие ключу удостоверяющего
- центра не требуется.
- Дополнительно TSK может быть изъят скомпрометированным закрытым ключом
- TLS, а пара заменяющий TSK быстро преобразована в новый TSK-ключ, в качестве
- альтернативы при подозрении в компрометации.
- При поступлении запроса на сервер высылается дополнение TLS, содержащее
- «tack».
- Внутри дополнения содержится открытый TSK ключ и его сигнатура.
- Пока клиент доступен по определённой паре имени и ключа TSK некоторое время,
- клиент будет активен с закреплением этих имени хоста и ключа на период
- жизни этого ключа.
- После окончания сессии данная пара имени и ключа перестаёт быть действительной,
- а при новом запросе высылается TLS дополнение, которое содержит новую пару
- имени и ключа.
+\begin_layout Itemize
+Необходимость наличия севера или иных механизмов для передачи ключей.
+\end_layout
+
+\begin_layout --Separator--
+
 \end_layout
 
 \begin_layout Subsection
@@ -1539,8 +3460,7 @@ Simple Public Key Infrastructure
  В связи с тем, что сертификаты SPKI могут содержать информацию, которую
  владелец ключа не желает публиковать, допускается распространение сертификатов
  самим владельцем.
- Владелец ключа может использовать глобальное хранилище, например LDAP,
- сервер ключей PGP или систему доменных имен DNS.
+ Владелец ключа может использовать глобальное хранилище.
 \end_layout
 
 \begin_layout Standard
@@ -15208,6 +17128,18 @@ key "SELinux"
 \end_inset
 
 с.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "3"
+key "PostgreSQL"
+
+\end_inset
+
+ PostgreSQL: The world's most advanced opensource database [Электронный
+ ресурс] --- http://www.postgresql.org
 \end_layout
 
 \begin_layout Bibliography
