@@ -3244,10 +3244,6 @@ key "PostgreSQL"
 \end_layout
 
 \begin_layout Section
-Обзор существующих подходов к управлению сертификатами пользователя в PKI
-\end_layout
-
-\begin_layout Subsection
 Обзор существующих подходов к управлению сертификатами пользователя
 \end_layout
 
@@ -4061,12 +4057,431 @@ Extensions
  
 \end_layout
 
+\begin_layout Subsubsection
+Формат дополнения сертификата X509
+\end_layout
+
+\begin_layout Standard
+Формат дополнения сертификата 
+\series bold
+X509 
+\series default
+определён рекомендациями Х509 версии 3 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "X509v3"
+
+\end_inset
+
+.
+ Дополнения сертификата описываются следующей структурой:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Extension ::= SEQUENCE {
+\end_layout
+
+\begin_layout Plain Layout
+
+	extnID OBJECT IDENTIFIER,
+\end_layout
+
+\begin_layout Plain Layout
+
+	critical BOOLEAN DEFAULT FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+	extnValue OCTET STRING 
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Дополнение сертификата состоит из следующих объектов:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+extnID
+\family default
+ --- идентификатор объекта;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+critical
+\family default
+ --- признак критичности;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+extnValue
+\family default
+ --- строка, определяющая значение расширения.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Каждое дополнение состоит из идентификатора типа дополнения 
+\family typewriter
+Extension identifier
+\family default
+, признака критичности 
+\family typewriter
+Criticality flag
+\family default
+ и собственно значения дополнения 
+\family typewriter
+Extension value
+\family default
+.
+ Идентификатор типа дополнения задает формат и семантику значения дополнения.
+ Признак критичности сообщает приложению, использующему данный сертификат,
+ существенна ли информация о назначении сертификата и может ли приложение
+ игнорировать данный тип дополнения.
+\end_layout
+
+\begin_layout Standard
+Дополнения можно разделить на две категории: ограничивающие и информационные.
+\end_layout
+
+\begin_layout Standard
+Первые ограничивают область применения ключа, определенного сертификатом,
+ или самого сертификата.
+ 
+\end_layout
+
+\begin_layout Standard
+Вторые содержат дополнительную информацию, которая может быть использована
+ в прикладном программном обеспечении пользователем сертификата.
+ 
+\end_layout
+
+\begin_layout Standard
+К ограничивающим дополнениям относятся: 
+\end_layout
+
+\begin_layout Itemize
+основные ограничения (
+\family typewriter
+Basic Constraints
+\family default
+); 
+\end_layout
+
+\begin_layout Itemize
+назначение ключа (
+\family typewriter
+Key Usage
+\family default
+);
+\end_layout
+
+\begin_layout Itemize
+расширенное назначение ключа (
+\family typewriter
+Extended Key Usage
+\family default
+);
+\end_layout
+
+\begin_layout Itemize
+политики применения сертификата (
+\family typewriter
+Certificates Policies, Policy Mappings
+\family default
+,
+\family typewriter
+ Policy Constraints
+\family default
+); 
+\end_layout
+
+\begin_layout Itemize
+ограничения на имена (
+\family typewriter
+Name Constraints
+\family default
+).
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+К информационным дополнениям относятся:
+\end_layout
+
+\begin_layout Itemize
+идентификаторы ключей (
+\family typewriter
+Subject Key Identifier
+\family default
+, 
+\family typewriter
+Authority Key Identifier
+\family default
+); 
+\end_layout
+
+\begin_layout Itemize
+альтернативные имена (
+\family typewriter
+Subject Alternative Name
+\family default
+, 
+\family typewriter
+Issuer Alternative Name
+\family default
+); 
+\end_layout
+
+\begin_layout Itemize
+пункт распространения списка аннулированных сертификатов (
+\family typewriter
+CRL Distribution Point
+\family default
+, 
+\family typewriter
+Issuing Distribution Point
+\family default
+);
+\end_layout
+
+\begin_layout Itemize
+способ доступа к информации УЦ (
+\family typewriter
+Authority Access Info
+\family default
+).
+ 
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Также стандарт открытых ключей X509v3 позволяет создавать пользовательские
+ дополнения и использовать их в сертификатах.
+ 
+\end_layout
+
 \begin_layout Subsection
 Подходы к управлению сертификатами пользователей
 \end_layout
 
+\begin_layout Standard
+Возможность использовать несколько действующих сертификатов, связанных с
+ разными политиками и назначениями ключей, связана с тем, что для каждого
+ вида активности должен выбираться корректный (соответствующий назначению)
+ секретный ключ.
+ Например, для подписи электронных сообщений используется один ключ, для
+ аутентификации --- другой.
+ При этом возникают ситуации, когда пользователь должен выбрать ключ, который
+ будет использовать в каком-либо приложении.
+\end_layout
+
+\begin_layout Standard
+При этом рекомендуется использовать отдельную пару ключей для решения одной
+ определённой задачи.
+\end_layout
+
+\begin_layout Standard
+Важным преимуществом использования этого подхода является удобство независимого
+ управления сертификатами в случае их аннулирования.
+ Если открытый ключ содержится в нескольких сертификатах, то при компрометации
+ ключа необходимо получить все сертификаты, содержащий этот ключ, после
+ чего аннулировать.
+ Если хотя бы один сертификат в таком случае аннулирован не будет, это может
+ привести к серьёзному риску нарушения безопасности системы.
+ 
+\end_layout
+
+\begin_layout Standard
+Если же будет скомпрометирована одна пара ключей, то её изъять и выпустить
+ новую пару ключей будет не так сложно.
+ 
+\end_layout
+
+\begin_layout Standard
+Кроме того, сертификаты, связанные с уникальной парой ключей, независимо
+ конструируются: они могут соответствовать разным политикам, а также иметь
+ разные сроки действия, назначения и процедуры управления.
+ Один сертификат может устаревать или аннулироваться независимо от других
+ сертификатов.
+ Использование одного и того же открытого ключа в нескольких сертификатах
+ усложняет управление сертификатами.
+\end_layout
+
+\begin_layout Standard
+Как правило, прикладное программное обеспечение выбирает сертификат пользователя
+ автоматически на основании дополнений сертификата, в которых может быть
+ указана для каких целей этот ключ может быть использован, а также политика
+ применения.
+ В следующих разделах приводится описание основных дополнений сертификата
+ X509.
+ 
+\end_layout
+
 \begin_layout Subsubsection
-Дополнения
+Основные ограничения Basic Constraints
+\end_layout
+
+\begin_layout Standard
+Дополнение 
+\family typewriter
+Basic Constraints
+\family default
+ используется в основном в качестве ограничения возможности использования
+ открытого ключа для проверки цифровых подписей сертификатов.
+ 
+\end_layout
+
+\begin_layout Standard
+Если в дополнении используется строка
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+CA: TRUE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+то она говорит о том, что пара ключей может быть использована для проверки
+ цифровых подписей сертификата.
+\end_layout
+
+\begin_layout Standard
+Для ограничения данной возможности используется следующая строка:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+CA: FALSE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Назначение ключа keyUsage
+\end_layout
+
+\begin_layout Standard
+Дополнение 
+\family typewriter
+keyUsage
+\family default
+ определяет цель использования ключа, содержащегося в сертификате.
+ Данное дополнение может быть использовано в сертификате, когда необходимо
+ ограничить перечень операций, в которых может быть использован ключ.
+ 
+\end_layout
+
+\begin_layout Standard
+Оно может принимать следующие значения:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+digitalSignature
+\family default
+ --- ключ, содержащийся в сертификате, используется для проверки цифровых
+ подписей (кроме подписей сертификатов, списков CRL);
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+nonRepudiation 
+\family default
+--- ключ, содержащийся в сертификате, не может быть использован для цифровых
+ подписей; 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+keyEncipherment
+\family default
+ --- ключ, содержащийся в сертификате, используется для шифрования закрытых
+ ключей; 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+dataEncipherment
+\family default
+ --- ключ, содержащийся в сертификате, используется для шифрования исходных
+ данных пользователей;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+keyAgreement
+\family default
+ --- ключ, содержащийся в сертификате, используется для согласования ключей;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+keyCertSign
+\family default
+ --- ключ, содержащийся в сертификате, используется для проверки сигнатур
+ подписи публичных ключей;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+cRLSign
+\family default
+ --- ключ, содержащийся в сертификате, используется для проверки сигнатур
+ списка отозванных сертификатов.
+\end_layout
+
+\begin_layout --Separator--
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -6759,240 +7174,6 @@ basicConstraints
 keyUsage
 \family default
  --- политику использования ключа.
- 
-\end_layout
-
-\begin_layout Subsubsection
-Структура дополнений
-\end_layout
-
-\begin_layout Standard
-Формат дополнения сертификата 
-\series bold
-X509 
-\series default
-определены рекомендациями Х509 версии 3 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "X509v3"
-
-\end_inset
-
-.
- Дополнения сертификата описываются следующей структурой:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-Extension ::= SEQUENCE {
-\end_layout
-
-\begin_layout Plain Layout
-
-	extnID OBJECT IDENTIFIER,
-\end_layout
-
-\begin_layout Plain Layout
-
-	critical BOOLEAN DEFAULT FALSE,
-\end_layout
-
-\begin_layout Plain Layout
-
-	extnValue OCTET STRING 
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Дополнение сертификата состоит из следующих объектов:
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-extnID
-\family default
- --- идентификатор объекта;
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-critical
-\family default
- --- признак критичности;
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-extnValue
-\family default
- --- строка, определяющая значение расширения.
-\end_layout
-
-\begin_layout --Separator--
-
-\end_layout
-
-\begin_layout Standard
-Каждое дополнение состоит из идентификатора типа дополнения 
-\family typewriter
-Extension identifier
-\family default
-, признака критичности 
-\family typewriter
-Criticality flag
-\family default
- и собственно значения дополнения 
-\family typewriter
-Extension value
-\family default
-.
- Идентификатор типа дополнения задает формат и семантику значения дополнения.
- Признак критичности сообщает приложению, использующему данный сертификат,
- существенна ли информация о назначении сертификата и может ли приложение
- игнорировать данный тип дополнения.
-\end_layout
-
-\begin_layout Standard
-Дополнения можно разделить на две категории: ограничивающие и информационные.
-\end_layout
-
-\begin_layout Standard
-Первые ограничивают область применения ключа, определенного сертификатом,
- или самого сертификата.
- 
-\end_layout
-
-\begin_layout Standard
-Вторые содержат дополнительную информацию, которая может быть использована
- в прикладном программном обеспечении пользователем сертификата.
- 
-\end_layout
-
-\begin_layout Standard
-К ограничивающим дополнениям относятся: 
-\end_layout
-
-\begin_layout Itemize
-основные ограничения (
-\family typewriter
-Basic Constraints
-\family default
-); 
-\end_layout
-
-\begin_layout Itemize
-назначение ключа (
-\family typewriter
-Key Usage
-\family default
-);
-\end_layout
-
-\begin_layout Itemize
-расширенное назначение ключа (
-\family typewriter
-Extended Key Usage
-\family default
-);
-\end_layout
-
-\begin_layout Itemize
-политики применения сертификата (
-\family typewriter
-Certificates Policies, Policy Mappings
-\family default
-,
-\family typewriter
- Policy Constraints
-\family default
-); 
-\end_layout
-
-\begin_layout Itemize
-ограничения на имена (
-\family typewriter
-Name Constraints
-\family default
-).
-\end_layout
-
-\begin_layout --Separator--
-
-\end_layout
-
-\begin_layout Standard
-К информационным дополнениям относятся:
-\end_layout
-
-\begin_layout Itemize
-идентификаторы ключей (
-\family typewriter
-Subject Key Identifier
-\family default
-, 
-\family typewriter
-Authority Key Identifier
-\family default
-); 
-\end_layout
-
-\begin_layout Itemize
-альтернативные имена (
-\family typewriter
-Subject Alternative Name
-\family default
-, 
-\family typewriter
-Issuer Alternative Name
-\family default
-); 
-\end_layout
-
-\begin_layout Itemize
-пункт распространения списка аннулированных сертификатов (
-\family typewriter
-CRL Distribution Point
-\family default
-, 
-\family typewriter
-Issuing Distribution Point
-\family default
-);
-\end_layout
-
-\begin_layout Itemize
-способ доступа к информации УЦ (
-\family typewriter
-Authority Access Info
-\family default
-).
- 
-\end_layout
-
-\begin_layout --Separator--
-
-\end_layout
-
-\begin_layout Standard
-Также стандарт открытых ключей X509v3 позволяет создавать пользовательские
- дополнения и использовать их в сертификатах.
  
 \end_layout
 
