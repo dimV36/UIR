@@ -1059,8 +1059,8 @@ lefthyphenmin=3
 \end_layout
 
 \begin_layout Standard
-Пояснительная записка к дипломному проекту: 130 страниц, 7 приложений, 15
- рисунков, 1 таблица, список литературы из 20 наименований.
+Пояснительная записка к дипломному проекту: 124 страницы, 7 приложений,
+ 15 рисунков, 1 таблица, список литературы из 20 наименования.
 \end_layout
 
 \begin_layout Standard
@@ -17079,9 +17079,9 @@ selinuxContext
 \end_layout
 
 \begin_layout Standard
-Для автоматизации процесса выбора сертификатов использовался механизм многоэкзем
-плярности директорий, позволяющий изолировать файлы и директории клиентов
- разного уровня.
+Для автоматизации процесса создания сертификатов использовался механизм
+ многоэкземплярности директорий, позволяющий изолировать файлы и директории
+ клиентов разного уровня.
  Модуль PAM 
 \family typewriter
 pam_namespace
@@ -21452,1431 +21452,279 @@ status collapsed
 
 \begin_layout Plain Layout
 
-*** a/contrib/sslinfo/sslinfo--1.0.sql
+--- postgresql-9.3.4/contrib/sslinfo/sslinfo.c	2014-03-17 23:35:47.000000000
+ +0400
 \end_layout
 
 \begin_layout Plain Layout
 
---- b/contrib/sslinfo/sslinfo--1.0.sql
++++ postgresql-9.3.4/contrib/sslinfo/sslinfo.c	2014-04-07 10:52:04.004629335
+ +0400
 \end_layout
 
 \begin_layout Plain Layout
 
-***************
+@@ -17,6 +17,7 @@
 \end_layout
 
 \begin_layout Plain Layout
 
-*** 38,40 **** LANGUAGE C STRICT;
-\end_layout
-
-\begin_layout Plain Layout
-
---- 38,56 ----
-\end_layout
-
-\begin_layout Plain Layout
-
-  CREATE FUNCTION ssl_issuer_dn() RETURNS text
-\end_layout
-
-\begin_layout Plain Layout
-
-  AS 'MODULE_PATHNAME', 'ssl_issuer_dn'
-\end_layout
-
-\begin_layout Plain Layout
-
-  LANGUAGE C STRICT;
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 
-\end_layout
-
-\begin_layout Plain Layout
-
-+ CREATE OR REPLACE FUNCTION ssl_get_extension_value(text) RETURNS text
-\end_layout
-
-\begin_layout Plain Layout
-
-+ AS 'MODULE_PATHNAME', 'ssl_get_extension_value'
-\end_layout
-
-\begin_layout Plain Layout
-
-+ LANGUAGE C STRICT;
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 
-\end_layout
-
-\begin_layout Plain Layout
-
-+ CREATE OR REPLACE FUNCTION ssl_is_critical_extension(text) RETURNS boolean
-\end_layout
-
-\begin_layout Plain Layout
-
-+ AS 'MODULE_PATHNAME', 'ssl_is_critical_extension'
-\end_layout
-
-\begin_layout Plain Layout
-
-+ LANGUAGE C STRICT;
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 
-\end_layout
-
-\begin_layout Plain Layout
-
-+ CREATE OR REPLACE FUNCTION ssl_get_count_of_extensions() RETURNS integer
-\end_layout
-
-\begin_layout Plain Layout
-
-+ AS 'MODULE_PATHNAME', 'ssl_get_count_of_extensions'
-\end_layout
-
-\begin_layout Plain Layout
-
-+ LANGUAGE C STRICT;
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 
-\end_layout
-
-\begin_layout Plain Layout
-
-+ CREATE OR REPLACE FUNCTION ssl_get_extension_names() RETURNS SETOF text
  
 \end_layout
 
 \begin_layout Plain Layout
 
-+ AS 'MODULE_PATHNAME', 'ssl_get_extension_names'
+ #include <openssl/x509.h>
 \end_layout
 
 \begin_layout Plain Layout
 
-+ LANGUAGE C STRICT;
+ #include <openssl/asn1.h>
 \end_layout
 
 \begin_layout Plain Layout
 
-
-\backslash
- No newline at end of file
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
- No newline at end of file
-\end_layout
-
-\begin_layout Plain Layout
-
-*** a/contrib/sslinfo/sslinfo--unpackaged--1.0.sql
-\end_layout
-
-\begin_layout Plain Layout
-
---- b/contrib/sslinfo/sslinfo--unpackaged--1.0.sql
-\end_layout
-
-\begin_layout Plain Layout
-
-***************
-\end_layout
-
-\begin_layout Plain Layout
-
-*** 11,16 **** ALTER EXTENSION sslinfo ADD function ssl_issuer_field(text);
-\end_layout
-
-\begin_layout Plain Layout
-
---- 11,21 ----
-\end_layout
-
-\begin_layout Plain Layout
-
-  ALTER EXTENSION sslinfo ADD function ssl_client_dn();
-\end_layout
-
-\begin_layout Plain Layout
-
-  ALTER EXTENSION sslinfo ADD function ssl_issuer_dn();
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-+ ALTER EXTENSION sslinfo ADD function ssl_get_extension_value();
-\end_layout
-
-\begin_layout Plain Layout
-
-+ ALTER EXTENSION sslinfo ADD function ssl_is_critical_extension();
-\end_layout
-
-\begin_layout Plain Layout
-
-+ ALTER EXTENSION sslinfo ADD function ssl_count_of_extensions();
-\end_layout
-
-\begin_layout Plain Layout
-
-+ ALTER EXTENSION sslinfo ADD function ssl_get_extension_names();
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 
-\end_layout
-
-\begin_layout Plain Layout
-
-  -- These functions were not in 9.0:
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-  CREATE FUNCTION ssl_version() RETURNS text
-\end_layout
-
-\begin_layout Plain Layout
-
-*** a/contrib/sslinfo/sslinfo.c
-\end_layout
-
-\begin_layout Plain Layout
-
---- b/contrib/sslinfo/sslinfo.c
-\end_layout
-
-\begin_layout Plain Layout
-
-***************
-\end_layout
-
-\begin_layout Plain Layout
-
-*** 5,10 ****
-\end_layout
-
-\begin_layout Plain Layout
-
---- 5,12 ----
-\end_layout
-
-\begin_layout Plain Layout
-
-   * This file is distributed under BSD-style license.
-\end_layout
-
-\begin_layout Plain Layout
-
-   *
-\end_layout
-
-\begin_layout Plain Layout
-
-   * contrib/sslinfo/sslinfo.c
-\end_layout
-
-\begin_layout Plain Layout
-
-+  * 
-\end_layout
-
-\begin_layout Plain Layout
-
-+  * Extension functions written by Dmitry Voronin carriingfate92@yandex.ru,
- CNIIEISU.
-\end_layout
-
-\begin_layout Plain Layout
-
-   */
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-  #include "postgres.h"
-\end_layout
-
-\begin_layout Plain Layout
-
-***************
-\end_layout
-
-\begin_layout Plain Layout
-
-*** 14,31 ****
-\end_layout
-
-\begin_layout Plain Layout
-
-  #include "miscadmin.h"
-\end_layout
-
-\begin_layout Plain Layout
-
-  #include "utils/builtins.h"
-\end_layout
-
-\begin_layout Plain Layout
-
-  #include "mb/pg_wchar.h"
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-  #include <openssl/x509.h>
-\end_layout
-
-\begin_layout Plain Layout
-
-  #include <openssl/asn1.h>
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-  PG_MODULE_MAGIC;
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-! static Datum X509_NAME_field_to_text(X509_NAME *name, text *fieldName);
-\end_layout
-
-\begin_layout Plain Layout
-
-! static Datum X509_NAME_to_text(X509_NAME *name);
-\end_layout
-
-\begin_layout Plain Layout
-
-! static Datum ASN1_STRING_to_text(ASN1_STRING *str);
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-  /*
-\end_layout
-
-\begin_layout Plain Layout
-
-   * Indicates whether current session uses SSL
-\end_layout
-
-\begin_layout Plain Layout
-
---- 16,49 ----
-\end_layout
-
-\begin_layout Plain Layout
-
-  #include "miscadmin.h"
-\end_layout
-
-\begin_layout Plain Layout
-
-  #include "utils/builtins.h"
-\end_layout
-
-\begin_layout Plain Layout
-
-  #include "mb/pg_wchar.h"
-\end_layout
-
-\begin_layout Plain Layout
-
-+ #include "funcapi.h"
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-  #include <openssl/x509.h>
-\end_layout
-
-\begin_layout Plain Layout
-
-  #include <openssl/asn1.h>
-\end_layout
-
-\begin_layout Plain Layout
-
-+ #include <openssl/x509v3.h>
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-  PG_MODULE_MAGIC;
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-! Datum		ssl_is_used(PG_FUNCTION_ARGS);
-\end_layout
-
-\begin_layout Plain Layout
-
-! Datum		ssl_version(PG_FUNCTION_ARGS);
-\end_layout
-
-\begin_layout Plain Layout
-
-! Datum		ssl_cipher(PG_FUNCTION_ARGS);
-\end_layout
-
-\begin_layout Plain Layout
-
-! Datum		ssl_client_cert_present(PG_FUNCTION_ARGS);
-\end_layout
-
-\begin_layout Plain Layout
-
-! Datum		ssl_client_serial(PG_FUNCTION_ARGS);
-\end_layout
-
-\begin_layout Plain Layout
-
-! Datum		ssl_client_dn_field(PG_FUNCTION_ARGS);
-\end_layout
-
-\begin_layout Plain Layout
-
-! Datum		ssl_issuer_field(PG_FUNCTION_ARGS);
-\end_layout
-
-\begin_layout Plain Layout
-
-! Datum		ssl_client_dn(PG_FUNCTION_ARGS);
-\end_layout
-
-\begin_layout Plain Layout
-
-! Datum		ssl_issuer_dn(PG_FUNCTION_ARGS);
-\end_layout
-
-\begin_layout Plain Layout
-
-! Datum		X509_NAME_field_to_text(X509_NAME *name, text *fieldName);
-\end_layout
-
-\begin_layout Plain Layout
-
-! Datum		X509_NAME_to_text(X509_NAME *name);
-\end_layout
-
-\begin_layout Plain Layout
-
-! Datum		ASN1_STRING_to_text(ASN1_STRING *str);
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-+ X509_EXTENSION	*get_extension(X509* certificate, char *name);
-\end_layout
-
-\begin_layout Plain Layout
-
-+ Datum 		ssl_get_extension_value(PG_FUNCTION_ARGS);
-\end_layout
-
-\begin_layout Plain Layout
-
-+ Datum		ssl_is_critical_extension(PG_FUNCTION_ARGS);
-\end_layout
-
-\begin_layout Plain Layout
-
-+ Datum 		ssl_get_count_of_extensions(PG_FUNCTION_ARGS);
-\end_layout
-
-\begin_layout Plain Layout
-
-+ Datum		ssl_get_extension_names(PG_FUNCTION_ARGS);
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-  /*
-\end_layout
-
-\begin_layout Plain Layout
-
-   * Indicates whether current session uses SSL
-\end_layout
-
-\begin_layout Plain Layout
-
-***************
-\end_layout
-
-\begin_layout Plain Layout
-
-*** 42,48 **** ssl_is_used(PG_FUNCTION_ARGS)
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-  /*
-\end_layout
-
-\begin_layout Plain Layout
-
-!  * Returns SSL version currently in use.
-\end_layout
-
-\begin_layout Plain Layout
-
-   */
-\end_layout
-
-\begin_layout Plain Layout
-
-  PG_FUNCTION_INFO_V1(ssl_version);
-\end_layout
-
-\begin_layout Plain Layout
-
-  Datum
-\end_layout
-
-\begin_layout Plain Layout
-
---- 60,66 ----
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-  /*
-\end_layout
-
-\begin_layout Plain Layout
-
-!  * Returns SSL cipher currently in use.
-\end_layout
-
-\begin_layout Plain Layout
-
-   */
-\end_layout
-
-\begin_layout Plain Layout
-
-  PG_FUNCTION_INFO_V1(ssl_version);
-\end_layout
-
-\begin_layout Plain Layout
-
-  Datum
-\end_layout
-
-\begin_layout Plain Layout
-
-***************
-\end_layout
-
-\begin_layout Plain Layout
-
-*** 68,74 **** ssl_cipher(PG_FUNCTION_ARGS)
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-  /*
-\end_layout
-
-\begin_layout Plain Layout
-
-!  * Indicates whether current client provided a certificate
-\end_layout
-
-\begin_layout Plain Layout
-
-   *
-\end_layout
-
-\begin_layout Plain Layout
-
-   * Function has no arguments.
-  Returns bool.
-  True if current session
-\end_layout
-
-\begin_layout Plain Layout
-
-   * is SSL session and client certificate is verified, otherwise false.
-\end_layout
-
-\begin_layout Plain Layout
-
---- 86,92 ----
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\end_layout
-
-\begin_layout Plain Layout
-
-  /*
-\end_layout
-
-\begin_layout Plain Layout
-
-!  * Indicates whether current client have provided a certificate
-\end_layout
-
-\begin_layout Plain Layout
-
-   *
-\end_layout
-
-\begin_layout Plain Layout
-
-   * Function has no arguments.
-  Returns bool.
-  True if current session
-\end_layout
-
-\begin_layout Plain Layout
-
-   * is SSL session and client certificate is verified, otherwise false.
-\end_layout
-
-\begin_layout Plain Layout
-
-***************
-\end_layout
-
-\begin_layout Plain Layout
-
-*** 129,135 **** ssl_client_serial(PG_FUNCTION_ARGS)
-\end_layout
-
-\begin_layout Plain Layout
-
-   * Returns Datum, which can be directly returned from a C language SQL
-\end_layout
-
-\begin_layout Plain Layout
-
-   * function.
-\end_layout
-
-\begin_layout Plain Layout
-
-   */
-\end_layout
-
-\begin_layout Plain Layout
-
-! static Datum
-\end_layout
-
-\begin_layout Plain Layout
-
-  ASN1_STRING_to_text(ASN1_STRING *str)
-\end_layout
-
-\begin_layout Plain Layout
-
-  {
-\end_layout
-
-\begin_layout Plain Layout
-
-  	BIO		   *membuf;
-\end_layout
-
-\begin_layout Plain Layout
-
---- 147,153 ----
-\end_layout
-
-\begin_layout Plain Layout
-
-   * Returns Datum, which can be directly returned from a C language SQL
-\end_layout
-
-\begin_layout Plain Layout
-
-   * function.
-\end_layout
-
-\begin_layout Plain Layout
-
-   */
-\end_layout
-
-\begin_layout Plain Layout
-
-! Datum
-\end_layout
-
-\begin_layout Plain Layout
-
-  ASN1_STRING_to_text(ASN1_STRING *str)
-\end_layout
-
-\begin_layout Plain Layout
-
-  {
-\end_layout
-
-\begin_layout Plain Layout
-
-  	BIO		   *membuf;
-\end_layout
-
-\begin_layout Plain Layout
-
-***************
-\end_layout
-
-\begin_layout Plain Layout
-
-*** 148,154 **** ASN1_STRING_to_text(ASN1_STRING *str)
-\end_layout
-
-\begin_layout Plain Layout
-
-  	nullterm = '
-\backslash
-0';
-\end_layout
-
-\begin_layout Plain Layout
-
-  	BIO_write(membuf, &nullterm, 1);
-\end_layout
-
-\begin_layout Plain Layout
-
-  	size = BIO_get_mem_data(membuf, &sp);
-\end_layout
-
-\begin_layout Plain Layout
-
-! 	dp = pg_any_to_server(sp, size - 1, PG_UTF8);
-\end_layout
-
-\begin_layout Plain Layout
-
-  	result = cstring_to_text(dp);
-\end_layout
-
-\begin_layout Plain Layout
-
-  	if (dp != sp)
-\end_layout
-
-\begin_layout Plain Layout
-
-  		pfree(dp);
-\end_layout
-
-\begin_layout Plain Layout
-
---- 166,175 ----
-\end_layout
-
-\begin_layout Plain Layout
-
-  	nullterm = '
-\backslash
-0';
-\end_layout
-
-\begin_layout Plain Layout
-
-  	BIO_write(membuf, &nullterm, 1);
-\end_layout
-
-\begin_layout Plain Layout
-
-  	size = BIO_get_mem_data(membuf, &sp);
-\end_layout
-
-\begin_layout Plain Layout
-
-! 	dp = (char *) pg_do_encoding_conversion((unsigned char *) sp,
-\end_layout
-
-\begin_layout Plain Layout
-
-! 											size - 1,
-\end_layout
-
-\begin_layout Plain Layout
-
-! 											PG_UTF8,
-\end_layout
-
-\begin_layout Plain Layout
-
-! 											GetDatabaseEncoding());
-\end_layout
-
-\begin_layout Plain Layout
-
-  	result = cstring_to_text(dp);
-\end_layout
-
-\begin_layout Plain Layout
-
-  	if (dp != sp)
-\end_layout
-
-\begin_layout Plain Layout
-
-  		pfree(dp);
-\end_layout
-
-\begin_layout Plain Layout
-
-***************
-\end_layout
-
-\begin_layout Plain Layout
-
-*** 170,176 **** ASN1_STRING_to_text(ASN1_STRING *str)
-\end_layout
-
-\begin_layout Plain Layout
-
-   * Returns result of ASN1_STRING_to_text applied to appropriate
-\end_layout
-
-\begin_layout Plain Layout
-
-   * part of name
-\end_layout
-
-\begin_layout Plain Layout
-
-   */
-\end_layout
-
-\begin_layout Plain Layout
-
-! static Datum
-\end_layout
-
-\begin_layout Plain Layout
-
-  X509_NAME_field_to_text(X509_NAME *name, text *fieldName)
-\end_layout
-
-\begin_layout Plain Layout
-
-  {
-\end_layout
-
-\begin_layout Plain Layout
-
-  	char	   *string_fieldname;
-\end_layout
-
-\begin_layout Plain Layout
-
---- 191,197 ----
-\end_layout
-
-\begin_layout Plain Layout
-
-   * Returns result of ASN1_STRING_to_text applied to appropriate
-\end_layout
-
-\begin_layout Plain Layout
-
-   * part of name
-\end_layout
-
-\begin_layout Plain Layout
-
-   */
-\end_layout
-
-\begin_layout Plain Layout
-
-! Datum
-\end_layout
-
-\begin_layout Plain Layout
-
-  X509_NAME_field_to_text(X509_NAME *name, text *fieldName)
-\end_layout
-
-\begin_layout Plain Layout
-
-  {
-\end_layout
-
-\begin_layout Plain Layout
-
-  	char	   *string_fieldname;
-\end_layout
-
-\begin_layout Plain Layout
-
-***************
-\end_layout
-
-\begin_layout Plain Layout
-
-*** 275,281 **** ssl_issuer_field(PG_FUNCTION_ARGS)
-\end_layout
-
-\begin_layout Plain Layout
-
-   * Returns: text datum which contains string representation of
-\end_layout
-
-\begin_layout Plain Layout
-
-   * X509_NAME
-\end_layout
-
-\begin_layout Plain Layout
-
-   */
-\end_layout
-
-\begin_layout Plain Layout
-
-! static Datum
-\end_layout
-
-\begin_layout Plain Layout
-
-  X509_NAME_to_text(X509_NAME *name)
-\end_layout
-
-\begin_layout Plain Layout
-
-  {
-\end_layout
-
-\begin_layout Plain Layout
-
-  	BIO		   *membuf = BIO_new(BIO_s_mem());
-\end_layout
-
-\begin_layout Plain Layout
-
---- 296,302 ----
-\end_layout
-
-\begin_layout Plain Layout
-
-   * Returns: text datum which contains string representation of
-\end_layout
-
-\begin_layout Plain Layout
-
-   * X509_NAME
-\end_layout
-
-\begin_layout Plain Layout
-
-   */
-\end_layout
-
-\begin_layout Plain Layout
-
-! Datum
-\end_layout
-
-\begin_layout Plain Layout
-
-  X509_NAME_to_text(X509_NAME *name)
-\end_layout
-
-\begin_layout Plain Layout
-
-  {
-\end_layout
-
-\begin_layout Plain Layout
-
-  	BIO		   *membuf = BIO_new(BIO_s_mem());
-\end_layout
-
-\begin_layout Plain Layout
-
-***************
-\end_layout
-
-\begin_layout Plain Layout
-
-*** 310,316 **** X509_NAME_to_text(X509_NAME *name)
-\end_layout
-
-\begin_layout Plain Layout
-
-  	nullterm = '
-\backslash
-0';
-\end_layout
-
-\begin_layout Plain Layout
-
-  	BIO_write(membuf, &nullterm, 1);
-\end_layout
-
-\begin_layout Plain Layout
-
-  	size = BIO_get_mem_data(membuf, &sp);
-\end_layout
-
-\begin_layout Plain Layout
-
-! 	dp = pg_any_to_server(sp, size - 1, PG_UTF8);
-\end_layout
-
-\begin_layout Plain Layout
-
-  	result = cstring_to_text(dp);
-\end_layout
-
-\begin_layout Plain Layout
-
-  	if (dp != sp)
-\end_layout
-
-\begin_layout Plain Layout
-
-  		pfree(dp);
-\end_layout
-
-\begin_layout Plain Layout
-
---- 331,340 ----
-\end_layout
-
-\begin_layout Plain Layout
-
-  	nullterm = '
-\backslash
-0';
-\end_layout
-
-\begin_layout Plain Layout
-
-  	BIO_write(membuf, &nullterm, 1);
-\end_layout
-
-\begin_layout Plain Layout
-
-  	size = BIO_get_mem_data(membuf, &sp);
-\end_layout
-
-\begin_layout Plain Layout
-
-! 	dp = (char *) pg_do_encoding_conversion((unsigned char *) sp,
-\end_layout
-
-\begin_layout Plain Layout
-
-! 											size - 1,
-\end_layout
-
-\begin_layout Plain Layout
-
-! 											PG_UTF8,
-\end_layout
-
-\begin_layout Plain Layout
-
-! 											GetDatabaseEncoding());
-\end_layout
-
-\begin_layout Plain Layout
-
-  	result = cstring_to_text(dp);
-\end_layout
-
-\begin_layout Plain Layout
-
-  	if (dp != sp)
-\end_layout
-
-\begin_layout Plain Layout
-
-  		pfree(dp);
-\end_layout
-
-\begin_layout Plain Layout
-
-***************
-\end_layout
-
-\begin_layout Plain Layout
-
-*** 356,358 **** ssl_issuer_dn(PG_FUNCTION_ARGS)
-\end_layout
-
-\begin_layout Plain Layout
-
---- 380,525 ----
-\end_layout
-
-\begin_layout Plain Layout
-
-  		PG_RETURN_NULL();
-\end_layout
-
-\begin_layout Plain Layout
-
-  	return X509_NAME_to_text(X509_get_issuer_name(MyProcPort->peer));
-\end_layout
-
-\begin_layout Plain Layout
-
-  }
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 
-\end_layout
-
-\begin_layout Plain Layout
-
-+ X509_EXTENSION *get_extension(X509* certificate, char *name) {
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	int 			extension_nid = 0;
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	int 			locate = 0;
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	extension_nid = OBJ_sn2nid(name);
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	if (extension_nid == NID_undef) {
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 		extension_nid = OBJ_ln2nid(name);
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 		if (extension_nid == NID_undef) 
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 			return NULL;
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	}
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	locate = X509_get_ext_by_NID(certificate, extension_nid,  -1);
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	return X509_get_ext(certificate, locate);
-\end_layout
-
-\begin_layout Plain Layout
-
-+ }
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 
++#include <openssl/x509v3.h>
 \end_layout
 
 \begin_layout Plain Layout
 
-+ /* Returns value of extension.
  
 \end_layout
 
 \begin_layout Plain Layout
 
-+  * 
-\end_layout
-
-\begin_layout Plain Layout
-
-+  * This function returns value of extension by short name in client certificat
-e.
  
 \end_layout
 
 \begin_layout Plain Layout
 
-+  * 
+ PG_MODULE_MAGIC;
 \end_layout
 
 \begin_layout Plain Layout
 
-+  * Returns text datum.
+@@ -34,6 +35,9 @@
+\end_layout
+
+\begin_layout Plain Layout
+
+ Datum		X509_NAME_field_to_text(X509_NAME *name, text *fieldName);
+\end_layout
+
+\begin_layout Plain Layout
+
+ Datum		X509_NAME_to_text(X509_NAME *name);
+\end_layout
+
+\begin_layout Plain Layout
+
+ Datum		ASN1_STRING_to_text(ASN1_STRING *str);
+\end_layout
+
+\begin_layout Plain Layout
+
++Datum 		ssl_get_extension_by_name(PG_FUNCTION_ARGS);
+\end_layout
+
+\begin_layout Plain Layout
+
++Datum 		ssl_is_critical_extension(PG_FUNCTION_ARGS);
+\end_layout
+
+\begin_layout Plain Layout
+
++Datum 		ssl_get_extensions_count(PG_FUNCTION_ARGS);
+\end_layout
+
+\begin_layout Plain Layout
+
  
 \end_layout
 
 \begin_layout Plain Layout
 
-+  */
+ 
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 
+ /*
 \end_layout
 
 \begin_layout Plain Layout
 
-+ PG_FUNCTION_INFO_V1(ssl_get_extension_value);
+@@ -371,3 +375,78 @@
 \end_layout
 
 \begin_layout Plain Layout
 
-+ Datum
+ 		PG_RETURN_NULL();
 \end_layout
 
 \begin_layout Plain Layout
 
-+ ssl_get_extension_value(PG_FUNCTION_ARGS) {	
+ 	return X509_NAME_to_text(X509_get_issuer_name(MyProcPort->peer));
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	X509 			*certificate = MyProcPort -> peer;
+ }
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	X509_EXTENSION 		*extension = NULL;
++
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	char 			*extension_name = text_to_cstring(PG_GETARG_TEXT_P(0));
++
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	BIO 			*bio = NULL;
++X509_EXTENSION *get_extension(X509* certificate, char *name) {
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	char 			*value = NULL;
++	int extension_nid = OBJ_sn2nid(name);
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	char 			nullterm = '
-\backslash
-0';
++	if (0 == extension_nid) {
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	text 			*result = NULL;
++	    extension_nid = OBJ_ln2nid(name);
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 
++	    if (0 == extension_nid) 
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	if (certificate == NULL)
++		return NULL;
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 		PG_RETURN_NULL();
++	}
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 
++	int locate = X509_get_ext_by_NID(certificate, extension_nid,  -1);
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	extension = get_extension(certificate, extension_name);
++	return X509_get_ext(certificate, locate);
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	if (extension == NULL)
++}
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 		elog(ERROR, "Extension by name 
++
+\end_layout
+
+\begin_layout Plain Layout
+
++
+\end_layout
+
+\begin_layout Plain Layout
+
++PG_FUNCTION_INFO_V1(ssl_get_extension_by_name);
+\end_layout
+
+\begin_layout Plain Layout
+
++Datum
+\end_layout
+
+\begin_layout Plain Layout
+
++ssl_get_extension_by_name(PG_FUNCTION_ARGS)
+\end_layout
+
+\begin_layout Plain Layout
+
++{	
+\end_layout
+
+\begin_layout Plain Layout
+
++	X509 *certificate = MyProcPort -> peer;
+\end_layout
+
+\begin_layout Plain Layout
+
++	char *extension_name = text_to_cstring(PG_GETARG_TEXT_P(0));
+\end_layout
+
+\begin_layout Plain Layout
+
++	X509_EXTENSION *extension = NULL;
+\end_layout
+
+\begin_layout Plain Layout
+
++	BIO *bio = BIO_new(BIO_s_mem());
+\end_layout
+
+\begin_layout Plain Layout
+
++	char *value = NULL;
+\end_layout
+
+\begin_layout Plain Layout
+
++	text *result = NULL;
+\end_layout
+
+\begin_layout Plain Layout
+
++	
+\end_layout
+
+\begin_layout Plain Layout
+
++	if (NULL == certificate)
+\end_layout
+
+\begin_layout Plain Layout
+
++	    PG_RETURN_NULL();
+\end_layout
+
+\begin_layout Plain Layout
+
++	
+\end_layout
+
+\begin_layout Plain Layout
+
++	extension = get_extension(certificate, extension_name);
+\end_layout
+
+\begin_layout Plain Layout
+
++	if (NULL == extension) 
+\end_layout
+
+\begin_layout Plain Layout
+
++	    elog(ERROR, "Extension by name 
 \backslash
 "%s
 \backslash
@@ -22885,162 +21733,139 @@ e.
 
 \begin_layout Plain Layout
 
-+ 
++	
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	bio = BIO_new(BIO_s_mem());
++	char nullterm = '
+\backslash
+0';
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	X509V3_EXT_print(bio, extension, -1, -1);
++	X509V3_EXT_print(bio, extension, -1, -1);
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	BIO_write(bio, &nullterm, 1);
++	BIO_write(bio, &nullterm, 1);
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	BIO_get_mem_data(bio, &value);
++	BIO_get_mem_data(bio, &value);
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 
++	
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	result = cstring_to_text(value);
++	result = cstring_to_text(value);
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	BIO_free(bio);
++	BIO_free(bio);
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 
++	pfree(extension_name);
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	PG_RETURN_TEXT_P(result);
++	
 \end_layout
 
 \begin_layout Plain Layout
 
-+ }
++	PG_RETURN_TEXT_P(result);
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 
++}
 \end_layout
 
 \begin_layout Plain Layout
 
-+ /* Returns status of extension 
++
 \end_layout
 
 \begin_layout Plain Layout
 
-+  * 
++
 \end_layout
 
 \begin_layout Plain Layout
 
-+  * Returns true, if extension is critical and false, if it is not.
++PG_FUNCTION_INFO_V1(ssl_is_critical_extension);
 \end_layout
 
 \begin_layout Plain Layout
 
-+  * 
++Datum
 \end_layout
 
 \begin_layout Plain Layout
 
-+  * Returns bool datum
++ssl_is_critical_extension(PG_FUNCTION_ARGS) {
 \end_layout
 
 \begin_layout Plain Layout
 
-+  */
++	X509 *certificate = MyProcPort -> peer;
 \end_layout
 
 \begin_layout Plain Layout
 
-+ PG_FUNCTION_INFO_V1(ssl_is_critical_extension);
++	char *extension_name = text_to_cstring(PG_GETARG_TEXT_P(0));
 \end_layout
 
 \begin_layout Plain Layout
 
-+ Datum
++	X509_EXTENSION *extension = NULL;
 \end_layout
 
 \begin_layout Plain Layout
 
-+ ssl_is_critical_extension(PG_FUNCTION_ARGS) {
++	
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	X509 			*certificate = MyProcPort -> peer;
++	if (NULL == certificate)
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	X509_EXTENSION 		*extension = NULL;
++	  PG_RETURN_NULL();
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	char 			*extension_name = text_to_cstring(PG_GETARG_TEXT_P(0));
++	
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	int 			critical = 0;
++	extension = get_extension(certificate, extension_name);
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	
++	if (NULL == extension) 
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	if (certificate == NULL)
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 		PG_RETURN_NULL();
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	extension = get_extension(certificate, extension_name);
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	if (extension == NULL) 
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 		elog(ERROR, "Extension name 
++	    elog(ERROR, "Extension name 
 \backslash
 "%s
 \backslash
@@ -23049,357 +21874,194 @@ e.
 
 \begin_layout Plain Layout
 
-+ 	
++	int critical = extension -> critical;
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	critical = X509_EXTENSION_get_critical(extension);
++	
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	PG_RETURN_BOOL(critical);
++	PG_RETURN_BOOL(critical > 0);
 \end_layout
 
 \begin_layout Plain Layout
 
-+ }
++}
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 
++
 \end_layout
 
 \begin_layout Plain Layout
 
-+ /* Returns count of extensions in client certificate
++
 \end_layout
 
 \begin_layout Plain Layout
 
-+  * 
++PG_FUNCTION_INFO_V1(ssl_get_extensions_count);
 \end_layout
 
 \begin_layout Plain Layout
 
-+  * Returns int datum
++Datum
 \end_layout
 
 \begin_layout Plain Layout
 
-+  */
++ssl_get_extensions_count(PG_FUNCTION_ARGS) {
 \end_layout
 
 \begin_layout Plain Layout
 
-+ PG_FUNCTION_INFO_V1(ssl_get_count_of_extensions);
++	X509 *certificate = MyProcPort -> peer;
 \end_layout
 
 \begin_layout Plain Layout
 
-+ Datum
++	
 \end_layout
 
 \begin_layout Plain Layout
 
-+ ssl_get_count_of_extensions(PG_FUNCTION_ARGS) {
++	if (NULL == certificate)
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	X509 			*certificate = MyProcPort -> peer;
++	  PG_RETURN_NULL();
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	
++	
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	if (certificate == NULL)
++	int extension_count = X509_get_ext_count(certificate);
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 		PG_RETURN_NULL();
++	PG_RETURN_INT32(extension_count);	
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	
++}
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	PG_RETURN_INT32(X509_get_ext_count(certificate));
+--- postgresql-9.3.4/contrib/sslinfo/sslinfo--1.0.sql	2014-03-17 23:35:47.000000000
+ +0400
 \end_layout
 
 \begin_layout Plain Layout
 
-+ }
++++ postgresql-9.3.4/contrib/sslinfo/sslinfo--1.0.sql	2014-04-07 10:54:16.242850797
+ +0400
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 
+@@ -38,3 +38,18 @@
 \end_layout
 
 \begin_layout Plain Layout
 
-+ /* Returns short names of extensions in client certificate
+ CREATE FUNCTION ssl_issuer_dn() RETURNS text
 \end_layout
 
 \begin_layout Plain Layout
 
-+  * 
+ AS 'MODULE_PATHNAME', 'ssl_issuer_dn'
 \end_layout
 
 \begin_layout Plain Layout
 
-+  * Returns setof text datum
+ LANGUAGE C STRICT;
 \end_layout
 
 \begin_layout Plain Layout
 
-+  */
++
 \end_layout
 
 \begin_layout Plain Layout
 
-+ PG_FUNCTION_INFO_V1(ssl_get_extension_names);
++CREATE OR REPLACE FUNCTION ssl_get_extension_by_name(text)
 \end_layout
 
 \begin_layout Plain Layout
 
-+ Datum
++RETURNS text AS
 \end_layout
 
 \begin_layout Plain Layout
 
-+ ssl_get_extension_names(PG_FUNCTION_ARGS) {
++'MODULE_PATHNAME', 'ssl_get_extension_by_name'
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	X509				*certificate = MyProcPort -> peer;
++LANGUAGE C STRICT;
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	FuncCallContext 		*funcctx;
++
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	STACK_OF(X509_EXTENSION) 	*extension_stack = NULL;
++CREATE OR REPLACE FUNCTION ssl_is_critical_extension(text)
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	MemoryContext 			oldcontext;
++RETURNS text AS
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	int 				call = 0;
++'MODULE_PATHNAME', 'ssl_is_critical_extension'
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	int 				max_calls = 0;
++LANGUAGE C STRICT;
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	X509_EXTENSION			*extension = NULL;
++
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	ASN1_OBJECT			*object = NULL;
++CREATE OR REPLACE FUNCTION ssl_get_extensions_count()
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	int 				extension_nid = 0;
++RETURNS text AS
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	text*				result = NULL;
++'MODULE_PATHNAME', 'ssl_get_extensions_count'
 \end_layout
 
 \begin_layout Plain Layout
 
-+ 	
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	if (certificate == NULL)
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 		PG_RETURN_NULL();
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	extension_stack = certificate -> cert_info -> extensions;
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	if (extension_stack == NULL) 
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 		PG_RETURN_NULL();
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	if (SRF_IS_FIRSTCALL()) {
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 		funcctx = SRF_FIRSTCALL_INIT();
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 		oldcontext = MemoryContextSwitchTo(funcctx -> multi_call_memory_ctx);
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 		funcctx -> max_calls = X509_get_ext_count(certificate);
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 		MemoryContextSwitchTo(oldcontext);
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	}
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	funcctx = SRF_PERCALL_SETUP();
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	call = funcctx -> call_cntr;
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	max_calls = funcctx -> max_calls;
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	if (call < max_calls) {
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 		extension = sk_X509_EXTENSION_value(extension_stack, call);
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 		object = X509_EXTENSION_get_object(extension);
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 		extension_nid = OBJ_obj2nid(object);
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	    
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 		if (extension_nid == NID_undef)
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 			elog(ERROR, "Unknown extension in certificate");
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	    
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 		result = cstring_to_text(OBJ_nid2sn(extension_nid));
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	    
-\end_layout
-
-\begin_layout Plain Layout
-
-+  		SRF_RETURN_NEXT(funcctx, (Datum) result);
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	}
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 	SRF_RETURN_DONE(funcctx);
-\end_layout
-
-\begin_layout Plain Layout
-
-+ }
-\end_layout
-
-\begin_layout Plain Layout
-
-+ 
++LANGUAGE C STRICT;
 \end_layout
 
 \end_inset
