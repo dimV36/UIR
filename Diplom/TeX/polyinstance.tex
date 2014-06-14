@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[tikz,convert]{standalone}
 \usepackage[utf8]{inputenc}
 
 \usepackage[T2A]{fontenc}
@@ -23,7 +23,7 @@
   % Define nodes in a matrix
   \matrix [column sep=3mm, row sep=5mm] {
                       & \node (null1) {}; & \node (null2) {}; & \node (null3) {}; & \node [block, text width = 23em] (instance1) {user\_u:object\_r:user\_home\_dir\_t:s0-s1\_user};                                              & \\
-                      & \node [block, fill = red!20] (home) {home}; & \node [block, fill = red!20] (user) {user}; & \node [block] (userinst) {user.inst}; & \node [block, text width = 23em, fill = red!20] (instance2) {user\_u:object\_r:user\_home\_dir\_t:s0-s0\_user};    & \\
+                      & \node [block, fill = blue!20] (home) {home}; & \node [block, fill = blue!20] (user) {user}; & \node [block] (userinst) {user.inst}; & \node [block, text width = 23em, fill = blue!20] (instance2) {user\_u:object\_r:user\_home\_dir\_t:s0-s0\_user};    & \\
                       & \node (null4) {}; & \node (null5) {}; & \node (null6) {}; & \node [block, text width = 23em] (instance3) {user\_u:object\_r:user\_home\_dir\_t:s1-s1\_user};                                              & \\
   };
   \begin{scope} [every path/.style=line]
@@ -35,22 +35,5 @@
   \end{scope}
   
 \end{tikzpicture}
-
-\begin{table}[t]
-
-\begin{tabular}{|r|c|l|} 
-% горизонтальный разделитель 
-\hline
-\No & Head & Head \\ \hline
-1 & Text 1 & Text \\ \hline
-2 & Text 3 & Text 4 \\ \hline
-\end{tabular}
-
-% название таблицы
-\caption{Table 1}
-
-% метка таблицы
-\label{table1}
-\end{table}
 
 \end{document}
