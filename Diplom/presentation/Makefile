@@ -2,21 +2,19 @@
 
 all: tex pdf view
 
-tex: diplom.tex
+tex: presentation.tex
 
-pdf: diplom.pdf
+pdf: presentation.pdf
 
-view: diplom.pdf
-	okular ../pdf/diplom.pdf
-#	evince diplom.pdf
+view: presentation.pdf
+#	okular ../pdf/presentation.pdf
 
-
-diplom.tex: diplom.txt Makefile
-	wiki2beamer diplom.txt > diplom.tex
+presentation.tex: presentation.txt Makefile
+	wiki2beamer presentation.txt > presentation.tex
 	
-diplom.pdf: diplom.tex Makefile
-	pdflatex diplom.tex 
-	cp diplom.pdf ../pdf/diplom.pdf
+presentation.pdf: presentation.tex Makefile
+	pdflatex presentation.tex 
+	cp presentation.pdf ../pdf/presentation.pdf
 	
 clean:
-	rm diplom.aux diplom.log diplom.nav diplom.out diplom.snm diplom.tex diplom.toc diplom.vrb diplom.pdf
+	rm presentation.aux presentation.log presentation.nav presentation.out presentation.snm presentation.tex presentation.toc presentation.pdf
