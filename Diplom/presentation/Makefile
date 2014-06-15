@@ -14,7 +14,7 @@ presentation.tex: presentation.txt Makefile
 	
 presentation.pdf: presentation.tex Makefile
 	pdflatex presentation.tex 
-	cp presentation.pdf ../pdf/presentation.pdf
+#	cp presentation.pdf ../pdf/presentation.pdf
 	
 clean:
 	rm presentation.aux presentation.log presentation.nav presentation.out presentation.snm presentation.tex presentation.toc presentation.pdf
