@@ -1,0 +1,618 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language russian
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1cm
+\topmargin 1cm
+\rightmargin 1cm
+\bottommargin 1cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Subsection*
+Слайд 1
+\end_layout
+
+\begin_layout Standard
+Для хранения и обработки информации в современном обществе используются
+ информационные системы.
+ Информация, которой они оперируют, как правило, обладает определённым уровнем
+ конфиденциальности.
+ Это объясняет необходимость систем контроля доступа, позволяющих конкретному
+ субъекту (пользователю) получить допуск к объекту (информации) соответствующего
+ уровня.
+ Получение доступа в некоторых информационных системах осуществляется путём
+ предъявления сертификата открытого ключа --- цифрового удостоверения личности
+ субъекта.
+ Использование одного сертификата разрешает субъекту доступ ко всей информации.
+ Для обеспечения доступа субъекта к объектам разного уровня конфиденциальности,
+ а не ко всей информации в целом, необходимо несколько сертификатов соответствую
+щих уровней, доступных субъекту.
+ Ввиду того, что уровней может быть много, то необходима автоматизация процесса
+ выбора сертификата.
+ Поэтому тема данного дипломного проекта является 
+\series bold
+актуальной
+\series default
+.
+\end_layout
+
+\begin_layout Standard
+В данной дипломной работе предлагается реализация механизма выбора сертификата
+ открытого ключа пользователя на основании его контекста безопасности.
+ 
+\end_layout
+
+\begin_layout Standard
+При реализации будет использована инфраструктура открытых ключей (англ.
+ 
+\emph on
+PKI
+\emph default
+), один из принципов построения которой предполагает наличие удостоверяющего
+ центра, выпускающего сертификаты открытых ключей пользователей, тем самым
+ удостоверяя их личность.
+ В каждом из сертификатов в дополнительном атрибуте будет содержаться значение
+ контекста безопасности.
+ 
+\end_layout
+
+\begin_layout Standard
+В качестве поставщика метки безопасности будет использоваться SELinux ---
+ реализация системы мандатного контроля доступа, которая используется в
+ некоторых дистрибутивах Linux (например, Fedora) вместе с дискреционным
+ механизмом контроля доступа.
+ С помощью специально описанных политик регулируется доступ субъекта (пользовате
+ля) к объекту (файлу, директории и т.д.).
+ SELinux может работать в многоуровневом режиме (англ.
+ 
+\emph on
+MLS
+\emph default
+).
+ Этот режим основан на принципе, что субъект может иметь доступ к объекту,
+ если уровень безопасности субъекта соответствует уровню безопасности объекта.
+ 
+\end_layout
+
+\begin_layout Standard
+Автоматизация процесса выбора сертификата будет осуществлена с использованием
+ многоэкземплярности директорий ОС семейства Linux --- механизма создания
+ независимых копий.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Научная новизна
+\series default
+ данной работы определяется в выборе сертификата открытого ключа пользователя
+ на основании его контекста безопасности.
+\end_layout
+
+\begin_layout Standard
+В работе показано применение предложенного механизма для аутентификации
+ клиентов СУБД PostgreSQL.
+ Это определяет 
+\series bold
+практическую значимость
+\series default
+ дипломной работы.
+\end_layout
+
+\begin_layout Subsection*
+Слайд 2
+\end_layout
+
+\begin_layout Standard
+Таким образом, 
+\series bold
+целью
+\series default
+ данной работы является разработка механизма автоматического выбора сертификата
+ пользователя на основании его контекста безопасности.
+ Для достижения поставленной цели были сформулированы следующие 
+\series bold
+задачи
+\series default
+:
+\end_layout
+
+\begin_layout Enumerate
+Изучить принципы построения инфраструктуры открытых ключей PKI;
+\end_layout
+
+\begin_layout Enumerate
+Исследовать современные средства выбора сертификата открытого ключа;
+\end_layout
+
+\begin_layout Enumerate
+Разработать способ создания сертификатов с контекстом безопасности пользователя;
+\end_layout
+
+\begin_layout Enumerate
+Автоматизировать выбор сертификатов, используя механизм многоэкземплярности;
+\end_layout
+
+\begin_layout Enumerate
+Показать применение разработанного механизма для аутентификации клиентов
+ СУБД PostgreSQL.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Реализация данного механизма произведена на дистрибутиве Linux Fedora 20.
+\end_layout
+
+\begin_layout Subsection*
+Слайд 3
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Инфраструктура открытых ключей
+\series default
+ (
+\emph on
+PKI
+\emph default
+, 
+\emph on
+Public Key Infrastructure
+\emph default
+) --- набор средств (технических, материальных, людских и т.
+ д.), распределенных служб и компонентов, в совокупности используемых для
+ поддержки криптозадач на основе закрытого и открытого ключей.
+\end_layout
+
+\begin_layout Standard
+В основе PKI лежит использование криптографической системы с открытым ключом
+ и несколько основных принципов:
+\end_layout
+
+\begin_layout Itemize
+закрытый ключ известен только его владельцу; 
+\end_layout
+
+\begin_layout Itemize
+удостоверяющий центр создает сертификат открытого ключа, таким образом удостовер
+яя этот ключ; 
+\end_layout
+
+\begin_layout Itemize
+никто не доверяет друг другу, но все доверяют удостоверяющему центру; 
+\end_layout
+
+\begin_layout Itemize
+удостоверяющий центр подтверждает или опровергает принадлежность открытого
+ ключа заданному лицу, которое владеет соответствующим закрытым ключом.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+PKI реализуется в модели клиент-сервер, то есть проверка какой-либо информации,
+ предоставляемой инфраструктурой может происходить только по инициативе
+ пользователя.
+\end_layout
+
+\begin_layout Standard
+Основные компоненты PKI:
+\end_layout
+
+\begin_layout Itemize
+Удостоверяющий центр (УЦ) является основной структурой, формирующей цифровые
+ сертификаты подчиненных центров сертификации и конечных пользователей.
+ УЦ является главным управляющим компонентом PKI.
+ Он является доверенной стороной.
+ 
+\end_layout
+
+\begin_layout Itemize
+Сертификат открытого ключа (чаще всего просто сертификат) — это данные пользоват
+еля и его открытый ключ, скрепленные подписью удостоверяющего центра.
+ Выпуская сертификат открытого ключа, удостоверяющий центр тем самым подтверждае
+т, что лицо, поименованное в сертификате, владеет секретным ключом, который
+ соответствует этому открытому ключу.
+ 
+\end_layout
+
+\begin_layout Itemize
+Репозиторий — хранилище, содержащее сертификаты и списки отозванных сертификатов
+ (СОС) и служащее для распространения этих объектов среди пользователей.
+ 
+\end_layout
+
+\begin_layout Itemize
+Архив сертификатов — хранилище всех изданных когда-либо сертификатов (включая
+ сертификаты с закончившимся сроком действия).
+ Архив используется для проверки подлинности электронной подписи, которой
+ заверялись документы.
+ 
+\end_layout
+
+\begin_layout Itemize
+Конечные пользователи — пользователи, приложения или системы, являющиеся
+ владельцами сертификата и использующие инфраструктуру управления открытыми
+ ключами.
+\end_layout
+
+\begin_layout Subsection*
+Слайд 4
+\end_layout
+
+\begin_layout Standard
+В дипломной работе производится анализ современных подходов к выбору сертификата.
+ Как правило, сертификаты выбираются ПО автоматически на основе дополнений
+ сертификата X509v3:
+\end_layout
+
+\begin_layout Itemize
+назначения ключа
+\end_layout
+
+\begin_layout Itemize
+ограничений сертификата
+\end_layout
+
+\begin_layout Itemize
+политики применения сертификата --- нормативных документов, определяющие
+ правила использования сертификата
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Аналогов выбора сертификата на основании контекста безопасности найдено
+ не было
+\end_layout
+
+\begin_layout Subsection*
+Слайд 5
+\end_layout
+
+\begin_layout Standard
+Обычно для создания сертификатов используется библиотека OpenSSL и одноименная
+ утилита командной строки.
+ Стандарт X509v3 предполагает включение в состав сертификата пользовательских
+ дополнений.
+ 
+\end_layout
+
+\begin_layout Standard
+Пользовательские дополнения могут быть включены в состав сертификата тремя
+ возможными способами:
+\end_layout
+
+\begin_layout Itemize
+Модификация конфигурационного файла 
+\family typewriter
+openssl.conf
+\family default
+;
+\end_layout
+
+\begin_layout Itemize
+Программно:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Alias на существующее дополнение (используется структура и методы обработки
+ существующего дополнения, однако новое имеет новое имя и идентификатор);
+\end_layout
+
+\begin_layout Itemize
+Полная реализация дополнения (реализация структуры, методов обработки).
+ 
+\end_layout
+
+\end_deeper
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+В работе реализован способ хранения контекста безопасности пользователя
+ путём реализации структуры дополнения 
+\family typewriter
+v3_secon
+\family default
+.
+\end_layout
+
+\begin_layout Subsection*
+Слайд 6
+\end_layout
+
+\begin_layout Standard
+Для утилиты создания сертификата пользователя были определены следующие
+ требования:
+\end_layout
+
+\begin_layout Enumerate
+Возможность создавать закрытый ключ клиента произвольной длины; 
+\end_layout
+
+\begin_layout Enumerate
+Создавать запросы на подпись сертификата (CSR) с дополнением 
+\family typewriter
+selinuxContext
+\family default
+; 
+\end_layout
+
+\begin_layout Enumerate
+Проверка корректности метки безопасности; 
+\end_layout
+
+\begin_layout Enumerate
+Выпуск сертификата удостоверяющим центром.
+ 
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Так как требовалось разработать утилиту максимально быстро, был выбран язык
+ программирования Python.
+ При этом были использована библиотека M2Crypto.
+ Вопросы оптимизации в работе не учитывались.
+\end_layout
+
+\begin_layout Subsection*
+Слайд 7
+\end_layout
+
+\begin_layout Standard
+Автоматизация выбора сертификата открытого ключа реализована с помощью механизма
+ многоэкземплярности директорий ОС семейства Linux.
+ 
+\end_layout
+
+\begin_layout Standard
+Этот механизм предполагает создание копий директорий по определённому признаку.
+ В работе использован механизм многоэкземплярности пользовательских директорий,
+ создающие копии пользовательской директории по текущему контексту безопасности
+ пользователя.
+ 
+\end_layout
+
+\begin_layout Standard
+Реализация механизма (создание директории, монтирование экземпляра) ---
+ 
+\family typewriter
+pam_namespace.so
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Команды по созданию директорий определяются в скрипте 
+\family typewriter
+namespace.init
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Модуль 
+\family typewriter
+pam_namespace
+\family default
+ доработан возможностью передавать в скрипт инициализации 
+\family typewriter
+namespace.init
+\family default
+ значения контекста безопасности пользователя.
+\end_layout
+
+\begin_layout Standard
+При первом входе в систему пользователю создаётся пара закрытый ключ --
+ сертификат, который используется для цифровой подписи.
+ Кроме того, создаётся сертификат, хранящий метку безопасности пользователя
+ на текущем уровне.
+ 
+\end_layout
+
+\begin_layout Standard
+Пользователь, имеющий допустимый контекст безопасности, имеет сертификат,
+ в котором содержится значение текущего контекста безопасности.
+\end_layout
+
+\begin_layout Subsection*
+Слайд 8
+\end_layout
+
+\begin_layout Standard
+Разработанный механизм может быть использован для аутентификации клиентов
+ СУБД PostgreSQL.
+ На слайде приведена схема стенда.
+ На клиентской машине созданы пользователи с определёнными уровнями доступа.
+ На сервере СУБД PostgreSQL им соотносятся пользователи СУБД.
+ Между клиентом и сервером настроено SSL-соединение.
+ 
+\end_layout
+
+\begin_layout Standard
+Модуль СУБД 
+\family typewriter
+sepgsql
+\family default
+ используется для реализации мандатного контроля доступа на основе метки
+ SELinux, был доработан возможностью установки метки безопасности из переданного
+ сертификата клиента.
+ 
+\end_layout
+
+\begin_layout Standard
+Модуль 
+\family typewriter
+sslinfo
+\family default
+, который содержит набор хранимых процедур для просмотра информации о сертификат
+ах клиента, был дополнен функциями просмотра информации о дополнениях сертификат
+а.
+\end_layout
+
+\begin_layout Standard
+С помощью доработанных модулей реализуется возможность выполнения серверным
+ процессом запросов в том контексте безопасности, который соответствует
+ метки безопасности из клиентского сертификата.
+\end_layout
+
+\begin_layout Subsection*
+Слайд 9, 10
+\end_layout
+
+\begin_layout Standard
+На следующих слайдах можно убедиться в этом.
+ Пользователь 
+\family typewriter
+user2
+\family default
+ имеет контекст безопасности 
+\family typewriter
+user_u:user_r:user_t:s0-s2
+\family default
+, ему создан сертификат с соответствующей меткой.
+ Пользователь подключается к СУБД PostgreSQL, с помощью функции 
+\family typewriter
+ssl_get_extension_by_name()
+\family default
+ можно убедиться в наличии дополнения и соответствии значения контекста
+ безопасности клиента; а с помощью функции 
+\family typewriter
+sepgsql_getcon()
+\family default
+ убедиться в том, что сервер выполняет запросы в том контексте безопасности,
+ который соответствует метке из сертификата.
+\end_layout
+
+\begin_layout Subsection*
+Слайд 11
+\end_layout
+
+\begin_layout Standard
+Выводы:
+\end_layout
+
+\begin_layout Itemize
+Для хранения контекста безопасности в сертификате X509 было реализовано
+ дополнение X509v3 selinuxContext; 
+\end_layout
+
+\begin_layout Itemize
+Разработана утилита pgcert генерации сертификатов с дополнением selinuxContext;
+ 
+\end_layout
+
+\begin_layout Itemize
+Для автоматизации процесса выбора сертификата использовался механизм многоэкземп
+лярности директорий; 
+\end_layout
+
+\begin_layout Itemize
+Разработанный механизм был адаптирован для аутентификации клиентов СУБД
+ PostgreSQL; 
+\end_layout
+
+\begin_layout Itemize
+Расширен функционал библиотек: pam_namespace, M2Crypto; 
+\end_layout
+
+\begin_layout Itemize
+Расширен функционал модулей СУБД PostgreSQL: sslinfo, sepgsql; 
+\end_layout
+
+\begin_layout Itemize
+Патч для модуля sslinfo был отправлен мировому сообществу PostgreSQL на
+ предмет включения в состав дистрибутива.
+ 
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Standard
+Полученные результаты говорят о достижении цели работы.
+\end_layout
+
+\end_body
+\end_document
