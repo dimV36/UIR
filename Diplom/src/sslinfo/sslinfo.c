@@ -382,55 +382,62 @@ ssl_issuer_dn(PG_FUNCTION_ARGS)
 }
 
 
-X509_EXTENSION *get_extension(X509* certificate, char *name) {
-	int 			extension_nid = 0;
-	int 			locate = 0;
+/*
+ * Returns extension object by given certificate and it's name.
+ * 
+ * Returns X509_EXTENSION* or NULL, if extension is not found in certificate.
+ */
+X509_EXTENSION *get_extension(X509* cert, char *name) {
+	int 	nid;
+	int 	loc;
 	
-	extension_nid = OBJ_sn2nid(name);
-	if (extension_nid == NID_undef) {
-		extension_nid = OBJ_ln2nid(name);
-		if (extension_nid == NID_undef) 
-			return NULL;
-	}
-	locate = X509_get_ext_by_NID(certificate, extension_nid,  -1);
-	return X509_get_ext(certificate, locate);
+	nid = OBJ_txt2nid(name);
+	if (nid == NID_undef) 
+		return NULL;
+	
+	loc = X509_get_ext_by_NID(cert, nid, -1);
+	return X509_get_ext(cert, loc);
 }
+
 
 /* Returns value of extension. 
  * 
- * This function returns value of extension by short name in client certificate. 
+ * This function returns value of extension by given name in client certificate. 
  * 
  * Returns text datum. 
  */
-
-PG_FUNCTION_INFO_V1(ssl_get_extension_value);
+PG_FUNCTION_INFO_V1(ssl_extension_value);
 Datum
-ssl_get_extension_value(PG_FUNCTION_ARGS) {	
-	X509 			*certificate = MyProcPort -> peer;
-	X509_EXTENSION 		*extension = NULL;
-	char 			*extension_name = text_to_cstring(PG_GETARG_TEXT_P(0));
-	BIO 			*bio = NULL;
-	char 			*value = NULL;
+ssl_extension_value(PG_FUNCTION_ARGS) {
+	X509 			*cert = MyProcPort->peer;
+	X509_EXTENSION 	*ext = NULL;
+	char 			*ext_name = text_to_cstring(PG_GETARG_TEXT_P(0));
+	BIO 			*membuf = NULL;
+	char 			*val = NULL;
 	char 			nullterm = '\0';
 	text 			*result = NULL;
 
-	if (certificate == NULL)
+	if (cert == NULL)
+		PG_RETURN_NULL();
+	
+	if (OBJ_txt2nid(ext_name) == NID_undef)
+		elog(ERROR, "Unknown extension name \"%s\"", ext_name);
+	
+	ext = get_extension(cert, ext_name);
+	if (ext == NULL) 
 		PG_RETURN_NULL();
 
-	extension = get_extension(certificate, extension_name);
-	if (extension == NULL)
-		elog(ERROR, "Extension by name \"%s\" is not found in certificate", extension_name);
+	membuf = BIO_new(BIO_s_mem());
+	X509V3_EXT_print(membuf, ext, -1, -1);
+	BIO_write(membuf, &nullterm, 1);
+	BIO_get_mem_data(membuf, &val);
 
-	bio = BIO_new(BIO_s_mem());
-	X509V3_EXT_print(bio, extension, -1, -1);
-	BIO_write(bio, &nullterm, 1);
-	BIO_get_mem_data(bio, &value);
-
-	result = cstring_to_text(value);
-	BIO_free(bio);
+	result = cstring_to_text(val);
+	BIO_free(membuf);
 
 	PG_RETURN_TEXT_P(result);
 }
+
 
 /* Returns status of extension 
  * 
@@ -438,88 +445,104 @@ ssl_get_extension_value(PG_FUNCTION_ARGS) {
  * 
  * Returns bool datum
  */
-PG_FUNCTION_INFO_V1(ssl_is_critical_extension);
+PG_FUNCTION_INFO_V1(ssl_extension_is_critical);
 Datum
-ssl_is_critical_extension(PG_FUNCTION_ARGS) {
-	X509 			*certificate = MyProcPort -> peer;
-	X509_EXTENSION 		*extension = NULL;
-	char 			*extension_name = text_to_cstring(PG_GETARG_TEXT_P(0));
-	int 			critical = 0;
+ssl_extension_is_critical(PG_FUNCTION_ARGS) {
+	X509 			*cert = MyProcPort->peer;
+	X509_EXTENSION 	*ext = NULL;
+	char 			*ext_name = text_to_cstring(PG_GETARG_TEXT_P(0));
+	int 			critical;
 	
-	if (certificate == NULL)
+	if (cert == NULL)
 		PG_RETURN_NULL();
 	
-	extension = get_extension(certificate, extension_name);
-	if (extension == NULL) 
-		elog(ERROR, "Extension name \"%s\" is not found in certificate", extension_name);
+	if (OBJ_txt2nid(ext_name) == NID_undef)
+		elog(ERROR, "Unknown extension name \"%s\"", ext_name);
 	
-	critical = X509_EXTENSION_get_critical(extension);
+	ext = get_extension(cert, ext_name);
+	if (ext == NULL) 
+		PG_RETURN_NULL();
+	
+	critical = X509_EXTENSION_get_critical(ext);
+		
 	PG_RETURN_BOOL(critical);
 }
 
-/* Returns count of extensions in client certificate
- * 
- * Returns int datum
- */
-PG_FUNCTION_INFO_V1(ssl_get_count_of_extensions);
-Datum
-ssl_get_count_of_extensions(PG_FUNCTION_ARGS) {
-	X509 			*certificate = MyProcPort -> peer;
-	
-	if (certificate == NULL)
-		PG_RETURN_NULL();
-	
-	PG_RETURN_INT32(X509_get_ext_count(certificate));
-}
 
 /* Returns short names of extensions in client certificate
  * 
  * Returns setof text datum
  */
-PG_FUNCTION_INFO_V1(ssl_get_extension_names);
+PG_FUNCTION_INFO_V1(ssl_extension_names);
 Datum
-ssl_get_extension_names(PG_FUNCTION_ARGS) {
-	X509				*certificate = MyProcPort -> peer;
-	FuncCallContext 		*funcctx;
-	STACK_OF(X509_EXTENSION) 	*extension_stack = NULL;
-	MemoryContext 			oldcontext;
-	int 				call = 0;
-	int 				max_calls = 0;
-	X509_EXTENSION			*extension = NULL;
-	ASN1_OBJECT			*object = NULL;
-	int 				extension_nid = 0;
-	text*				result = NULL;
+ssl_extension_names(PG_FUNCTION_ARGS) {
+	X509						*cert = MyProcPort->peer;
+	FuncCallContext 			*funcctx;
+	STACK_OF(X509_EXTENSION) 	*ext_stack = NULL;
+	int 						call;
+	int 						max_calls;
+	TupleDesc					tupdesc;
+	AttInMetadata				*attinmeta;
+	MemoryContext 				oldcontext;
+	char			 			**values;
+	HeapTuple    				tuple;
+	int 						nid;
+	X509_EXTENSION				*ext = NULL;
+	ASN1_OBJECT					*obj = NULL;
+	BIO 						*membuf = NULL;
+	char 						nullterm = '\0';
 	
-	if (certificate == NULL)
+	if (cert == NULL)
 		PG_RETURN_NULL();
 	
-	extension_stack = certificate -> cert_info -> extensions;
-	if (extension_stack == NULL) 
+	ext_stack = cert->cert_info->extensions;
+	if (ext_stack == NULL) 
 		PG_RETURN_NULL();
 	
 	if (SRF_IS_FIRSTCALL()) {
 		funcctx = SRF_FIRSTCALL_INIT();
-		oldcontext = MemoryContextSwitchTo(funcctx -> multi_call_memory_ctx);
-		funcctx -> max_calls = X509_get_ext_count(certificate);
+		oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
+		funcctx->max_calls = X509_get_ext_count(cert);
+		
+		if (get_call_result_type(fcinfo, NULL, &tupdesc) != TYPEFUNC_COMPOSITE)
+			ereport(ERROR,
+					(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
+					errmsg("function returning record called in context "
+						"that cannot accept type record")));
+
+		attinmeta = TupleDescGetAttInMetadata(tupdesc);
+		funcctx->attinmeta = attinmeta;
+		
 		MemoryContextSwitchTo(oldcontext);
 	}
-	funcctx = SRF_PERCALL_SETUP();
 	
-	call = funcctx -> call_cntr;
-	max_calls = funcctx -> max_calls;
+	funcctx = SRF_PERCALL_SETUP();
+	call = funcctx->call_cntr;
+    max_calls = funcctx->max_calls;
+    attinmeta = funcctx->attinmeta;
 	
 	if (call < max_calls) {
-		extension = sk_X509_EXTENSION_value(extension_stack, call);
-		object = X509_EXTENSION_get_object(extension);
-		extension_nid = OBJ_obj2nid(object);
+		values = (char **) palloc(2 * sizeof(char *));
+		
+		ext = sk_X509_EXTENSION_value(ext_stack, call);
+		obj = X509_EXTENSION_get_object(ext);
+		nid = OBJ_obj2nid(obj);
 	    
-		if (extension_nid == NID_undef)
+		if (nid == NID_undef)
 			elog(ERROR, "Unknown extension in certificate");
 	    
-		result = cstring_to_text(OBJ_nid2sn(extension_nid));
+		values[0] = (char *) OBJ_nid2sn(nid);
+		
+		membuf = BIO_new(BIO_s_mem());
+		X509V3_EXT_print(membuf, ext, -1, -1);
+		BIO_write(membuf, &nullterm, 1);
+		BIO_get_mem_data(membuf, &values[1]);
+				
+		tuple = BuildTupleFromCStrings(attinmeta, values);
+		
+		BIO_free(membuf);
 	    
- 		SRF_RETURN_NEXT(funcctx, (Datum) result);
+ 		SRF_RETURN_NEXT(funcctx, HeapTupleGetDatum(tuple));
 	}
 	SRF_RETURN_DONE(funcctx);
 }
-

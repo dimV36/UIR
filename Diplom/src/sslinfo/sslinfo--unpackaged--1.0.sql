@@ -11,11 +11,6 @@ ALTER EXTENSION sslinfo ADD function ssl_issuer_field(text);
 ALTER EXTENSION sslinfo ADD function ssl_client_dn();
 ALTER EXTENSION sslinfo ADD function ssl_issuer_dn();
 
-ALTER EXTENSION sslinfo ADD function ssl_get_extension_value();
-ALTER EXTENSION sslinfo ADD function ssl_is_critical_extension();
-ALTER EXTENSION sslinfo ADD function ssl_count_of_extensions();
-ALTER EXTENSION sslinfo ADD function ssl_get_extension_names();
-
 -- These functions were not in 9.0:
 
 CREATE FUNCTION ssl_version() RETURNS text
