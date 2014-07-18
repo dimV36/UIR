@@ -1,0 +1,657 @@
+*** a/contrib/sslinfo/sslinfo.c
+--- b/contrib/sslinfo/sslinfo.c
+***************
+*** 5,10 ****
+--- 5,12 ----
+   * This file is distributed under BSD-style license.
+   *
+   * contrib/sslinfo/sslinfo.c
++  * 
++  * Extension functions written by Dmitry Voronin carriingfate92@yandex.ru, CNIIEISU.
+   */
+  
+  #include "postgres.h"
+***************
+*** 14,29 ****
+  #include "miscadmin.h"
+  #include "utils/builtins.h"
+  #include "mb/pg_wchar.h"
+  
+  #include <openssl/x509.h>
+  #include <openssl/asn1.h>
+  
+  PG_MODULE_MAGIC;
+  
+- static Datum X509_NAME_field_to_text(X509_NAME *name, text *fieldName);
+- static Datum X509_NAME_to_text(X509_NAME *name);
+- static Datum ASN1_STRING_to_text(ASN1_STRING *str);
+  
+  
+  /*
+   * Indicates whether current session uses SSL
+--- 16,49 ----
+  #include "miscadmin.h"
+  #include "utils/builtins.h"
+  #include "mb/pg_wchar.h"
++ #include "funcapi.h"
+  
+  #include <openssl/x509.h>
+  #include <openssl/asn1.h>
++ #include <openssl/x509v3.h>
++ 
+  
+  PG_MODULE_MAGIC;
+  
+  
++ Datum		ssl_is_used(PG_FUNCTION_ARGS);
++ Datum		ssl_version(PG_FUNCTION_ARGS);
++ Datum		ssl_cipher(PG_FUNCTION_ARGS);
++ Datum		ssl_client_cert_present(PG_FUNCTION_ARGS);
++ Datum		ssl_client_serial(PG_FUNCTION_ARGS);
++ Datum		ssl_client_dn_field(PG_FUNCTION_ARGS);
++ Datum		ssl_issuer_field(PG_FUNCTION_ARGS);
++ Datum		ssl_client_dn(PG_FUNCTION_ARGS);
++ Datum		ssl_issuer_dn(PG_FUNCTION_ARGS);
++ Datum		X509_NAME_field_to_text(X509_NAME *name, text *fieldName);
++ Datum		X509_NAME_to_text(X509_NAME *name);
++ Datum		ASN1_STRING_to_text(ASN1_STRING *str);
++ 
++ X509_EXTENSION	*get_extension(X509* certificate, char *name);
++ Datum 		ssl_get_extension_value(PG_FUNCTION_ARGS);
++ Datum		ssl_is_critical_extension(PG_FUNCTION_ARGS);
++ Datum 		ssl_get_count_of_extensions(PG_FUNCTION_ARGS);
++ Datum		ssl_get_extension_names(PG_FUNCTION_ARGS);
+  
+  /*
+   * Indicates whether current session uses SSL
+***************
+*** 40,46 **** ssl_is_used(PG_FUNCTION_ARGS)
+  
+  
+  /*
+!  * Returns SSL version currently in use.
+   */
+  PG_FUNCTION_INFO_V1(ssl_version);
+  Datum
+--- 60,66 ----
+  
+  
+  /*
+!  * Returns SSL cipher currently in use.
+   */
+  PG_FUNCTION_INFO_V1(ssl_version);
+  Datum
+***************
+*** 66,72 **** ssl_cipher(PG_FUNCTION_ARGS)
+  
+  
+  /*
+!  * Indicates whether current client provided a certificate
+   *
+   * Function has no arguments.  Returns bool.  True if current session
+   * is SSL session and client certificate is verified, otherwise false.
+--- 86,92 ----
+  
+  
+  /*
+!  * Indicates whether current client have provided a certificate
+   *
+   * Function has no arguments.  Returns bool.  True if current session
+   * is SSL session and client certificate is verified, otherwise false.
+***************
+*** 121,133 **** ssl_client_serial(PG_FUNCTION_ARGS)
+   * current database encoding if possible.  Any invalid characters are
+   * replaced by question marks.
+   *
+!  * Parameter: str - OpenSSL ASN1_STRING structure.  Memory management
+   * of this structure is responsibility of caller.
+   *
+   * Returns Datum, which can be directly returned from a C language SQL
+   * function.
+   */
+! static Datum
+  ASN1_STRING_to_text(ASN1_STRING *str)
+  {
+  	BIO		   *membuf;
+--- 141,153 ----
+   * current database encoding if possible.  Any invalid characters are
+   * replaced by question marks.
+   *
+!  * Parameter: str - OpenSSL ASN1_STRING structure.	Memory management
+   * of this structure is responsibility of caller.
+   *
+   * Returns Datum, which can be directly returned from a C language SQL
+   * function.
+   */
+! Datum
+  ASN1_STRING_to_text(ASN1_STRING *str)
+  {
+  	BIO		   *membuf;
+***************
+*** 146,152 **** ASN1_STRING_to_text(ASN1_STRING *str)
+  	nullterm = '\0';
+  	BIO_write(membuf, &nullterm, 1);
+  	size = BIO_get_mem_data(membuf, &sp);
+! 	dp = pg_any_to_server(sp, size - 1, PG_UTF8);
+  	result = cstring_to_text(dp);
+  	if (dp != sp)
+  		pfree(dp);
+--- 166,175 ----
+  	nullterm = '\0';
+  	BIO_write(membuf, &nullterm, 1);
+  	size = BIO_get_mem_data(membuf, &sp);
+! 	dp = (char *) pg_do_encoding_conversion((unsigned char *) sp,
+! 											size - 1,
+! 											PG_UTF8,
+! 											GetDatabaseEncoding());
+  	result = cstring_to_text(dp);
+  	if (dp != sp)
+  		pfree(dp);
+***************
+*** 168,174 **** ASN1_STRING_to_text(ASN1_STRING *str)
+   * Returns result of ASN1_STRING_to_text applied to appropriate
+   * part of name
+   */
+! static Datum
+  X509_NAME_field_to_text(X509_NAME *name, text *fieldName)
+  {
+  	char	   *string_fieldname;
+--- 191,197 ----
+   * Returns result of ASN1_STRING_to_text applied to appropriate
+   * part of name
+   */
+! Datum
+  X509_NAME_field_to_text(X509_NAME *name, text *fieldName)
+  {
+  	char	   *string_fieldname;
+***************
+*** 273,279 **** ssl_issuer_field(PG_FUNCTION_ARGS)
+   * Returns: text datum which contains string representation of
+   * X509_NAME
+   */
+! static Datum
+  X509_NAME_to_text(X509_NAME *name)
+  {
+  	BIO		   *membuf = BIO_new(BIO_s_mem());
+--- 296,302 ----
+   * Returns: text datum which contains string representation of
+   * X509_NAME
+   */
+! Datum
+  X509_NAME_to_text(X509_NAME *name)
+  {
+  	BIO		   *membuf = BIO_new(BIO_s_mem());
+***************
+*** 308,314 **** X509_NAME_to_text(X509_NAME *name)
+  	nullterm = '\0';
+  	BIO_write(membuf, &nullterm, 1);
+  	size = BIO_get_mem_data(membuf, &sp);
+! 	dp = pg_any_to_server(sp, size - 1, PG_UTF8);
+  	result = cstring_to_text(dp);
+  	if (dp != sp)
+  		pfree(dp);
+--- 331,340 ----
+  	nullterm = '\0';
+  	BIO_write(membuf, &nullterm, 1);
+  	size = BIO_get_mem_data(membuf, &sp);
+! 	dp = (char *) pg_do_encoding_conversion((unsigned char *) sp,
+! 											size - 1,
+! 											PG_UTF8,
+! 											GetDatabaseEncoding());
+  	result = cstring_to_text(dp);
+  	if (dp != sp)
+  		pfree(dp);
+***************
+*** 354,356 **** ssl_issuer_dn(PG_FUNCTION_ARGS)
+--- 380,548 ----
+  		PG_RETURN_NULL();
+  	return X509_NAME_to_text(X509_get_issuer_name(MyProcPort->peer));
+  }
++ 
++ 
++ /*
++  * Returns extension object by given certificate and it's name.
++  * 
++  * Returns X509_EXTENSION* or NULL, if extension is not found in certificate.
++  */
++ X509_EXTENSION *get_extension(X509* cert, char *name) {
++ 	int 	nid;
++ 	int 	loc;
++ 	
++ 	nid = OBJ_txt2nid(name);
++ 	if (nid == NID_undef) 
++ 		return NULL;
++ 	
++ 	loc = X509_get_ext_by_NID(cert, nid, -1);
++ 	return X509_get_ext(cert, loc);
++ }
++ 
++ 
++ /* Returns value of extension. 
++  * 
++  * This function returns value of extension by given name in client certificate. 
++  * 
++  * Returns text datum. 
++  */
++ PG_FUNCTION_INFO_V1(ssl_extension_value);
++ Datum
++ ssl_extension_value(PG_FUNCTION_ARGS) {
++ 	X509 			*cert = MyProcPort->peer;
++ 	X509_EXTENSION 	*ext = NULL;
++ 	char 			*ext_name = text_to_cstring(PG_GETARG_TEXT_P(0));
++ 	BIO 			*membuf = NULL;
++ 	char 			*val = NULL;
++ 	char 			nullterm = '\0';
++ 	text 			*result = NULL;
++ 
++ 	if (cert == NULL)
++ 		PG_RETURN_NULL();
++ 	
++ 	if (OBJ_txt2nid(ext_name) == NID_undef)
++ 		elog(ERROR, "Unknown extension name \"%s\"", ext_name);
++ 	
++ 	ext = get_extension(cert, ext_name);
++ 	if (ext == NULL) 
++ 		PG_RETURN_NULL();
++ 
++ 	membuf = BIO_new(BIO_s_mem());
++ 	X509V3_EXT_print(membuf, ext, -1, -1);
++ 	BIO_write(membuf, &nullterm, 1);
++ 	BIO_get_mem_data(membuf, &val);
++ 
++ 	result = cstring_to_text(val);
++ 	BIO_free(membuf);
++ 
++ 	PG_RETURN_TEXT_P(result);
++ }
++ 
++ 
++ /* Returns status of extension 
++  * 
++  * Returns true, if extension is critical and false, if it is not.
++  * 
++  * Returns bool datum
++  */
++ PG_FUNCTION_INFO_V1(ssl_extension_is_critical);
++ Datum
++ ssl_extension_is_critical(PG_FUNCTION_ARGS) {
++ 	X509 			*cert = MyProcPort->peer;
++ 	X509_EXTENSION 	*ext = NULL;
++ 	char 			*ext_name = text_to_cstring(PG_GETARG_TEXT_P(0));
++ 	int 			critical;
++ 	
++ 	if (cert == NULL)
++ 		PG_RETURN_NULL();
++ 	
++ 	if (OBJ_txt2nid(ext_name) == NID_undef)
++ 		elog(ERROR, "Unknown extension name \"%s\"", ext_name);
++ 	
++ 	ext = get_extension(cert, ext_name);
++ 	if (ext == NULL) 
++ 		PG_RETURN_NULL();
++ 	
++ 	critical = X509_EXTENSION_get_critical(ext);
++ 		
++ 	PG_RETURN_BOOL(critical);
++ }
++ 
++ 
++ /* Returns short names of extensions in client certificate
++  * 
++  * Returns setof text datum
++  */
++ PG_FUNCTION_INFO_V1(ssl_extension_names);
++ Datum
++ ssl_extension_names(PG_FUNCTION_ARGS) {
++ 	X509						*cert = MyProcPort->peer;
++ 	FuncCallContext 			*funcctx;
++ 	STACK_OF(X509_EXTENSION) 	*ext_stack = NULL;
++ 	int 						call;
++ 	int 						max_calls;
++ 	TupleDesc					tupdesc;
++ 	AttInMetadata				*attinmeta;
++ 	MemoryContext 				oldcontext;
++ 	char			 			**values;
++ 	HeapTuple    				tuple;
++ 	int 						nid;
++ 	X509_EXTENSION				*ext = NULL;
++ 	ASN1_OBJECT					*obj = NULL;
++ 	BIO 						*membuf = NULL;
++ 	char 						nullterm = '\0';
++ 	
++ 	if (cert == NULL)
++ 		PG_RETURN_NULL();
++ 	
++ 	ext_stack = cert->cert_info->extensions;
++ 	if (ext_stack == NULL) 
++ 		PG_RETURN_NULL();
++ 	
++ 	if (SRF_IS_FIRSTCALL()) {
++ 		funcctx = SRF_FIRSTCALL_INIT();
++ 		oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
++ 		funcctx->max_calls = X509_get_ext_count(cert);
++ 		
++ 		if (get_call_result_type(fcinfo, NULL, &tupdesc) != TYPEFUNC_COMPOSITE)
++ 			ereport(ERROR,
++ 					(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
++ 					errmsg("function returning record called in context "
++ 						"that cannot accept type record")));
++ 
++ 		attinmeta = TupleDescGetAttInMetadata(tupdesc);
++ 		funcctx->attinmeta = attinmeta;
++ 		
++ 		MemoryContextSwitchTo(oldcontext);
++ 	}
++ 	
++ 	funcctx = SRF_PERCALL_SETUP();
++ 	call = funcctx->call_cntr;
++     max_calls = funcctx->max_calls;
++     attinmeta = funcctx->attinmeta;
++ 	
++ 	if (call < max_calls) {
++ 		values = (char **) palloc(2 * sizeof(char *));
++ 		
++ 		ext = sk_X509_EXTENSION_value(ext_stack, call);
++ 		obj = X509_EXTENSION_get_object(ext);
++ 		nid = OBJ_obj2nid(obj);
++ 	    
++ 		if (nid == NID_undef)
++ 			elog(ERROR, "Unknown extension in certificate");
++ 	    
++ 		values[0] = (char *) OBJ_nid2sn(nid);
++ 		
++ 		membuf = BIO_new(BIO_s_mem());
++ 		X509V3_EXT_print(membuf, ext, -1, -1);
++ 		BIO_write(membuf, &nullterm, 1);
++ 		BIO_get_mem_data(membuf, &values[1]);
++ 				
++ 		tuple = BuildTupleFromCStrings(attinmeta, values);
++ 		
++ 		BIO_free(membuf);
++ 	    
++  		SRF_RETURN_NEXT(funcctx, HeapTupleGetDatum(tuple));
++ 	}
++ 	SRF_RETURN_DONE(funcctx);
++ }
+*** a/doc/src/sgml/sslinfo.sgml
+--- b/doc/src/sgml/sslinfo.sgml
+***************
+*** 24,34 ****
+  
+    <variablelist>
+     <varlistentry>
+      <term>
+       <function>ssl_is_used() returns boolean</function>
+-      <indexterm>
+-       <primary>ssl_is_used</primary>
+-      </indexterm>
+      </term>
+      <listitem>
+      <para>
+--- 24,34 ----
+  
+    <variablelist>
+     <varlistentry>
++     <indexterm>
++      <primary>ssl_is_used</primary>
++     </indexterm>
+      <term>
+       <function>ssl_is_used() returns boolean</function>
+      </term>
+      <listitem>
+      <para>
+***************
+*** 39,49 ****
+     </varlistentry>
+  
+     <varlistentry>
+      <term>
+       <function>ssl_version() returns text</function>
+-      <indexterm>
+-       <primary>ssl_version</primary>
+-      </indexterm>
+      </term>
+      <listitem>
+      <para>
+--- 39,49 ----
+     </varlistentry>
+  
+     <varlistentry>
++     <indexterm>
++      <primary>ssl_version</primary>
++     </indexterm>
+      <term>
+       <function>ssl_version() returns text</function>
+      </term>
+      <listitem>
+      <para>
+***************
+*** 54,64 ****
+     </varlistentry>
+  
+     <varlistentry>
+      <term>
+       <function>ssl_cipher() returns text</function>
+-      <indexterm>
+-       <primary>ssl_cipher</primary>
+-      </indexterm>
+      </term>
+      <listitem>
+      <para>
+--- 54,64 ----
+     </varlistentry>
+  
+     <varlistentry>
++     <indexterm>
++      <primary>ssl_cipher</primary>
++     </indexterm>
+      <term>
+       <function>ssl_cipher() returns text</function>
+      </term>
+      <listitem>
+      <para>
+***************
+*** 69,79 ****
+     </varlistentry>
+  
+     <varlistentry>
+      <term>
+       <function>ssl_client_cert_present() returns boolean</function>
+-      <indexterm>
+-       <primary>ssl_client_cert_present</primary>
+-      </indexterm>
+      </term>
+      <listitem>
+      <para>
+--- 69,79 ----
+     </varlistentry>
+  
+     <varlistentry>
++     <indexterm>
++      <primary>ssl_client_cert_present</primary>
++     </indexterm>
+      <term>
+       <function>ssl_client_cert_present() returns boolean</function>
+      </term>
+      <listitem>
+      <para>
+***************
+*** 85,95 ****
+     </varlistentry>
+  
+     <varlistentry>
+      <term>
+       <function>ssl_client_serial() returns numeric</function>
+-      <indexterm>
+-       <primary>ssl_client_serial</primary>
+-      </indexterm>
+      </term>
+      <listitem>
+      <para>
+--- 85,95 ----
+     </varlistentry>
+  
+     <varlistentry>
++     <indexterm>
++      <primary>ssl_client_serial</primary>
++     </indexterm>
+      <term>
+       <function>ssl_client_serial() returns numeric</function>
+      </term>
+      <listitem>
+      <para>
+***************
+*** 109,119 ****
+     </varlistentry>
+  
+     <varlistentry>
+      <term>
+       <function>ssl_client_dn() returns text</function>
+-      <indexterm>
+-       <primary>ssl_client_dn</primary>
+-      </indexterm>
+      </term>
+      <listitem>
+      <para>
+--- 109,119 ----
+     </varlistentry>
+  
+     <varlistentry>
++     <indexterm>
++      <primary>ssl_client_dn</primary>
++     </indexterm>
+      <term>
+       <function>ssl_client_dn() returns text</function>
+      </term>
+      <listitem>
+      <para>
+***************
+*** 132,142 ****
+     </varlistentry>
+  
+     <varlistentry>
+      <term>
+       <function>ssl_issuer_dn() returns text</function>
+-      <indexterm>
+-       <primary>ssl_issuer_dn</primary>
+-      </indexterm>
+      </term>
+      <listitem>
+      <para>
+--- 132,142 ----
+     </varlistentry>
+  
+     <varlistentry>
++     <indexterm>
++      <primary>ssl_issuer_dn</primary>
++     </indexterm>
+      <term>
+       <function>ssl_issuer_dn() returns text</function>
+      </term>
+      <listitem>
+      <para>
+***************
+*** 157,167 ****
+     </varlistentry>
+  
+     <varlistentry>
+      <term>
+       <function>ssl_client_dn_field(fieldname text) returns text</function>
+-      <indexterm>
+-       <primary>ssl_client_dn_field</primary>
+-      </indexterm>
+      </term>
+      <listitem>
+      <para>
+--- 157,167 ----
+     </varlistentry>
+  
+     <varlistentry>
++     <indexterm>
++      <primary>ssl_client_dn_field</primary>
++     </indexterm>
+      <term>
+       <function>ssl_client_dn_field(fieldname text) returns text</function>
+      </term>
+      <listitem>
+      <para>
+***************
+*** 206,216 **** emailAddress
+     </varlistentry>
+  
+     <varlistentry>
+      <term>
+       <function>ssl_issuer_field(fieldname text) returns text</function>
+-      <indexterm>
+-       <primary>ssl_issuer_field</primary>
+-      </indexterm>
+      </term>
+      <listitem>
+      <para>
+--- 206,216 ----
+     </varlistentry>
+  
+     <varlistentry>
++     <indexterm>
++      <primary>ssl_issuer_field</primary>
++     </indexterm>
+      <term>
+       <function>ssl_issuer_field(fieldname text) returns text</function>
+      </term>
+      <listitem>
+      <para>
+***************
+*** 220,225 **** emailAddress
+--- 220,271 ----
+      </listitem>
+     </varlistentry>
+    </variablelist>
++   
++    <variablelist>
++     <varlistentry>
++      <indexterm>
++       <primary>ssl_extension_value</primary>
++      </indexterm>
++     <term>
++      <function>ssl_extension_value(name text) returns text</function>
++     </term>
++     <listitem>
++      <para>
++       Returns value of extension by given extension name.
++      </para>
++     </listitem>
++    </varlistentry>
++    
++    <variablelist>
++     <varlistentry>
++      <indexterm>
++       <primary>ssl_extension_is_critical</primary>
++      </indexterm>
++     <term>
++      <function>ssl_extension_is_critical(text) returns boolean</function>
++     </term>
++     <listitem>
++      <para>
++       Returns TRUE if extension is critical and FALSE otherwise.
++      </para>
++     </listitem>
++    </varlistentry>
++    
++    <variablelist>
++     <varlistentry>
++      <indexterm>
++       <primary>ssl_extension_names</primary>
++      </indexterm>
++     <term>
++      <function>ssl_extension_names() returns setof extension</function>
++     </term>
++     <listitem>
++      <para>
++       Returns pairs of extension names and values. The type <structfield>extension</> contains 2 columns: <structfield>name</> and <structfield>value</>. 
++      </para>
++     </listitem>
++    </varlistentry>   
++   
+   </sect2>
+  
+   <sect2>
